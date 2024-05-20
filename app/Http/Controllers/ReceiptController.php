@@ -11,10 +11,11 @@ class ReceiptController extends Controller
     public function index(Request $request)
     {
         $receipts = Receipt::where('driver_id',$request->driver_id)->get();
+        
         if(count($receipts) >0){
             return response()->json(['status'=>200,'message'=>'receipts found','data'=>$receipts],200);
         }else{
-            return response()->json(['status'=>404,'message'=>'receipts not found','data'=>(object)[]],404);
+            return response()->json(['status'=>404,'message'=>'receipts not found','data'=>[]],404);
         }
     }
     public function create(Request $request)
@@ -32,7 +33,7 @@ class ReceiptController extends Controller
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
         $receipt = new Receipt();
-        $receipt->driver_id = $request->driver_id;
+        $receipt->driver_id = (int)$request->driver_id;
         $receipt->fuel_station_name = $request->fuel_station_name;
         $receipt->price_per_gallon = $request->price_per_gallon;
         $receipt->gallons_bought = $request->gallons_bought;
@@ -43,6 +44,7 @@ class ReceiptController extends Controller
             $receipt->receipt_image= $imageName;
         }
         $receipt->save();
+
         return response()->json(['status'=>200,'message'=>'receipts saved','data'=>$receipt],200);
     }
 }

@@ -33,7 +33,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
-            
+            'email' => 'required',
         ]);
 
         if ($validator->fails()) {
