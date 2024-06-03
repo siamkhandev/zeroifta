@@ -12,7 +12,7 @@ class AdminController extends Controller
     {
        
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
-            return redirect('dashboard');
+            return redirect('/');
         }else{
             return redirect()->back()->withError('Invalid Credentials');
         }
