@@ -30,6 +30,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('dashboard',[DriverDashboardController::class,'index']);
 
     //////vehcile
+    Route::get('vehicles/all',[VehicleController::class,'allVehicles']);
     Route::post('vehicle',[VehicleController::class,'index']);
     Route::post('vehicle/update',[VehicleController::class,'update']);
     ////receipts

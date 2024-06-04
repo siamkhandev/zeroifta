@@ -30,4 +30,10 @@ class VehicleController extends Controller
             return response()->json(['status'=>404,'message'=>'vehicle not found','data'=> (object)[]],404);
         }
     }
+    public function allVehicles()
+    {
+        $vehicles = Vehicle::all();
+        return response()->json(['status'=>200,'message'=>'vehicles fetched successfully','data'=> $vehicles],200);
+
+    }
 }
