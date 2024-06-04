@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contactus;
+use App\Models\DriverVehicle;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +13,7 @@ class DriverDashboardController extends Controller
     public function index(Request $request)
     {
         $dashboardData = [];
-        $dashboardData['vehicle'] = Vehicle::where('driver_id',$request->driver_id)->first();
+        $dashboardData['vehicle'] = DriverVehicle::with('vehicle')->where('driver_id',$request->driver_id)->first();
         $dashboardData['recentTrips'] = [];
         return response()->json(['status'=>200,'message'=>'Data Fetched','data'=>$dashboardData],200);
     }

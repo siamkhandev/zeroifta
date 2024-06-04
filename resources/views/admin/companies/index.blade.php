@@ -59,7 +59,7 @@
                         <span class="text-secondary text-xs font-weight-bold">{{$company->created_at->format('Y-m-d')}}</span>
                       </td>
                       <td class="align-middle">
-                        <a href="#" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Edit user">
+                        <a href="{{route('companies.edit',$company->id)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Edit user">
                           Edit
                         </a>
                         <a href="{{route('companies.delete',$company->id)}}" class="btn btn-sm btn-danger" >
