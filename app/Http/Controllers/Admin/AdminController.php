@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanyContactUs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,5 +22,21 @@ class AdminController extends Controller
     {
         Auth::logout();
         return redirect('login');
+    }
+    public function contactUsForms()
+    {
+        $forms = CompanyContactUs::with('company')->orderBy('company_contact_us.id','desc')->get();
+        return view('admin.contactus.index',get_defined_vars());
+    }
+    public function readForm($id)
+    {
+        $form = CompanyContactUs::with('company')->find($id);
+        return view('admin.contactus.read',get_defined_vars());
+    }
+    public function deleteForm($id)
+    {
+        $form = CompanyContactUs::find($id);
+        $form->delete();
+        return redirect('contactus/all')->withError('Record Deleted Successfully');
     }
 }

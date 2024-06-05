@@ -11,7 +11,7 @@
               </div>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('fuel_taxes.update',$plan->id)}}">
+                <form method="post" action="{{route('fuel_taxes.update',$fuelTax->id)}}">
                     @csrf
                     <p class="text-uppercase text-sm">Fuel Tax Information</p>
                     <div class="row">

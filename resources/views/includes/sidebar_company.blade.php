@@ -28,7 +28,7 @@
         <li class="nav-item">
           <a class="nav-link {{ Request::is('vehicles/all*') ? 'active' : '' }}" href="{{route('allvehicles')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-delivery-fast text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Vehicles</span>
           </a>
@@ -36,7 +36,7 @@
         <li class="nav-item">
           <a class="nav-link {{ Request::is('driver/vehicles*') ? 'active' : '' }}" href="{{route('driver_vehicles')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-bus-front-12 text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Driver Vehicles</span>
           </a>
@@ -44,16 +44,16 @@
         <li class="nav-item">
           <a class="nav-link " href="#">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-collection text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Subscriptions</span>
           </a>
         </li>
        
         <li class="nav-item">
-          <a class="nav-link " href="#">
+          <a class="nav-link {{ Request::is('contactus*') ? 'active' : '' }} " href="{{route('contactus')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-email-83 text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Contact Us</span>
           </a>

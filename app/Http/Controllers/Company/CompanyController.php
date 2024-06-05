@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanyContactUs;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
@@ -34,5 +36,20 @@ class CompanyController extends Controller
         $company->save();
         return redirect('login')->withSuccess('Account created successfully. Now you can login.');
        
+    }
+
+    public function contactus()
+    {
+        return view('company.contactus');
+    }
+    public function submitContactUs(Request $request)
+    {
+        $contact = new CompanyContactUs();
+        $contact->subject = $request->subject;
+        $contact->company_id = Auth::id();
+        $contact->phone = $request->phone;
+        $contact->description = $request->description;
+        $contact->save();
+        return redirect()->back()->withSuccess('Information Submitted Successfully');
     }
 }

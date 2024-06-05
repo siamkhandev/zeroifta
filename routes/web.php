@@ -72,4 +72,9 @@ Route::get('drivers/edit/{id}',[DriversController::class,'edit'])->name('driver.
 Route::post('drivers/update/{id}',[DriversController::class,'update'])->name('driver.update');
 Route::get('drivers/delete/{id}',[DriversController::class,'delete'])->name('driver.delete');
 
-
+Route::get('contactus',[CompanyController::class,'contactus'])->name('contactus');
+Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('company.contactus');
+////
+Route::get('contactus/all',[AdminController::class,'contactUsForms'])->name('admin.contactus');
+Route::get('contactform/read/{id}',[AdminController::class,'readForm'])->name('contactform.detail');
+Route::get('contactform/delete/{id}',[AdminController::class,'deleteForm'])->name('contactform.delete');

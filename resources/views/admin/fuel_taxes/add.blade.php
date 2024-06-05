@@ -31,12 +31,13 @@
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label">Tax %</label>
                             <input class="form-control" type="number" name="tax" placeholder="Tax" max="100">
-                        </div>
-                        @error('tax')
+                            @error('tax')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
+                          </div>
+                       
                         </div>
                   
                     </div>

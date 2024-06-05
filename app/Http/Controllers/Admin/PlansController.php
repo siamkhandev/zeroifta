@@ -20,6 +20,13 @@ class PlansController extends Controller
     public function store(Request $request)
 
     {
+        $data = $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'price_type' => 'required',
+            
+           
+        ]);
         $plan = new Plan();
         $plan->name = $request->name;
         $plan->price = $request->price;
@@ -34,6 +41,13 @@ class PlansController extends Controller
     }
     public function update(Request $request,$id)
     {
+        $data = $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'price_type' => 'required',
+            
+           
+        ]);
         $plan = Plan::find($id);
         $plan->name = $request->name;
         $plan->price = $request->price;

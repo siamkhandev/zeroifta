@@ -23,7 +23,15 @@ class DriversController extends Controller
     }
     public function store(Request $request)
 
-    {
+    { 
+        $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email|max:255',
+        'phone' => 'required|string|max:20',
+        'password' => 'required|string|min:8|confirmed',
+        'dot' => 'required|string|max:255',
+        'mc' => 'required|string|max:255',
+    ]);
         $driver = new User();
         $driver->name = $request->name;
         $driver->email = $request->email;
@@ -46,6 +54,13 @@ class DriversController extends Controller
     }
     public function update(Request $request,$id)
     {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required',
+            'phone' => 'required|string|max:20',
+            'dot' => 'required|string|max:255',
+            'mc' => 'required|string|max:255',
+        ]);
         $driver = User::find($id);
         $driver->name = $request->name;
         $driver->email = $request->email;

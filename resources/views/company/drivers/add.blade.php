@@ -76,7 +76,7 @@
                                     <label for="example-text-input" class="form-control-label">Password</label>
                                     <input class="form-control" type="password" name="password" placeholder="Password">
                                 </div>
-                            @error('mc')
+                            @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -87,11 +87,7 @@
                                     <label for="example-text-input" class="form-control-label">Confirm Password</label>
                                     <input class="form-control" type="password" name="password_confirmation" placeholder="Confirm Password">
                                 </div>
-                            @error('mc')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            
                         </div>
                         
                         

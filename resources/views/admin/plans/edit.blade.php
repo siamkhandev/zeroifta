@@ -31,12 +31,13 @@
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label">Price</label>
                             <input class="form-control" type="number" name="price" value="{{$plan->price}}">
-                        </div>
-                        @error('price')
+                            @error('price')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
+                          </div>
+                        
                         </div>
                         <div class="col-md-6">
                         <div class="form-group">

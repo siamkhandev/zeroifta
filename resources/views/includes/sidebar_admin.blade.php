@@ -28,7 +28,7 @@
         <li class="nav-item">
           <a class="nav-link {{ Request::is('plans*') ? 'active' : '' }}" href="{{route('plans')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-collection text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Manage Subscriptions</span>
           </a>
@@ -36,7 +36,7 @@
         <li class="nav-item">
           <a class="nav-link " href="#">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-money-coins text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Manage Payments</span>
           </a>
@@ -44,7 +44,7 @@
         <li class="nav-item">
           <a class="nav-link {{ Request::is('fuel_taxes*') ? 'active' : '' }}" href="{{route('fuel_taxes')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-ui-04 text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Manage Fuel Taxes</span>
           </a>
@@ -52,15 +52,15 @@
         <li class="nav-item">
           <a class="nav-link " href="#">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-chart-bar-32 text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Reporting & Analytics</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="#">
+          <a class="nav-link {{ Request::is('contactus/all*') ? 'active' : '' }}" href="{{route('admin.contactus')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+              <i class="ni ni-email-83 text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Contact Forms</span>
           </a>
