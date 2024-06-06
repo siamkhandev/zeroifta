@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DriverVehicle;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,7 @@ class VehicleController extends Controller
 {
     public function index(Request $request)
     {
-        $vehicle = Vehicle::where('driver_id',$request->driver_id)->first();
+        $vehicle = DriverVehicle::with('vehicle')->where('driver_vehicles.driver_id',$request->driver_id)->first();
         if($vehicle){
             return response()->json(['status'=>200,'message'=>'vehicle found','data'=> $vehicle],200);
         }else{
