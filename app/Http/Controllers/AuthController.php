@@ -41,7 +41,7 @@ class AuthController extends Controller
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
         $user = User::whereId($request->user_id)->first();
-        $user->image = 'http://54.164.54.21/image/'.$user->image;
+        $user->image = 'http://54.164.54.21/images/'.$user->image;
         return response()->json(['status'=>200,'message'=>'Profile Fetched successfully','data' => $user], 200);
     }
     public function changePassword(Request $request)
@@ -80,7 +80,7 @@ class AuthController extends Controller
                 $user->image= $imageName;
             }
             $user->update();
-            $user->image = 'http://54.164.54.21/image/'.$user->image;
+            $user->image = 'http://54.164.54.21/images/'.$user->image;
             return response()->json(['status'=>200,'message' => 'Profile Updated successfully.','data'=>$user], 200);
         }else{
             return response()->json(['status'=>404,'message' => 'User not found','data'=>(object)[]], 404);
