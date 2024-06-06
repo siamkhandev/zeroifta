@@ -13,6 +13,11 @@ class ReceiptController extends Controller
         $receipts = Receipt::where('driver_id',$request->driver_id)->get();
         
         if(count($receipts) >0){
+            foreach ($receipts as $receipt) {
+                if (isset($receipt->receipt_image)) {
+                    $receipt->receipt_image = 'http://54.164.54.21/images/' . $receipt->receipt_image;
+                }
+            }
             return response()->json(['status'=>200,'message'=>'receipts found','data'=>$receipts],200);
         }else{
             return response()->json(['status'=>404,'message'=>'receipts not found','data'=>[]],404);
