@@ -12,6 +12,7 @@ class VehicleController extends Controller
     {
         $vehicle = DriverVehicle::with('vehicle')->where('driver_vehicles.driver_id',$request->driver_id)->first();
         if($vehicle){
+            $vehicle->vehicle_image = 'http://54.164.54.21/vehicles/' .$vehicle->vehicle_image;
             return response()->json(['status'=>200,'message'=>'vehicle found','data'=> $vehicle],200);
         }else{
             return response()->json(['status'=>404,'message'=>'vehicle not found','data'=> (object)[]],404);
