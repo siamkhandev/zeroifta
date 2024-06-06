@@ -15,7 +15,7 @@ class DriverDashboardController extends Controller
         $dashboardData = [];
         $dashboardData['vehicle'] = DriverVehicle::with('vehicle')->where('driver_id',$request->driver_id)->first();
         if ($dashboardData['vehicle'] && $dashboardData['vehicle']->vehicle) {
-            $dashboardData['vehicle']->vehicle->vehicle_image = 'http://54.164.54.21/images/' . $dashboardData['vehicle']->vehicle->vehicle_image;
+            $dashboardData['vehicle']->vehicle->vehicle_image = 'http://54.164.54.21/vehicles/' . $dashboardData['vehicle']->vehicle->vehicle_image;
         }
         $dashboardData['recentTrips'] = [];
         return response()->json(['status'=>200,'message'=>'Data Fetched','data'=>$dashboardData],200);
