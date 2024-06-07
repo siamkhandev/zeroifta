@@ -4,10 +4,13 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CompaniesController;
 use App\Http\Controllers\Admin\FuelTaxController;
 use App\Http\Controllers\Admin\PlansController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Company\DriversController;
 use App\Http\Controllers\Company\DriverVehiclesController;
 use App\Http\Controllers\Company\VehiclesController;
+use App\Http\Controllers\PaymentController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,3 +81,9 @@ Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('com
 Route::get('contactus/all',[AdminController::class,'contactUsForms'])->name('admin.contactus');
 Route::get('contactform/read/{id}',[AdminController::class,'readForm'])->name('contactform.detail');
 Route::get('contactform/delete/{id}',[AdminController::class,'deleteForm'])->name('contactform.delete');
+
+Route::get('/checkout', [PaymentController::class, 'showCheckoutForm'])->name('checkout.form');
+Route::post('/checkout', [PaymentController::class, 'processPayment'])->name('checkout.process');
+
+Route::get('password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [AuthController::class, 'reset'])->name('password.update');
