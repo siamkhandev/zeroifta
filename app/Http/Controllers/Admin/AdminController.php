@@ -17,7 +17,7 @@ class AdminController extends Controller
         {
             $data = User::where('role','company')->take(10)->get();
         }else{
-            $data = CompanyDriver::with('driver','comapny')->where('company_id',Auth::id())->take(10)->get();
+            $data = CompanyDriver::with('driver','company')->where('company_id',Auth::id())->take(10)->get();
         }
         return view('admin.index',get_defined_vars());
     }
