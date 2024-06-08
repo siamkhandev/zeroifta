@@ -39,7 +39,7 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       @yield('content')
-    @include('includes.footer')
+    <!-- @include('includes.footer') -->
     </div>
   </main>
   <div class="fixed-plugin">
