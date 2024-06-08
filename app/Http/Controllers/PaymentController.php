@@ -114,4 +114,9 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'No active subscription found.');
         }
     }
+    public function allPayments()
+    {
+        $payments = Payment::with('user','plan')->get();
+        return view('admin.payments.index',get_defined_vars());    
+    }
 }

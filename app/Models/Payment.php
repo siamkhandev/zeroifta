@@ -9,4 +9,13 @@ class Payment extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'company_id');
+    }
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class,'plan_id');
+    }
 }

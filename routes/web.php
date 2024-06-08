@@ -96,5 +96,6 @@ Route::middleware('auth')->group(function () {
     Route::get('purchase/{id}', [PaymentController::class, 'purchase'])->name('purchase');
     Route::get('subscribe', [CompanyController::class, 'showPlans'])->name('subscribe');
     Route::post('pay', [PaymentController::class, 'subscribe'])->name('pay');
+    Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
     Route::get('/cancel-subscription/{id}', [PaymentController::class, 'cancel'])->name('cancel.subscription');
 });
