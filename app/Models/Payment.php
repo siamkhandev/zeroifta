@@ -14,7 +14,7 @@ class Payment extends Model
     {
         return $this->belongsTo(User::class,'company_id');
     }
-    public function plan()
+    public function planName()
     {
         return $this->belongsTo(Plan::class,'plan_id');
     }

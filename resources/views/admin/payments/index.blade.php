@@ -34,13 +34,13 @@
                         <div class="d-flex px-2 py-1">
                           
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$payment->company->name ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$payment->user->name ?? ''}}</h6>
                             <p class="text-xs text-secondary mb-0"></p>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <p class="text-xs font-weight-bold mb-0">{{$payment->plan->name ?? ''}}</p>
+                        <p class="text-xs font-weight-bold mb-0">{{$payment->planName->name ?? ''}}</p>
                        
                       </td>
                       <td>

@@ -116,7 +116,8 @@ class PaymentController extends Controller
     }
     public function allPayments()
     {
-        $payments = Payment::with('user','plan')->get();
+        $payments = Payment::with('user','planName')->get();
+      
         return view('admin.payments.index',get_defined_vars());    
     }
 }
