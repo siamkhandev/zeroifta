@@ -43,7 +43,7 @@
                    @else
                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Vehicles</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\Vehicle::count()??0}}
+                    {{\App\Models\Vehicle::where('company_id',Auth::id())->count()??0}}
                     </h5>
                    @endif
                   </div>
