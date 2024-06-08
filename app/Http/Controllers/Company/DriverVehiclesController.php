@@ -14,13 +14,13 @@ class DriverVehiclesController extends Controller
 {
     public function index()
     {
-        $vehicles = DriverVehicle::with('driver','vehicle')->get();
+        $vehicles = DriverVehicle::with('driver','vehicle')->where('company_id',Auth::id())->get();
         return view('company.driver_vehicles.index',get_defined_vars());
     }
     public function create()
     {
         $drivers = CompanyDriver::with('driver')->where('company_id',Auth::id())->get();
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::where('company_id',Auth::id())->get();
         
         return view('company.driver_vehicles.create',get_defined_vars());
     }
@@ -48,7 +48,7 @@ class DriverVehiclesController extends Controller
     {
         $vehicle = DriverVehicle::find($id);
         $drivers = User::whereRole('driver')->get();
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::where('company_id',Auth::id())->get();
         return view('company.driver_vehicles.edit',get_defined_vars());
     }
     public function update(Request $request,$id)

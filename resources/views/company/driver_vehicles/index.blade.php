@@ -47,10 +47,10 @@
                       
                      
                       <td class="align-middle">
-                        <a href="#" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Edit user">
+                        <a href="{{route('driver_vehicles.edit',$vehicle->id)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Edit user">
                           Edit
                         </a>
-                        <a href="#"  class="btn btn-sm btn-danger" >
+                        <a href="{{route('driver_vehicles.delete',$vehicle->id)}}"  class="btn btn-sm btn-danger" >
                           Delete
                         </a>
                       </td>
