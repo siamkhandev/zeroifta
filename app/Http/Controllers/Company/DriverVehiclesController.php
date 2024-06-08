@@ -36,6 +36,7 @@ class DriverVehiclesController extends Controller
             $vehicle = new DriverVehicle();
             $vehicle->driver_id = $request->driver_id;
             $vehicle->vehicle_id = $request->vehicle_id;
+            $vehicle->company_id = Auth::id();
             $vehicle->save();
               return redirect('driver/vehicles')->withSuccess('Vehicle assigned successfully');
         }else{
@@ -59,7 +60,7 @@ class DriverVehiclesController extends Controller
             $vehicle = DriverVehicle::find($id);
             $vehicle->driver_id = $request->driver_id;
             $vehicle->vehicle_id = $request->vehicle_id;
-          
+            $vehicle->company_id = Auth::id();
             $vehicle->save();
               return redirect('driver/vehicles')->withSuccess('Vehicle assigned successfully');
         // }else{

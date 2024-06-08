@@ -41,12 +41,11 @@
                         </div>
                         <div class="col-md-6">
                         <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Price Type</label>
-                           <select name="price_type" class="form-control">
-                            <option value="">Select</option>
-                            <option value="free">Free</option>
-                            <option value="paid">Paid</option>
-                           </select>
+                          <label for="billing_period">Billing Period</label>
+                            <select class="form-control" id="billing_period" name="billing_period">
+                                <option value="month">Monthly</option>
+                                <option value="year">Yearly</option>
+                            </select>
                             @error('price_type')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -55,8 +54,27 @@
                         </div>
                         
                         </div>
-                        
-                        
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="recurring">Is Recurring?</label>
+                              <select class="form-control" id="recurring" name="recurring" required>
+                                  <option value="1">Yes</option>
+                                  <option value="0">No</option>
+                              </select>
+                              @error('recurring')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="recurring">Description</label>
+                             <textarea class="form-control" name="description"></textarea>
+                              
+                          </div>
+                        </div>
                         
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm" >Submit</button>

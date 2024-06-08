@@ -10,11 +10,19 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}" href="/">
+          <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="/">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('profile') ? 'active' : '' }}" href="{{route('profile')}}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-single-02 text-primary text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Profile Management</span>
           </a>
         </li>
         <li class="nav-item">
@@ -42,7 +50,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="#">
+          <a class="nav-link {{ Request::is('subscribe') ? 'active' : '' }}" href="{{route('subscribe')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-collection text-warning text-sm opacity-10"></i>
             </div>

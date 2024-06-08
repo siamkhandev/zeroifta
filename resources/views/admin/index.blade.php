@@ -7,16 +7,22 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
+                    @if(Auth::user()->role=="admin")
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Companies</p>
                     <h5 class="font-weight-bolder">
                       {{\App\Models\User::whereRole('company')->count()??0}}
                     </h5>
-                   
+                   @else
+                   <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Drivers</p>
+                    <h5 class="font-weight-bolder">
+                      {{\App\Models\User::whereRole('driver')->count()??0}}
+                    </h5>
+                   @endif
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                    <i class="ni ni-circle-08 text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
               </div>
@@ -29,16 +35,26 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Active Users</p>
+                  @if(Auth::user()->role=="admin")
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Fuel Taxes</p>
                     <h5 class="font-weight-bolder">
-                    2
+                    {{\App\Models\FuelTax::count()??0}}
                     </h5>
-                   
+                   @else
+                   <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Vehicles</p>
+                    <h5 class="font-weight-bolder">
+                    {{\App\Models\Vehicle::count()??0}}
+                    </h5>
+                   @endif
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                  @if(Auth::user()->role=="admin")
                     <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                    @else
+                    <i class="ni ni-delivery-fast text-lg opacity-10" aria-hidden="true"></i>
+                    @endif
                   </div>
                 </div>
               </div>
@@ -51,16 +67,26 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Ads</p>
+                  @if(Auth::user()->role=="admin")
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Plans</p>
                     <h5 class="font-weight-bolder">
-                   2
+                   {{\App\Models\Plan::count()??0}}
                     </h5>
-                   
+                   @else
+                   <p class="text-sm mb-0 text-uppercase font-weight-bold">Driver Vehicles</p>
+                    <h5 class="font-weight-bolder">
+                    {{\App\Models\DriverVehicle::where('company_id',Auth::id())->count()??0}}
+                    </h5>
+                   @endif
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                  @if(Auth::user()->role=="admin")  
+                  <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                    @else
+                    <i class="ni ni-bus-front-12 text-lg opacity-10" aria-hidden="true"></i>
+                   @endif
                   </div>
                 </div>
               </div>
@@ -73,16 +99,22 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Active Ads</p>
+                  @if(Auth::user()->role=="admin")
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Contact Forms</p>
                     <h5 class="font-weight-bolder">
-                    2
+                    {{\App\Models\CompanyContactUs::count()??0}}
                     </h5>
-                    
+                    @else
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Contact Forms</p>
+                    <h5 class="font-weight-bolder">
+                    {{\App\Models\ContactUs::count()??0}}
+                    </h5>
+                    @endif
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                    <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                    <i class="ni ni-email-83 text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
               </div>
@@ -94,7 +126,13 @@
         <div class="col-lg-12 mb-lg-0 mb-4">
           <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
-              <h6 class="text-capitalize">Ads overview</h6>
+              <h6 class="text-capitalize">
+                @if(Auth::user()->role=='admin')
+                Companies overview
+                @else
+                Drivers overview
+                @endif
+              </h6>
               
             </div>
             <div class="card-body p-3">
@@ -107,11 +145,18 @@
         
       </div>
       <div class="row mt-4">
-        <div class="col-lg-7 mb-lg-0 mb-4">
+        <div class="col-lg-12 mb-lg-0 mb-4">
           <div class="card ">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
-                <h6 class="mb-2">Ads by Country</h6>
+                <h6 class="mb-2">
+                @if(Auth::user()->role=='admin')
+                Companies by Country
+                @else
+                Drivers by Country
+                @endif
+                  
+                </h6>
               </div>
             </div>
             <div class="table-responsive">
@@ -246,72 +291,6 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-5">
-          <div class="card">
-            <div class="card-header pb-0 p-3">
-              <h6 class="mb-0">Categories</h6>
-            </div>
-            <div class="card-body p-3">
-              <ul class="list-group">
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                      <i class="ni ni-mobile-button text-white opacity-10"></i>
-                    </div>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Users</h6>
-                      <span class="text-xs">2 total users</span>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                      <i class="ni ni-tag text-white opacity-10"></i>
-                    </div>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Active Users</h6>
-                      <span class="text-xs">2 active ads </span>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                      <i class="ni ni-box-2 text-white opacity-10"></i>
-                    </div>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Ads</h6>
-                      <span class="text-xs">2 total ads</span>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                      <i class="ni ni-satisfied text-white opacity-10"></i>
-                    </div>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Active Ads</h6>
-                      <span class="text-xs font-weight-bold">2 active ads</span>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        
 </div>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VehiclesController extends Controller
 {
@@ -24,6 +25,7 @@ class VehiclesController extends Controller
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->vehicle_number = $request->vehicle_number;
         $vehicle->odometer_reading	 = $request->odometer_reading;
+        $vehicle->company_id = Auth::id();
         $vehicle->mpg= $request->mpg;
         $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
         if($request->hasFile('image')){
@@ -44,6 +46,7 @@ class VehiclesController extends Controller
         $vehicle = Vehicle::find($id);
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->vehicle_number = $request->vehicle_number;
+        $vehicle->company_id = Auth::id();
         $vehicle->odometer_reading	 = $request->odometer_reading;
         $vehicle->mpg= $request->mpg;
         $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;

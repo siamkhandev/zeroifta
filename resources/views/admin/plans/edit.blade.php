@@ -41,12 +41,11 @@
                         </div>
                         <div class="col-md-6">
                         <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Price Type</label>
-                           <select name="price_type" class="form-control">
-                            <option value="">Select</option>
-                            <option value="free" {{$plan->price_type=="free" ? 'selected':''}}>Free</option>
-                            <option value="paid" {{$plan->price_type=="paid" ? 'selected':''}}>Paid</option>
-                           </select>
+                          <label for="billing_period">Billing Period</label>
+                            <select class="form-control" id="billing_period" name="billing_period">
+                                <option value="monthly" {{$plan->recurring=='monthly' ? 'selected':''}}>Monthly</option>
+                                <option value="yearly" {{$plan->recurring=='yearly' ? 'selected':''}}>Yearly</option>
+                            </select>
                             @error('price_type')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -54,6 +53,27 @@
                         @enderror
                         </div>
                         
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="recurring">Is Recurring?</label>
+                              <select class="form-control" id="recurring" name="recurring" required>
+                                  <option value="1" {{$plan->recurring==1 ? 'selected':''}}>Yes</option>
+                                  <option value="0" {{$plan->recurring==0 ? 'selected':''}}>No</option>
+                              </select>
+                              @error('recurring')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="recurring">Description</label>
+                             <textarea class="form-control" name="description">{{$plan->description}}</textarea>
+                              
+                          </div>
                         </div>
                         
                         

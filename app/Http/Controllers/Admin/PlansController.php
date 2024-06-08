@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\Product;
+use Stripe\Price;
 
 class PlansController extends Controller
 {
@@ -20,19 +24,46 @@ class PlansController extends Controller
     public function store(Request $request)
 
     {
+        
         $data = $request->validate([
             'name' => 'required',
             'price' => 'required',
-            'price_type' => 'required',
+           'billing_period' => 'nullable|string|in:month,year',
+            'recurring' => 'required|boolean',
             
            
         ]);
-        $plan = new Plan();
-        $plan->name = $request->name;
-        $plan->price = $request->price;
-        $plan->price_type = $request->price_type;
-        $plan->save();
-        return redirect('plans')->withSuccess('Plan Added Successfully');
+        try{
+            Stripe::setApiKey(config('services.stripe.secret'));
+            $product = Product::create([
+                'name' => $request->name,
+            ]);
+    
+            $stripePriceData = [
+                'product' => $product->id,
+                'unit_amount' => $request->price * 100,
+                'currency' => 'usd',
+            ];
+    
+            if ($request->recurring) {
+                $stripePriceData['recurring'] = ['interval' => $request->billing_period];
+            }
+    
+            $price = Price::create($stripePriceData);
+            $plan = new Plan();
+            $plan->name = $request->name;
+            $plan->price = $request->price;
+            $plan->billing_period = $request->recurring ? $request->billing_period : null;
+            $plan->recurring = $request->recurring;
+            $plan->stripe_plan_id = $price->id;
+            $plan->description = $request->description;
+            $plan->save();
+            return redirect('plans')->withSuccess('Plan Added Successfully');
+        }catch(Exception $e)
+        {
+            dd($e->getMessage());
+        }
+        
     }
     public function edit($id)
     {
@@ -41,17 +72,18 @@ class PlansController extends Controller
     }
     public function update(Request $request,$id)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'price' => 'required',
-            'price_type' => 'required',
-            
-           
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'billing_period' => 'nullable|string|in:month,year',
+            'recurring' => 'required|boolean',
         ]);
         $plan = Plan::find($id);
         $plan->name = $request->name;
         $plan->price = $request->price;
-        $plan->price_type = $request->price_type;
+        $plan->billing_period = $request->recurring ? $request->billing_period : null;
+        $plan->recurring =$request->recurring;
+        $plan->description = $request->description;
         $plan->update();
         return redirect('plans')->withSuccess('Plan Updated Successfully');
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyContactUs;
+use App\Models\Payment;
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,4 +54,11 @@ class CompanyController extends Controller
         $contact->save();
         return redirect()->back()->withSuccess('Information Submitted Successfully');
     }
+    public function showPlans()
+    {
+        $plans = Plan::get();
+        $userPlan = Payment::where('company_id',Auth::id())->where('status','active')->first();
+        return view('company.plans',get_defined_vars());
+    }
+   
 }
