@@ -36,9 +36,9 @@
                 <div class="col-8">
                   <div class="numbers">
                   @if(Auth::user()->role=="admin")
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Fuel Taxes</p>
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Subscriptions</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\FuelTax::count()??0}}
+                    {{\App\Models\Payment::count()??0}}
                     </h5>
                    @else
                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Vehicles</p>
@@ -68,9 +68,9 @@
                 <div class="col-8">
                   <div class="numbers">
                   @if(Auth::user()->role=="admin")
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Plans</p>
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Payments</p>
                     <h5 class="font-weight-bolder">
-                   {{\App\Models\Plan::count()??0}}
+                   {{\App\Models\Payment::count()??0}}
                     </h5>
                    @else
                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Driver Vehicles</p>
