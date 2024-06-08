@@ -20,6 +20,15 @@ class CompaniesController extends Controller
     }
     public function update(Request $request,$id)
     {
+        
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|unique:users,email,' . $id,
+            'phone' => 'required|string|max:20',
+            'dot' => 'required|string|max:255',
+            'mc' => 'required|string|max:255',
+            
+        ]);
         $company = User::find($id);
         $company->name=$request->name;
         $company->email=$request->email;

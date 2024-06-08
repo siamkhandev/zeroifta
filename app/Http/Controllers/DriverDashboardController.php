@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyDriver;
 use App\Models\Contactus;
 use App\Models\DriverVehicle;
 use App\Models\Vehicle;
@@ -31,8 +32,10 @@ class DriverDashboardController extends Controller
         if ($validator->fails()) {
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
+        $findCompay = CompanyDriver::where('driver_id',$request->driver_id)->first();
         $contact = new Contactus();
         $contact->driver_id = $request->driver_id;
+        $contact->company_id = $findCompay->company_id;
         $contact->subject = $request->subject;
         $contact->message = $request->message;
         $contact->save();

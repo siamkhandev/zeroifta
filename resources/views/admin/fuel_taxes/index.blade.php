@@ -19,8 +19,9 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">State Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tax %</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">State</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alpha Code</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">IFTA Tax %</th>
                       
                       <th class="text-secondary opacity-7"></th>
                     </tr>
@@ -38,7 +39,11 @@
                         </div>
                       </td>
                       <td>
-                        <p class="text-xs font-weight-bold mb-0">{{$tax->tax}}</p>
+                        <p class="text-xs font-weight-bold mb-0">${{$tax->code}}</p>
+          
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">${{$tax->tax}}</p>
                        
                       </td>
                      

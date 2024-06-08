@@ -17,9 +17,21 @@
                     <div class="row">
                         <div class="col-md-6">
                         <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Name</label>
+                            <label for="example-text-input" class="form-control-label">State Name</label>
                             <input class="form-control" type="text" name="name" value="{{$fuelTax->name}}">
                             @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">State Code</label>
+                            <input class="form-control" type="text" name="code" value="{{$fuelTax->code}}">
+                            @error('code')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

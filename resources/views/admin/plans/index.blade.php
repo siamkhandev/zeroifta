@@ -21,7 +21,7 @@
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plan Name</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Plan Type</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Recurring</th>
                     
                       <th class="text-secondary opacity-7"></th>
                     </tr>
@@ -39,13 +39,13 @@
                         </div>
                       </td>
                       <td>
-                        <p class="text-xs font-weight-bold mb-0">{{$plan->price}}</p>
+                        <p class="text-xs font-weight-bold mb-0">${{$plan->price}}</p>
                        
                       </td>
                      
                      
                       <td class="align-middle ">
-                        <span class="text-secondary text-xs font-weight-bold">{{$plan->price_type}}</span>
+                        <span class="text-secondary text-xs font-weight-bold">{{$plan->recurring==1 ?'Yes' : 'No'}}</span>
                       </td>
                       <td class="align-middle">
                         <a href="{{route('plans.edit',$plan->id)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Edit user">

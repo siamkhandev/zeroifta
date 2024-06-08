@@ -4,11 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyContactUs;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    public function index()
+    {
+        if(Auth::user()->role=='admin')
+        {
+            $data = User::where('role','company')->take(10)->get();
+        }else{
+            $data = User::where('role','driver')->take(10)->get();
+        }
+        return view('admin.index',get_defined_vars());
+    }
     public function login(Request $request)
     {
        

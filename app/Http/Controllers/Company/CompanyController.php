@@ -19,7 +19,14 @@ class CompanyController extends Controller
     }
     public function store(Request $request)
     {
-        
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|unique:users,email',
+            'phone' => 'required|string|max:20',
+            'dot' => 'required|string|max:255',
+            'mc' => 'required|string|max:255',
+            'password'=>'required|min:8|confirmed'
+        ]);
         $company = new User();
         $company->name=$request->name;
         $company->email=$request->email;
@@ -32,9 +39,9 @@ class CompanyController extends Controller
         $company->state=$request->state;
         $company->city=$request->city;
         $company->zip=$request->zip;
-        $company->contact_person_name=$request->contact_person_name;
-        $company->contact_person_email=$request->contact_person_email;
-        $company->contact_person_phone=$request->contact_person_phone;
+        $company->contact_person_name=$request->contact_name;
+        $company->contact_person_email=$request->contact_email;
+        $company->contact_person_phone=$request->contact_phone;
         $company->save();
         return redirect('login')->withSuccess('Account created successfully. Now you can login.');
        

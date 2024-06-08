@@ -29,6 +29,18 @@
                         </div>
                         <div class="col-md-6">
                         <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">State Code</label>
+                            <input class="form-control" type="text" name="code" placeholder="Code">
+                            @error('code')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group">
                             <label for="example-text-input" class="form-control-label">Tax %</label>
                             <input class="form-control" type="number" name="tax" placeholder="Tax" max="100">
                             @error('tax')

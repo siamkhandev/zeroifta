@@ -25,19 +25,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.index');
-})->name('dashboard')->middleware('auth');
+
+Route::get('/',[AdminController::class,'index'])->name('dashboard')->middleware('auth');
 Route::get('login', function () {
     return view('login');
 });
+Route::get('company/register',[CompanyController::class,'create'])->name('company.register');
+Route::post('company/register',[CompanyController::class,'store'])->name('register');
 Route::post('login',[AdminController::class,'login'])->name('login');
 Route::middleware('auth')->group(function () {
     Route::get('profile',[UsersController::class,'profile'])->name('profile');
     Route::post('profile/update',[UsersController::class,'profileUpdate'])->name('profile.update');
     Route::post('password/update',[UsersController::class,'passwordUpdate'])->name('passwords.update');
-    Route::get('company/register',[CompanyController::class,'create'])->name('company.register');
-    Route::post('company/register',[CompanyController::class,'store'])->name('register');
+    
 
     Route::get('logout',[AdminController::class,'logout'])->name('logout');
 
