@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyContactUs;
+use App\Models\CompanyDriver;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class AdminController extends Controller
         {
             $data = User::where('role','company')->take(10)->get();
         }else{
-            $data = User::where('role','driver')->take(10)->get();
+            $data = CompanyDriver::with('driver','comapny')->where('company_id',Auth::id())->take(10)->get();
         }
         return view('admin.index',get_defined_vars());
     }

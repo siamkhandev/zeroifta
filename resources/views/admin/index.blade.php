@@ -159,6 +159,7 @@
                 </h6>
               </div>
             </div>
+            @if(Auth::user()->role=='admin')
             <div class="table-responsive">
               <table class="table align-items-center ">
                 <tbody>
@@ -192,6 +193,41 @@
                 </tbody>
               </table>
             </div>
+            @else
+            <div class="table-responsive">
+              <table class="table align-items-center ">
+                <tbody>
+                  @foreach($data as $record)
+                  <tr>
+                    <td class="w-30">
+                      <div class="d-flex px-2 py-1 align-items-center">
+                        
+                        <div class="ms-4">
+                          <p class="text-xs font-weight-bold mb-0">Name:</p>
+                          <h6 class="text-sm mb-0">{{$record->driver->name ??'N/A'}}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="text-center">
+                        <p class="text-xs font-weight-bold mb-0">Email:</p>
+                        <h6 class="text-sm mb-0">{{$record->driver->email??'N/A'}}</h6>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="text-center">
+                        <p class="text-xs font-weight-bold mb-0">Phone</p>
+                        <h6 class="text-sm mb-0">{{$record->driver->phone??'N/A'}}</h6>
+                      </div>
+                    </td>
+                    
+                  </tr>
+                  @endforeach
+                 
+                </tbody>
+              </table>
+            </div>
+            @endif
           </div>
         </div>
         
