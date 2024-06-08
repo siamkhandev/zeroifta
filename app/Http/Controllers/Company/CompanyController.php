@@ -53,6 +53,14 @@ class CompanyController extends Controller
     }
     public function submitContactUs(Request $request)
     {
+        $data = $request->validate([
+            'subject' => 'required|string|max:255',
+           
+            'phone' => 'required|string|max:20',
+            'description' => 'required',
+           
+            
+        ]);
         $contact = new CompanyContactUs();
         $contact->subject = $request->subject;
         $contact->company_id = Auth::id();

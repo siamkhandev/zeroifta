@@ -22,6 +22,7 @@ class FuelTaxController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
+            'code' => 'required',
             'tax' => 'required|max:100',
            
             
@@ -29,6 +30,7 @@ class FuelTaxController extends Controller
         ]);
         $fuelTax = new FuelTax();
         $fuelTax->name = $request->name;
+        $fuelTax->code = $request->code;
         $fuelTax->tax = $request->tax;
        
         $fuelTax->save();
@@ -43,11 +45,13 @@ class FuelTaxController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
+            'code' => 'required',
             'tax' => 'required|max:100',
  
         ]);
         $fuel_taxes = FuelTax::find($id);
         $fuel_taxes->name = $request->name;
+        $fuel_taxes->code = $request->code;
         $fuel_taxes->tax = $request->tax;
         $fuel_taxes->update();
         return redirect('fuel_taxes')->withSuccess('Fuel Tax Updated Successfully');

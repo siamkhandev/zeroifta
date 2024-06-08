@@ -92,7 +92,7 @@
                     <div class="col-md-6">
                     <div class="form-group">
                         <label for="example-text-input" class="form-control-label">Image</label>
-                        <input class="form-control" type="file" name="image" v>
+                        <input class="form-control" type="file" name="image" accept="image/png, image/jpg, image/jpeg">
                     </div>
                     </div>
                 

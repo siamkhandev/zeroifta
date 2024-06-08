@@ -21,6 +21,14 @@ class VehiclesController extends Controller
     public function store(Request $request)
 
     {
+        $data = $request->validate([
+            'vehicle_type' => 'required',
+            'vehicle_number' => 'required',
+            'odometer_reading' => 'required',
+            'mpg' => 'required',
+            'image' => 'required',
+            
+        ]);
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->vehicle_number = $request->vehicle_number;
@@ -43,6 +51,14 @@ class VehiclesController extends Controller
     }
     public function update(Request $request,$id)
     {
+        $data = $request->validate([
+            'vehicle_type' => 'required',
+            'vehicle_number' => 'required',
+            'odometer_reading' => 'required',
+            'mpg' => 'required',
+
+            
+        ]);
         $vehicle = Vehicle::find($id);
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->vehicle_number = $request->vehicle_number;

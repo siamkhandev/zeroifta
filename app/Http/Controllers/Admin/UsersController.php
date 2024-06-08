@@ -18,6 +18,14 @@ class UsersController extends Controller
     }
     public function profileUpdate(Request $request)
     {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|unique:users,email,' . Auth::id(),
+            'phone' => 'required|string|max:20',
+            'dot' => 'required|string|max:255',
+            'mc' => 'required|string|max:255',
+            
+        ]);
         $user = User::whereId(Auth::id())->first();
         $user->name = $request->name;
         $user->email = $request->email;
