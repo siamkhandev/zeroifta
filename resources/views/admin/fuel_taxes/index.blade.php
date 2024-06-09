@@ -11,7 +11,7 @@
             @endif
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Plans table</h6>
+              <h6>Fuel Taxes table</h6>
               <a href="{{route('fuel_taxes.create')}}" class="btn btn-primary" style="float:right">Add Fuel Tax</a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
@@ -20,13 +20,14 @@
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">State</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alpha Code</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">IFTA Tax %</th>
+                      <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Alpha Code</th>
+                      <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7 ps-2">IFTA Tax %</th>
                       
                       <th class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>
                   <tbody>
+                    @if(count($fuelTaxes)>0)
                     @foreach($fuelTaxes as $tax)
                     <tr>
                       <td>
@@ -39,11 +40,11 @@
                         </div>
                       </td>
                       <td>
-                        <p class="text-xs font-weight-bold mb-0">${{$tax->code}}</p>
+                        <p class="text-xs font-weight-bold mb-0 text-center">{{$tax->code}}</p>
           
                       </td>
                       <td>
-                        <p class="text-xs font-weight-bold mb-0">${{$tax->tax}}</p>
+                        <p class="text-xs font-weight-bold mb-0 text-center">${{$tax->tax}}</p>
                        
                       </td>
                      
@@ -61,6 +62,14 @@
                     </tr>
                     
                    @endforeach
+                   @else
+                   <tr>
+                    <td colspan="5" class="text-center">
+                    <p>No records found</p>
+                    </td>
+                   </tr>
+                  
+                   @endif
                   </tbody>
                 </table>
               </div>

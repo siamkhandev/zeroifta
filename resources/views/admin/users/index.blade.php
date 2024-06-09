@@ -27,6 +27,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @if(count($users)>0)
                     @foreach($users as $user)
                     <tr>
                       <td>
@@ -93,6 +94,14 @@
                         </div>
                         </div>
                    @endforeach
+                   @else
+                   <tr>
+                    <td colspan="5" class="text-center">
+                    <p>No records found</p>
+                    </td>
+                   </tr>
+                  
+                   @endif
                   </tbody>
                 </table>
               </div>

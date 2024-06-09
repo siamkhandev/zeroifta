@@ -29,6 +29,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @if(count($vehicles)>0)
                     @foreach($vehicles as $vehicle)
                     <tr>
                       <td>
@@ -66,6 +67,14 @@
                     </tr>
                     
                    @endforeach
+                   @else
+                   <tr>
+                    <td colspan="5" class="text-center">
+                    <p>No records found</p>
+                    </td>
+                   </tr>
+                  
+                   @endif
                   </tbody>
                 </table>
               </div>

@@ -11,7 +11,7 @@
             @endif
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Plans table</h6>
+              <h6>Subscriptions table</h6>
               <a href="{{route('plans.create')}}" class="btn btn-primary" style="float:right">Add Plan</a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
@@ -27,6 +27,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @if(count($plans)>0)
                     @foreach($plans as $plan)
                     <tr>
                       <td>
@@ -59,6 +60,14 @@
                     </tr>
                     
                    @endforeach
+                   @else
+                   <tr>
+                    <td colspan="5" class="text-center">
+                    <p>No records found</p>
+                    </td>
+                   </tr>
+                  
+                   @endif
                   </tbody>
                 </table>
               </div>

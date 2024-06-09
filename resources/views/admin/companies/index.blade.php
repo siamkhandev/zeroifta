@@ -28,6 +28,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @if(count($companies)>0)
                     @foreach($companies as $company)
                     <tr>
                       <td>
@@ -88,6 +89,14 @@
                         </div>
                         </div>
                    @endforeach
+                   @else
+                   <tr>
+                    <td colspan="5" class="text-center">
+                    <p>No records found</p>
+                    </td>
+                   </tr>
+                  
+                   @endif
                   </tbody>
                 </table>
               </div>

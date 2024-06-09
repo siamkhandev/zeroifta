@@ -73,7 +73,10 @@ class DriversController extends Controller
     public function delete($id)
     {
         $driver = User::find($id);
-        CompanyDriver::where('driver_id',$id)->delete();
+        $findVehicle = CompanyDriver::where('driver_id',$id)->first();
+        if( $findVehicle){
+            $findVehicle->delete();
+        }
         $driver->delete();
         return redirect('drivers')->withError('Driver Deleted Successfully');
     }

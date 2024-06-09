@@ -41,7 +41,7 @@
             </div>
             <div class="card-body">
               <p class="text-uppercase text-sm">User Information</p>
-              <form method="post" action="{{route('profile.update')}}">
+              <form method="post" action="{{route('profile.update')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">

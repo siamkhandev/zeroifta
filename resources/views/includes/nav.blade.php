@@ -16,9 +16,9 @@
           </ol>
           <h6 class="font-weight-bolder text-white mb-0">Companies</h6>
           @elseif(Request::is('plans'))
-          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Plans</li>
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Subscriptions</li>
           </ol>
-          <h6 class="font-weight-bolder text-white mb-0">Plans</h6>
+          <h6 class="font-weight-bolder text-white mb-0">Subscriptions</h6>
           @elseif(Request::is('payments'))
           <li class="breadcrumb-item text-sm text-white active" aria-current="page">Payments</li>
           </ol>

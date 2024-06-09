@@ -145,7 +145,11 @@
         
       </div>
       <div class="row mt-4">
-        <div class="col-lg-12 mb-lg-0 mb-4">
+        @if(Auth::user()->role=='admin')
+        <div class="col-lg-7 mb-lg-0 mb-4">
+          @else
+          <div class="col-lg-12 mb-lg-0 mb-4">
+          @endif
           <div class="card ">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
@@ -230,6 +234,37 @@
             @endif
           </div>
         </div>
-        
+        @if(Auth::user()->role=='admin')
+        @php 
+        $contacts = \App\Models\CompanyContactUs::with('company')->take(5)->get();
+        @endphp
+        <div class="col-lg-5 col-xl-5">
+          <div class="card h-100">
+            <div class="card-header pb-0 p-3">
+              <h6 class="mb-0">Contact Forms</h6>
+            </div>
+            <div class="card-body p-3">
+              <ul class="list-group">
+                @foreach($contacts as $con)
+                <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                  <div class="avatar me-3">
+                    @if($con->company->image)
+                    <img src="{{asset('images')}}/{{$con->company->image}}" alt="kal" class="border-radius-lg shadow">
+                    @else
+                    <img src="{{asset('images/com.png')}}" alt="kal" class="border-radius-lg shadow">
+                  @endif
+                  </div>
+                  <div class="d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">{{$con->company->name??'N/A'}}</h6>
+                    <p class="mb-0 text-xs">{{$con->description ? Str::limit($con->description,20,'...'):'N/A'}}</p>
+                  </div>
+                  <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="{{route('admin.contactus')}}">Detail</a>
+                </li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+        </div>
+        @endif
 </div>
 @endsection

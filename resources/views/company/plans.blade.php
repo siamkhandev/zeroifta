@@ -23,18 +23,23 @@
                 @else
                 @foreach($plans as $plan)
                 <div class="col-lg-6">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$plan->name}}</h5>
-
-                            <!-- <p class="card-text">{{$plan->description}}</p> -->
-                            @if($plan->recurring==1)
-                            <p>After purchasing this plan, payments will be automatically deducted from your card.</p>
-                            @endif
-                            <h5 class="card-title text-center">${{$plan->price}}</h5>
-                            <a href="{{route('purchase',$plan->id)}}" class="btn btn-primary" style="width: 240px;">Purchase</a>
-                        </div>
+                <div class="card">
+                    <div class="card-header mx-4 p-3 text-center">
+                      <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+                        <i class="fas fa-landmark opacity-10" aria-hidden="true"></i>
+                      </div>
                     </div>
+                    <div class="card-body pt-0 p-3 text-center">
+                      <h6 class="text-center mb-0">{{$plan->name}}</h6>
+                      @if($plan->recurring==1)
+                        <span class="text-xs">After purchasing this plan, payments will be automatically deducted from your card.</span>
+                        @endif
+                      <hr class="horizontal dark my-3">
+                      <h5 class="mb-0">${{$plan->price}}</h5>
+                      <a href="{{route('purchase',$plan->id)}}" class="btn btn-primary" style="width: 240px;">Purchase</a>
+                    </div>
+                  </div>
+                    
                 </div>
                 @endforeach
                 @endif

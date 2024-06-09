@@ -42,6 +42,7 @@ class AdminController extends Controller
     public function contactUsForms()
     {
         $forms = CompanyContactUs::with('company')->orderBy('company_contact_us.id','desc')->get();
+        
         return view('admin.contactus.index',get_defined_vars());
     }
     public function readForm($id)
