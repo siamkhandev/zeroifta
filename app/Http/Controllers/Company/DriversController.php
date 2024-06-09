@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyDriver;
+use App\Models\DriverVehicle;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,8 +75,12 @@ class DriversController extends Controller
     {
         $driver = User::find($id);
         $findVehicle = CompanyDriver::where('driver_id',$id)->first();
+        $findDVehicle = DriverVehicle::where('driver_id',$id)->first();
         if( $findVehicle){
             $findVehicle->delete();
+        }
+        if( $findDVehicle){
+            $findDVehicle->delete();
         }
         $driver->delete();
         return redirect('drivers')->withError('Driver Deleted Successfully');
