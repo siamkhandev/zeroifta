@@ -15,7 +15,8 @@
                    @else
                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Drivers</p>
                     <h5 class="font-weight-bolder">
-                      {{\App\Models\User::whereRole('driver')->count()??0}}
+                   
+                      {{\App\Models\CompanyDriver::where('company_id',Auth::id())->count()??0}}
                     </h5>
                    @endif
                   </div>
@@ -236,7 +237,7 @@
         </div>
         @if(Auth::user()->role=='admin')
         @php 
-        $contacts = \App\Models\CompanyContactUs::with('company')->take(5)->get();
+        $contacts = \App\Models\CompanyContactUs::with('company')->take(5)->latest()->get();
         @endphp
         <div class="col-lg-5 col-xl-5">
           <div class="card h-100">
@@ -256,7 +257,7 @@
                   </div>
                   <div class="d-flex align-items-start flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{$con->company->name??'N/A'}}</h6>
-                    <p class="mb-0 text-xs">{{$con->description ? Str::limit($con->description,20,'...'):'N/A'}}</p>
+                    <p class="mb-0 text-xs">{{$con->description ? Str::limit($con->message,20,'...'):'N/A'}}</p>
                   </div>
                   <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="{{route('admin.contactus')}}">Detail</a>
                 </li>

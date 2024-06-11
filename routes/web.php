@@ -10,7 +10,9 @@ use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Company\DriversController;
 use App\Http\Controllers\Company\DriverVehiclesController;
 use App\Http\Controllers\Company\VehiclesController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\PaymentController;
+use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -98,4 +100,10 @@ Route::middleware('auth')->group(function () {
     Route::post('pay', [PaymentController::class, 'subscribe'])->name('pay');
     Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
     Route::get('/cancel-subscription/{id}', [PaymentController::class, 'cancel'])->name('cancel.subscription');
+    Route::post('/messages', [ContactUsController::class, 'store'])->name('messages.store');
+    Route::get('/messages/{contact_id}', [ContactUsController::class, 'fetchMessages'])->name('messages.fetch');
+    //Route::post('/messages/read/{id}', [ContactUsController::class, 'markAsRead'])->name('messages.markAsRead');
+    ////////
+    Route::get('company/contactus/all',[CompanyController::class,'contactUsForms'])->name('company.contactus');
+    Route::get('company/contactform/read/{id}',[CompanyController::class,'readForm'])->name('company.contactform.detail');
 });

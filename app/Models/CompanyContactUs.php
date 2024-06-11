@@ -13,4 +13,8 @@ class CompanyContactUs extends Model
     {
         return $this->belongsTo(User::class,'company_id');
     }
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'contact_id');
+    }
 }

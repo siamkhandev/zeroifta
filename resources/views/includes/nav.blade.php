@@ -51,6 +51,62 @@
           <li class="breadcrumb-item text-sm text-white active" aria-current="page">Contact us</li>
           </ol>
           <h6 class="font-weight-bolder text-white mb-0">Contact us</h6>
+          @elseif(Request::is('plans/create'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Create Plan</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Create Plan</h6>
+          @elseif(Route::is('plans.edit'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Edit Plan</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Edit Plan</h6>
+          @elseif(Route::is('companies.edit'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Edit Company</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Edit Company</h6>
+          @elseif(Route::is('fuel_taxes.create'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Create Fuel Tax</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Create Fuel Tax</h6>
+          @elseif(Route::is('fuel_taxes.edit'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Edit Fuel Tax</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Edit Fuel Tax</h6>
+          @elseif(Route::is('vehicles.create'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Create Vehicle</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Create Vehicle</h6>
+          @elseif(Route::is('vehicles.edit'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Edit Vehicle</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Edit Vehicle</h6>
+          @elseif(Route::is('driver_vehicles.add'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Assign Vehicle</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Assign Vehicle</h6>
+          @elseif(Route::is('driver_vehicles.edit'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Edit Assign Vehicle</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Edit Assign Vehicle</h6>
+          @elseif(Route::is('contactform.detail'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Read Contact Form</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Read Contact Form</h6>
+          @elseif(Route::is('drivers.create'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Create Driver</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Create Driver</h6>
+          @elseif(Route::is('drivers.edit'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Edit Driver</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Edit Driver</h6>
+          @elseif(Route::is('vehicle.edit'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Edit Vehicle</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Edit Vehicle</h6>
+          @elseif(Route::is('purchase'))
+          <li class="breadcrumb-item text-sm text-white active" aria-current="page">Purchase Subscription</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">>Purchase Subscription</h6>
           @endif
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">

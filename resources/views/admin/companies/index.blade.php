@@ -20,10 +20,10 @@
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">MC Number</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dot Number</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created Date</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone</th>
+                      <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">MC Number</th>
+                      <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dot Number</th>
+                      <th class=" text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created Date</th>
                       <th class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>

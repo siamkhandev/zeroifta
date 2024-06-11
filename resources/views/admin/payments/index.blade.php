@@ -20,10 +20,10 @@
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Company Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plan</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Payment</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Purchased Date</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plan</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Payment</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Purchased Date</th>
                      
                     </tr>
                   </thead>
@@ -40,19 +40,19 @@
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td class="text-center">
                         <p class="text-xs font-weight-bold mb-0">{{$payment->planName->name ?? ''}}</p>
                        
                       </td>
-                      <td>
+                      <td class="text-center">
                         <p class="text-xs font-weight-bold mb-0">${{$payment->amount}}</p>
                        
                       </td>
-                      <td>
+                      <td class="text-center">
                         <p class="text-xs font-weight-bold mb-0">{{$payment->status}}</p>
                        
                       </td>
-                      <td>
+                      <td class="text-center">
                         <p class="text-xs font-weight-bold mb-0">{{$payment->created_at->format('Y-m-d')}}</p>
                        
                       </td>

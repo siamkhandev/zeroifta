@@ -66,6 +66,7 @@ class CompanyController extends Controller
         $contact->company_id = Auth::id();
         $contact->phone = $request->phone;
         $contact->description = $request->description;
+        $contact->message = $request->description;
         $contact->save();
         return redirect()->back()->withSuccess('Information Submitted Successfully');
     }
@@ -74,6 +75,17 @@ class CompanyController extends Controller
         $plans = Plan::get();
         $userPlan = Payment::where('company_id',Auth::id())->where('status','active')->first();
         return view('company.plans',get_defined_vars());
+    }
+    public function contactUsForms()
+    {
+        $forms = CompanyContactUs::with('company')->where('company_id',Auth::id())->orderBy('company_contact_us.id','desc')->get();
+        
+        return view('company.contactus.index',get_defined_vars());
+    }
+    public function readForm($id)
+    {
+        $form = CompanyContactUs::with('company')->find($id);
+        return view('company.contactus.read',get_defined_vars());
     }
    
 }

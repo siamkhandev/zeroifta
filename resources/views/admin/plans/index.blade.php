@@ -20,8 +20,8 @@
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plan Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Recurring</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Recurring</th>
                     
                       <th class="text-secondary opacity-7"></th>
                     </tr>
@@ -30,7 +30,7 @@
                     @if(count($plans)>0)
                     @foreach($plans as $plan)
                     <tr>
-                      <td>
+                      <td  class="text-center">
                         <div class="d-flex px-2 py-1">
                           
                           <div class="d-flex flex-column justify-content-center">
@@ -39,13 +39,13 @@
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td class="text-center">
                         <p class="text-xs font-weight-bold mb-0">${{$plan->price}}</p>
                        
                       </td>
                      
                      
-                      <td class="align-middle ">
+                      <td class="align-middle text-center">
                         <span class="text-secondary text-xs font-weight-bold">{{$plan->recurring==1 ?'Yes' : 'No'}}</span>
                       </td>
                       <td class="align-middle">

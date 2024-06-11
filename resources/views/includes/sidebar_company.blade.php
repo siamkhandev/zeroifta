@@ -59,7 +59,7 @@
         </li>
        
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('contactus*') ? 'active' : '' }} " href="{{route('contactus')}}">
+          <a class="nav-link {{ Route::is('company.contactus') ? 'active' : '' }} " href="{{route('company.contactus')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-email-83 text-warning text-sm opacity-10"></i>
             </div>

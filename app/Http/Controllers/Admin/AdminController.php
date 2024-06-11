@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyContactUs;
 use App\Models\CompanyDriver;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,9 +16,9 @@ class AdminController extends Controller
     {
         if(Auth::user()->role=='admin')
         {
-            $data = User::where('role','company')->take(10)->get();
+            $data = User::where('role','company')->take(10)->latest()->get();
         }else{
-            $data = CompanyDriver::with('driver','company')->where('company_id',Auth::id())->take(10)->get();
+            $data = CompanyDriver::with('driver','company')->where('company_id',Auth::id())->take(10)->latest()->get();
         }
         return view('admin.index',get_defined_vars());
     }
@@ -48,6 +49,7 @@ class AdminController extends Controller
     public function readForm($id)
     {
         $form = CompanyContactUs::with('company')->find($id);
+      
         return view('admin.contactus.read',get_defined_vars());
     }
     public function deleteForm($id)
