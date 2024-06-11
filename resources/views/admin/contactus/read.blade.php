@@ -60,7 +60,7 @@
                 .then(data => {
                     let messagesHtml = '';
                     data.forEach(function(message) {
-                        const isReadClass = message.is_read ? 'text-muted' : 'text-primary';
+                        const isReadClass = message.is_read ? 'text-muted' : 'text-black';
                         const senderClass = message.sender === '{{ auth()->user()->name }}' ? 'text-end' : 'text-start';
                         const bubbleClass = message.sender === '{{ auth()->user()->name }}' ? 'bg-primary text-white' : 'bg-light';
                         messagesHtml += `
@@ -101,6 +101,9 @@
 </script>
 
 <style>
+  .d-block .text-end .text-primary{
+    color:white !important;
+  }
     .chat-box {
         background-color: #f9f9f9;
         border-radius: 8px;

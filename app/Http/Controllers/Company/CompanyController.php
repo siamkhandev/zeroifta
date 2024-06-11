@@ -68,7 +68,7 @@ class CompanyController extends Controller
         $contact->description = $request->description;
         $contact->message = $request->description;
         $contact->save();
-        return redirect()->back()->withSuccess('Information Submitted Successfully');
+        return redirect('company/contactus/all')->withSuccess('Information Submitted Successfully');
     }
     public function showPlans()
     {

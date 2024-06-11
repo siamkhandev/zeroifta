@@ -16,7 +16,7 @@
               </div>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('company.contactus')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('company.contactus.submit')}}" enctype="multipart/form-data">
                     @csrf
                     <p class="text-uppercase text-sm">Information</p>
                     <div class="row">

@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::get('drivers/delete/{id}',[DriversController::class,'delete'])->name('driver.delete');
 
     Route::get('contactus',[CompanyController::class,'contactus'])->name('contactus');
-    Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('company.contactus');
+    Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('company.contactus.submit');
     ////
     Route::get('contactus/all',[AdminController::class,'contactUsForms'])->name('admin.contactus');
     Route::get('contactform/read/{id}',[AdminController::class,'readForm'])->name('contactform.detail');

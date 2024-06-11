@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DriverContactUsController;
 use App\Http\Controllers\DriverDashboardController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\VehicleController;
@@ -39,4 +40,8 @@ Route::middleware('auth:api')->group( function () {
     Route::post('receipt/create',[ReceiptController::class,'create']);
     ////contact us
     Route::post('contactus',[DriverDashboardController::class,'contactus']);
+
+    Route::post('contactus/all',[DriverContactUsController::class,'getContactUs']);
+    Route::post('chat/get',[DriverContactUsController::class,'getChat']);
+    Route::post('chat/send',[DriverContactUsController::class,'send']);
 });
