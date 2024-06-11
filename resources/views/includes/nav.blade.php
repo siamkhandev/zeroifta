@@ -106,7 +106,7 @@
           @elseif(Route::is('purchase'))
           <li class="breadcrumb-item text-sm text-white active" aria-current="page">Purchase Subscription</li>
           </ol>
-          <h6 class="font-weight-bolder text-white mb-0">>Purchase Subscription</h6>
+          <h6 class="font-weight-bolder text-white mb-0">Purchase Subscription</h6>
           @endif
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">

@@ -7,11 +7,11 @@
             <div class="alert alert-success" style="color:white">{{Session::get('success')}}</div>
         @endif
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="row">
                 @if(Auth::user()->is_subscribed==1)
-                <div class="col-lg-6">
-                    <div class="card" style="width: 18rem;">
+                <div class="col-lg-4">
+                    <div class="card" >
                         <div class="card-body">
                             <h5 class="card-title">Cancel Subscription</h5>
                             
@@ -22,7 +22,7 @@
                 </div>
                 @else
                 @foreach($plans as $plan)
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header mx-4 p-3 text-center">
                       <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
