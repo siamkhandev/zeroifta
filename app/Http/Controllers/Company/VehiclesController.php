@@ -11,7 +11,7 @@ class VehiclesController extends Controller
 {
     public function index()
     {
-        $vehicles= Vehicle::orderBy('id','desc')->get();
+        $vehicles= Vehicle::where('company_id',Auth::id())->orderBy('id','desc')->get();
         return view('company.vehicles.index',get_defined_vars());
     }
     public function create()
