@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactUsController extends Controller
 {
@@ -19,6 +20,7 @@ class ContactUsController extends Controller
             'contact_id' => $request->contact_id,
             'message' => $request->message,
             'sender' => $request->sender,
+            'user_id' => Auth::id(),
         ]);
 
         return response()->json(['success' => 'Message sent']);
