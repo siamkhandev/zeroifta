@@ -33,7 +33,12 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                         <div>
+                          @if($vehicle->driver->driver_image)
+                          <img src="{{asset('drivers')}}/{{$vehicle->driver->driver_image}}" class="avatar avatar-sm me-3" alt="user1">
+                          @else
+
                             <img src="{{asset('assets/img/team-2.jpg')}}" class="avatar avatar-sm me-3" alt="user1">
+                            @endif
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">{{$vehicle->driver->name??'N/A'}}</h6>
@@ -47,7 +52,7 @@
                       </td>
                       <td>
                         
-                        <img src="{{asset('vehicles')}}/{{$vehicle->vehicle->image}}" class="avatar avatar-sm me-3" alt="user1">
+                        <img src="{{asset('vehicles')}}/{{$vehicle->vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1">
                         
                        
                       </td>

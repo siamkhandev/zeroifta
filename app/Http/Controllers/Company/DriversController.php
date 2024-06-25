@@ -51,7 +51,7 @@ class DriversController extends Controller
         $companyDriver->driver_id =$driver->id;
         $companyDriver->company_id =Auth::id();
         $companyDriver->save();
-        return redirect('drivers')->withSuccess('Driver Added Successfully');
+        return redirect('drivers/all')->withSuccess('Driver Added Successfully');
     }
     public function edit($id)
     {
@@ -79,7 +79,7 @@ class DriversController extends Controller
             $driver->driver_image= $imageName;
         }
         $driver->update();
-        return redirect('drivers')->withSuccess('Driver Updated Successfully');
+        return redirect('drivers/all')->withSuccess('Driver Updated Successfully');
     }
     public function delete($id)
     {
@@ -93,6 +93,6 @@ class DriversController extends Controller
             $findDVehicle->delete();
         }
         $driver->delete();
-        return redirect('drivers')->withError('Driver Deleted Successfully');
+        return redirect('drivers/all')->withError('Driver Deleted Successfully');
     }
 }
