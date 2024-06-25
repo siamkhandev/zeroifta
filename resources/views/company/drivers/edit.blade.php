@@ -71,7 +71,13 @@
                                 </span>
                             @enderror
                         </div>
-                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Profile Picture</label>
+                                    <input class="form-control" type="file" name="image" >
+                                </div>
+                            
+                        </div>
                         
                         
                         

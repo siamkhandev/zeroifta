@@ -73,6 +73,13 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Profile Picture</label>
+                                    <input class="form-control" type="file" name="image" >
+                                </div>
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Password</label>
                                     <input class="form-control" type="password" name="password" placeholder="Password">
                                 </div>

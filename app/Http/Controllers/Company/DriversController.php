@@ -41,6 +41,11 @@ class DriversController extends Controller
         $driver->dot=$request->dot;
         $driver->role='driver';
         $driver->mc=$request->mc;
+        if($request->hasFile('image')){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('drivers'), $imageName);
+            $driver->driver_image= $imageName;
+        }
         $driver->save();
         $companyDriver = new CompanyDriver();
         $companyDriver->driver_id =$driver->id;
@@ -68,6 +73,11 @@ class DriversController extends Controller
         $driver->phone	 = $request->phone;
         $driver->dot=$request->dot;
         $driver->mc=$request->mc;
+        if($request->hasFile('image')){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('drivers'), $imageName);
+            $driver->driver_image= $imageName;
+        }
         $driver->update();
         return redirect('drivers')->withSuccess('Driver Updated Successfully');
     }
