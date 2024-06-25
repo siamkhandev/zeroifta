@@ -35,7 +35,17 @@ class VehicleController extends Controller
     public function allVehicles()
     {
         $vehicles = Vehicle::all();
-        return response()->json(['status'=>200,'message'=>'vehicles fetched successfully','data'=> $vehicles],200);
+        if(count($vehicles) >0){
+            foreach ($vehicles as $vehicle) {
+                if (isset($vehicle->vehicle_image)) {
+                    $vehicle->vehicle_image = 'http://54.164.54.21/vehicles/' . $vehicle->vehicle_image;
+                }
+            }
+            return response()->json(['status'=>200,'message'=>'vehicles found','data'=>$vehicles],200);
+        }else{
+            return response()->json(['status'=>404,'message'=>'vehicles not found','data'=>[]],404);
+        }
+       
 
     }
 }
