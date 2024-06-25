@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::post('driver/vehicles/update/{id}', [DriverVehiclesController::class,'update'])->name('driver_vehicles.update');
     Route::get('driver/vehicles/delete/{id}', [DriverVehiclesController::class,'destroy'])->name('driver_vehicles.delete');
 
-    Route::get('drivers',[DriversController::class,'index'])->name('drivers');
+    Route::get('drivers/all',[DriversController::class,'index'])->name('drivers.all');
     Route::get('drivers/create',[DriversController::class,'create'])->name('drivers.create');
     Route::post('drivers/store',[DriversController::class,'store'])->name('driver.store');
     Route::get('drivers/edit/{id}',[DriversController::class,'edit'])->name('driver.edit');
