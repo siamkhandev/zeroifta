@@ -30,7 +30,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">Vehicle Number</label>
-                                <input class="form-control" type="text" name="vehicle_number" placeholder="Vehicle Number">
+                                <input class="form-control" type="text" name="vehicle_number" placeholder="Vehicle Number" value="{{old('vehicle_number')}}">
                             </div>
                             @error('vehicle_number')
                                 <span class="invalid-feedback" role="alert">
@@ -41,7 +41,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">Odometer Reading</label>
-                                <input class="form-control" type="text" name="odometer_reading" placeholder="Odometer Reading">
+                                <input class="form-control" type="text" name="odometer_reading" placeholder="Odometer Reading" value="{{old('odometer_reading')}}">
                             </div>
                             @error('odometer_reading')
                                 <span class="invalid-feedback" role="alert">
@@ -52,7 +52,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">MPG</label>
-                                <input class="form-control" type="text" name="mpg" placeholder="MPG">
+                                <input class="form-control" type="text" name="mpg" placeholder="MPG" value="{{old('mpg')}}">
                             </div>
                             @error('mpg')
                                 <span class="invalid-feedback" role="alert">
@@ -63,7 +63,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Fuel Tank Capacity</label>
-                                    <input class="form-control" type="text" name="fuel_tank_capacity" placeholder="Fuel Tank Capacity">
+                                    <input class="form-control" type="text" name="fuel_tank_capacity" placeholder="Fuel Tank Capacity" value="{{old('fuel_tank_capacity')}}">
                                 </div>
                             @error('fuel_tank_capacity')
                                 <span class="invalid-feedback" role="alert">
@@ -73,7 +73,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Image</label>
+                                <label for="example-text-input" class="form-control-label">Image (PNG,JPG,JPEG only)</label>
                             <input type="file" name="image" class="form-control" accept="image/png, image/jpg, image/jpeg">
                                 @error('image')
                                 <span class="invalid-feedback" role="alert">

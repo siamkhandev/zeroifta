@@ -18,7 +18,7 @@
                         <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label">State Name</label>
-                            <input class="form-control" type="text" name="name" placeholder="Name">
+                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{old('name')}}">
                             @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -30,7 +30,7 @@
                         <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label">State Code</label>
-                            <input class="form-control" type="text" name="code" placeholder="Code">
+                            <input class="form-control" type="text" name="code" placeholder="Code"  value="{{old('code')}}">
                             @error('code')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -42,7 +42,7 @@
                         <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label">Tax %</label>
-                            <input class="form-control" type="number" name="tax" placeholder="Tax" max="100">
+                            <input class="form-control" type="number" name="tax" placeholder="Tax" max="100" value="{{old('tax')}}">
                             @error('tax')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

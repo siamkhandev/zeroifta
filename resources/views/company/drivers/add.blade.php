@@ -18,7 +18,7 @@
                         <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label">Name</label>
-                            <input class="form-control" type="text" name="name" placeholder="Name">
+                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{old('name')}}">
                             @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -30,7 +30,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">Email</label>
-                                <input class="form-control" type="email" name="email" placeholder="Email">
+                                <input class="form-control" type="email" name="email" placeholder="Email" value="{{old('email')}}">
                             </div>
                             @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -41,7 +41,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">Phone</label>
-                                <input class="form-control" type="text" name="phone" placeholder="Phone">
+                                <input class="form-control" type="number" name="phone" placeholder="Phone" value="{{old('phone')}}">
                             </div>
                             @error('phone')
                                 <span class="invalid-feedback" role="alert">
@@ -52,7 +52,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">DOT</label>
-                                <input class="form-control" type="text" name="dot" placeholder="DOT">
+                                <input class="form-control" type="text" name="dot" placeholder="DOT" value="{{old('dot')}}">
                             </div>
                             @error('dot')
                                 <span class="invalid-feedback" role="alert">
@@ -63,7 +63,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">MC</label>
-                                    <input class="form-control" type="text" name="mc" placeholder="MC">
+                                    <input class="form-control" type="text" name="mc" placeholder="MC" value="{{old('mc')}}">
                                 </div>
                             @error('mc')
                                 <span class="invalid-feedback" role="alert">

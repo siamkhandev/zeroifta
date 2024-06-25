@@ -18,7 +18,7 @@
                         <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label">Name</label>
-                            <input class="form-control" type="text" name="name" placeholder="Name">
+                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{old('name')}}">
                             @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -30,7 +30,7 @@
                         <div class="col-md-6">
                           <div class="form-group">
                               <label for="example-text-input" class="form-control-label">Price</label>
-                              <input class="form-control" type="number" name="price" placeholder="Price">
+                              <input class="form-control" type="number" name="price" placeholder="Price" value="{{old('price')}}">
                               @error('price')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
