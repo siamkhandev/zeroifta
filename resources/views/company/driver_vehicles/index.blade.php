@@ -21,7 +21,7 @@
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Driver Name</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Vehicle Number</th>
-                     
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Vehicle Image</th>
                      
                       <th class="text-secondary opacity-7"></th>
                     </tr>
@@ -45,7 +45,12 @@
                         <p class="text-xs font-weight-bold mb-0">{{$vehicle->vehicle->vehicle_number ?? 'N/A'}}</p>
                        
                       </td>
-                      
+                      <td>
+                        
+                        <img src="{{asset('vehicles')}}/{{$vehicle->vehicle->image}}" class="avatar avatar-sm me-3" alt="user1">
+                        
+                       
+                      </td>
                      
                       <td class="align-middle">
                         <a href="{{route('driver_vehicles.edit',$vehicle->id)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Edit user">
