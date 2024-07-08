@@ -120,7 +120,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label>Current Password</label>
-                                <input type="password" class="form-control" name="current_password" placeholder="Current Password">
+                                <input type="password" class="form-control" name="current_password" placeholder="Current Password" value="{{old('current_password')}}">
                                 @error('current_password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -129,7 +129,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label>New Password</label>
-                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                <input type="password" class="form-control" name="password" placeholder="Password" value="{{old('password')}}">
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -138,7 +138,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Confirm Password</label>
-                                <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
+                                <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" value="{{old('password_confirmation')}}">
                             </div>
                             <div class="col-md-12" style="margin-top: 10px;">
                                 <button type="submit" class="btn btn-primary">Submit</button>

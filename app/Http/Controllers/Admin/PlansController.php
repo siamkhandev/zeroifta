@@ -72,12 +72,12 @@ class PlansController extends Controller
     }
     public function update(Request $request,$id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'billing_period' => 'nullable|string|in:month,year',
-            'recurring' => 'required|boolean',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'price' => 'required|numeric',
+        //     'billing_period' => 'nullable|string|in:month,year',
+        //     'recurring' => 'required|boolean',
+        // ]);
         $plan = Plan::find($id);
         $plan->name = $request->name;
         $plan->price = $request->price;

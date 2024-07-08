@@ -8,7 +8,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 class UsersController extends Controller
 {
     public function profile()
@@ -44,22 +45,54 @@ class UsersController extends Controller
     }
     public function passwordUpdate(Request $request)
     {
-       
         $request->validate([
             'current_password' => 'required',
             'password' => 'required|min:8|confirmed',
         ]);
-        try{
-            $user = User::whereId(Auth::id())->first();
+
+        try {
+            $user = User::find(Auth::id());
             if (!Hash::check($request->current_password, $user->password)) {
-                return redirect()->back()->withError('Current password does not match');
+                return redirect()->back()->withInput()->withErrors(['current_password' => 'Current password does not match']);
             }
             $user->password = Hash::make($request->password);
-            $user->update();
+            $user->save();
             return redirect()->back()->withSuccess('Password updated successfully');
-        }catch(Exception $e){
-            dd($e->getMessage());
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Something went wrong. Please try again.']);
         }
-       
+    }
+
+    public function readDatFile()
+    {
+        // Define the path to the .dat file in the public folder
+        $filePath = public_path('output.dat');
+        
+        // Check if the file exists
+        if (!File::exists($filePath)) {
+            return back()->with('error', 'File not found.');
+        }
+
+        // Read the file
+        $contents = File::get($filePath);
+
+        // Parse the file (Assuming each line is a record and fields are separated by commas)
+        $lines = explode(PHP_EOL, $contents);
+
+        foreach ($lines as $line) {
+           
+            $data = str_getcsv($line); // Adjust according to your file structure
+            dd($data);
+            if (count($data) > 1) { // To ensure non-empty lines
+                // Insert data into the database
+                DB::table('your_table')->insert([
+                    'field1' => $data[0],
+                    'field2' => $data[1],
+                    // Add more fields as necessary
+                ]);
+            }
+        }
+
+        return back()->with('success', 'File read and data inserted successfully.');
     }
 }

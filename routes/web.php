@@ -35,6 +35,7 @@ Route::get('login', function () {
 Route::get('company/register',[CompanyController::class,'create'])->name('company.register');
 Route::post('company/register',[CompanyController::class,'store'])->name('register');
 Route::post('login',[AdminController::class,'login'])->name('login');
+Route::get('/read-dat-file', [UsersController::class, 'readDatFile'])->name('read.dat.file');
 Route::middleware('auth')->group(function () {
     Route::get('profile',[UsersController::class,'profile'])->name('profile');
     Route::post('profile/update',[UsersController::class,'profileUpdate'])->name('profile.update');

@@ -32,7 +32,7 @@ class AdminController extends Controller
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
             return redirect('/');
         }else{
-            return redirect()->back()->withError('Invalid Credentials');
+            return redirect()->back()->withInput()->withErrors(['email' => 'Invalid Credentials']);
         }
     }
     public function logout()
