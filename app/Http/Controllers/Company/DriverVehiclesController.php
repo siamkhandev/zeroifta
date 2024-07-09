@@ -47,7 +47,7 @@ class DriverVehiclesController extends Controller
     public function edit($id)
     {
         $vehicle = DriverVehicle::find($id);
-        $drivers = User::whereRole('driver')->get();
+        $drivers = User::whereRole('driver')->where('company_id',Auth::id())->get();
         $vehicles = Vehicle::where('company_id',Auth::id())->get();
         return view('company.driver_vehicles.edit',get_defined_vars());
     }
