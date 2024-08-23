@@ -74,7 +74,7 @@ class IFTAController extends Controller
         // This is a placeholder for demonstration purposes.
         return [
             'location' => 'Some Fuel Station',
-            'pricePerGallon' => 3.50
+            //'pricePerGallon' => 3.50
         ];
     }
 
