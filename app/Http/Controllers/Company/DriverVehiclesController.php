@@ -20,8 +20,9 @@ class DriverVehiclesController extends Controller
     public function create()
     {
         $drivers = CompanyDriver::with('driver')->where('company_id',Auth::id())->get();
-        $vehicles = Vehicle::where('company_id',Auth::id())->get();
-        
+        $vehicles = Vehicle::where('company_id',Auth::id())->pluck('id');
+        $check = DriverVehicle::whereIn('vehicle_id',$vehicles)->get();
+        $vehicles = Vehicle::where('company_id',Auth::id())->whereNotIn('id',$check->pluck('vehicle_id'))->get();
         return view('company.driver_vehicles.create',get_defined_vars());
     }
     public function store(Request $request)
@@ -47,7 +48,7 @@ class DriverVehiclesController extends Controller
     public function edit($id)
     {
         $vehicle = DriverVehicle::find($id);
-        $drivers = User::whereRole('driver')->where('company_id',Auth::id())->get();
+        $drivers = CompanyDriver::with('driver')->where('company_id',Auth::id())->get();
         $vehicles = Vehicle::where('company_id',Auth::id())->get();
         return view('company.driver_vehicles.edit',get_defined_vars());
     }

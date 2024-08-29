@@ -4,6 +4,9 @@
 <div class="container-fluid py-4">
       <div class="row">
         <div class="col-md-12">
+        @if(Session::has('error'))
+                <div class="alert alert-danger" style="color:white">{{Session::get('error')}}</div>
+            @endif
           <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">

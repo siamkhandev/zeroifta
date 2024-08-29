@@ -31,8 +31,9 @@
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
   @if(Auth::user()->role=='admin')
   @include('includes.sidebar_admin')
-  @else
+  @elseif(Auth::user()->role=='company')
   @include('includes.sidebar_company')
+  @else
   @endif
   <main class="main-content position-relative border-radius-lg ">
     <!-- Navbar -->

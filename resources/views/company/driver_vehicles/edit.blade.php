@@ -21,8 +21,9 @@
                             <select name="driver_id" class="form-control" style="height: 40px;">
                               <option value="">Select</option>
                               @foreach($drivers as $driver)
-                              <option value="{{$driver->id}}" {{$vehicle->driver_id ==$driver->id ? 'selected':'' }}>{{$driver->name}}</option>
+                              <option value="{{$driver->driver->id}}" {{$vehicle->driver_id ==$driver->driver->id ? 'selected':'' }}>{{$driver->driver->name}}</option>
                               @endforeach
+                              
                             </select>
                             @error('driver_id')
                               <span class="invalid-feedback" role="alert">
