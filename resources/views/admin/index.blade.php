@@ -108,7 +108,7 @@
                     @else
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Contact Forms</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\Contactus::count()??0}}
+                    {{\App\Models\Contactus::where('company_id',Auth::id())->count()??0}}
                     </h5>
                     @endif
                   </div>
