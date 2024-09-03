@@ -19,6 +19,7 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sr #</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Company Name</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Subject</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sent Date</th>
@@ -31,6 +32,7 @@
                     @if(count($forms)>0)
                     @foreach($forms as $form)
                     <tr>
+                      <td>{{$loop->iteration}}</td>
                       <td>
                         <div class="d-flex px-2 py-1">
                           

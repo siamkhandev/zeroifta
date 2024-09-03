@@ -243,16 +243,16 @@
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-4 text-sm mx-auto">
                     Do you have an account?
-                    <a href="javascript:;" class="text-primary text-gradient font-weight-bold">Login</a>
+                    <a href="{{route('login')}}" class="text-primary text-gradient font-weight-bold">Login</a>
                   </p>
                 </div>
               </div>
             </div>
             <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
               <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('{{asset('images/truck2.webp')}}');
-          background-size: cover;">
+          ">
                 <span class="mask bg-gradient-primary opacity-6"></span>
-                <h4 class="mt-5 text-white font-weight-bolder position-relative"></h4>
+                <h4 class="mt-5 text-white font-weight-bolder position-relative">Fuel smarter, drive farther—empowering every journey with ZeroIFTA. Turn every mile into a milestone of savings and success.</h4>
                 <p class="text-white position-relative"></p>
               </div>
             </div>

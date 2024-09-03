@@ -19,6 +19,7 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sr #</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
@@ -30,6 +31,7 @@
                     @if(count($users)>0)
                     @foreach($users as $user)
                     <tr>
+                    <td>{{$loop->iteration}}</td>
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
