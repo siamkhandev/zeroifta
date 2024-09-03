@@ -10,6 +10,15 @@
   <title>
     Zeroifta | Company Register
   </title>
+  <style>
+  .field-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+</style>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
@@ -210,19 +219,21 @@
                         </span>
                     @enderror
                    
-                    <p>Authetication</p>
+                    <p>Authentication</p>
 
-                    <div class="mb-3">
-                        <input id="password" placeholder="Password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                    <div class="mb-3 position-relative">
+                      <input id="password" placeholder="Password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                      <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                     </div>
                     @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                    <div class="mb-3">
-                        <input id="password_confirm" placeholder="Confirm Password" type="password" class="form-control" name="password_confirmation" required >
-                    </div>
+                    <div class="mb-3 position-relative">
+  <input id="password_confirm" placeholder="Confirm Password" type="password" class="form-control" name="password_confirmation" required>
+  <span toggle="#password_confirm" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+</div>
                     
                     <div class="text-center">
                       <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Register</button>
@@ -238,7 +249,7 @@
               </div>
             </div>
             <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
+              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('{{asset('images/truck2.webp')}}');
           background-size: cover;">
                 <span class="mask bg-gradient-primary opacity-6"></span>
                 <h4 class="mt-5 text-white font-weight-bolder position-relative"></h4>
@@ -255,6 +266,22 @@
   <script src="{{asset('assets/js/core/bootstrap.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
+  <script>
+  document.querySelectorAll('.toggle-password').forEach(function(element) {
+    element.addEventListener('click', function() {
+      let input = document.querySelector(this.getAttribute('toggle'));
+      if (input.getAttribute('type') === 'password') {
+        input.setAttribute('type', 'text');
+        this.classList.remove('fa-eye');
+        this.classList.add('fa-eye-slash');
+      } else {
+        input.setAttribute('type', 'password');
+        this.classList.remove('fa-eye-slash');
+        this.classList.add('fa-eye');
+      }
+    });
+  });
+</script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {

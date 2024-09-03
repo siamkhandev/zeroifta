@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DriverVehicle;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
@@ -46,6 +48,8 @@ class CompaniesController extends Controller
     }
     public function delete($id)
     {
+        Vehicle::where('company_id',$id)->delete();
+        DriverVehicle::where('company_id',$id)->delete();
         User::whereId($id)->delete();
         return redirect()->back()->withError('Company Deleted Successfully');
     }
