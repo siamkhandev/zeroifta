@@ -10,13 +10,14 @@
                     @if(Auth::user()->role=="admin")
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Companies</p>
                     <h5 class="font-weight-bolder">
-                      {{\App\Models\User::whereRole('company')->count()??0}}
+                      <a href="{{route('companies')}}">{{\App\Models\User::whereRole('company')->count()??0}}</a>
+
                     </h5>
                    @else
                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Drivers</p>
                     <h5 class="font-weight-bolder">
                    
-                      {{\App\Models\CompanyDriver::where('company_id',Auth::id())->count()??0}}
+                    <a href="{{route('drivers.all')}}"> {{\App\Models\CompanyDriver::where('company_id',Auth::id())->count()??0}}</a>
                     </h5>
                    @endif
                   </div>
@@ -39,12 +40,12 @@
                   @if(Auth::user()->role=="admin")
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Subscriptions</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\Payment::count()??0}}
+                  <a href="{{route('plans')}}">{{\App\Models\Payment::count()??0}}</a>
                     </h5>
                    @else
                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Vehicles</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\Vehicle::where('company_id',Auth::id())->count()??0}}
+                    <a href="{{route('allvehicles')}}"> {{\App\Models\Vehicle::where('company_id',Auth::id())->count()??0}}</a>
                     </h5>
                    @endif
                   </div>
@@ -71,12 +72,12 @@
                   @if(Auth::user()->role=="admin")
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Payments</p>
                     <h5 class="font-weight-bolder">
-                   {{\App\Models\Payment::count()??0}}
+                    <a href="{{route('payments')}}">{{\App\Models\Payment::count()??0}}</a>
                     </h5>
                    @else
                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Driver Vehicles</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\DriverVehicle::where('company_id',Auth::id())->count()??0}}
+                    <a href="{{route('driver_vehicles')}}"> {{\App\Models\DriverVehicle::where('company_id',Auth::id())->count()??0}}</a>
                     </h5>
                    @endif
                   </div>
@@ -103,12 +104,12 @@
                   @if(Auth::user()->role=="admin")
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Contact Forms</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\CompanyContactUs::count()??0}}
+                    <a href="{{route('admin.contactus')}}">{{\App\Models\CompanyContactUs::count()??0}}</a>
                     </h5>
                     @else
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Contact Forms</p>
                     <h5 class="font-weight-bolder">
-                    {{\App\Models\Contactus::where('company_id',Auth::id())->count()??0}}
+                    <a href="{{route('contactus')}}">{{\App\Models\Contactus::where('company_id',Auth::id())->count()??0}}</a>
                     </h5>
                     @endif
                   </div>

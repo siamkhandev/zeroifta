@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('content')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">
@@ -16,7 +17,7 @@
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
+                <table class="table align-items-center mb-0" id="myTable">
                   <thead>
                     <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sr #</th>
@@ -86,3 +87,10 @@
     
     </div>
   @endsection
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+  <script>
+$(document).ready(function() {
+    $('#myTable').DataTable();
+});
+</script>
