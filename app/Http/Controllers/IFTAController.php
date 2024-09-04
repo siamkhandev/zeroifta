@@ -22,41 +22,61 @@ class IFTAController extends Controller
     }
 
     private function stopsAlgorithm($route, $currentGallons, $reserveGallons, $desiredAdditionalEndingGallons)
-    {
-        // Calculate the total fuel needed for the route
-        $fuelNeeded = $this->gallonsOfFuel($route['miles'], $route['truckMPG']) + $reserveGallons + $desiredAdditionalEndingGallons;
+{
+   
 
-        // If the current fuel is sufficient, no stop is needed
-        if ($fuelNeeded <= $currentGallons) {
-            return [[], $currentGallons - $fuelNeeded];
-        } else {
-            // If fuel stop is necessary
-            $fuelStop = $this->findCheapestFuelStop($route);
-            $routeSegmentA = $this->createRouteSegment($route['start'], $fuelStop['location'], $route);
+    // Calculate the total fuel needed for the route
+    $fuelNeeded = $this->gallonsOfFuel($route['miles'], $route['truckMPG']) + $reserveGallons + $desiredAdditionalEndingGallons;
 
-            // Calculate for the first segment
-            $gallonsUsedSegmentA = $this->gallonsOfFuel($routeSegmentA['miles'], $routeSegmentA['truckMPG']);
-            $remainingGallonsAfterSegmentA = $currentGallons - $gallonsUsedSegmentA;
+    // If the current fuel is sufficient, no stop is needed
+    if ($fuelNeeded <= $currentGallons) {
+        return [[], $currentGallons - $fuelNeeded];
+    } else {
+        // If a fuel stop is necessary
+        $fuelStop = $this->findCheapestFuelStop($route);
+        $routeSegmentA = $this->createRouteSegment($route['start'], $fuelStop['location'], $route);
 
-            // Calculate the amount of fuel to buy
-            $gallonsToBuy = min(
-                $this->amountOfFuelNeeded($route['miles'], $route['truckMPG']) + $reserveGallons + $desiredAdditionalEndingGallons,
-                $route['truckTankCapacity']
-            ) - $remainingGallonsAfterSegmentA;
+        // Calculate for the first segment
+        $gallonsUsedSegmentA = $this->gallonsOfFuel($routeSegmentA['miles'], $routeSegmentA['truckMPG']);
+        $remainingGallonsAfterSegmentA = $currentGallons - $gallonsUsedSegmentA;
 
-            $stopsData = [
-                ['fuelStop' => $fuelStop, 'gallonsToBuy' => $gallonsToBuy]
-            ];
+        // Calculate the amount of fuel to buy
+        $gallonsToBuy = min(
+            $this->amountOfFuelNeeded($routeSegmentA['miles'], $routeSegmentA['truckMPG']) + $reserveGallons + $desiredAdditionalEndingGallons,
+            $route['truckTankCapacity']
+        ) - $remainingGallonsAfterSegmentA;
 
-            $routeSegmentB = $this->createRouteSegment($fuelStop['location'], $route['destination'], $route);
+        $stopsData = [
+            ['fuelStop' => $fuelStop, 'gallonsToBuy' => $gallonsToBuy]
+        ];
+
+        // Update the route for the next segment
+        $remainingMiles = $route['miles'] - $routeSegmentA['miles'];
+
+      
+
+        if ($remainingMiles > 0) {
+            $routeSegmentB = $this->createRouteSegment($fuelStop['location'], $route['destination'], [
+                'miles' => $remainingMiles,
+                'truckMPG' => $route['truckMPG'],
+                'truckTankCapacity' => $route['truckTankCapacity'],
+                'start' => $fuelStop['location'],
+                'destination' => $route['destination']
+            ]);
+
             $remainingGallonsAfterBuying = $gallonsToBuy + $remainingGallonsAfterSegmentA;
 
-            // Calculate for the second segment
+            // Recursive call for the remaining segment
             list($segBstopsData, $gallonsRemaining) = $this->stopsAlgorithm($routeSegmentB, $remainingGallonsAfterBuying, $reserveGallons, $desiredAdditionalEndingGallons);
 
             return [array_merge($stopsData, $segBstopsData), $gallonsRemaining];
+        } else {
+            // In case there are no remaining miles, return the current data
+            return [$stopsData, $gallonsToBuy + $remainingGallonsAfterSegmentA];
         }
     }
+}
+
 
     private function gallonsOfFuel($miles, $MPG)
     {
