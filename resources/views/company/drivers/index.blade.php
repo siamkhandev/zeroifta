@@ -63,6 +63,9 @@
                         <a href="{{route('driver.delete',$driver->driver->id)}}"  class="btn btn-sm btn-danger" >
                           Delete
                         </a>
+                        <a href="{{route('driver.track',$driver->driver->id)}}" class="btn btn-sm btn-warning" data-user-id="{{ $driver->driver->id }}">
+                          Track Driver
+                        </a>
                       </td>
                     </tr>
                     
@@ -86,3 +89,4 @@
     
     </div>
   @endsection
+ 

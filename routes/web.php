@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/',[AdminController::class,'index'])->name('dashboard')->middleware('auth');
+
+Route::get('/testsocket',[AdminController::class,'socket']);
 Route::get('login', function () {
     return view('login');
 });
@@ -83,6 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::get('drivers/edit/{id}',[DriversController::class,'edit'])->name('driver.edit');
     Route::post('drivers/update/{id}',[DriversController::class,'update'])->name('driver.update');
     Route::get('drivers/delete/{id}',[DriversController::class,'delete'])->name('driver.delete');
+    Route::get('drivers/track/{id}',[DriversController::class,'track'])->name('driver.track');
+
 
     Route::get('contactus',[CompanyController::class,'contactus'])->name('contactus');
     Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('company.contactus.submit');

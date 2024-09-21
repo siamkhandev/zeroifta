@@ -5,6 +5,7 @@ use App\Http\Controllers\DriverContactUsController;
 use App\Http\Controllers\DriverDashboardController;
 use App\Http\Controllers\IFTAController;
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\TripController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,3 +48,5 @@ Route::middleware('auth:api')->group( function () {
     Route::post('chat/get',[DriverContactUsController::class,'getChat']);
     Route::post('chat/send',[DriverContactUsController::class,'send']);
 });
+Route::post('/trip/start', [TripController::class, 'store']);
+Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);

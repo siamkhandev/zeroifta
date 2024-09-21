@@ -95,4 +95,8 @@ class DriversController extends Controller
         $driver->delete();
         return redirect('drivers/all')->withError('Driver Deleted Successfully');
     }
+    public function track($id)
+    {
+        return view('company.drivers.track', ['userId' => $id]);
+    }
 }

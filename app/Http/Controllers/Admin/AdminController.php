@@ -62,4 +62,8 @@ class AdminController extends Controller
         $form->delete();
         return redirect('contactus/all')->withError('Record Deleted Successfully');
     }
+    public function socket()
+    {
+        return view('socket');
+    }
 }
