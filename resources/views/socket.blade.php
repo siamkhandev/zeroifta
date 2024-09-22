@@ -10,7 +10,7 @@
     <h1>User Location Simulation (ID: 1)</h1>
 
     <script>
-        const socket = io('https://zeroifta.alnairtech.com:3000');  // Socket.io server address
+        const socket = io('https://zeroifta.alnairtech.com');  // Socket.io server address
 
         // Coordinates for the simulation (from Lahore to Islamabad)
         const locations = [
