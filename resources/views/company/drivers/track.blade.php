@@ -23,7 +23,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
     <script>
         let map, routePath, userMarker, startMarker, endMarker;
-        const socket = io('http://zeroifta.alnairtech.com');  // Socket.io server URL
+        const socket = io('http://zeroifta.alnairtech.com:3000');  // Socket.io server URL
         const userId = {{ $userId }};  // Pass the userId from blade
 
         function initMap() {
