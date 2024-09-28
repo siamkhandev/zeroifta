@@ -33,7 +33,7 @@
             if (index < locations.length) {
                 const currentLocation = locations[index];
                 socket.emit('userLocation', {
-                    user_id: 13,  // User ID 1
+                    user_id: 3,  // User ID 1
                     lat: currentLocation.lat,
                     lng: currentLocation.lng
                 });
