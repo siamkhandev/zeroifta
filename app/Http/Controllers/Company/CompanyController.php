@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyContactUs;
+use App\Models\CompanyDriver;
 use App\Models\Payment;
 use App\Models\Plan;
+use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,10 +84,23 @@ class CompanyController extends Controller
         
         return view('company.contactus.index',get_defined_vars());
     }
+
     public function readForm($id)
     {
         $form = CompanyContactUs::with('company')->find($id);
         return view('company.contactus.read',get_defined_vars());
+    }
+    public function fleet()
+    {
+        $drivers = CompanyDriver::with('driver', 'company')
+        ->where('company_id', Auth::id())
+        ->get();
+
+        // Fetch trips for all drivers in the company
+        foreach ($drivers as $driver) {
+            $driver->trips = Trip::where('user_id', $driver->driver->id)->get();
+        }
+        return view('company.fleet',compact('drivers'));
     }
    
 }

@@ -1,32 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track User Location</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
+@extends('layouts.main')
+
+@section('content')
     <div class="container mt-5">
-        <h1>Tracking Location for User ID: {{ $userId }}</h1>
-        <div id="map"></div>
+        <!-- Pills Navigation -->
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="pills-live-tab" data-toggle="pill" href="#pills-live" role="tab" aria-controls="pills-live" aria-selected="true">Live</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="pills-history-tab" data-toggle="pill" href="#pills-history" role="tab" aria-controls="pills-history" aria-selected="false">History</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</a>
+            </li>
+        </ul>
+
+        <!-- Pills Content -->
+        <div class="tab-content" id="pills-tabContent">
+            <!-- Live Tab Content -->
+            <div class="tab-pane fade show active" id="pills-live" role="tabpanel" aria-labelledby="pills-live-tab">
+                <div id="mapContainer">
+                    <div id="map" style="width: 100%; height: 500px;"></div>
+                </div>
+            </div>
+
+            <!-- History Tab Content -->
+            <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+                <h4>History coming soon.</h4>
+            </div>
+
+            <!-- Profile Tab Content -->
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <h4>Profile coming soon.</h4>
+            </div>
+        </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
+
     <script>
         let map, routePath, userMarker, startMarker, endMarker;
         const socket = io('http://zeroifta.alnairtech.com:3000');  // Socket.io server URL
         const userId = {{ $userId }};  // Pass the userId from blade
 
         function initMap() {
+            // Initialize the map if the Live tab is active
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 7,
                 center: { lat: 31.5497, lng: 74.3436 }  // Default to Lahore
@@ -92,6 +113,24 @@
             bounds.extend(end);
             map.fitBounds(bounds);
         }
+
+        // Handle tab change
+        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+            const target = $(e.target).attr("href");  // Get the tab's target id
+            
+            if (target === '#pills-live') {
+                // Remove any old map element and reinitialize it when switching to Live tab
+                $('#mapContainer').html('<div id="map" style="width: 100%; height: 500px;"></div>');
+                initMap();
+            } else {
+                // Completely remove the map from the DOM when switching to History or Profile
+                $('#mapContainer').empty();
+            }
+        });
+
+        // Trigger map initialization on page load
+        $(document).ready(function() {
+            initMap();
+        });
     </script>
-</body>
-</html>
+@endsection

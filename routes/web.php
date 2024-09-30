@@ -111,4 +111,8 @@ Route::middleware('auth')->group(function () {
     ////////
     Route::get('company/contactus/all',[CompanyController::class,'contactUsForms'])->name('company.contactus');
     Route::get('company/contactform/read/{id}',[CompanyController::class,'readForm'])->name('company.contactform.detail');
+
+    /////////
+    Route::get('fleet',[CompanyController::class,'fleet'])->name('fleet');
+
 });
