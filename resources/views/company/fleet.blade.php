@@ -19,9 +19,9 @@
                             <h6>{{ $driver->driver->name }}</h6>
 
                             @if($driver->trips->isNotEmpty())
-                                <a style="font-weight: bold;
-    color: blue;" href="{{route('driver.track',$driver->driver->id)}}">
-                                    Track Location</a>
+                                <a style="font-weight: bold; color: blue;" href="{{ route('driver.track', $driver->driver->id) }}">
+                                    Track Location
+                                </a>
                             @else
                                 <p class="text-muted mt-2">No trip found</p>
                             @endif
@@ -32,7 +32,7 @@
 
             <!-- Map Column (8 Columns) -->
             <div class="col-md-8">
-                <h4></h4>
+                <h4>Fleet View</h4>
                 <div id="map" style="width: 100%; height: 500px;">
                     <!-- Embed your map here (Google Maps, OpenStreetMap, etc.) -->
                 </div>
@@ -40,57 +40,47 @@
         </div>
     </div>
 </div>
+
+<!-- Including Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
-    <script>
+<script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
+
+<script>
     let map;
-    let routePaths = [];
+    let driverMarkers = {}; // Store markers for each driver by driver ID
 
     function initMap() {
-        // Initialize the map centered at a default location
+        // Initialize the map centered at a default location (USA)
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 7,
-            center: { lat: 31.5497, lng: 74.3436 } // Default to Lahore
+            zoom: 4,
+            center: { lat: 39.8283, lng: -98.5795 } // Center of USA
         });
 
-        // Pass all drivers and their trips data from backend to frontend
-        const drivers = @json($drivers);
+        // Establish connection to Socket.IO server
+        const socket = io('http://zeroifta.alnairtech.com:3000');
 
-        // Iterate over each driver and their trips
-        drivers.forEach(driver => {
-            driver.trips.forEach(trip => {
-                const startLatLng = { lat: parseFloat(trip.start_lat), lng: parseFloat(trip.start_lng) };
-                const endLatLng = { lat: parseFloat(trip.end_lat), lng: parseFloat(trip.end_lng) };
+        // Listen for real-time driver location updates
+        socket.on('driverLocationUpdate', function(data) {
+            const driverId = data.driver_id;
+            const driverLatLng = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
 
-                // Draw the polyline for the trip route
-                const routePath = new google.maps.Polyline({
-                    path: [startLatLng, endLatLng],
-                    geodesic: true,
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3,
-                    map: map
-                });
-
-                // Add markers at the start and end points of the trip
-                new google.maps.Marker({
-                    position: startLatLng,
+            // Check if a marker for this driver already exists
+            if (driverMarkers[driverId]) {
+                // Update marker position
+                driverMarkers[driverId].setPosition(driverLatLng);
+            } else {
+                // Create a new marker for the driver
+                const marker = new google.maps.Marker({
+                    position: driverLatLng,
                     map: map,
-                    title: 'Start',
-                    icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                    title: `Driver ${data.driver_name}`,
+                    icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
                 });
 
-                new google.maps.Marker({
-                    position: endLatLng,
-                    map: map,
-                    title: 'End',
-                    icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                });
-
-                // Store the routePath in case we need to manipulate it later
-                routePaths.push(routePath);
-            });
+                // Store the marker by driver ID
+                driverMarkers[driverId] = marker;
+            }
         });
     }
 </script>
