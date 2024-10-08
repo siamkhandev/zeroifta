@@ -16,7 +16,13 @@
                 <ul class="list-group">
                     @foreach($drivers as $driver)
                         <li class="list-group-item">
-                            <h6>{{ $driver->driver->name }}</h6>
+                            <h6>
+                                {{ $driver->driver->name }}
+                                <!-- Status Circle -->
+                                <span id="status-{{ $driver->driver->id }}" 
+                                      class="status-circle" 
+                                      style="display:inline-block; width:10px; height:10px; background-color:yellow; border-radius:50%; margin-left:10px;"></span>
+                            </h6>
 
                             @if($driver->trips->isNotEmpty())
                                 <a style="font-weight: bold; color: blue;" href="{{ route('driver.track', $driver->driver->id) }}">
@@ -51,10 +57,10 @@
     let driverMarkers = {}; // Store markers for each driver by driver ID
 
     function initMap() {
-        // Initialize the map centered at a default location (USA)
+        // Initialize the map centered at Lahore, Pakistan
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 4,
-            center: { lat: 31.5497, lng: 74.3436 }
+            zoom: 10,
+            center: { lat: 31.5497, lng: 74.3436 } // Center at Lahore
         });
 
         // Establish connection to Socket.IO server
@@ -65,6 +71,9 @@
             const driverId = data.driver_id;
             const driverLatLng = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
             
+            // Update driver status to online (green circle)
+            updateDriverStatus(driverId, 'green');
+
             // Check if a marker for this driver already exists
             if (driverMarkers[driverId]) {
                 // Update marker position
@@ -82,8 +91,13 @@
                 driverMarkers[driverId] = marker;
             }
         });
-        socket.on('disconnect', function(data) {
-            const driverId = data.user_id;
+
+        // Listen for driver disconnection
+        socket.on('driverDisconnected', function(data) {
+            const driverId = data.driver_id;
+
+            // Update driver status to offline (yellow circle)
+            updateDriverStatus(driverId, 'yellow');
 
             // Check if a marker for this driver exists
             if (driverMarkers[driverId]) {
@@ -94,6 +108,14 @@
                 delete driverMarkers[driverId];
             }
         });
+    }
+
+    // Function to update the driver's status
+    function updateDriverStatus(driverId, color) {
+        const statusCircle = document.getElementById(`status-${driverId}`);
+        if (statusCircle) {
+            statusCircle.style.backgroundColor = color;
+        }
     }
 </script>
 @endsection
