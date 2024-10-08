@@ -82,6 +82,18 @@
                 driverMarkers[driverId] = marker;
             }
         });
+        socket.on('disconnect', function(data) {
+            const driverId = data.user_id;
+
+            // Check if a marker for this driver exists
+            if (driverMarkers[driverId]) {
+                // Remove the marker from the map
+                driverMarkers[driverId].setMap(null);
+
+                // Delete the marker from the driverMarkers object
+                delete driverMarkers[driverId];
+            }
+        });
     }
 </script>
 @endsection
