@@ -29,14 +29,14 @@ io.on('connection', (socket) => {
                 id: data.user_id,
                 lat: data.lat,
                 lng: data.lng,
-                name: data.driver_name // Assuming driver name is sent with location
+                //name: data.driver_name // Assuming driver name is sent with location
             });
         }
 
         // Broadcast updated location to all connected clients
         io.emit('driverLocationUpdate', {
             driver_id: data.user_id,
-            driver_name: data.driver_name,
+            //driver_name: data.driver_name,
             lat: data.lat,
             lng: data.lng
         });

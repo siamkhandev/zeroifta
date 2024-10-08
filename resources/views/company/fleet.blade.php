@@ -74,7 +74,7 @@
                 const marker = new google.maps.Marker({
                     position: driverLatLng,
                     map: map,
-                    title: `Driver ${data.driver_name}`,
+                    title: `Driver`,
                     icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
                 });
 
