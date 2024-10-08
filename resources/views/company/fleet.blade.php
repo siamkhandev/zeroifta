@@ -64,7 +64,7 @@
         socket.on('driverLocationUpdate', function(data) {
             const driverId = data.driver_id;
             const driverLatLng = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
-
+            
             // Check if a marker for this driver already exists
             if (driverMarkers[driverId]) {
                 // Update marker position

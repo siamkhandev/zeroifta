@@ -48,11 +48,11 @@
             if (index13 < driver13Locations.length) {
                 const currentLocation = driver13Locations[index13];
                 socket.emit('userLocation', {
-                    user_id: 13,  // Driver ID 13
+                    user_id: 6,  // Driver ID 13
                     lat: currentLocation.lat,
                     lng: currentLocation.lng
                 });
-                console.log(`Driver 13 sent location: ${currentLocation.lat}, ${currentLocation.lng}`);
+                console.log(`Driver 6 sent location: ${currentLocation.lat}, ${currentLocation.lng}`);
                 index13++;
             }
         }
