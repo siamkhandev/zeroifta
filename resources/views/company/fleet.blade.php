@@ -54,7 +54,7 @@
         // Initialize the map centered at a default location (USA)
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 4,
-            center: { lat: 39.8283, lng: -98.5795 } // Center of USA
+            center: { lat: 31.5497, lng: 74.3436 }
         });
 
         // Establish connection to Socket.IO server
