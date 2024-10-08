@@ -26,13 +26,14 @@ class DriversController extends Controller
 
     { 
         $data = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email|max:255',
-        'phone' => 'required|string|max:20',
-        'password' => 'required|string|min:8|confirmed',
-        'dot' => 'required|string|max:255',
-        'mc' => 'required|string|max:255',
-    ]);
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'phone' => 'required|string|max:20',
+            'password' => 'required|string|min:8|confirmed',
+            'dot' => 'required|string|max:255',
+            'mc' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
         $driver = new User();
         $driver->name = $request->name;
         $driver->email = $request->email;
