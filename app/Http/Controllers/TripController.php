@@ -19,18 +19,18 @@ class TripController extends Controller
         ]);
 
         // Store the trip details
-        Trip::create($validatedData);
+       $trip =  Trip::create($validatedData);
 
-        return response()->json(['status' => 'success', 'message' => 'Trip coordinates stored successfully']);
+        return response()->json(['status' =>200, 'message' => 'Trip coordinates stored successfully', 'data' =>$trip ]);
     }
     public function getTrip($user_id)
     {
         $trip = Trip::where('user_id', $user_id)->first();
 
         if (!$trip) {
-            return response()->json(['status' => 'error', 'message' => 'No trip found for this user']);
+            return response()->json(['status' =>404, 'message' => 'No trip found for this user', 'data' => (object)[]]);
         }
 
-        return response()->json(['status' => 'success', 'data' => $trip]);
+        return response()->json(['status' => 200, 'message' => 'Trip retrieved successfully', 'data' => $trip]);
     }
 }
