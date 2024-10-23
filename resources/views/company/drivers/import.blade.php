@@ -9,7 +9,7 @@
               <div class="d-flex align-items-center">
                 <p class="mb-0">Import Drivers</p>
               </div>
-              <a href="{{ asset('driver.xlsx') }}" download class="btn btn-warning" style="float: right;">Download Sample File</a>
+              <a href="{{ asset('drivers.xlsx') }}" download class="btn btn-warning" style="float: right;">Download Sample File</a>
             </div>
             
             <div class="card-body">
