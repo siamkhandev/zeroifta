@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Imports\DriversImport;
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 class DriversController extends Controller
@@ -99,5 +101,19 @@ class DriversController extends Controller
     public function track($id)
     {
         return view('company.drivers.track', ['userId' => $id]);
+    }
+    public function importForm()
+    {
+       return view('company.drivers.import');
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new DriversImport, $request->file('file'));
+
+        return redirect('drivers/all')->with('success', 'Driver imported successfully.');
     }
 }

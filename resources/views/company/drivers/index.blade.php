@@ -13,6 +13,7 @@
             <div class="card-header pb-0">
               <h6>Drivers table</h6>
               <a href="{{route('drivers.create')}}" class="btn btn-primary" style="float:right">Add Driver</a>
+              <a href="{{route('drivers.importform')}}" class="btn btn-success" style="float:right;margin-right:10px">Import Driver</a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">

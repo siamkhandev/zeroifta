@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Imports\VehiclesImport;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VehiclesController extends Controller
 {
@@ -79,5 +81,19 @@ class VehiclesController extends Controller
         $vehicle = Vehicle::find($id);
         $vehicle->delete();
         return redirect('vehicles/all')->withError('vehicle Deleted Successfully');
+    }
+    public function importForm()
+    {
+       return view('company.vehicles.import');
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new VehiclesImport, $request->file('file'));
+
+        return redirect('vehicles/all')->with('success', 'Vehicles imported successfully.');
     }
 }

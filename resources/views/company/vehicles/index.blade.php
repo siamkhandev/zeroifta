@@ -13,6 +13,7 @@
             <div class="card-header pb-0">
               <h6>Vehicles table</h6>
               <a href="{{route('vehicles.create')}}" class="btn btn-primary" style="float:right">Add Vehicle</a>
+              <a href="{{route('vehicles.importform')}}" class="btn btn-success" style="float:right;margin-right:10px">Import Vehicle</a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -35,7 +36,11 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                         <div>
+                          @if($vehicle->vehicle_image)
                             <img src="{{asset('vehicles')}}/{{$vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1">
+                          @else
+                          <img src="{{asset('vehicles/blank.png')}}" class="avatar avatar-sm me-3" alt="user1">
+                          @endif
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">{{$vehicle->vehicle_type}}</h6>

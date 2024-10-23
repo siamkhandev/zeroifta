@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::get('vehicle/edit/{id}',[VehiclesController::class,'edit'])->name('vehicle.edit');
     Route::post('vehicle/update/{id}',[VehiclesController::class,'update'])->name('vehicle.update');
     Route::get('vehicle/delete/{id}',[VehiclesController::class,'delete'])->name('vehicle.delete');
+    Route::get('/vehicles/import', [VehiclesController::class, 'importForm'])->name('vehicles.importform');
+    Route::post('/vehicles/import', [VehiclesController::class, 'import'])->name('vehicle.import');
 
     Route::get('/driver/vehicles', [DriverVehiclesController::class,'index'])->name('driver_vehicles');
     Route::get('driver/vehicles/add', [DriverVehiclesController::class,'create'])->name('driver_vehicles.add');
@@ -86,7 +88,8 @@ Route::middleware('auth')->group(function () {
     Route::post('drivers/update/{id}',[DriversController::class,'update'])->name('driver.update');
     Route::get('drivers/delete/{id}',[DriversController::class,'delete'])->name('driver.delete');
     Route::get('drivers/track/{id}',[DriversController::class,'track'])->name('driver.track');
-
+    Route::get('/drivers/import', [DriversController::class, 'importForm'])->name('drivers.importform');
+    Route::post('/drivers/import', [DriversController::class, 'import'])->name('drivers.import');
 
     Route::get('contactus',[CompanyController::class,'contactus'])->name('contactus');
     Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('company.contactus.submit');
