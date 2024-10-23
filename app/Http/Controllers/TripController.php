@@ -18,7 +18,10 @@ class TripController extends Controller
             'end_lng'   => 'required|numeric',
         ]);
 
-        // Store the trip details
+        $findTrip = Trip::where('user_id', $validatedData['user_id'])->first();
+        if ($findTrip) {
+            return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => (object)[]]);
+        }
        $trip =  Trip::create($validatedData);
 
         return response()->json(['status' =>200, 'message' => 'Trip coordinates stored successfully', 'data' =>$trip ]);
