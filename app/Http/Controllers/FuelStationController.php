@@ -29,7 +29,7 @@ class FuelStationController extends Controller
             ]);
         }
 
-        return response()->json(['status' => 200, 'message' => 'Fuel stations saved successfully', 'data' => []]);
+        return response()->json(['status' => 200, 'message' => 'Fuel stations saved successfully','data' => (object)[]]);
     }
     public function getFuelStations($user_id)
     {
