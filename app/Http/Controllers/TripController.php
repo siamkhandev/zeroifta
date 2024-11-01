@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FuelStation;
 use App\Models\Trip;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
