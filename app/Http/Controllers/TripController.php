@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Trip;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class TripController extends Controller
@@ -26,17 +27,7 @@ class TripController extends Controller
 
     //     return response()->json(['status' =>200, 'message' => 'Trip coordinates stored successfully', 'data' =>$trip ]);
     // }
-    <?php
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Models\Trip;
-use App\Models\FuelStation;
-use GuzzleHttp\Client;
-
-class TripController extends Controller
-{
     public function store(Request $request)
     {
         // Step 1: Validate request data
