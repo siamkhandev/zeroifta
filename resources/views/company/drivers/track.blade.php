@@ -42,130 +42,125 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
 
     <script>
-        let map, routePath, userMarker, startMarker, endMarker;
-        const socket = io('http://zeroifta.alnairtech.com:3000');  // Socket.io server URL
-        const userId = {{ $userId }};  // Pass the userId from blade
+       let map, routeRenderer, userMarker, startMarker, endMarker;
+const socket = io('http://zeroifta.alnairtech.com:3000');  // Socket.io server URL
+const userId = {{ $userId }};  // Pass the userId from blade
 
-        function initMap() {
-            // Initialize the map if the Live tab is active
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 7,
-                center: { lat: 31.5497, lng: 74.3436 }  // Default to Lahore
-            });
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 7,
+        center: { lat: 31.5497, lng: 74.3436 }  // Default to Lahore
+    });
 
-            routePath = new google.maps.Polyline({
-                path: [],
-                geodesic: true,
-                strokeColor: '#FF0000',
-                strokeOpacity: 1.0,
-                strokeWeight: 3
-            });
-            routePath.setMap(map);
+    routeRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+        suppressMarkers: true // Prevents the default markers for start and end points
+    });
 
-            userMarker = new google.maps.Marker({
-                map: map,
-                icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-            });
+    userMarker = new google.maps.Marker({
+        map: map,
+        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+    });
 
-            // Fetch trip data
-            $.get('/api/user-trip/' + userId, function(response) {
-                if (response.status ==200) {
-                    const trip = response.data;
-                    const start = new google.maps.LatLng(parseFloat(trip.start_lat), parseFloat(trip.start_lng));
-                    const end = new google.maps.LatLng(parseFloat(trip.end_lat), parseFloat(trip.end_lng));
+    // Fetch trip data
+    $.get('/api/user-trip/' + userId, function(response) {
+        if (response.status == 200) {
+            const trip = response.data;
+            const start = { lat: parseFloat(trip.start_lat), lng: parseFloat(trip.start_lng) };
+            const end = { lat: parseFloat(trip.end_lat), lng: parseFloat(trip.end_lng) };
 
-                    drawRoute(start, end);
+            drawRoute(start, end);
 
-                    socket.on('locationUpdate', function(data) {
-                        const { user_id, lat, lng } = data;
-                        if (user_id === userId) {
-                            const currentLocation = new google.maps.LatLng(lat, lng);
-                            userMarker.setPosition(currentLocation);
-                            map.setCenter(currentLocation);
-                        }
-                    });
-                } else {
-                    alert(response.message);
+            socket.on('locationUpdate', function(data) {
+                const { user_id, lat, lng } = data;
+                if (user_id === userId) {
+                    const currentLocation = new google.maps.LatLng(lat, lng);
+                    userMarker.setPosition(currentLocation);
+                    map.setCenter(currentLocation);
                 }
             });
-            $.get('/api/get-fuel-stations/' + userId, function(response) {
-                if (response.status ==200) {
-                    const fuelStationIcon = {
-                        url: 'https://maps.google.com/mapfiles/kml/shapes/gas_stations.png',  // Fuel station icon URL
-                        scaledSize: new google.maps.Size(32, 32)  // Set size of the icon (width: 32px, height: 32px)
-                    };
-
-                    // Loop through each station and place a marker with a tooltip (infowindow)
-                    response.data.forEach(station => {
-                        const marker = new google.maps.Marker({
-                            position: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                            map: map,
-                            icon: fuelStationIcon,  // Use custom fuel station icon with adjusted size
-                            title: station.name  // Show station name on hover
-                        });
-
-                        // Add InfoWindow to show on hover
-                        const infoWindow = new google.maps.InfoWindow({
-                            content: `<strong>${station.name}</strong>`
-                        });
-
-                        // Show the InfoWindow on mouseover
-                        marker.addListener('mouseover', () => {
-                            infoWindow.open(map, marker);
-                        });
-
-                        // Close the InfoWindow on mouseout
-                        marker.addListener('mouseout', () => {
-                            infoWindow.close();
-                        });
-                    });
-                } else {
-                    alert(response.message);
-                }
-            });
+        } else {
+            alert(response.message);
         }
+    });
 
-        function drawRoute(start, end) {
-            if (startMarker) startMarker.setMap(null);
-            if (endMarker) endMarker.setMap(null);
+    $.get('/api/get-fuel-stations/' + userId, function(response) {
+        if (response.status == 200) {
+            const fuelStationIcon = {
+                url: 'https://maps.google.com/mapfiles/kml/shapes/gas_stations.png',
+                scaledSize: new google.maps.Size(32, 32)
+            };
 
-            startMarker = new google.maps.Marker({
-                position: start,
-                map: map,
-                label: "Start"
+            response.data.forEach(station => {
+                const marker = new google.maps.Marker({
+                    position: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
+                    map: map,
+                    icon: fuelStationIcon,
+                    title: station.name
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<strong>${station.name}</strong>`
+                });
+
+                marker.addListener('mouseover', () => {
+                    infoWindow.open(map, marker);
+                });
+                marker.addListener('mouseout', () => {
+                    infoWindow.close();
+                });
             });
-
-            endMarker = new google.maps.Marker({
-                position: end,
-                map: map,
-                label: "End"
-            });
-
-            routePath.setPath([start, end]);
-
-            const bounds = new google.maps.LatLngBounds();
-            bounds.extend(start);
-            bounds.extend(end);
-            map.fitBounds(bounds);
+        } else {
+            alert(response.message);
         }
+    });
+}
 
-        // Handle tab change
-        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-            const target = $(e.target).attr("href");  // Get the tab's target id
-            
-            if (target === '#pills-live') {
-                // Remove any old map element and reinitialize it when switching to Live tab
-                $('#mapContainer').html('<div id="map" style="width: 100%; height: 500px;"></div>');
-                initMap();
-            } else {
-                // Completely remove the map from the DOM when switching to History or Profile
-                $('#mapContainer').empty();
-            }
-        });
+function drawRoute(start, end) {
+    if (startMarker) startMarker.setMap(null);
+    if (endMarker) endMarker.setMap(null);
 
-        // Trigger map initialization on page load
-        $(document).ready(function() {
-            initMap();
-        });
+    startMarker = new google.maps.Marker({
+        position: start,
+        map: map,
+        label: "Start"
+    });
+
+    endMarker = new google.maps.Marker({
+        position: end,
+        map: map,
+        label: "End"
+    });
+
+    const directionsService = new google.maps.DirectionsService();
+    directionsService.route({
+        origin: start,
+        destination: end,
+        travelMode: google.maps.TravelMode.DRIVING
+    }, function(result, status) {
+        if (status === google.maps.DirectionsStatus.OK) {
+            routeRenderer.setDirections(result);
+        } else {
+            console.error('Error fetching directions', result);
+        }
+    });
+}
+
+// Handle tab change
+$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+    const target = $(e.target).attr("href");
+
+    if (target === '#pills-live') {
+        $('#mapContainer').html('<div id="map" style="width: 100%; height: 500px;"></div>');
+        initMap();
+    } else {
+        $('#mapContainer').empty();
+    }
+});
+
+// Trigger map initialization on page load
+$(document).ready(function() {
+    initMap();
+});
     </script>
 @endsection
