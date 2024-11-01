@@ -69,7 +69,7 @@
 
             // Fetch trip data
             $.get('/api/user-trip/' + userId, function(response) {
-                if (response.status === 'success') {
+                if (response.status ==200) {
                     const trip = response.data;
                     const start = new google.maps.LatLng(parseFloat(trip.start_lat), parseFloat(trip.start_lng));
                     const end = new google.maps.LatLng(parseFloat(trip.end_lat), parseFloat(trip.end_lng));
@@ -89,40 +89,40 @@
                 }
             });
             $.get('/api/get-fuel-stations/' + userId, function(response) {
-        if (response.status === 'success') {
-            const fuelStationIcon = {
-                url: 'https://maps.google.com/mapfiles/kml/shapes/gas_stations.png',  // Fuel station icon URL
-                scaledSize: new google.maps.Size(32, 32)  // Set size of the icon (width: 32px, height: 32px)
-            };
+                if (response.status ==200) {
+                    const fuelStationIcon = {
+                        url: 'https://maps.google.com/mapfiles/kml/shapes/gas_stations.png',  // Fuel station icon URL
+                        scaledSize: new google.maps.Size(32, 32)  // Set size of the icon (width: 32px, height: 32px)
+                    };
 
-            // Loop through each station and place a marker with a tooltip (infowindow)
-            response.data.forEach(station => {
-                const marker = new google.maps.Marker({
-                    position: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                    map: map,
-                    icon: fuelStationIcon,  // Use custom fuel station icon with adjusted size
-                    title: station.name  // Show station name on hover
-                });
+                    // Loop through each station and place a marker with a tooltip (infowindow)
+                    response.data.forEach(station => {
+                        const marker = new google.maps.Marker({
+                            position: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
+                            map: map,
+                            icon: fuelStationIcon,  // Use custom fuel station icon with adjusted size
+                            title: station.name  // Show station name on hover
+                        });
 
-                // Add InfoWindow to show on hover
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `<strong>${station.name}</strong>`
-                });
+                        // Add InfoWindow to show on hover
+                        const infoWindow = new google.maps.InfoWindow({
+                            content: `<strong>${station.name}</strong>`
+                        });
 
-                // Show the InfoWindow on mouseover
-                marker.addListener('mouseover', () => {
-                    infoWindow.open(map, marker);
-                });
+                        // Show the InfoWindow on mouseover
+                        marker.addListener('mouseover', () => {
+                            infoWindow.open(map, marker);
+                        });
 
-                // Close the InfoWindow on mouseout
-                marker.addListener('mouseout', () => {
-                    infoWindow.close();
-                });
+                        // Close the InfoWindow on mouseout
+                        marker.addListener('mouseout', () => {
+                            infoWindow.close();
+                        });
+                    });
+                } else {
+                    alert(response.message);
+                }
             });
-        } else {
-            alert(response.message);
-        }
-    });
         }
 
         function drawRoute(start, end) {
