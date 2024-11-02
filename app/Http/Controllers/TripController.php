@@ -53,16 +53,20 @@ class TripController extends Controller
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
 
         foreach ($gasStations as $station) {
-            FuelStation::create([
+            $fuelStation= FuelStation::create([
                 'user_id'   => $validatedData['user_id'],
                 'trip_id'   => $trip->id,
                 'name'      => $station['name'],
                 'latitude'  => $station['latitude'],
                 'longitude' => $station['longitude'],
             ]);
+            $storedStations[] = $fuelStation;
         }
 
-        return response()->json(['status' => 200, 'message' => 'Trip and gas stations stored successfully', 'data' => $trip]);
+        return response()->json(['status' => 200, 'message' => 'Trip and gas stations stored successfully','data'    => [
+            'trip'          => $trip,
+            'gas_stations'  => $storedStations
+        ]]);
     }
 
     private function findGasStations($startLat, $startLng, $endLat, $endLng)
