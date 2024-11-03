@@ -207,7 +207,7 @@ class TripController extends Controller
     }
     public function deleteTrip(Request $request)
     {
-        $trip = Trip::where('user_id', $request->user_id)->first();
+        $trip = Trip::whereId($request->trip_id)->first();
         if (!$trip) {
             return response()->json(['status' => 404, 'message' => 'No trip found for this user', 'data' => (object)[]]);
         }
