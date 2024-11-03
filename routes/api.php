@@ -50,6 +50,8 @@ Route::middleware('auth:api')->group( function () {
     Route::post('chat/send',[DriverContactUsController::class,'send']);
 });
 Route::post('/trip/start', [TripController::class, 'store']);
+Route::post('/trip/delete', [TripController::class, 'deleteTrip']);
+Route::post('/trip/complete', [TripController::class, 'completeTrip']);
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
 Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);

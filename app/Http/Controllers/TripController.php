@@ -41,11 +41,11 @@ class TripController extends Controller
         ]);
 
         // Step 2: Check if a trip already exists for this user
-        $findTrip = Trip::where('user_id', $validatedData['user_id'])->first();
+        $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
         if ($findTrip) {
             return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => (object)[]]);
         }
-
+        $validatedData['status']='active';
         // Step 3: Store the trip
         $trip = Trip::create($validatedData);
 
@@ -204,5 +204,23 @@ class TripController extends Controller
         }
 
         return response()->json(['status' => 200, 'message' => 'Trip retrieved successfully', 'data' => $trip]);
+    }
+    public function deleteTrip(Request $request)
+    {
+        $trip = Trip::where('user_id', $request->user_id)->first();
+        if (!$trip) {
+            return response()->json(['status' => 404, 'message' => 'No trip found for this user', 'data' => (object)[]]);
+        }
+        $trip->delete();
+        return response()->json(['status' => 200, 'message' => 'Trip deleted successfully', 'data' => (object)[]]);
+    }
+    public function completeTrip(Request $request){
+        $trip = Trip::whereId($request->trip_id)->first();
+        if (!$trip) {
+            return response()->json(['status' => 404, 'message' => 'No trip found', 'data' => (object)[]]);
+        }
+        $trip->status = 'completed';
+        $trip->save();
+        return response()->json(['status' => 200, 'message' => 'Trip completed successfully', 'data' => (object)[]]);
     }
 }
