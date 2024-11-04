@@ -9,6 +9,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -65,5 +66,24 @@ class AdminController extends Controller
     public function socket()
     {
         return view('socket');
+    }
+    public function testftp()
+    {
+        $matchingFiles = [];
+        $files = Storage::disk('ftp')->files('/'); // List all files in the root directory
+
+        foreach ($files as $file) {
+            if (str_contains($file, 'Cpricing')) { // Check if the file name contains 'Cpricing'
+                $matchingFiles[] = $file;
+                
+                $content = Storage::disk('ftp')->get($file); // Read the file content
+              
+                dd($content);
+            }
+        }
+
+        if (empty($matchingFiles)) {
+            echo "No files found with 'Cpricing' in the name.";
+        }
     }
 }

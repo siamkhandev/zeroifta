@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[AdminController::class,'index'])->name('dashboard')->middleware('auth');
 
 Route::get('/testsocket',[AdminController::class,'socket']);
+Route::get('/testftp',[AdminController::class,'testftp']);
 Route::get('login', function () {
     return view('login');
 });
