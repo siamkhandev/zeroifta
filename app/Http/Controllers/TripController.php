@@ -35,6 +35,7 @@ class TripController extends Controller
         
         // Step 4: Find and save gas stations along the route
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
+        dd( $gasStations);
         $ftpData = $this->loadAndParseFTPData();
         
         foreach ($gasStations as $station) {
@@ -86,7 +87,7 @@ class TripController extends Controller
     private function findGasStations($startLat, $startLng, $endLat, $endLng)
     {
         $client = new Client();
-        $radius = 500; // Search radius of 500 meters
+        $radius = 1000; // Search radius of 500 meters
         $distance = $this->calculateDistance($startLat, $startLng, $endLat, $endLng);
         
         // Calculate the number of API requests dynamically based on route length
