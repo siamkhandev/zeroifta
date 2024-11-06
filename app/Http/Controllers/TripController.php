@@ -37,10 +37,13 @@ class TripController extends Controller
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
        
         $ftpData = $this->loadAndParseFTPData();
-        dd($gasStations);
+        //dd($gasStations);
         foreach ($gasStations as $station) {
-            
-            $price = $ftpData[$station['latitude']][$station['longitude']]['price'] ?? 0.00;
+            $lat = number_format((float) $station['latitude'], 4);
+            $lng = number_format((float) $station['longitude'], 4);
+
+            $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
+            //$price = $ftpData[$station['latitude']][$station['longitude']]['price'] ?? 0.00;
             $fuelStation= FuelStation::create([
                 'user_id'   => $validatedData['user_id'],
                 'trip_id'   => $trip->id,
@@ -75,8 +78,8 @@ class TripController extends Controller
             foreach ($rows as $line) {
                 $row = explode('|', $line);
                 if (isset($row[8], $row[9])) {
-                    $lat = trim($row[8]);
-                    $lng = trim($row[9]);
+                    $lat = number_format((float) trim($row[8]), 4);
+                    $lng = number_format((float) trim($row[9]), 4);
                     $parsedData[$lat][$lng] = ['price' => $row[11] ?? 0.00];
                 }
             }
