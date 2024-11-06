@@ -35,7 +35,7 @@ class TripController extends Controller
         
         // Step 4: Find and save gas stations along the route
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
-        dd( $gasStations);
+       
         $ftpData = $this->loadAndParseFTPData();
         
         foreach ($gasStations as $station) {
