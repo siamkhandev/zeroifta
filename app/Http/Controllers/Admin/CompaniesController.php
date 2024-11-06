@@ -25,7 +25,7 @@ class CompaniesController extends Controller
         
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|unique:users,email,' . $id,
+            //'email' => 'required|string|unique:users,email,' . $id,
             'phone' => 'required|string|max:20',
             'dot' => 'required|string|max:255',
             'mc' => 'required|string|max:255',

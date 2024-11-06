@@ -1,63 +1,81 @@
-@extends('layouts.new_main')
+@extends('layouts.main')
 @section('content')
-<div class="dashbord-inner">
-    <!-- Section 1 -->
-    <div class="profileForm-area mb-4">
-    <form method="post" action="{{route('companies.update',$company->id)}}">
-    @csrf
-        <div class="sec1-style">
-            <div class="row pt-3">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name"  name="name"  value="{{$company->name}}"/>
-                    </div>
-                    @error('name')
+
+<div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex align-items-center">
+                <p class="mb-0">Edit Company</p>
+              </div>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{{route('companies.update',$company->id)}}">
+                    @csrf
+                    <p class="text-uppercase text-sm">Company Information</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Name</label>
+                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{$company->name}}">
+                            @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email Address</label>
-                        <input type="email" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Email" name="email"  value="{{$company->email}}"/>
-                    </div>
-                    @error('email')
+                        </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">DOT</label>
+                                <input class="form-control" type="text" name="dot" placeholder="DOT" value="{{$company->dot}}">
+                            </div>
+                            @error('dot')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                </div>
-               
-               
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Phone</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" name="phone" placeholder="Add Phone" value="{{$company->phone}}" />
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">MC</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{$company->mc}}"/>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">City</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" name="city" placeholder="City" value="{{$company->city}}"/>
-                    </div>
-                    @error('city')
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">MC Number</label>
+                                <input class="form-control" type="text" name="mc" placeholder="MC Number" value="{{$company->mc}}">
+                            </div>
+                            @error('mc')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">State</label>
-                        <select name="state" class="form-control login-input" name="state">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">Email address</label>
+                                <input class="form-control" type="email" name="email" placeholder="Email" value="{{$company->email}}">
+                            </div>
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">Phone</label>
+                                <input class="form-control" type="text" name="phone" placeholder="phone" value="{{$company->phone}}">
+                                @error('phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">State</label>
+                                <select name="state" class="form-control" name="state">
                       <option value="">Select state</option>
                       <option value="Alabama" {{$company->state=="Alabama" ? 'selected':''}}> Alabama</option>
                       <option value="Arizona" {{$company->state=="Arizona" ? 'selected':''}}>Arizona</option>
@@ -134,62 +152,87 @@
                                     <option value="Wyoming" {{$company->state=="Wyoming" ? 'selected':''}}>
                         Wyoming</option>
                             </select>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">ZIP</label>
-                        <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="zip" placeholder="ZIP" value="{{$company->zip}}"/>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Dot</label>
-                        <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="dot" placeholder="DOT" value="{{$company->dot}}"/>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Contact Person Name</label>
-                        <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_name" placeholder="Contact Person Name" value="{{$company->contact_person_name}}"/>
-                    </div>
-                    @error('contact_person_name')
+                                @error('state')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Contact Person Email</label>
-                        <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_email" placeholder="Contact Person Email" value="{{$company->contact_person_email}}"/>
-                    </div>
-                    @error('contact_person_email')
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">City</label>
+                                <input class="form-control" type="text" name="city" placeholder="City" value="{{$company->city}}">
+                                @error('city')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Contact Person Phone</label>
-                        <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1"  name="contact_person_phone" placeholder="Contact Person Phone" value="{{$company->contact_person_phone}}"/>
-                    </div>
-                    @error('contact_person_phone')
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">ZIP</label>
+                                <input class="form-control" type="text" name="zip" placeholder="ZIP" value="{{$company->zip}}">
+                                @error('zip')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                </div>
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">Contact Person Name</label>
+                                <input class="form-control" type="text" name="contact_person_name" placeholder="Contact Person Name" value="{{$company->contact_person_name}}">
+                                @error('contact_person_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">Contact Person Email</label>
+                                <input class="form-control" type="text" name="contact_person_email" placeholder="Contact Person Email" value="{{$company->contact_person_email}}">
+                                @error('contact_person_email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">Contact Person Phone</label>
+                                <input class="form-control" type="text" name="contact_person_phone" placeholder="Contact Person Phone" value="{{$company->contact_person_phone}}">
+                                @error('contact_person_phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        
+                        </div>
+                       
+                        
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm" >Update</button>
+                </form>
+              
+             
             </div>
-            <div class="buttons">
-                <a href="#" class="cancelBtn">Cancel</a>
-                <button type="submit"  class="mainBtn">Submit</button>
-            </div>
+          </div>
         </div>
-</form>
+        
+      </div>
+     
     </div>
-</div>
-
 
 @endsection

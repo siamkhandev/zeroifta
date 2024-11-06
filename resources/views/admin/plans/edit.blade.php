@@ -1,48 +1,38 @@
-@extends('layouts.main')
+@extends('layouts.new_main')
 @section('content')
-
-<div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header pb-0">
-              <div class="d-flex align-items-center">
-                <p class="mb-0">Edit Plan</p>
-              </div>
-            </div>
-            <div class="card-body">
-                <form method="post" action="{{route('plans.update',$plan->id)}}">
-                    @csrf
-                    <p class="text-uppercase text-sm">Plan Information</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Name</label>
-                            <input class="form-control" type="text" name="name" value="{{$plan->name}}">
-                            @error('name')
+<div class="dashbord-inner">
+    <!-- Section 1 -->
+    <div class="profileForm-area mb-4">
+        <div class="sec1-style">
+        <form method="post" action="{{route('plans.update',$plan->id)}}">
+            @csrf
+            <div class="row pt-3">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
+                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{$plan->name}}"/>
+                    </div>
+                    @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        </div>
-                        
-                        </div>
-                        <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Price</label>
-                            <input class="form-control" type="number" name="price" value="{{$plan->price}}">
-                            @error('price')
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Price</label>
+                        <input type="number" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Price" name="price" value="{{$plan->price}}" />
+                    </div>
+                    @error('price')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                          </div>
-                        
-                        </div>
-                        <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="billing_period">Billing Period</label>
-                            <select class="form-control" id="billing_period" name="billing_period">
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-1">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Billing Period</label>
+                        <select class="form-control login-input" id="exampleFormControlInput1" name="billing_period">
                                 <option value="monthly" {{$plan->recurring=='monthly' ? 'selected':''}}>Monthly</option>
                                 <option value="yearly" {{$plan->recurring=='yearly' ? 'selected':''}}>Yearly</option>
                             </select>
@@ -51,13 +41,12 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        </div>
-                        
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                              <label for="recurring">Is Recurring?</label>
-                              <select class="form-control" id="recurring" name="recurring" required>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-1">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Is Recurring?</label>
+                        <select class="form-control login-input" id="recurring" name="recurring" required>
                                   <option value="1" {{$plan->recurring==1 ? 'selected':''}}>Yes</option>
                                   <option value="0" {{$plan->recurring==0 ? 'selected':''}}>No</option>
                               </select>
@@ -66,29 +55,24 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                              <label for="recurring">Description</label>
-                             <textarea class="form-control" name="description">{{$plan->description}}</textarea>
-                              
-                          </div>
-                        </div>
-                        
-                        
-                        
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm" >Update</button>
-                </form>
-              
-             
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Description</label>
+                        <div class="textArea dash-input">
+                            <textarea class="" name="description" id="" rows="3" placeholder="Type Here" >{{$plan->description}}</textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="buttons mt-5">
+                <a href="#" class="cancelBtn">Cancel</a>
+                <button type="submit"  class="mainBtn">Submit</a>
+            </div>
         </div>
-        
-      </div>
-     
     </div>
+</div>
 
 @endsection

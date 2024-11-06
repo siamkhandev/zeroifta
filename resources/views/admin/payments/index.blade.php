@@ -1,81 +1,113 @@
-@extends('layouts.main')
+@extends('layouts.new_main')
 @section('content')
-<div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-12">
-            @if(Session::has('success'))
-                <div class="alert alert-success" style="color:white">{{Session::get('success')}}</div>
-            @endif
-            @if(Session::has('error'))
-                <div class="alert alert-danger" style="color:white">{{Session::get('error')}}</div>
-            @endif
-          <div class="card mb-4">
-            <div class="card-header pb-0">
-              <h6>Payments table</h6>
-             
-            </div>
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Company Name</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plan</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Payment</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Purchased Date</th>
-                     
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @if(count($payments)>0)
-                    @foreach($payments as $payment)
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$payment->user->name ?? ''}}</h6>
-                            <p class="text-xs text-secondary mb-0"></p>
-                          </div>
+<div class="dashbord-inner">
+                            <!-- Section 1 -->
+                            <div class="manage-comp mb-4">
+                                <div class="Filters-main mb-3 mb-md-4">
+                                    <div class="sec1-style">
+                                        <div class="tabele_filter">
+                                            <div class="tabFilt_left">
+                                                <!-- Show Filter -->
+                                                <div class="sd-filter">
+                                                    <span class="filter-text">Show</span>
+                                                    <span class="d-sel">
+                                                        <select class="form-select" aria-label="Default select example">
+                                                            <option selected>1</option>
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                        </select>
+                                                    </span>
+                                                </div>
+                                                <!-- Sort By Filter -->
+                                                <div class="sd2-filter">
+                                                    <span class="filter-text">Entries</span>
+                                                    <span class="d-sel">
+                                                        <select class="form-select" aria-label="Default select example">
+                                                            <option selected>
+                                                                <span>Sort by :</span>
+                                                                <span class="filter-text">Newest</span>
+                                                            </option>
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                        </select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="sec1-style">
+                                    <div class="table-span table-responsive">
+                                        <table class="table table-comm">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Company Name</th>
+                                                    <th scope="col">Plan Name</th>
+                                                    <th scope="col">Payments</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Purchased date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($payments as $payment)
+                                                <tr>
+                                                    <td>
+                                                        <div class="table-conTab">
+                                                            <span>{{$payment->user->name ?? ''}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span>{{$payment->planName->name ?? ''}}</span>
+                                                    </td>
+                                                    <td><span>${{$payment->amount}}</span></td>
+                                                    <td><span>{{$payment->status}}</span></td>
+                                                    <td>
+                                                        <span>{{$payment->created_at->format('Y-m-d')}}</span>
+                                                    </td>
+                                                </tr>
+                                               @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pegination Area -->
+                                    <div class="peg-main">
+                                        <div>
+                                            <p class="peg-text gray1">Showing data 1 to 8 of 100 entries</p>
+                                        </div>
+                                        <div>
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#979797">
+                                                                    <path d="M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z" />
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item"><a class="page-link gray1" href="#">1</a></li>
+                                                    <li class="page-item"><a class="page-link gray1" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link gray1" href="#">...</a></li>
+                                                    <li class="page-item"><a class="page-link gray1" href="#">30</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Next">
+                                                            <span aria-hidden="true">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#979797">
+                                                                    <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </td>
-                      <td class="text-center">
-                        <p class="text-xs font-weight-bold mb-0">{{$payment->planName->name ?? ''}}</p>
-                       
-                      </td>
-                      <td class="text-center">
-                        <p class="text-xs font-weight-bold mb-0">${{$payment->amount}}</p>
-                       
-                      </td>
-                      <td class="text-center">
-                        <p class="text-xs font-weight-bold mb-0">{{$payment->status}}</p>
-                       
-                      </td>
-                      <td class="text-center">
-                        <p class="text-xs font-weight-bold mb-0">{{$payment->created_at->format('Y-m-d')}}</p>
-                       
-                      </td>
-                      
-                    </tr>
-                    
-                   @endforeach
-                   @else
-                   <tr>
-                    <td colspan="5" class="text-center">
-                    <p>No records found</p>
-                    </td>
-                   </tr>
-                  
-                   @endif
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    
-    </div>
   @endsection
