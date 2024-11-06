@@ -84,57 +84,57 @@ class TripController extends Controller
             return $parsedData;
         });
     }
-    private function findGasStations($startLat, $startLng, $endLat, $endLng) 
-{
-    $client = new Client();
-    $radius = 2000; // Reduced search radius for more precise results
-    $distance = $this->calculateDistance($startLat, $startLng, $endLat, $endLng);
+    private function findGasStations($startLat, $startLng, $endLat, $endLng)
+    {
+        $client = new Client();
+        $radius = 2000; // Search radius of 500 meters
+        $distance = $this->calculateDistance($startLat, $startLng, $endLat, $endLng);
+        
+        // Calculate the number of API requests dynamically based on route length
+        $maxRequests = max(5, (int)($distance / 5)); // 1 request per 5 km, with a minimum of 5 requests
+        $epsilon = 0.0005; // Tolerance for RDP simplification (smaller values retain more points)
 
-    // Increase minimum number of requests to capture more stations
-    $maxRequests = max(10, (int)($distance / 5)); // Use more checkpoints for a detailed search
-    $epsilon = 0.0005; // Smaller epsilon to retain more route points
+        $gasStations = [];
 
-    $gasStations = [];
+        // Generate initial route points
+        $routePoints = $this->getRoutePoints($startLat, $startLng, $endLat, $endLng, 100); // Generate more points initially
 
-    // Generate more route points initially
-    $routePoints = $this->getRoutePoints($startLat, $startLng, $endLat, $endLng, 150); 
+        // Simplify route points using RDP
+        $simplifiedPoints = $this->ramerDouglasPeucker($routePoints, $epsilon);
 
-    // Simplify route points using RDP with a smaller epsilon for higher accuracy
-    $simplifiedPoints = $this->ramerDouglasPeucker($routePoints, $epsilon);
+        // Limit checkpoints based on calculated maxRequests
+        $checkpoints = array_slice($simplifiedPoints, 0, $maxRequests);
 
-    // Limit checkpoints based on calculated maxRequests
-    $checkpoints = array_slice($simplifiedPoints, 0, $maxRequests);
+        // Google Places API URL
+        $url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 
-    // Google Places API URL
-    $url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+        foreach ($checkpoints as $point) {
+            $response = $client->get($url, [
+                'query' => [
+                    'location' => "{$point['lat']},{$point['lng']}",
+                    'radius' => $radius,
+                    'type' => 'gas_station',
+                    'key' => 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'
+                ]
+            ]);
 
-    foreach ($checkpoints as $point) {
-        $response = $client->get($url, [
-            'query' => [
-                'location' => "{$point['lat']},{$point['lng']}",
-                'radius' => $radius,
-                'type' => 'gas_station',
-                'key' => 'YOUR_GOOGLE_API_KEY'
-            ]
-        ]);
-
-        $results = json_decode($response->getBody(), true)['results'];
-        foreach ($results as $result) {
-            $gasStations[] = [
-                'name' => $result['name'],
-                'latitude' => $result['geometry']['location']['lat'],
-                'longitude' => $result['geometry']['location']['lng']
-            ];
+            $results = json_decode($response->getBody(), true)['results'];
+            foreach ($results as $result) {
+                $gasStations[] = [
+                    'name' => $result['name'],
+                    'latitude' => $result['geometry']['location']['lat'],
+                    'longitude' => $result['geometry']['location']['lng']
+                ];
+            }
         }
+
+        // Remove duplicate stations
+        $uniqueGasStations = collect($gasStations)->unique(function ($station) {
+            return $station['name'] . $station['latitude'] . $station['longitude'];
+        })->values()->all();
+
+        return $uniqueGasStations;
     }
-
-    // Remove duplicate stations
-    $uniqueGasStations = collect($gasStations)->unique(function ($station) {
-        return $station['name'] . $station['latitude'] . $station['longitude'];
-    })->values()->all();
-
-    return $uniqueGasStations;
-}
 
     private function getRoutePoints($startLat, $startLng, $endLat, $endLng, $numPoints)
     {
