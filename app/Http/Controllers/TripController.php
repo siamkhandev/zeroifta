@@ -117,13 +117,13 @@ class TripController extends Controller
                     'key' => 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'
                 ]
             ]);
-
+        
             $results = json_decode($response->getBody(), true)['results'];
             foreach ($results as $result) {
                 $gasStations[] = [
                     'name' => $result['name'],
-                    'latitude' => $result['geometry']['location']['lat'],
-                    'longitude' => $result['geometry']['location']['lng']
+                    'latitude' => round($result['geometry']['location']['lat'], 4),
+                    'longitude' => round($result['geometry']['location']['lng'], 4),
                 ];
             }
         }
