@@ -37,10 +37,10 @@ class TripController extends Controller
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
        
         $ftpData = $this->loadAndParseFTPData();
-        dd($ftpData);
+        dd($gasStations);
         foreach ($gasStations as $station) {
             
-            $price = $ftpData['32.5425']['-83.0711']['price'] ?? 0.00;
+            $price = $ftpData[$station['latitude']][$station['longitude']]['price'] ?? 0.00;
             $fuelStation= FuelStation::create([
                 'user_id'   => $validatedData['user_id'],
                 'trip_id'   => $trip->id,
