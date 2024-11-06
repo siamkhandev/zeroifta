@@ -40,7 +40,7 @@ class TripController extends Controller
         
         foreach ($gasStations as $station) {
             
-            $price = $ftpData[$station['latitude']][$station['longitude']]['price'] ?? 0.00;
+            $price = $ftpData['41.2644']['-80.1718']['price'] ?? 0.00;
             $fuelStation= FuelStation::create([
                 'user_id'   => $validatedData['user_id'],
                 'trip_id'   => $trip->id,
