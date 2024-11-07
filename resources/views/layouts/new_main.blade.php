@@ -20,7 +20,12 @@
     <body>
         <div class="main">
             <div class="dash-main">
-                @include('includes.sidebar_admin_new')
+                @if(Auth::user()->role=='admin')
+                    @include('includes.sidebar_admin_new')
+                @elseif(Auth::user()->role=='company')
+                    @include('includes.sidebar_company_new')
+                @else
+                @endif
                 <div class="dashboard-rigt">
                     <div class="container-fluid">
                     @include('includes.header_new')

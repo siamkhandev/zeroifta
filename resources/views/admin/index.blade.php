@@ -104,10 +104,18 @@
         <!-- Section 2 -->
         <div class="table-area mb-4">
             <div class="row">
+            @if(Auth::user()->role=='admin')
                 <div class="col-lg-6 col-md-12 col.sm-12 col-12 mb-4">
+                    @else
+                    <div class="col-lg-12 col-md-12 col.sm-12 col-12 mb-4">
+                    @endif
                     <div class="sec1-style">
                         <div class="inHead-span">
-                            <h2 class="head-20Med">Company Overview</h2>
+                            <h2 class="head-20Med">@if(Auth::user()->role=='admin')
+                                Companies overview
+                                @else
+                                Drivers overview
+                                @endif</h2>
                         </div>
                         @if(Auth::user()->role=='admin')
                         <div class="table-span table-responsive">
@@ -127,7 +135,7 @@
                                         <td>{{$record->phone}}</td>
                                     </tr>
                                     @endforeach
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -149,7 +157,7 @@
                                         <td>{{$record->driver->phone??'N/A'}}</td>
                                     </tr>
                                     @endforeach
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -157,7 +165,7 @@
                     </div>
                 </div>
                 @if(Auth::user()->role=='admin')
-        @php 
+        @php
         $contacts = \App\Models\CompanyContactUs::with('company')->take(5)->latest()->get();
         @endphp
                 <div class="col-lg-6 col-md-12 col.sm-12 col-12 mb-4">
@@ -195,7 +203,7 @@
                                 </div>
                             </div>
                            @endforeach
-                            
+
                         </div>
                     </div>
                 </div>

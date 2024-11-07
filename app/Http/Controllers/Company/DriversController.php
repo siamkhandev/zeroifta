@@ -26,7 +26,8 @@ class DriversController extends Controller
     }
     public function store(Request $request)
 
-    { 
+    {
+
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
@@ -36,6 +37,7 @@ class DriversController extends Controller
             'mc' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
         $driver = new User();
         $driver->name = $request->name;
         $driver->email = $request->email;
