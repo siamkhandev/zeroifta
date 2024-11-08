@@ -13,7 +13,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
                     </div>
                     @error('name')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -24,7 +24,7 @@
                         <input type="email" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
                     </div>
                     @error('email')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -35,7 +35,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Phone" name="phone" value="{{old('phone')}}" />
                     </div>
                     @error('phone')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -46,7 +46,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add DOT" name="dot" value="{{old('dot')}}" />
                     </div>
                     @error('dot')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -57,7 +57,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{old('mc')}}" />
                     </div>
                     @error('mc')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -68,7 +68,7 @@
                         <input type="file" class="form-control login-input" id="exampleFormControlInput1"  name="image"  />
                     </div>
                     @error('image')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -79,7 +79,7 @@
                         <input type="password" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Password" name="password"  />
                     </div>
                     @error('password')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror

@@ -13,7 +13,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
                     </div>
                     @error('name')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -24,7 +24,7 @@
                         <input type="number" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Price" name="price" value="{{old('price')}}" />
                     </div>
                     @error('price')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -37,7 +37,7 @@
                                 <option value="year">Yearly</option>
                             </select>
                             @error('price_type')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -51,7 +51,7 @@
                                   <option value="0">No</option>
                               </select>
                               @error('recurring')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror

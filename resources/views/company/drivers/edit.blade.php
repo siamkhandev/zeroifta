@@ -14,7 +14,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{$driver->name}}"/>
                     </div>
                     @error('name')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -25,7 +25,7 @@
                         <input type="email" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{$driver->email}}" />
                     </div>
                     @error('email')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -36,7 +36,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Phone" name="phone" value="{{$driver->phone}}" />
                     </div>
                     @error('phone')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -47,7 +47,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add DOT" name="dot" value="{{$driver->dot}}" />
                     </div>
                     @error('dot')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -58,7 +58,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{$driver->mc}}" />
                     </div>
                     @error('mc')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -69,7 +69,7 @@
                         <input type="file" class="form-control login-input" id="exampleFormControlInput1"  name="image"  />
                     </div>
                     @error('image')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror

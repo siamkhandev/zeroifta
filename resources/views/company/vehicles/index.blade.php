@@ -42,6 +42,7 @@
                             </div>
                             <div class="filter-btn">
                                 <a class="blueLine_btn" href="{{route('vehicles.create')}}">Add Vehicle+</a>
+                                <a class="blueLine_btn" href="{{route('vehicles.importform')}}">Import Vehicles+</a>
                             </div>
                         </div>
                     </div>
