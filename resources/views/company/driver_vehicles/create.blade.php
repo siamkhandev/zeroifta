@@ -1,68 +1,52 @@
-@extends('layouts.main')
+@extends('layouts.new_main')
 @section('content')
-
-<div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-md-12">
-        @if(Session::has('error'))
-                <div class="alert alert-danger" style="color:white">{{Session::get('error')}}</div>
-            @endif
-          <div class="card">
-            <div class="card-header pb-0">
-              <div class="d-flex align-items-center">
-                <p class="mb-0">Assign Driver</p>
-              </div>
-            </div>
-            <div class="card-body">
-                <form method="post" action="{{route('driver_vehicles.store')}}" enctype="multipart/form-data">
-                    @csrf
-                   
-                    <div class="row">
-                        <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Driver</label>
-                            <select name="driver_id" class="form-control" style="height: 40px;">
+<div class="dashbord-inner">
+    <!-- Section 1 -->
+    <div class="profileForm-area mb-4">
+        <div class="sec1-style">
+        <form method="post" action="{{route('driver_vehicles.store')}}" enctype="multipart/form-data">
+            @csrf
+            <div class="row pt-3">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Driver</label>
+                        <select name="driver_id" class="form-control login-input" >
                               <option value="">Select</option>
                               @foreach($drivers as $driver)
                               <option value="{{$driver->driver->id}}">{{$driver->driver->name}}</option>
                               @endforeach
                             </select>
-                            @error('driver_id')
-                              <span class="invalid-feedback" role="alert">
-                                  <strong>{{ $message }}</strong>
-                              </span>
-                          @enderror
-                        </div>
-                        
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Vehicle</label>
-                                <select name="vehicle_id" class="form-control" style="height: 40px;">
+                    </div>
+                    @error('driver_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Vehicle</label>
+                        <select name="vehicle_id" class="form-control login-input" >
                         <option value="">Select</option>
                         @foreach($vehicles as $vehicle)
                         <option value="{{$vehicle->id}}">{{$vehicle->vehicle_number}}</option>
                         @endforeach
                       </select>
-                            </div>
-                            @error('vehicle_id')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                     
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm" >Submit</button>
-                </form>
-              
-             
+                    @error('vehicle_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+
             </div>
-          </div>
+            <div class="buttons mt-5">
+                <a href="#" class="cancelBtn">Cancel</a>
+                <button type="submit"  class="mainBtn">Submit</a>
+            </div>
         </div>
-        
-      </div>
-     
     </div>
+</div>
 
 @endsection
