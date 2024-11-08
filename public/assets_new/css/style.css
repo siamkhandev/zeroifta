@@ -28,7 +28,10 @@ body {
     --sidebar-text-color: #ffffff;
     --card-bg-color: #ffffff;
     --card-text-color: #040506;
-    --sidebar-gred-light: var(--mainGrediant-Final, linear-gradient(180deg, #134ab4 0%, #092e75 100%));
+    --sidebar-gred-light: var(
+        --mainGrediant-Final,
+        linear-gradient(180deg, #134ab4 0%, #092e75 100%)
+    );
     --border-1: #b6b5c8;
     --white: #ffffff;
     --sidebar-li: #ffffff;
@@ -68,12 +71,23 @@ body {
     --sidebar-text-color: #ffffff;
     --card-bg-color: #3b3f45;
     --card-text-color: #ffffff;
-    --sidebar-gred-light: var(--sidebar-bg1, linear-gradient(180deg, rgba(38, 34, 80, 0.65) 0%, rgba(27, 25, 66, 0.85) 57%, rgba(23, 22, 59, 0.79) 89%));
+    --sidebar-gred-light: var(
+        --sidebar-bg1,
+        linear-gradient(
+            180deg,
+            rgba(38, 34, 80, 0.65) 0%,
+            rgba(27, 25, 66, 0.85) 57%,
+            rgba(23, 22, 59, 0.79) 89%
+        )
+    );
     --border-1: #b6b5c8;
     --white: #ffffff;
     --sidebar-li: #979797;
     /* --body-bg: radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%); */
-    --body-bg: var(--Darkbg-1, radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%));
+    --body-bg: var(
+        --Darkbg-1,
+        radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%)
+    );
     --primaryColor: #1a1840;
     --gray1: #979797;
     --gray2: #333333;
@@ -360,6 +374,7 @@ Main Dashboard
 .dash-main {
     display: flex;
     gap: 10px;
+    height: 100%;
 }
 .dashboard-rigt {
     width: 100%;
@@ -577,6 +592,7 @@ h1 {
     width: 100%;
     text-align: end;
 }
+
 
 /* =========================================================
 Media Quries 

@@ -28,7 +28,10 @@ body {
     --sidebar-text-color: #ffffff;
     --card-bg-color: #ffffff;
     --card-text-color: #040506;
-    --sidebar-gred-light: var(--mainGrediant-Final, linear-gradient(180deg, #134ab4 0%, #092e75 100%));
+    --sidebar-gred-light: var(
+        --mainGrediant-Final,
+        linear-gradient(180deg, #134ab4 0%, #092e75 100%)
+    );
     --border-1: #b6b5c8;
     --white: #ffffff;
     --sidebar-li: #ffffff;
@@ -75,12 +78,23 @@ body {
     --sidebar-text-color: #ffffff;
     --card-bg-color: #3b3f45;
     --card-text-color: #ffffff;
-    --sidebar-gred-light: var(--sidebar-bg1, linear-gradient(180deg, rgba(38, 34, 80, 0.65) 0%, rgba(27, 25, 66, 0.85) 57%, rgba(23, 22, 59, 0.79) 89%));
+    --sidebar-gred-light: var(
+        --sidebar-bg1,
+        linear-gradient(
+            180deg,
+            rgba(38, 34, 80, 0.65) 0%,
+            rgba(27, 25, 66, 0.85) 57%,
+            rgba(23, 22, 59, 0.79) 89%
+        )
+    );
     --border-1: #b6b5c8;
     --white: #ffffff;
     --sidebar-li: #979797;
     /* --body-bg: radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%); */
-    --body-bg: var(--Darkbg-1, radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%));
+    --body-bg: var(
+        --Darkbg-1,
+        radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%)
+    );
     --primaryColor: #1a1840;
     --gray1: #979797;
     --gray2: #333333;
@@ -473,11 +487,20 @@ Login
 Main Dashboard
 ==========================================================================*/
 .main {
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
+    display: grid;
 }
 .dash-main {
     display: flex;
     gap: 10px;
+    height: 100%;
+}
+.hdd-inn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
 }
 .dashboard-rigt {
     width: 100%;
@@ -523,6 +546,57 @@ Main Dashboard
 .hf-svg svg {
     fill: var(--headSvs);
 }
+/* User Drop Down */
+.up-img .dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.up-img .dropbtn {
+    border: none;
+    background: none;
+}
+
+.up-img #myDropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: var(--shadow1);
+    z-index: 1;
+    top: 52px;
+    border-radius: 5px;
+    padding: 20px 0;
+}
+.up-img .dropdown-content span {
+    color: #979797;
+    text-decoration: none;
+    display: block;
+}
+.up-img .dropdown-content svg path {
+    fill: #092e75;
+}
+.up-img .dropdown-content .hdd-inn {
+    padding: 8px 10px;
+}
+.dark-mode .up-img #myDropdown {
+    background-color: #17153a;
+}
+.dark-mode .up-img .dropdown-content span {
+    color: #ffffff;
+}
+.dark-mode .up-img .dropdown-content svg path {
+    fill: #ffffff;
+}
+.up-img .dropdown-content .hdd-inn:hover {
+    background-color: #f1f1f1;
+}
+.dark-mode .up-img .dropdown-content .hdd-inn:hover {
+    background-color: rgba(225, 225, 225, 0.1);
+}
+
 /* ========================================================================
 SideBar 
 ========================================================================= */
@@ -536,6 +610,9 @@ SideBar
     border-bottom: 1px solid var(--border-1);
     padding: 0 20px 25px 20px;
     margin: 0 0 25px 0;
+}
+.logo-div img {
+    width: 100px;
 }
 .sideBar .head-14Nor {
     font-size: 14px;
@@ -748,6 +825,11 @@ Profile Managemnet
     display: flex;
     align-items: center;
     gap: 20px;
+}
+.up-headLeft img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
 }
 .dash-input input {
     background: transparent;
@@ -996,6 +1078,35 @@ Media Quries
     }
 }
 @media only screen and (max-width: 768px) {
+    /* Auth Pages  */
+    .auth-inner {
+        flex-direction: column;
+        width: 100%;
+    }
+    .auth-left {
+        width: 100%;
+    }
+    .al-inn {
+        width: 100%;
+        padding: 40px 150px;
+    }
+    .al-inn h1 {
+        text-align: center;
+        width: 100%;
+    }
+    .al-inn p {
+        text-align: center;
+        width: 100%;
+    }
+    .main-logo {
+        width: 100%;
+        text-align: center;
+    }
+    .auth-right {
+        width: 100%;
+        padding: 30px 0 60px 0;
+    }
+    /* Auth Pages  */
     .peg-main {
         flex-direction: column-reverse;
         gap: 10px;
@@ -1026,6 +1137,7 @@ Media Quries
     .comm-counts {
         border-radius: 10px;
         padding: 20px 10px;
+        text-align: center;
     }
     .count-content {
         text-align: center;
@@ -1035,6 +1147,11 @@ Media Quries
     }
 }
 @media only screen and (max-width: 600px) {
+    /* Auth Pages  */
+    .al-inn {
+        padding: 40px 80px;
+    }
+    /* Auth Pages  */
     .tabFilt_left {
         gap: 10px;
     }
@@ -1047,14 +1164,16 @@ Media Quries
     }
 }
 @media only screen and (max-width: 500px) {
+    /* Auth Pages  */
+    .al-inn h1 {
+        font-size: 20px;
+    }
+    /* Auth Pages  */
     .up-headLeft {
         flex-direction: column;
         align-items: center;
         width: 100%;
         gap: 10px;
-    }
-    .up-headLeft img {
-        width: 50px;
     }
     .up-info {
         text-align: center;
@@ -1080,6 +1199,17 @@ Media Quries
     }
 }
 @media only screen and (max-width: 425px) {
+    /* Auth Pages  */
+    .al-inn {
+        padding: 30px 20px;
+    }
+    .al-inn p {
+        font-size: 12px;
+    }
+    .authRight_inn {
+        width: 100%;
+    }
+    /* Auth Pages  */
     .form_div {
         flex-direction: column;
         align-items: start;
