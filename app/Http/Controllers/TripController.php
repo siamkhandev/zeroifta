@@ -37,7 +37,7 @@ class TripController extends Controller
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
        
         $ftpData = $this->loadAndParseFTPData();
-        //dd($gasStations);
+       if($gasStations){
         foreach ($gasStations as $station) {
             $lat = number_format((float) $station['latitude'], 4);
             $lng = number_format((float) $station['longitude'], 4);
@@ -54,10 +54,12 @@ class TripController extends Controller
             ]);
             $storedStations[] = $fuelStation;
         }
+       }
+        
 
         return response()->json(['status' => 200, 'message' => 'Trip and gas stations stored successfully','data'    => [
             'trip'          => $trip,
-            'gas_stations'  => $storedStations
+            'gas_stations'  => $storedStations ?? [],
         ]]);
     }
     private function loadAndParseFTPData()

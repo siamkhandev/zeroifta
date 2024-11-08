@@ -42,6 +42,7 @@
                             </div>
                             <div class="filter-btn">
                                 <a class="blueLine_btn" href="{{route('drivers.create')}}">Add Driver+</a>
+                                <a class="blueLine_btn" href="{{route('drivers.importform')}}">Import Drivers+</a>
                             </div>
                         </div>
                     </div>

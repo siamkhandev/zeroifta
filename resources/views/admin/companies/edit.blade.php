@@ -13,7 +13,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name"  name="name"  value="{{$company->name}}"/>
                     </div>
                     @error('name')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -24,7 +24,7 @@
                         <input type="email" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Email" name="email"  value="{{$company->email}}"/>
                     </div>
                     @error('email')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert" style="display: block;">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
@@ -49,7 +49,7 @@
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" name="city" placeholder="City" value="{{$company->city}}"/>
                     </div>
                     @error('city')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert" style="display: block;">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
@@ -154,7 +154,7 @@
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_name" placeholder="Contact Person Name" value="{{$company->contact_person_name}}"/>
                     </div>
                     @error('contact_person_name')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert" style="display: block;">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
@@ -165,7 +165,7 @@
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_email" placeholder="Contact Person Email" value="{{$company->contact_person_email}}"/>
                     </div>
                     @error('contact_person_email')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert" style="display: block;">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
@@ -176,7 +176,7 @@
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1"  name="contact_person_phone" placeholder="Contact Person Phone" value="{{$company->contact_person_phone}}"/>
                     </div>
                     @error('contact_person_phone')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert" style="display: block;">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror

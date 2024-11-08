@@ -19,7 +19,7 @@
                             </select>
                     </div>
                     @error('driver_id')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -35,7 +35,7 @@
                       </select>
                     </div>
                     @error('vehicle_id')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
