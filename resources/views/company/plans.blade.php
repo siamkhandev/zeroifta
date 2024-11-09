@@ -1,51 +1,60 @@
-@extends('layouts.main')
+@extends('layouts.new_main')
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-md-12">
-        @if(Session::has('success'))
-            <div class="alert alert-success" style="color:white">{{Session::get('success')}}</div>
-        @endif
-        </div>
-        <div class="col-lg-12">
-            <div class="row">
-                @if(Auth::user()->is_subscribed==1)
-                <div class="col-lg-4">
-                    <div class="card" >
-                        <div class="card-body">
-                            <h5 class="card-title">Cancel Subscription</h5>
-                            
-                            <p class="">Press cancel button to cancel your subscription. You will no longer be charged after cancellation.</p>
-                            <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="btn btn-primary" style="width: 240px;">Cancel</a>
+<div class="dashbord-inner">
+                            <!-- Section 1 -->
+                            <div class="manage-comp mb-4">
+                                <div class="Filters-main mb-3 mb-md-4">
+                                    <div class="sec1-style">
+                                        <div class="subs_plan">
+                                            <div class="inHead-span">
+                                                <h2 class="head-20Med">Subscription Plans</h2>
+                                            </div>
+                                            <div class="row" style="align-items: center">
+                                              @if(Auth::user()->is_subscribed==1)
+                                              <div class="col-md-4 col-sm-12 col-12 mb-4">
+                                                    <div class="price_plans plan-com weekly-plan">
+                                                        <div class="ph-area">
+                                                            <h3>Cancel Subscription</h3>
+                                                            
+                                                        </div>
+                                                        <div class="pp-inn" style="height: 70px;">
+                                                            <p>Press cancel button to cancel your subscription. You will no longer be charged after cancellation.</p>
+                                                        </div>
+                                                        <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn" style="margin-top: 20px;">Cancel Subscription</a>
+                                                    </div>
+                                                </div>
+                                              @else
+                                            @foreach($plans as $plan)
+                                                <div class="col-md-4 col-sm-12 col-12 mb-4">
+                                                    <div class="price_plans plan-com weekly-plan">
+                                                        <div class="ph-area">
+                                                            <h3>{{$plan->name}}</h3>
+                                                            <p>${{$plan->price}}</p>
+                                                        </div>
+                                                        <div class="pp-inn">
+                                                            <ul>
+                                                                <li>
+                                                                    <span>Recurring</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>Tax Free</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>Recurring</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <a href="{{route('purchase',$plan->id)}}" class="mainBtn" >Purchase</a>
+                                                    </div>
+                                                </div>
+                                               @endforeach
+                                               @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                @else
-                @foreach($plans as $plan)
-                <div class="col-lg-4">
-                <div class="card" style="margin-top: 10px;">
-                    <div class="card-header mx-4 p-3 text-center">
-                      <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
-                        <i class="fas fa-landmark opacity-10" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                    <div class="card-body pt-0 p-3 text-center">
-                      <h6 class="text-center mb-0">{{$plan->name}}</h6>
-                      @if($plan->recurring==1)
-                        <span class="text-xs">After purchasing this plan, payments will be automatically deducted from your card.</span>
-                        @endif
-                      <hr class="horizontal dark my-3">
-                      <h5 class="mb-0">${{$plan->price}}</h5>
-                      <a href="{{route('purchase',$plan->id)}}" class="btn btn-primary" style="width: 240px;">Purchase</a>
-                    </div>
-                  </div>
-                    
-                </div>
-                @endforeach
-                @endif
-            </div>
-        </div>
-    </div>
 
 
 @endsection

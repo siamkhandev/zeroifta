@@ -97,8 +97,8 @@
                 @endif</h2>
                 </div>
                 <div>
-                <div class="chart">
-                <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+                <div class="chart" style="max-width: 1125px; overflow: hidden;">
+                <canvas id="chart-line" class="chart-canvas" height="300"  ></canvas>
               </div>
                 </div>
             </div>

@@ -473,22 +473,11 @@ Login
 Main Dashboard
 ==========================================================================*/
 .main {
-    height: 100%;
-    min-height: 100vh;
-    display: grid;
+    height: 100vh;
 }
 .dash-main {
     display: flex;
     gap: 10px;
-}
-.dashboard-rigt {
-    width: 100%;
-}
-.hdd-inn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 0 10px;
 }
 .dashboard-rigt {
     width: 100%;
@@ -534,56 +523,6 @@ Main Dashboard
 .hf-svg svg {
     fill: var(--headSvs);
 }
-/* User Drop Down */
-.up-img .dropdown {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.up-img .dropbtn {
-    border: none;
-    background: none;
-}
-
-.up-img #myDropdown {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: #ffffff;
-    min-width: 160px;
-    box-shadow: var(--shadow1);
-    z-index: 1;
-    top: 52px;
-    border-radius: 5px;
-    padding: 20px 0;
-}
-.up-img .dropdown-content span {
-    color: #979797;
-    text-decoration: none;
-    display: block;
-}
-.up-img .dropdown-content svg path {
-    fill: #092e75;
-}
-.up-img .dropdown-content .hdd-inn {
-    padding: 8px 10px;
-}
-.dark-mode .up-img #myDropdown {
-    background-color: #17153a;
-}
-.dark-mode .up-img .dropdown-content span {
-    color: #ffffff;
-}
-.dark-mode .up-img .dropdown-content svg path {
-    fill: #ffffff;
-}
-.up-img .dropdown-content .hdd-inn:hover {
-    background-color: #f1f1f1;
-}
-.dark-mode .up-img .dropdown-content .hdd-inn:hover {
-    background-color: rgba(225, 225, 225, 0.1);
-}
 /* ========================================================================
 SideBar 
 ========================================================================= */
@@ -597,9 +536,6 @@ SideBar
     border-bottom: 1px solid var(--border-1);
     padding: 0 20px 25px 20px;
     margin: 0 0 25px 0;
-}
-.logo-div img {
-    width: 100px;
 }
 .sideBar .head-14Nor {
     font-size: 14px;
@@ -950,8 +886,7 @@ Companies Managemnet
     border: none;
 }
 .dark-mode .sd2-filter .form-select {
-    background-color: transparent;
-    color: #979797;
+    background-color: #ffffff;
 }
 
 /* .d-sel {
@@ -964,168 +899,6 @@ Companies Managemnet
     background: transparent;
     border: none;
 } */
-/* ========================================================================
-Subscription Plan
-========================================================================= */
-.plan-com {
-    border-radius: 10px;
-    text-align: center;
-}
-.plan-com ul {
-    padding: 30px 0 0 0;
-}
-.price_plans {
-    border: 1px solid #e3e3e3;
-    padding: 34px 0;
-}
-.price_pm {
-    border: 1px solid #0c388b;
-    padding: 50px 0;
-}
-.dark-mode .price_pm {
-    border: 1px solid #ffffff;
-}
-.dark-mode .price_plans {
-    border: 1px solid #4c4545;
-}
-.ph-area {
-    padding: 10px 0;
-    color: #ffffff;
-    border-bottom: 1px solid #cccccc;
-}
-.dark-mode .ph-area {
-    border-bottom: 1px solid #4c4545;
-}
-.ph-area h3 {
-    font-size: 25px;
-    font-weight: 600;
-    color: #333333;
-}
-.dark-mode .ph-area h3 {
-    color: #ffffff;
-}
-.ph-area p {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--h1color);
-}
-.plan-com ul {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
-}
-.plan-com ul li span {
-    font-size: 16px;
-    font-weight: 500;
-    color: #979797;
-}
-.top-plan {
-    position: relative;
-}
-.pop-div {
-    margin: -63px 0 35px 0;
-}
-.pop-div span {
-    background: var(--h1color);
-    border-radius: 5px;
-    padding: 6px 20px;
-    color: #ffffff;
-}
-.dark-mode .pop-div span {
-    color: #4c4545;
-}
-/* ========================================================================
-Fleet View
-========================================================================= */
-
-/* Fleet Filter */
-.fleetV_main .tabele_filter {
-    display: block;
-}
-.fleetV_main .tabFilt_left {
-    justify-content: space-between;
-}
-.fleetV_main .sd2-filter {
-    width: 100%;
-}
-.fleetV_main .sd2-filter .d-sel {
-    width: 100%;
-}
-.fleetV_main .sd2-filter .d-sel select {
-    line-height: 2;
-}
-.fleet-inn {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 350px auto;
-}
-.dark-mode .fleet-inn .sec1-style {
-    border: 1px solid #21212e;
-    box-shadow: none;
-}
-.dark-mode .clear-filter svg path {
-    fill: #ffffff !important;
-}
-.dark-mode .status-btn svg path {
-    fill: #17153a;
-}
-/* Map Setting */
-.fleet-map {
-    border-radius: 15px;
-    overflow: hidden;
-}
-.mapouter {
-    position: relative;
-    text-align: right;
-    width: 100%;
-    height: 100vh;
-}
-.gmap_canvas {
-    overflow: hidden;
-    background: none !important;
-    width: 100%;
-    height: 100vh;
-}
-.gmap_iframe {
-    width: 100% !important;
-    height: 100vh !important;
-}
-/* Vehicle List */
-.vh-tab {
-    border-bottom: 1px solid #ebebeb;
-    padding: 0 0 16px 0;
-}
-.vh-tabIn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.vh-tab h4 {
-    color: var(--h1color);
-    font-size: 16px;
-    font-weight: 500;
-    padding: 0 0 5px 0;
-}
-.dark-mode .vh-tab h4 {
-    /* color: #b3adad; */
-    font-size: 14px;
-}
-.vh-tab p {
-    color: #979797;
-    font-size: 12px;
-}
-.v-lov {
-    font-size: 14px;
-    color: #333333;
-}
-.dark-mode .v-lov {
-    color: #a59d9d;
-}
-.v-time {
-    font-size: 14px;
-    color: #979797;
-}
 /* =========================================================
 Media Quries 
 ============================================================ */
@@ -1221,43 +994,8 @@ Media Quries
     .authRight_inn {
         width: 90%;
     }
-    .vehicle-list {
-        width: 300px;
-    }
-    .vh-tab h4 {
-        font-size: 14px;
-    }
 }
 @media only screen and (max-width: 768px) {
-    /* Auth Pages  */
-    .auth-inner {
-        flex-direction: column;
-        width: 100%;
-    }
-    .auth-left {
-        width: 100%;
-    }
-    .al-inn {
-        width: 100%;
-        padding: 40px 150px;
-    }
-    .al-inn h1 {
-        text-align: center;
-        width: 100%;
-    }
-    .al-inn p {
-        text-align: center;
-        width: 100%;
-    }
-    .main-logo {
-        width: 100%;
-        text-align: center;
-    }
-    .auth-right {
-        width: 100%;
-        padding: 30px 0 60px 0;
-    }
-    /* Auth Pages  */
     .peg-main {
         flex-direction: column-reverse;
         gap: 10px;
@@ -1288,7 +1026,6 @@ Media Quries
     .comm-counts {
         border-radius: 10px;
         padding: 20px 10px;
-        text-align: center;
     }
     .count-content {
         text-align: center;
@@ -1296,30 +1033,8 @@ Media Quries
     .sec1-style {
         padding: 10px;
     }
-    .weekly-plan {
-        margin: 0 0 20px 0;
-    }
-    .fleet-inn {
-        display: flex;
-        gap: 20px;
-        flex-direction: column-reverse;
-    }
-    .fleet-map {
-        height: 300px;
-    }
-    .vehicle-list {
-        width: 100%;
-    }
-    .tabFilt_left {
-        flex-direction: column;
-    }
 }
 @media only screen and (max-width: 600px) {
-    /* Auth Pages  */
-    .al-inn {
-        padding: 40px 80px;
-    }
-    /* Auth Pages  */
     .tabFilt_left {
         gap: 10px;
     }
@@ -1332,11 +1047,6 @@ Media Quries
     }
 }
 @media only screen and (max-width: 500px) {
-    /* Auth Pages  */
-    .al-inn h1 {
-        font-size: 20px;
-    }
-    /* Auth Pages  */
     .up-headLeft {
         flex-direction: column;
         align-items: center;
@@ -1370,17 +1080,6 @@ Media Quries
     }
 }
 @media only screen and (max-width: 425px) {
-    /* Auth Pages  */
-    .al-inn {
-        padding: 30px 20px;
-    }
-    .al-inn p {
-        font-size: 12px;
-    }
-    .authRight_inn {
-        width: 100%;
-    }
-    /* Auth Pages  */
     .form_div {
         flex-direction: column;
         align-items: start;
@@ -1395,13 +1094,5 @@ Media Quries
     .peg-main a.page-link {
         font-size: 14px;
         width: 36px;
-    }
-    /* Fleet */
-    .buttons {
-        flex-direction: column;
-    }
-    .buttons a {
-        width: 100%;
-        text-align: center;
     }
 }

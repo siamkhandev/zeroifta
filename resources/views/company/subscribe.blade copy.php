@@ -1,4 +1,4 @@
-@extends('layouts.new_main')
+@extends('layouts.main')
 
 @section('content')
 <style>
@@ -9,48 +9,35 @@
         border-radius: 5px; /* Border radius */
     }
 </style>
-<div class="dashbord-inner">
-    <!-- Section 1 -->
-    <div class="manage-comp mb-4">
-        <div class="Filters-main mb-3 mb-md-4">
-            <div class="sec1-style">
-                <div class="subs_plan">
-                    <div class="inHead-span">
-                        <h2 class="head-20Med">Subscription Plans</h2>
-                    </div>
-                        <div class="row">
-                            
-                            <div class="col-md-3"></div>
-                            <div class="col-md-6">
-                                
+<div class="row">
+    
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        
 
-                            <div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: 4rem;">
-                            <div class="card-body p-3">
-                            <h4>Subscribe to {{ $plan->name }}</h4>
-                            <form id="subscribe-form" action="{{route('pay')}}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="card-element">
-                                        Credit or debit card
-                                    </label>
-                                    <div id="card-element">
-                                        <!-- A Stripe Element will be inserted here. -->
-                                    </div>
-                                    <div id="card-errors" role="alert"></div>
-                                </div>
-                                <input type="hidden" name="plan_id" value="{{ $plan->id }}">
-                                <button type="submit" class="btn btn-primary">Subscribe</button>
-                            </form>
-                            </div>
-                        </div>
-                            </div>
-                            <div class="col-md-3"></div>
-                        </div>
-                </div>
+    <div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: 4rem;">
+    <div class="card-body p-3">
+    <h4>Subscribe to {{ $plan->name }}</h4>
+    <form id="subscribe-form" action="{{route('pay')}}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="card-element">
+                Credit or debit card
+            </label>
+            <div id="card-element">
+                <!-- A Stripe Element will be inserted here. -->
             </div>
+            <div id="card-errors" role="alert"></div>
         </div>
+        <input type="hidden" name="plan_id" value="{{ $plan->id }}">
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
     </div>
+  </div>
+    </div>
+    <div class="col-md-3"></div>
 </div>
+  
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         var stripe = Stripe('{{ config('services.stripe.key') }}');

@@ -1,6 +1,7 @@
-@extends('layouts.main')
+@extends('layouts.new_main')
 
 @section('content')
+<div class="dashbord-inner">
     <div class="container mt-5">
         <!-- Pills Navigation -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -35,7 +36,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
