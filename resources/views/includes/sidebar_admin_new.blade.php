@@ -11,7 +11,7 @@
                         <div class="pt-2">
                             <ul class="sidebar-list">
                                 <li>
-                                    <a href="/" class="sidebar_li">
+                                    <a href="/" class="sidebar_li {{ Request::is('/') ? 'menu_active' : '' }}">
                                         <span class="strok-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="24" viewBox="0 0 26 24" fill="none">
                                                 <g clip-path="url(#clip0_2273_6808)">
@@ -32,7 +32,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('profile')}}" class="sidebar_li">
+                                    <a href="{{route('profile')}}" class="sidebar_li {{ Request::is('profile') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path
@@ -45,7 +45,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('plans')}}" class="sidebar_li">
+                                    <a href="{{route('plans')}}" class="sidebar_li {{ Request::is('plans*') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
                                                 <path
@@ -58,7 +58,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('companies')}}" class="sidebar_li">
+                                    <a href="{{route('companies')}}" class="sidebar_li {{ Request::is('companies*') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
                                                 <path
@@ -71,7 +71,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('payments')}}" class="sidebar_li">
+                                    <a href="{{route('payments')}}" class="sidebar_li {{ Request::is('payments*') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path
@@ -84,7 +84,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('fuel_taxes')}}" class="sidebar_li">
+                                    <a href="{{route('fuel_taxes')}}" class="sidebar_li {{ Request::is('fuel_taxes*') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path
@@ -117,7 +117,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin.contactus')}}" class="sidebar_li">
+                                    <a href="{{route('admin.contactus')}}" class="sidebar_li {{ Request::is('contactus/all*') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path

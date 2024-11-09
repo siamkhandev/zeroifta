@@ -2,8 +2,53 @@
   <div>
     <div class="head-left">
       <div class="bread_crum">
+        @if(Request::is('/'))
         <span class="bc-text">Pages / Dashboard</span>
         <h1 class="head-1">Main Dashboard</h1>
+        @elseif(Request::is('fleet'))
+        <span class="bc-text">Pages / Fleet Management</span>
+        <h1 class="head-1">Fleet Management</h1>
+        @elseif(Request::is('profile'))
+        <span class="bc-text">Pages / Profile Management</span>
+        <h1 class="head-1">Profile Management</h1>
+        @elseif(Request::is('drivers.all'))
+        <span class="bc-text">Pages / Drivers</span>  
+        <h1 class="head-1">Manage Drivers</h1>
+        @elseif(Request::is('vehicles*'))
+        <span class="bc-text">Pages / Vehicles</span>
+        <h1 class="head-1">Manage Vehicles</h1>
+        @elseif(Request::is('vehicle/create'))
+        <span class="bc-text">Pages / Vehicles</span>
+        <h1 class="head-1">Create Vehicles</h1>
+        @elseif(Request::is('driver/vehicles*'))
+        <span class="bc-text">Pages / Driver Vehicles</span>
+        <h1 class="head-1">Manage Driver Vehicles</h1>
+        @elseif(Request::is('subscribe'))
+        <span class="bc-text">Pages / Subscribe</span>
+        <h1 class="head-1">Subscriptions</h1>
+        @elseif(Request::is('company.contactus'))
+        <span class="bc-text">Pages / Contact Us</span>
+        <h1 class="head-1">Contact Us</h1>
+        @elseif(Request::is('fuel_taxes*'))
+        <span class="bc-text">Pages / Fuel Taxes</span>
+        <h1 class="head-1">Fuel Taxes</h1>
+        @elseif(Request::is('payments*'))
+        <span class="bc-text">Pages / Payments</span>
+        <h1 class="head-1">Payments</h1>
+        @elseif(Request::is('companies*'))
+        <span class="bc-text">Pages / Companies</span>
+        <h1 class="head-1">Companies</h1>
+        @elseif(Request::is('plans*'))
+        <span class="bc-text">Pages / Subscriptions</span>
+        <h1 class="head-1">Subscriptions</h1>
+        @elseif(Request::is('drivers*'))
+        <span class="bc-text">Pages / Drivers</span>
+        <h1 class="head-1">Manage Drivers</h1>
+        @elseif(Request::is('company/contactus/all'))
+        <span class="bc-text">Pages / Contact Us</span>
+        <h1 class="head-1">Contact Us</h1>
+        @else
+        @endif
       </div>
     </div>
   </div>

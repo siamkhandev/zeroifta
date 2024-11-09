@@ -11,7 +11,7 @@
                         <div class="pt-2">
                             <ul class="sidebar-list">
                                 <li>
-                                    <a href="/" class="sidebar_li">
+                                    <a href="/" class="sidebar_li {{ Request::is('/') ? 'menu_active' : '' }}">
                                         <span class="strok-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="24" viewBox="0 0 26 24" fill="none">
                                                 <g clip-path="url(#clip0_2273_6808)">
@@ -32,7 +32,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('profile')}}" class="sidebar_li">
+                                    <a href="{{route('profile')}}" class="sidebar_li {{ Request::is('profile') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path
@@ -45,7 +45,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('fleet')}}" class="sidebar_li">
+                                    <a href="{{route('fleet')}}" class="sidebar_li {{ Request::is('fleet') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
                                                 <path
@@ -58,7 +58,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('drivers.all')}}" class="sidebar_li">
+                                    <a href="{{route('drivers.all')}}" class="sidebar_li {{ Request::is('drivers.all') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
                                                 <path
@@ -71,7 +71,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('allvehicles')}}" class="sidebar_li">
+                                    <a href="{{route('allvehicles')}}" class="sidebar_li {{ Request::is('vehicles/all*') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path
@@ -84,7 +84,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('driver_vehicles')}}" class="sidebar_li">
+                                    <a href="{{route('driver_vehicles')}}" class="sidebar_li {{ Request::is('driver/vehicles*') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path
@@ -97,7 +97,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('subscribe')}}" class="sidebar_li">
+                                    <a href="{{route('subscribe')}}" class="sidebar_li {{ Request::is('subscribe') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
                                                 <g clip-path="url(#clip0_2033_1598)">
@@ -117,7 +117,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('company.contactus')}}" class="sidebar_li">
+                                    <a href="{{route('company.contactus')}}" class="sidebar_li {{ Request::is('company.contactus') ? 'menu_active' : '' }}">
                                         <span class="fill-svg">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path
