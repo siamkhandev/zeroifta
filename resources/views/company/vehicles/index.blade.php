@@ -82,7 +82,7 @@
                                             @if($vehicle->vehicle_image)
                                                 <img src="{{asset('vehicles')}}/{{$vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 50px;">
                                             @else
-                                            <img src="{{asset('vehicles/blank.png')}}" class="avatar avatar-sm me-3" alt="user1">
+                                            <img src="{{asset('vehicles/blank.png')}}" class="avatar avatar-sm me-3" alt="user1" style="height: 50px;">
                                             @endif
                                             </span>
                                             <span> {{$vehicle->vehicle_type}}</span>

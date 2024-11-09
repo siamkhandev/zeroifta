@@ -43,6 +43,10 @@ class UsersController extends Controller
         $user->update();
         return redirect()->back();
     }
+    public function changePasswordUpdate()
+    {
+        return view('change-password');
+    }
     public function passwordUpdate(Request $request)
     {
         $request->validate([

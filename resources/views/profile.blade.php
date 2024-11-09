@@ -8,9 +8,9 @@
                     <div class="up-head">
                         <div class="up-headLeft">
                         @if(Auth::user()->image)
-                          <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;">
+                          <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;border-radius:100%">
                           @else
-                          <img src="../assets/img/team-1.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;">
+                          <img src="{{asset('assets/user.png')}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;">
                       @endif
                             <div class="up-info">
                                 <p class="head-18Med">{{Auth::user()->name}}</p>
@@ -38,35 +38,47 @@
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
-                                <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Shahzaib Sohaib" name="name" value="{{Auth::user()->name}}" />
+                                <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Add Name" name="name" value="{{Auth::user()->name}}" />
                             </div>
+                            @error('name')
+                                    <span class="invalid-feedback" role="alert" style="display: block;">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email Address</label>
                                 <input type="email" class="form-control dis-input" id="exampleFormControlInput1" placeholder="test@email.com" name="email" value="{{Auth::user()->email}}" />
                             </div>
+                            @error('email')
+                                    <span class="invalid-feedback" role="alert" style="display: block;">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                            <div class="dash-input mb-1">
-                                <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Password</label>
-                                <input type="email" class="form-control dis-input" id="exampleFormControlInput1" placeholder="123456789" disabled />
-                            </div>
-                            <div class="chnage-pass text-end">
-                                <a class="hover" href="#">Change Password</a>
-                            </div>
-                        </div>
+                       
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Phone</label>
                                 <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="+92345623947234" name="phone" value="{{Auth::user()->phone}}" />
                             </div>
+                            @error('phone')
+                                    <span class="invalid-feedback" role="alert" style="display: block;">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">MC</label>
                                 <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="9898" name="mc" value="{{Auth::user()->mc}}" />
                             </div>
+                            @error('mc')
+                                    <span class="invalid-feedback" role="alert" style="display: block;">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
@@ -84,6 +96,17 @@
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Dot</label>
                                 <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="ssdgg5778534873" name="dot" value="{{Auth::user()->dot}}" />
+                            </div>
+                            @error('dot')
+                                    <span class="invalid-feedback" role="alert" style="display: block;">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                            <div class="dash-input mb-3">
+                                <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Profile Picture</label>
+                                <input type="file" class="form-control dis-input" id="exampleFormControlInput1" name="image" accept="image/png, image/jpg, image/jpeg" />
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">

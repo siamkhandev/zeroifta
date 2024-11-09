@@ -42,6 +42,7 @@ Route::get('/read-dat-file', [UsersController::class, 'readDatFile'])->name('rea
 Route::middleware('auth')->group(function () {
     Route::get('profile',[UsersController::class,'profile'])->name('profile');
     Route::post('profile/update',[UsersController::class,'profileUpdate'])->name('profile.update');
+    Route::get('password/change',[UsersController::class,'changePasswordUpdate'])->name('password.change');
     Route::post('password/update',[UsersController::class,'passwordUpdate'])->name('passwords.update');
     
 

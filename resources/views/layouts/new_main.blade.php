@@ -44,6 +44,7 @@
             crossorigin="anonymous"
         ></script>
         <script src="{{asset('assets/chartjs.min.js')}}"></script>
+        <script src="{{asset('assets/js/script.js')}}"></script>
   <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
