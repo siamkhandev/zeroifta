@@ -353,7 +353,7 @@
                 <p>
                   <span class="gray1">Already have an account?</span>
                   <span>
-                    <a class="blue" href="{{route('register')}}">Sign In</a>
+                    <a class="blue" href="{{route('login')}}">Sign In</a>
                   </span>
                 </p>
               </div>

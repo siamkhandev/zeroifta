@@ -183,7 +183,7 @@
                 </div>
             </div>
             <div class="buttons">
-                <a href="#" class="cancelBtn">Cancel</a>
+                <a href="{{route('companies')}}" class="cancelBtn">Cancel</a>
                 <button type="submit"  class="mainBtn">Submit</button>
             </div>
         </div>

@@ -32,7 +32,7 @@
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                                             <div class="dash-input mb-1">
                                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Tax %</label>
-                                                <input type="number" class="form-control login-input dis-input" id="exampleFormControlInput1" name="tax" placeholder="Tax" max="100" value="{{old('tax')}}" />
+                                                <input type="number" min="0" class="form-control login-input dis-input" id="exampleFormControlInput1" name="tax" placeholder="Tax" max="100" value="{{old('tax')}}" />
                                             </div>
                                             @error('tax')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                     <div class="buttons mt-5">
-                                        <a href="#" class="cancelBtn">Cancel</a>
+                                        <a href="{{route('fuel_taxes')}}" class="cancelBtn">Cancel</a>
                                         <button type="submit"  class="mainBtn">Submit</button>
                                     </div>
                                 </div>

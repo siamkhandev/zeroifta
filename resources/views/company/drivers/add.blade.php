@@ -93,7 +93,7 @@
                 </div>
             </div>
             <div class="buttons mt-5">
-                <a href="#" class="cancelBtn">Cancel</a>
+                <a href="{{route('drivers.all')}}" class="cancelBtn">Cancel</a>
                 <button type="submit"  class="mainBtn">Submit</a>
             </div>
         </div>
