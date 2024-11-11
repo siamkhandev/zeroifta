@@ -14,15 +14,7 @@
     crossorigin="anonymous" />
   <!-- Custom Css -->
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
-<style>
-  .authRight_inn{
-    width: 90%;
-  }
-  .auth-right{
-    display: inline;
-    padding: 20px;
-  }
-</style>
+
   <title>ZeroIfta</title>
 </head>
 
@@ -58,7 +50,7 @@
                 <h3 class="blue pb-1">Signup</h3>
                 <p class="gray1">Enter your details to get Register</p>
               </div>
-             
+
               <form method="POST" action="{{ route('register') }}">
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">Name</label>
@@ -70,14 +62,14 @@
                     name="name"
                     value="{{ old('name') }}"
                     required
-                    
+
                     autofocus />
                 </div>
                 @error('name')
-                        <span class="invalid-feedback" role="alert" style="display: block;">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                <span class="invalid-feedback" role="alert" style="display: block;">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                 @csrf
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">Email</label>
@@ -92,10 +84,10 @@
                     autofocus />
                 </div>
                 @error('email')
-                        <span class="invalid-feedback" role="alert" style="display: block;">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                <span class="invalid-feedback" role="alert" style="display: block;">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">Phone</label>
                   <input
@@ -153,90 +145,90 @@
                 @enderror
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">State</label>
-                  <select name="state" class="form-control login-input" >
-                      <option value="null">Select state</option>
-                      <option value="Alabama"> Alabama</option>
-                      <option value="Arizona">Arizona</option>
-                      <option value="Arkansas">Arkansas</option>
-                      <option value="California">California</option>
-                      <option value="Colorado">Colorado</option>
-                      <option value="Connecticut">Connecticut</option>
-                      <option value="Delaware">Delaware</option>
-                      <option value="Florida">Florida</option>
-                      <option value="Georgia">Georgia</option>
-                      <option value="Idaho">Idaho</option>
-                      <option value="Illinois">Illinois</option>
-                      <option value="Indiana">Indiana</option>
-                      <option value="Iowa">Iowa</option>
-                      <option value="Kansas">Kansas</option>
-                      <option value="Kentucky">Kentucky</option>
-                      <option value="Louisiana">Louisiana</option>
-                      <option value="Maine">Maine</option>
-                      <option value="Maryland">Maryland</option>
-                      <option value="Massachusetts">Massachusetts</option>
-                      <option value="Michigan">Michigan</option>
-                      <option value="Minnesota">Minnesota</option>
-                      <option value="Mississippi">Mississippi</option>
-                                    <option value="Missouri">
-                        Missouri</option>
-                                    <option value="Montana">
-                        Montana</option>
-                                    <option value="Nebraska">
-                        Nebraska</option>
-                                    <option value="Nevada">
-                        Nevada</option>
-                                    <option value="New Hampshire">
-                        New Hampshire</option>
-                                    <option value="New Jersey">
-                        New Jersey</option>
-                                    <option value="New Mexico">
-                        New Mexico</option>
-                                    <option value="New York">
-                        New York</option>
-                                    <option value="North Carolina">
-                        North Carolina</option>
-                                    <option value="North Dakota">
-                        North Dakota</option>
-                                    <option value="Ohio">
-                        Ohio</option>
-                                    <option value="Oklahoma">
-                        Oklahoma</option>
-                                    <option value="Oregon">
-                        Oregon</option>
-                                    <option value="Pennsylvania">
-                        Pennsylvania</option>
-                                    <option value="Rhode Island">
-                        Rhode Island</option>
-                                    <option value="South Carolina">
-                        South Carolina</option>
-                                    <option value="South Dakota">
-                        South Dakota</option>
-                                    <option value="Tennessee">
-                        Tennessee</option>
-                                    <option value="Texas">
-                        Texas</option>
-                                    <option value="Utah">
-                        Utah</option>
-                                    <option value="Vermont">
-                        Vermont</option>
-                                    <option value="Virginia">
-                        Virginia</option>
-                                    <option value="Washington">
-                        Washington</option>
-                                    <option value="West Virginia">
-                        West Virginia</option>
-                                    <option value="Wisconsin">
-                        Wisconsin</option>
-                                    <option value="Wyoming">
-                        Wyoming</option>
-                            </select>
-                    </div>
-                    @error('state')
-                        <span class="invalid-feedback" role="alert" style="display: block;">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                
+                  <select name="state" class="form-control login-input">
+                    <option value="null">Select state</option>
+                    <option value="Alabama"> Alabama</option>
+                    <option value="Arizona">Arizona</option>
+                    <option value="Arkansas">Arkansas</option>
+                    <option value="California">California</option>
+                    <option value="Colorado">Colorado</option>
+                    <option value="Connecticut">Connecticut</option>
+                    <option value="Delaware">Delaware</option>
+                    <option value="Florida">Florida</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Idaho">Idaho</option>
+                    <option value="Illinois">Illinois</option>
+                    <option value="Indiana">Indiana</option>
+                    <option value="Iowa">Iowa</option>
+                    <option value="Kansas">Kansas</option>
+                    <option value="Kentucky">Kentucky</option>
+                    <option value="Louisiana">Louisiana</option>
+                    <option value="Maine">Maine</option>
+                    <option value="Maryland">Maryland</option>
+                    <option value="Massachusetts">Massachusetts</option>
+                    <option value="Michigan">Michigan</option>
+                    <option value="Minnesota">Minnesota</option>
+                    <option value="Mississippi">Mississippi</option>
+                    <option value="Missouri">
+                      Missouri</option>
+                    <option value="Montana">
+                      Montana</option>
+                    <option value="Nebraska">
+                      Nebraska</option>
+                    <option value="Nevada">
+                      Nevada</option>
+                    <option value="New Hampshire">
+                      New Hampshire</option>
+                    <option value="New Jersey">
+                      New Jersey</option>
+                    <option value="New Mexico">
+                      New Mexico</option>
+                    <option value="New York">
+                      New York</option>
+                    <option value="North Carolina">
+                      North Carolina</option>
+                    <option value="North Dakota">
+                      North Dakota</option>
+                    <option value="Ohio">
+                      Ohio</option>
+                    <option value="Oklahoma">
+                      Oklahoma</option>
+                    <option value="Oregon">
+                      Oregon</option>
+                    <option value="Pennsylvania">
+                      Pennsylvania</option>
+                    <option value="Rhode Island">
+                      Rhode Island</option>
+                    <option value="South Carolina">
+                      South Carolina</option>
+                    <option value="South Dakota">
+                      South Dakota</option>
+                    <option value="Tennessee">
+                      Tennessee</option>
+                    <option value="Texas">
+                      Texas</option>
+                    <option value="Utah">
+                      Utah</option>
+                    <option value="Vermont">
+                      Vermont</option>
+                    <option value="Virginia">
+                      Virginia</option>
+                    <option value="Washington">
+                      Washington</option>
+                    <option value="West Virginia">
+                      West Virginia</option>
+                    <option value="Wisconsin">
+                      Wisconsin</option>
+                    <option value="Wyoming">
+                      Wyoming</option>
+                  </select>
+                </div>
+                @error('state')
+                <span class="invalid-feedback" role="alert" style="display: block;">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">City</label>
                   <input
@@ -244,7 +236,7 @@
                     class="form-control login-input @error('city') is-invalid @enderror"
                     name="city"
                     required
-                  
+
                     id="exampleFormControlInput1"
                     placeholder="Type City" />
                 </div>
@@ -260,7 +252,7 @@
                     class="form-control login-input @error('zip') is-invalid @enderror"
                     name="zip"
                     required
-                    
+
                     id="exampleFormControlInput1"
                     placeholder="Type ZIP" />
                 </div>
@@ -271,7 +263,7 @@
                     class="form-control login-input @error('contact_name') is-invalid @enderror"
                     name="contact_name"
                     required
-                    
+
                     id="exampleFormControlInput1"
                     placeholder="Type contact name" />
                 </div>
@@ -287,7 +279,7 @@
                     class="form-control login-input @error('contact_email') is-invalid @enderror"
                     name="contact_email"
                     required
-                    
+
                     id="exampleFormControlInput1"
                     placeholder="Type contact email" />
                 </div>
@@ -303,7 +295,7 @@
                     class="form-control login-input @error('contact_phone') is-invalid @enderror"
                     name="contact_phone"
                     required
-                    
+
                     id="exampleFormControlInput1"
                     placeholder="Type contact phone" />
                 </div>
@@ -335,7 +327,7 @@
                     class="form-control login-input @error('password_confirmation') is-invalid @enderror"
                     name="password_confirmation"
                     required
-                    
+
                     id="exampleFormControlInput1"
                     placeholder="Type Confirm Password" />
                 </div>

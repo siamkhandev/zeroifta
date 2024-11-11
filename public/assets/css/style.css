@@ -28,7 +28,10 @@ body {
     --sidebar-text-color: #ffffff;
     --card-bg-color: #ffffff;
     --card-text-color: #040506;
-    --sidebar-gred-light: var(--mainGrediant-Final, linear-gradient(180deg, #134ab4 0%, #092e75 100%));
+    --sidebar-gred-light: var(
+        --mainGrediant-Final,
+        linear-gradient(180deg, #134ab4 0%, #092e75 100%)
+    );
     --border-1: #b6b5c8;
     --white: #ffffff;
     --sidebar-li: #ffffff;
@@ -75,12 +78,23 @@ body {
     --sidebar-text-color: #ffffff;
     --card-bg-color: #3b3f45;
     --card-text-color: #ffffff;
-    --sidebar-gred-light: var(--sidebar-bg1, linear-gradient(180deg, rgba(38, 34, 80, 0.65) 0%, rgba(27, 25, 66, 0.85) 57%, rgba(23, 22, 59, 0.79) 89%));
+    --sidebar-gred-light: var(
+        --sidebar-bg1,
+        linear-gradient(
+            180deg,
+            rgba(38, 34, 80, 0.65) 0%,
+            rgba(27, 25, 66, 0.85) 57%,
+            rgba(23, 22, 59, 0.79) 89%
+        )
+    );
     --border-1: #b6b5c8;
     --white: #ffffff;
     --sidebar-li: #979797;
     /* --body-bg: radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%); */
-    --body-bg: var(--Darkbg-1, radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%));
+    --body-bg: var(
+        --Darkbg-1,
+        radial-gradient(50% 50% at 50% 50%, #201d47 0%, #17153a 100%)
+    );
     --primaryColor: #1a1840;
     --gray1: #979797;
     --gray2: #333333;
@@ -289,6 +303,10 @@ body {
 .peg-text {
     font-size: 14px;
 }
+/* Language Modal */
+.language-modal .buttons {
+    justify-content: center;
+}
 
 /* Modal Common Css */
 .modal-header {
@@ -377,12 +395,15 @@ Login
 .login-input {
     border-radius: 8px;
     border: 1px solid rgba(151, 151, 151, 0.2);
-    font-size: 14px;
-    color: #979797;
+    font-size: 16px;
+    color: #726d6d;
     padding: 10px;
 }
+.dark-mode .login-input {
+    color: #979797;
+}
 .login-input::placeholder {
-    font-size: 14px;
+    font-size: 16px;
     color: #c2bfbf;
 }
 .auth-pages {
@@ -397,6 +418,15 @@ Login
     background: url("../img/auth-bg.png") no-repeat;
     background-size: cover;
     width: 50%;
+}
+.pass-input {
+    position: relative;
+}
+.show-pass {
+    position: absolute;
+    top: 36px;
+    right: 8px;
+    cursor: pointer;
 }
 .al-inn {
     display: flex;
@@ -417,13 +447,22 @@ Login
     color: #ffffff;
     padding: 10px 0 0 0;
 }
-.auth-right {
+/* .auth-right {
     width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+} */
+.auth-right {
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow-y: scroll;
 }
 .authRight_inn {
     width: 60%;
@@ -533,6 +572,16 @@ Main Dashboard
 }
 .hf-svg svg {
     fill: var(--headSvs);
+}
+.hfs-svg svg {
+    stroke: var(--headSvs);
+}
+.lang-icon svg path {
+    stroke: var(--headSvs);
+}
+.lang-icon span {
+    color: #979797;
+    font-size: 14px;
 }
 /* User Drop Down */
 .up-img .dropdown {
@@ -704,6 +753,10 @@ h1 {
 .count-content h5 {
     padding: 0 0 5px 0;
 }
+/* Chart */
+.chart {
+    margin: 0 auto;
+}
 /* Table Common */
 .table-comm {
     border-radius: 10px;
@@ -802,6 +855,14 @@ Profile Managemnet
     left: 0;
     height: 100%;
 }
+.profile-img {
+    width: 100px;
+    height: 100px;
+}
+.profile-ph svg {
+    width: 100px;
+    height: 100px;
+}
 .up-head {
     display: flex;
     align-items: center;
@@ -818,7 +879,7 @@ Profile Managemnet
     border-radius: 8px;
     border: 1px solid rgba(151, 151, 151, 0.2);
     font-size: 14px;
-    color: #979797;
+    color: #726d6d;
     padding: 10px;
 }
 .dash-input input::placeholder {
@@ -1140,6 +1201,9 @@ Media Quries
     }
 }
 @media only screen and (max-width: 1024px) {
+    .res-pad {
+        padding: 0 15px;
+    }
     /* Auth Pages */
     .al-inn h1 {
         font-size: 25px;
@@ -1236,6 +1300,10 @@ Media Quries
     }
     .auth-left {
         width: 100%;
+    }
+    .auth-right {
+        height: unset;
+        overflow: visible;
     }
     .al-inn {
         width: 100%;
@@ -1343,8 +1411,9 @@ Media Quries
         width: 100%;
         gap: 10px;
     }
-    .up-headLeft img {
-        width: 50px;
+    .profile-img {
+        width: 60px;
+        height: 60px;
     }
     .up-info {
         text-align: center;
