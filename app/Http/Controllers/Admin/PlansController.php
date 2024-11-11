@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use App\Models\Plan;
 use Exception;
 use Illuminate\Http\Request;
@@ -90,6 +91,10 @@ class PlansController extends Controller
     public function delete($id)
     {
         $plan = Plan::find($id);
+        $payments = Payment::where('plan_id',$id)->first();
+        if($payments){
+            return redirect()->back()->withError('Subscription exist against this plan. you can not delete this.');
+        }
         $plan->delete();
         return redirect('plans')->withError('Plan Deleted Successfully');
     }
