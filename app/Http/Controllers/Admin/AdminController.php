@@ -59,8 +59,15 @@ class AdminController extends Controller
     }
     public function deleteForm($id)
     {
+       
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+    
         $form = CompanyContactUs::find($id);
-        $form->delete();
+        $form->forceDelete();
+
+        // Re-enable foreign key checks
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        
         return redirect('contactus/all')->withError('Record Deleted Successfully');
     }
     public function socket()

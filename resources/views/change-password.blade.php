@@ -34,12 +34,12 @@
                 <!-- Profile Inner -->
                 <div class="sec-stylePad">
                 @if(Session::has('success'))
-                    <p class="text-success">{{Session::get('success')}}</p>
+                    <div class="alert alert-success">{{Session::get('success')}}</div>
                     @endif
                     @if(Session::has('error'))
-                    <p class="text-danger">{{Session::get('error')}}</p>
+                    <div class="alert alert-danger">{{Session::get('error')}}</div>
                     @endif
-                <form method="post" action="{{route('password.update')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('passwords.updatePass')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row pt-3">
                    

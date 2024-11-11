@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('profile',[UsersController::class,'profile'])->name('profile');
     Route::post('profile/update',[UsersController::class,'profileUpdate'])->name('profile.update');
     Route::get('password/change',[UsersController::class,'changePasswordUpdate'])->name('password.change');
-    Route::post('password/update',[UsersController::class,'passwordUpdate'])->name('passwords.update');
+    Route::post('password/change',[UsersController::class,'passwordUpdate'])->name('passwords.updatePass');
     
 
     Route::get('logout',[AdminController::class,'logout'])->name('logout');

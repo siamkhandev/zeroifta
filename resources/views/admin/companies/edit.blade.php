@@ -36,12 +36,22 @@
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Phone</label>
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" name="phone" placeholder="Add Phone" value="{{$company->phone}}" />
                     </div>
+                    @error('phone')
+                                <span class="invalid-feedback" role="alert" style="display: block;">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">MC</label>
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{$company->mc}}"/>
                     </div>
+                    @error('mc')
+                                <span class="invalid-feedback" role="alert" style="display: block;">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
@@ -147,6 +157,11 @@
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Dot</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="dot" placeholder="DOT" value="{{$company->dot}}"/>
                     </div>
+                    @error('dot')
+                                <span class="invalid-feedback" role="alert" style="display: block;">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
