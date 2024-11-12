@@ -464,6 +464,10 @@ Login
     flex-direction: column;
     overflow-y: scroll;
 }
+.auth-right.reg-right {
+    justify-content: flex-start;
+    padding: 50px;
+}
 .authRight_inn {
     width: 60%;
     margin: 0 auto 0 auto;

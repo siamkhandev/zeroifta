@@ -42,7 +42,7 @@
           </div>
         </div>
         <!-- Authentication Right Side Form Area -->
-        <div class="auth-right">
+        <div class="auth-right reg-right">
           <div class="container">
 
             <div class="authRight_inn">
