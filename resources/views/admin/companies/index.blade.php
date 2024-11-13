@@ -98,7 +98,7 @@
               </td>
               <td>
                 <div class="tabAction-list">
-                  <span class="tabView-icon">
+                  <!-- <span class="tabView-icon">
                     <a href="#">
                       <svg xmlns="http://www.w3.org/2000/svg" width="23" height="17" viewBox="0 0 23 17" fill="none">
                         <path
@@ -109,7 +109,7 @@
                           fill="#19A130" />
                       </svg>
                     </a>
-                  </span>
+                  </span> -->
                   <span class="tabEdit-icon">
                     <a href="{{route('companies.edit',$company->id)}}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
