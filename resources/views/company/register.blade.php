@@ -56,7 +56,7 @@
                   <label for="exampleFormControlInput1" class="pb-1">Name</label>
                   <input
                     type="text"
-                    class="form-control login-input 
+                    class="form-control login-input
                     @error('name') is-invalid @enderror" id="exampleFormControlInput1"
                     placeholder="Type Your Name"
                     name="name"
@@ -107,203 +107,13 @@
                 </span>
                 @enderror
 
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">MC</label>
-                  <input
-                    type="text"
-                    class="form-control login-input @error('mc') is-invalid @enderror"
-                    id="exampleFormControlInput1"
-                    placeholder="Add MC"
-                    name="mc"
-                    value="{{ old('mc') }}"
-                    required
-                    autofocus />
-                </div>
 
-                @error('mc')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">DOT</label>
-                  <input
-                    type="text"
-                    class="form-control login-input @error('dot') is-invalid @enderror"
-                    id="exampleFormControlInput1"
-                    placeholder="Add Dot"
-                    name="dot"
-                    value="{{ old('dot') }}"
-                    required
-                    autofocus />
-                </div>
 
-                @error('dot')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">State</label>
-                  <select name="state" class="form-control login-input">
-                    <option value="null">Select state</option>
-                    <option value="Alabama"> Alabama</option>
-                    <option value="Arizona">Arizona</option>
-                    <option value="Arkansas">Arkansas</option>
-                    <option value="California">California</option>
-                    <option value="Colorado">Colorado</option>
-                    <option value="Connecticut">Connecticut</option>
-                    <option value="Delaware">Delaware</option>
-                    <option value="Florida">Florida</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Idaho">Idaho</option>
-                    <option value="Illinois">Illinois</option>
-                    <option value="Indiana">Indiana</option>
-                    <option value="Iowa">Iowa</option>
-                    <option value="Kansas">Kansas</option>
-                    <option value="Kentucky">Kentucky</option>
-                    <option value="Louisiana">Louisiana</option>
-                    <option value="Maine">Maine</option>
-                    <option value="Maryland">Maryland</option>
-                    <option value="Massachusetts">Massachusetts</option>
-                    <option value="Michigan">Michigan</option>
-                    <option value="Minnesota">Minnesota</option>
-                    <option value="Mississippi">Mississippi</option>
-                    <option value="Missouri">
-                      Missouri</option>
-                    <option value="Montana">
-                      Montana</option>
-                    <option value="Nebraska">
-                      Nebraska</option>
-                    <option value="Nevada">
-                      Nevada</option>
-                    <option value="New Hampshire">
-                      New Hampshire</option>
-                    <option value="New Jersey">
-                      New Jersey</option>
-                    <option value="New Mexico">
-                      New Mexico</option>
-                    <option value="New York">
-                      New York</option>
-                    <option value="North Carolina">
-                      North Carolina</option>
-                    <option value="North Dakota">
-                      North Dakota</option>
-                    <option value="Ohio">
-                      Ohio</option>
-                    <option value="Oklahoma">
-                      Oklahoma</option>
-                    <option value="Oregon">
-                      Oregon</option>
-                    <option value="Pennsylvania">
-                      Pennsylvania</option>
-                    <option value="Rhode Island">
-                      Rhode Island</option>
-                    <option value="South Carolina">
-                      South Carolina</option>
-                    <option value="South Dakota">
-                      South Dakota</option>
-                    <option value="Tennessee">
-                      Tennessee</option>
-                    <option value="Texas">
-                      Texas</option>
-                    <option value="Utah">
-                      Utah</option>
-                    <option value="Vermont">
-                      Vermont</option>
-                    <option value="Virginia">
-                      Virginia</option>
-                    <option value="Washington">
-                      Washington</option>
-                    <option value="West Virginia">
-                      West Virginia</option>
-                    <option value="Wisconsin">
-                      Wisconsin</option>
-                    <option value="Wyoming">
-                      Wyoming</option>
-                  </select>
-                </div>
-                @error('state')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
 
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">City</label>
-                  <input
-                    type="text"
-                    class="form-control login-input @error('city') is-invalid @enderror"
-                    name="city"
-                    required
 
-                    id="exampleFormControlInput1"
-                    placeholder="Type City" />
-                </div>
-                @error('city')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">ZIP</label>
-                  <input
-                    type="text"
-                    class="form-control login-input @error('zip') is-invalid @enderror"
-                    name="zip"
-                    required
 
-                    id="exampleFormControlInput1"
-                    placeholder="Type ZIP" />
-                </div>
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">Contact Person Name</label>
-                  <input
-                    type="text"
-                    class="form-control login-input @error('contact_name') is-invalid @enderror"
-                    name="contact_name"
-                    required
 
-                    id="exampleFormControlInput1"
-                    placeholder="Type contact name" />
-                </div>
-                @error('contact_name')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">Contact Person Email</label>
-                  <input
-                    type="text"
-                    class="form-control login-input @error('contact_email') is-invalid @enderror"
-                    name="contact_email"
-                    required
 
-                    id="exampleFormControlInput1"
-                    placeholder="Type contact email" />
-                </div>
-                @error('contact_email')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                <div class="log_input mb-3">
-                  <label for="exampleFormControlInput1" class="pb-1">Contact Person Phone</label>
-                  <input
-                    type="text"
-                    class="form-control login-input @error('contact_phone') is-invalid @enderror"
-                    name="contact_phone"
-                    required
-
-                    id="exampleFormControlInput1"
-                    placeholder="Type contact phone" />
-                </div>
-                @error('contact_phone')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">Password</label>
                   <input

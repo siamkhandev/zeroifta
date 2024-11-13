@@ -25,8 +25,7 @@ class CompanyController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|unique:users,email',
             'phone' => 'required|string|max:20',
-            'dot' => 'required|string|max:255',
-            'mc' => 'required|string|max:255',
+
             'password'=>'required|min:8|confirmed'
         ]);
         $company = new User();
@@ -34,19 +33,10 @@ class CompanyController extends Controller
         $company->email=$request->email;
         $company->password=Hash::make($request->password);
         $company->role="company";
-        $company->mc=$request->mc;
-        $company->dot=$request->dot;
         $company->phone=$request->phone;
-        
-        $company->state=$request->state;
-        $company->city=$request->city;
-        $company->zip=$request->zip;
-        $company->contact_person_name=$request->contact_name;
-        $company->contact_person_email=$request->contact_email;
-        $company->contact_person_phone=$request->contact_phone;
         $company->save();
         return redirect('login')->withSuccess('Account created successfully. Now you can login.');
-       
+
     }
 
     public function contactus()
@@ -57,11 +47,11 @@ class CompanyController extends Controller
     {
         $data = $request->validate([
             'subject' => 'required|string|max:255',
-           
+
             'phone' => 'required|string|max:20',
             'description' => 'required',
-           
-            
+
+
         ]);
         $contact = new CompanyContactUs();
         $contact->subject = $request->subject;
@@ -81,7 +71,7 @@ class CompanyController extends Controller
     public function contactUsForms()
     {
         $forms = CompanyContactUs::with('company')->where('company_id',Auth::id())->orderBy('company_contact_us.id','desc')->get();
-        
+
         return view('company.contactus.index',get_defined_vars());
     }
 
@@ -102,5 +92,5 @@ class CompanyController extends Controller
         }
         return view('company.fleet',compact('drivers'));
     }
-   
+
 }
