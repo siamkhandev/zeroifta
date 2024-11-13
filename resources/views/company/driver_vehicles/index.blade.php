@@ -76,7 +76,7 @@
                                         <div class="table-conTab">
                                             <span>
                                             @if($vehicle->driver->driver_image)
-                                            <img src="{{asset('drivers')}}/{{$vehicle->driver->driver_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 50px;">
+                                            <img src="{{asset('drivers')}}/{{$vehicle->driver->driver_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
                                             @else
 
                                                 <img src="{{asset('assets/img/team-2.jpg')}}" class="avatar avatar-sm me-3" alt="user1">
@@ -91,7 +91,7 @@
 
                                         </div>
                                     </td>
-                                    <td><img src="{{asset('vehicles')}}/{{$vehicle->vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 50px;"></td>
+                                    <td><img src="{{asset('vehicles')}}/{{$vehicle->vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;"></td>
 
 
                                     <td>

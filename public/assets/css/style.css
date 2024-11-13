@@ -466,7 +466,7 @@ Login
 }
 .auth-right.reg-right {
     justify-content: flex-start;
-    padding: 50px;
+    padding: 50px 0;
 }
 .authRight_inn {
     width: 60%;
@@ -762,6 +762,12 @@ h1 {
     margin: 0 auto;
 }
 /* Table Common */
+.table-conTab img {
+    width: 30px;
+    border-radius: 50%;
+    border: 1px solid #cdcdcd;
+    padding: 1px;
+}
 .table-comm {
     border-radius: 10px;
     overflow: hidden;
