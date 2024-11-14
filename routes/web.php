@@ -32,6 +32,7 @@ Route::get('/',[AdminController::class,'index'])->name('dashboard')->middleware(
 
 Route::get('/testsocket',[AdminController::class,'socket']);
 Route::get('/testftp',[AdminController::class,'testftp']);
+Route::get('/subscription',[AdminController::class,'subscription']);
 Route::get('login', function () {
     return view('login');
 });
@@ -44,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('profile/update',[UsersController::class,'profileUpdate'])->name('profile.update');
     Route::get('password/change',[UsersController::class,'changePasswordUpdate'])->name('password.change');
     Route::post('password/change',[UsersController::class,'passwordUpdate'])->name('passwords.updatePass');
-    
+
 
     Route::get('logout',[AdminController::class,'logout'])->name('logout');
 

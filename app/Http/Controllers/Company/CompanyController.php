@@ -25,7 +25,6 @@ class CompanyController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|unique:users,email',
             'phone' => 'required|string|max:20',
-
             'password'=>'required|min:8|confirmed'
         ]);
         $company = new User();
