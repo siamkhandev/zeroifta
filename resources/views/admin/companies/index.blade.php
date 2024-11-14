@@ -1,11 +1,21 @@
 @extends('layouts.new_main')
 @section('content')
 <div class="dashbord-inner">
-  @if(Session::has('success'))
-  <div class="alert alert-success" style="color:white">{{Session::get('success')}}</div>
+@if(Session::has('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
+  {{Session::get('success')}}
+  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
   @endif
   @if(Session::has('error'))
-  <div class="alert alert-danger" style="color:white">{{Session::get('error')}}</div>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #dd4957;color:white">
+  {{Session::get('error')}}
+  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
   @endif
   <div class="manage-comp mb-4">
     <div class="Filters-main mb-3 mb-md-4">

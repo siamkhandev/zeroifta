@@ -41,7 +41,7 @@ class UsersController extends Controller
             $user->image= $imageName;
         }
         $user->update();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Profile updated successfully');
     }
     public function changePasswordUpdate()
     {

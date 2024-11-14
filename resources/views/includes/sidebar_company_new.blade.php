@@ -64,7 +64,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('drivers.all')}}" class="sidebar_li {{ Request::is('drivers.all') ? 'menu_active' : '' }}">
+          <a href="{{route('drivers.all')}}" class="sidebar_li {{ Request::is('drivers/all') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
                 <path

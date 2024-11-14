@@ -34,11 +34,21 @@
                 <!-- Profile Inner -->
                 <div class="sec-stylePad">
                 @if(Session::has('success'))
-                    <div class="alert alert-success">{{Session::get('success')}}</div>
-                    @endif
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
+                {{Session::get('success')}}
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              @endif
                     @if(Session::has('error'))
-                    <div class="alert alert-danger">{{Session::get('error')}}</div>
-                    @endif
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #dd4957;color:white">
+  {{Session::get('error')}}
+  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+  @endif
                 <form method="post" action="{{route('passwords.updatePass')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row pt-3">
@@ -46,7 +56,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Current Password</label>
-                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Current Password" name="current_password"  />
+                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Current Password" name="current_password"  required/>
                             </div>
                             @error('current_password')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
@@ -57,7 +67,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">New Password</label>
-                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="New Password" name="password"  />
+                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="New Password" name="password"  required/>
                             </div>
                             @error('password')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
@@ -68,7 +78,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                             <div class="dash-input mb-3">
                                 <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
-                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Confirm Password" name="password_confirmation"  />
+                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Confirm Password" name="password_confirmation"  required/>
                             </div>
                             
                         </div>
