@@ -524,6 +524,11 @@ Main Dashboard
     display: flex;
     gap: 10px;
 }
+.body-right {
+    max-height: 100vh;
+    overflow-y: scroll;
+    width: 100%;
+}
 .dashboard-rigt {
     width: 100%;
 }
@@ -562,6 +567,12 @@ Main Dashboard
     top: 6px;
 }
 .serch-tab input {
+    border-radius: 5px;
+    border: var(--inputBorder);
+    background: var(--inputBg);
+    padding: 5px 10px 5px 25px;
+}
+.serch-tab textarea {
     border-radius: 5px;
     border: var(--inputBorder);
     background: var(--inputBg);
@@ -844,6 +855,90 @@ h1 {
 .ub-div {
     width: 100%;
     text-align: end;
+}
+/* Contact Form Read*/
+.user-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #efeded;
+    padding: 0 0 15px 0;
+}
+.dark-mode .user-form {
+    border-bottom: 1px solid #979797;
+}
+.uh-img {
+    height: 60px;
+    width: 60px;
+}
+.uh-head .uh-head {
+    color: #ffffff;
+}
+.dark-mode .uh-head {
+    color: #ffffff;
+}
+.uh-spans span {
+    color: #979797;
+    font-size: 14px;
+}
+.userchat-tab {
+    padding: 50px 0 30px 0;
+}
+.user-span {
+    display: flex;
+}
+.userchat-tab span {
+    background: #e3e3e3;
+    padding: 10px 30px;
+    border-radius: 30px;
+    color: #333333;
+    max-width: 500px;
+    font-size: 14px;
+    display: block;
+}
+.admin-rply {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    flex-direction: column;
+}
+.admin-rply .admin-span {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    flex-direction: column;
+}
+.admin-rply span {
+    background: #092e75;
+    padding: 10px 30px;
+    border-radius: 30px;
+    color: #ffffff;
+    display: block;
+    max-width: 500px;
+    font-size: 14px;
+}
+.dark-mode .admin-rply span {
+    background: #29265a;
+}
+.formChat-input {
+    position: relative;
+}
+.formChat-input textarea {
+    border-radius: 10px;
+}
+.dark-mode .formChat-input textarea {
+    background: transparent;
+    color: #ffffff;
+}
+.sendChat-icon {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+.fchat-inn {
+    max-height: 500px;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 /* ========================================================================
 Profile Managemnet

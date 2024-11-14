@@ -27,12 +27,15 @@
       @include('includes.sidebar_company_new')
       @else
       @endif
-      <div class="container-fluid">
-        <div class="dashboard-rigt">
-          @include('includes.header_new')
-          @yield('content')
+      <div class="body-right">
+        <div class="container-fluid">
+          <div class="dashboard-rigt">
+            @include('includes.header_new')
+            @yield('content')
+          </div>
         </div>
       </div>
+
       <!---------------------------------------- Dashboard Right Area End ----------------------------------------->
     </div>
   </div>
