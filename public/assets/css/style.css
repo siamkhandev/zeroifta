@@ -968,6 +968,7 @@ Profile Managemnet
 .profile-img {
     width: 100px;
     height: 100px;
+    border-radius: 50%;
 }
 .profile-ph svg {
     width: 100px;
@@ -1344,6 +1345,14 @@ Fleet View
 /* =========================================================
 Media Quries 
 ============================================================ */
+@media only screen and (max-width: 1440px) {
+    .sidebar_li {
+        padding: 10px 20px;
+    }
+    .sideBar .head-14Nor {
+        font-size: 13px;
+    }
+}
 @media only screen and (max-width: 1366px) {
     .al-inn {
         width: 70%;
