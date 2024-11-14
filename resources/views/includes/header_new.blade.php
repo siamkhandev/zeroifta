@@ -12,7 +12,7 @@
           @elseif(Request::is('profile'))
           <span class="bc-text">Pages / Profile Management</span>
           <h1 class="head-1">Profile Management</h1>
-         
+
           @elseif(Request::is('vehicles*'))
           <span class="bc-text">Pages / Vehicles</span>
           <h1 class="head-1">Manage Vehicles</h1>
@@ -43,19 +43,19 @@
           @elseif(Request::is('plans*'))
           <span class="bc-text">Pages / Subscriptions</span>
           <h1 class="head-1">Subscriptions</h1>
-          
+
           @elseif(Request::is('company/contactus/all'))
           <span class="bc-text">Pages / Contact Us</span>
           <h1 class="head-1">Contact Us</h1>
-        
+
           @else
           @endif
         </div>
       </div>
     </div>
     <div class="right-opts">
-      <t class="head-right">
-        <div class="search-div">
+      <div class="head-right">
+        <!-- <div class="search-div">
           <div class="serch-tab">
             <input type="text" placeholder="Type Here" name="" id="" />
             <span class="s-icon hs-svg">
@@ -65,7 +65,7 @@
               </svg>
             </span>
           </div>
-        </div>
+        </div> -->
         <div class="opt-div">
           <div class="mob-menu">
             <div class="mobLogo-div">
@@ -233,7 +233,7 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
-</div>
 </div>

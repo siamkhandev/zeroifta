@@ -136,9 +136,9 @@
   <!-- Theme Color Div -->
   <div class="sc-pad">
     <div class="themeColr-div">
-      <div class="">
+      <!-- <div class="">
         <h4 class="head-14Med">Theme</h4>
-      </div>
+      </div> -->
       <div class="light-dark pt-3">
         <div>
           <p class="head-14Med">Light/Dark</p>

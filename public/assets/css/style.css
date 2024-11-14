@@ -151,12 +151,12 @@ body {
     font-weight: 600;
     color: var(--white);
 }
-.alert-success button.close{
+.alert-success button.close {
     float: right !important;
     background: #1c9d62 !important;
     border: #1c9d62 !important;
 }
-.alert-danger button.close{
+.alert-danger button.close {
     float: right !important;
     background: #dd4957 !important;
     border: #dd4957 !important;
@@ -529,6 +529,7 @@ Main Dashboard
     height: 100%;
     min-height: 100vh;
     display: grid;
+    overflow-x: hidden;
 }
 .dash-main {
     display: flex;
@@ -669,12 +670,12 @@ SideBar
     background: var(--sidebar-gred-light);
     box-shadow: var(--sidebarshadow);
     width: 300px;
-    padding: 30px 0;
+    padding: 10px 0;
 }
 .logo-div {
     border-bottom: 1px solid var(--border-1);
-    padding: 0 20px 25px 20px;
-    margin: 0 0 25px 0;
+    padding: 0 20px 6px 20px;
+    margin: 0 0 20px 0;
 }
 .logo-div img {
     width: 100px;
@@ -693,7 +694,7 @@ SideBar
     padding: 0 20px;
 }
 .main-menu {
-    padding: 0 0 50px 0;
+    padding: 0 0 10px 0;
 }
 .sidebar_li {
     display: flex;
@@ -865,6 +866,10 @@ h1 {
     display: flex;
     align-items: center;
     gap: 30px;
+}
+.user-area img {
+    height: 30px;
+    border-radius: 50%;
 }
 .ub-div {
     width: 100%;
@@ -1355,9 +1360,9 @@ Fleet View
 /* =========================================================
 Media Quries 
 ============================================================ */
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: 1600px) {
     .sidebar_li {
-        padding: 10px 20px;
+        padding: 12px 20px !important;
     }
     .sideBar .head-14Nor {
         font-size: 13px;
