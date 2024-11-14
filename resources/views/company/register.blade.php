@@ -14,6 +14,8 @@
     crossorigin="anonymous" />
   <!-- Custom Css -->
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
+  <!-- Standard Favicon -->
+  <link rel="icon" href="assets/img/fav-icon.png">
 
   <title>ZeroIfta</title>
 </head>

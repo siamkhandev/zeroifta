@@ -940,6 +940,7 @@ h1 {
     overflow-y: scroll;
     scrollbar-width: none;
 }
+
 /* ========================================================================
 Profile Managemnet
 ========================================================================= */
@@ -1200,6 +1201,47 @@ Subscription Plan
 }
 .dark-mode .pop-div span {
     color: #4c4545;
+}
+/* ========================================================================
+User Subccription Plans
+========================================================================= */
+.sbsp-com {
+    border-radius: 10px !important;
+}
+.sbsp-com .ph-area {
+    text-align: center;
+    padding: 10px;
+}
+.sbp-section {
+    padding: 20px;
+}
+.sbp-section h4 {
+    font-size: 18px;
+    color: #333333;
+    padding: 0 0 10px 0;
+    font-weight: 600;
+}
+.sbp-list {
+    display: flex;
+    gap: 5px;
+}
+.usp-head {
+    color: var(--h1color);
+    font-size: 15px;
+    font-weight: 600;
+}
+.usp-para {
+    font-size: 14px;
+    color: #979797;
+}
+.sbsp-com .pop-div {
+    text-align: center;
+}
+.price_plans {
+    height: 100%;
+}
+.price_pm {
+    height: 100%;
 }
 /* ========================================================================
 Fleet View
