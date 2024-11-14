@@ -604,7 +604,11 @@ Main Dashboard
     display: inline-block;
     cursor: pointer;
 }
-
+.up-img img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
 .up-img .dropbtn {
     border: none;
     background: none;
