@@ -93,10 +93,10 @@
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">Phone</label>
                   <input
-                    type="text"
+                    type="number"
                     class="form-control login-input @error('phone') is-invalid @enderror"
                     id="exampleFormControlInput1"
-                    placeholder="Add Email"
+                    placeholder="Add Phone"
                     name="phone"
                     value="{{ old('phone') }}"
                     required
@@ -108,13 +108,6 @@
                   <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-
-
-
-
-
-
-
 
                 <div class="log_input mb-3">
                   <label for="exampleFormControlInput1" class="pb-1">Password</label>
