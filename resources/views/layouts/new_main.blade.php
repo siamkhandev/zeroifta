@@ -14,7 +14,7 @@
     crossorigin="anonymous" />
   <!-- Custom Css -->
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
-
+  <link rel="icon" href="{{asset('assets/img/fav-icon.png')}}">
   <title>ZeroIfta</title>
 </head>
 
