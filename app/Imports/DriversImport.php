@@ -29,7 +29,7 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
 
         // Skip the row if validation fails
         if ($validator->fails()) {
-            return null; // Skipping invalid rows
+            throw new \Exception($validator->errors()->first());
         }
         return new User([
             'name' => $row['name'],

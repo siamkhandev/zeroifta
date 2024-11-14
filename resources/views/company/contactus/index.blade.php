@@ -6,8 +6,13 @@
                 <div class="alert alert-success" style="color:white">{{Session::get('success')}}</div>
             @endif
             @if(Session::has('error'))
-                <div class="alert alert-danger" style="color:white">{{Session::get('error')}}</div>
-            @endif
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #dd4957;color:white">
+  {{Session::get('error')}}
+  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+  @endif
                             <!-- Section 1 -->
                             <div class="manage-comp mb-4">
                                 <div class="Filters-main mb-3 mb-md-4">

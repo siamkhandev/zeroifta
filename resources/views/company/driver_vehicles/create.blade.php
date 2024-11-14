@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Driver</label>
-                        <select name="driver_id" class="form-control login-input" >
+                        <select name="driver_id" class="form-control login-input" required>
                               <option value="">Select</option>
                               @foreach($drivers as $driver)
                               <option value="{{$driver->driver->id}}">{{$driver->driver->name}}</option>
@@ -26,7 +26,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Vehicle</label>
-                        <select name="vehicle_id" class="form-control login-input" >
+                        <select name="vehicle_id" class="form-control login-input" required>
                         <option value="">Select</option>
                         @foreach($vehicles as $vehicle)
                         <option value="{{$vehicle->id}}">{{$vehicle->vehicle_number}}</option>

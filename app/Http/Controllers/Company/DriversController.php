@@ -113,9 +113,14 @@ class DriversController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
+        try{
+            Excel::import(new DriversImport, $request->file('file'));
+            return redirect('drivers/all')->with('success', 'Driver imported successfully.');
+        }catch(\Exception $e){
+            return redirect('drivers/all')->with('error', $e->getMessage());
+        }
+       
 
-        Excel::import(new DriversImport, $request->file('file'));
-
-        return redirect('drivers/all')->with('success', 'Driver imported successfully.');
+        
     }
 }

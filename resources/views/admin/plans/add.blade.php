@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
+                        <input type="text" class="form-control login-input" required id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
                     </div>
                     @error('name')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -21,7 +21,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Price</label>
-                        <input type="number" class="form-control login-input" min="0" id="exampleFormControlInput1" placeholder="Add Price" name="price" value="{{old('price')}}" />
+                        <input type="number" class="form-control login-input" required min="0" id="exampleFormControlInput1" placeholder="Add Price" name="price" value="{{old('price')}}" />
                     </div>
                     @error('price')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -32,7 +32,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-1">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Billing Period</label>
-                        <select class="form-control login-input" id="exampleFormControlInput1" name="billing_period">
+                        <select class="form-control login-input" id="exampleFormControlInput1" name="billing_period" required>
                                 <option value="month">Monthly</option>
                                 <option value="year">Yearly</option>
                             </select>

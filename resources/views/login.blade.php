@@ -13,9 +13,9 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
     crossorigin="anonymous" />
   <!-- Custom Css -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
   <!-- Standard Favicon -->
-  <link rel="icon" href="assets/img/fav-icon.png">
+  <link rel="icon" href="{{asset('assets/img/fav-icon.png')}}">
 
   <title>ZeroIfta</title>
 </head>
@@ -52,7 +52,12 @@
                 <p class="gray1">Enter your email and password to sign in</p>
               </div>
               @if(Session::has('success'))
-              <div class="alert alert-success" style="color:white">{{Session::get('success')}}</div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
+                {{Session::get('success')}}
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
               @endif
               @if(Session::has('error'))
               <div class="alert alert-danger" style="color:white">{{Session::get('error')}}</div>

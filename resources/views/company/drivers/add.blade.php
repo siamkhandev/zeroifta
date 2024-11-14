@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
                     </div>
                     @error('name')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -21,7 +21,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email</label>
-                        <input type="email" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
+                        <input type="email" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
                     </div>
                     @error('email')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -32,7 +32,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Phone</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Phone" name="phone" value="{{old('phone')}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Phone" name="phone" value="{{old('phone')}}" />
                     </div>
                     @error('phone')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -43,7 +43,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">DOT</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add DOT" name="dot" value="{{old('dot')}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add DOT" name="dot" value="{{old('dot')}}" />
                     </div>
                     @error('dot')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -54,7 +54,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">MC</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{old('mc')}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{old('mc')}}" />
                     </div>
                     @error('mc')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -65,7 +65,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Profile Picture</label>
-                        <input type="file" class="form-control login-input" id="exampleFormControlInput1"  name="image"  />
+                        <input type="file" required class="form-control login-input" id="exampleFormControlInput1"  name="image"  />
                     </div>
                     @error('image')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -76,7 +76,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Password</label>
-                        <input type="password" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Password" name="password"  />
+                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Password" name="password"  />
                     </div>
                     @error('password')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -87,7 +87,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
-                        <input type="password" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Confirm Password" name="password_confirmation"  />
+                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Confirm Password" name="password_confirmation"  />
                     </div>
 
                 </div>

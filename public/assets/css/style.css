@@ -151,6 +151,16 @@ body {
     font-weight: 600;
     color: var(--white);
 }
+.alert-success button.close{
+    float: right !important;
+    background: #1c9d62 !important;
+    border: #1c9d62 !important;
+}
+.alert-danger button.close{
+    float: right !important;
+    background: #dd4957 !important;
+    border: #dd4957 !important;
+}
 .head-14Nor {
     font-size: 14px;
     font-weight: 400;
