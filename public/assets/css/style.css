@@ -985,10 +985,15 @@ Profile Managemnet
     left: 0;
     height: 100%;
 }
-.profile-img {
+.prof-wrap {
     width: 100px;
     height: 100px;
     border-radius: 50%;
+    overflow: hidden;
+}
+.profile-img {
+    display: block;
+    width: 100%;
 }
 .profile-ph svg {
     width: 100px;
@@ -1594,7 +1599,7 @@ Media Quries
         width: 100%;
         gap: 10px;
     }
-    .profile-img {
+    .prof-wrap {
         width: 60px;
         height: 60px;
     }

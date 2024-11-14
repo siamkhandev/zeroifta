@@ -1,25 +1,25 @@
 @extends('layouts.new_main')
 @section('content')
-  <div class="dashbord-inner">
-  
-    <div class="profile-area mb-4">
-    
-        <div class="style-bg">
-            <div class="sec2-style">
-                <div class="prof-img">
-                    <div class="up-head">
-                        <div class="up-headLeft">
-                        @if(Auth::user()->image)
-                          <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;border-radius:100%">
-                          @else
-                          <img src="{{asset('assets/user.png')}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;">
-                      @endif
-                            <div class="up-info">
-                                <p class="head-18Med">{{Auth::user()->name}}</p>
-                                <p class="head-14Med white">{{Auth::user()->email}}</p>
-                            </div>
-                        </div>
-                        <!-- <div class="edit-icon">
+<div class="dashbord-inner">
+
+  <div class="profile-area mb-4">
+
+    <div class="style-bg">
+      <div class="sec2-style">
+        <div class="prof-img">
+          <div class="up-head">
+            <div class="up-headLeft">
+              @if(Auth::user()->image)
+              <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;border-radius:100%">
+              @else
+              <img src="{{asset('assets/user.png')}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;">
+              @endif
+              <div class="up-info">
+                <p class="head-18Med">{{Auth::user()->name}}</p>
+                <p class="head-14Med white">{{Auth::user()->email}}</p>
+              </div>
+            </div>
+            <!-- <div class="edit-icon">
                             <a class="hover" href="profile-management-form.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 45 45" fill="none">
                                     <path
@@ -29,70 +29,70 @@
                                 </svg>
                             </a>
                         </div> -->
-                    </div>
-                </div>
-                <!-- Profile Inner -->
-                <div class="sec-stylePad">
-                @if(Session::has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
-                {{Session::get('success')}}
-                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              @endif
-                    @if(Session::has('error'))
-  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #dd4957;color:white">
-  {{Session::get('error')}}
-  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-  @endif
-                <form method="post" action="{{route('passwords.updatePass')}}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row pt-3">
-                   
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                            <div class="dash-input mb-3">
-                                <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Current Password</label>
-                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Current Password" name="current_password"  required/>
-                            </div>
-                            @error('current_password')
-                                    <span class="invalid-feedback" role="alert" style="display: block;">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                            <div class="dash-input mb-3">
-                                <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">New Password</label>
-                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="New Password" name="password"  required/>
-                            </div>
-                            @error('password')
-                                    <span class="invalid-feedback" role="alert" style="display: block;">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                            <div class="dash-input mb-3">
-                                <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
-                                <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Confirm Password" name="password_confirmation"  required/>
-                            </div>
-                            
-                        </div>
-                        
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                            <div class="dash-input mb-3">
-                                <button type="submit" class="mainBtn">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                </div>
-            </div>
+          </div>
         </div>
+        <!-- Profile Inner -->
+        <div class="sec-stylePad">
+          @if(Session::has('success'))
+          <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
+            {{Session::get('success')}}
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          @endif
+          @if(Session::has('error'))
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #dd4957;color:white">
+            {{Session::get('error')}}
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          @endif
+          <form method="post" action="{{route('passwords.updatePass')}}" enctype="multipart/form-data">
+            @csrf
+            <div class="row pt-3">
+
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="dash-input mb-3">
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Current Password</label>
+                  <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Current Password" name="current_password" required />
+                </div>
+                @error('current_password')
+                <span class="invalid-feedback" role="alert" style="display: block;">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="dash-input mb-3">
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">New Password</label>
+                  <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="New Password" name="password" required />
+                </div>
+                @error('password')
+                <span class="invalid-feedback" role="alert" style="display: block;">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="dash-input mb-3">
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
+                  <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Confirm Password" name="password_confirmation" required />
+                </div>
+
+              </div>
+
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                <div class="dash-input mb-3">
+                  <button type="submit" class="mainBtn">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 @endsection

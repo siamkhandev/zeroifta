@@ -4,11 +4,11 @@
 <div class="dashbord-inner">
   @if(Session::has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
-  {{Session::get('success')}}
-  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+    {{Session::get('success')}}
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   @endif
   <div class="profile-area mb-4">
     <div class="style-bg">
@@ -17,7 +17,10 @@
           <div class="up-head">
             <div class="up-headLeft">
               @if(Auth::user()->image)
-              <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="profile_image" class="profile-img border-radius-lg shadow-sm">
+              <div class="prof-wrap">
+                <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="profile_image" class="profile-img border-radius-lg shadow-sm">
+              </div>
+
               @else
               <!-- <img src="{{asset('assets/user.png')}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="height: 100px;"> -->
               <span class="profile-ph">
@@ -32,7 +35,7 @@
                 <p class="head-14Med white">{{Auth::user()->email}}</p>
               </div>
             </div>
-           
+
           </div>
         </div>
         <!-- Profile Inner -->
