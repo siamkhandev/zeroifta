@@ -97,9 +97,9 @@
                   <div class="inHead-span">
                     <h2 class="head-20Med">Subscription Plans</h2>
                   </div>
-                  <div class="row" style="align-items: center">
+                  <div class="row">
                     <!-- Plan 1 -->
-                    <div class="col-md-4 col-sm-12 col-12 mb-4">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
                       <div class="price_plans sbsp-com weekly-plan">
                         <div class="ph-area">
                           <h3>Basic Plan</h3>
@@ -173,12 +173,18 @@
                               </ul>
                             </div>
                           </div>
+                          <!-- Button -->
+                          <div class="palns-btn mt-5">
+                            <button type="submit" class="mainBtn">
+                              Buy Plan
+                            </button>
+                          </div>
                         </div>
 
                       </div>
                     </div>
                     <!-- Plan 2 -->
-                    <div class="col-md-4 col-sm-12 col-12 mb-4">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
                       <div class="price_pm sbsp-com montly-plan top-plan">
                         <div class="pop-div">
                           <span>Recommended</span>
@@ -188,6 +194,7 @@
                           <p> $67 - Monthly</p>
                         </div>
                         <div class="sbp-section">
+                          <!-- Sec 1 -->
                           <div>
                             <h4 class="pb-3">Features</h4>
                             <div class="pp-inn">
@@ -347,11 +354,17 @@
                               </ul>
                             </div>
                           </div>
+                          <!-- Button -->
+                          <div class="palns-btn mt-5">
+                            <button type="submit" class="mainBtn">
+                              Buy Plan
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <!-- Plan 3 -->
-                    <div class="col-md-4 col-sm-12 col-12 mb-4">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
                       <div class="price_plans sbsp-com weekly-plan">
                         <div class="ph-area">
                           <h3>Premium+ Subscription </h3>
@@ -461,6 +474,12 @@
                                 </li>
                               </ul>
                             </div>
+                          </div>
+                          <!-- Button -->
+                          <div class="palns-btn mt-5">
+                            <button type="submit" class="mainBtn">
+                              Buy Plan
+                            </button>
                           </div>
                         </div>
 
