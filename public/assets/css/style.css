@@ -760,7 +760,7 @@ h1 {
 }
 .comm-counts {
     border-radius: 10px;
-    padding: 30px;
+    padding: 10px 20px;
 }
 .t-comp {
     background: var(--pinkColor);
@@ -778,7 +778,12 @@ h1 {
     display: flex;
     align-items: center;
     gap: 20px;
-    justify-content: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+.dc_inn img {
+    width: 45px;
+    height: 45px;
 }
 .count-content h5 {
     padding: 0 0 5px 0;
