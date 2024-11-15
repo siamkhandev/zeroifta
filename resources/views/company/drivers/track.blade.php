@@ -9,24 +9,24 @@
             <div class="col-md-4">
     <div class="card shadow-lg p-4 mb-4 bg-white rounded" style="margin-top: 20px;">
         <div class="card-body">
-            <h4 class="card-title text-center mb-4">User Info</h4>
+
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <th class="text-primary">Name:</th>
+                            <th class="text-primary">Driver Name</th>
                             <td>{{ $userName }}</td>
                         </tr>
                         <tr>
-                            <th class="text-primary">Trip Start:</th>
+                            <th class="text-primary">Trip Start Date</th>
                             <td>{{ $trip->created_at }}</td>
                         </tr>
                         <tr>
-                            <th class="text-primary">Trip Starting Point:</th>
+                            <th class="text-primary">Trip Starting Point</th>
                             <td>{{ $startAddress }}</td>
                         </tr>
                         <tr>
-                            <th class="text-primary">Trip Ending Point:</th>
+                            <th class="text-primary">Trip Ending Point</th>
                             <td>{{ $endAddress }}</td>
                         </tr>
                     </tbody>
