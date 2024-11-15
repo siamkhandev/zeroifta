@@ -28,8 +28,8 @@ class VehiclesController extends Controller
             'vehicle_number' => 'required',
             'odometer_reading' => 'required',
             'mpg' => 'required',
-            'image' => 'required',
-            
+           'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
+
         ]);
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
@@ -59,7 +59,7 @@ class VehiclesController extends Controller
             'odometer_reading' => 'required',
             'mpg' => 'required',
 
-            
+
         ]);
         $vehicle = Vehicle::find($id);
         $vehicle->vehicle_type = $request->vehicle_type;

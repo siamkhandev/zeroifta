@@ -25,7 +25,7 @@ class UsersController extends Controller
             'phone' => 'required|string|max:20',
             'dot' => 'required|string|max:255',
             'mc' => 'required|string|max:255',
-            
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:1024',
         ]);
         $user = User::whereId(Auth::id())->first();
         $user->name = $request->name;
@@ -71,7 +71,7 @@ class UsersController extends Controller
     {
         // Define the path to the .dat file in the public folder
         $filePath = public_path('output.dat');
-        
+
         // Check if the file exists
         if (!File::exists($filePath)) {
             return back()->with('error', 'File not found.');
@@ -84,7 +84,7 @@ class UsersController extends Controller
         $lines = explode(PHP_EOL, $contents);
 
         foreach ($lines as $line) {
-           
+
             $data = str_getcsv($line); // Adjust according to your file structure
             dd($data);
             if (count($data) > 1) { // To ensure non-empty lines

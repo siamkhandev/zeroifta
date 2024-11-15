@@ -71,6 +71,7 @@ class DriversController extends Controller
             'phone' => 'required|string|max:20',
             'dot' => 'required|string|max:255',
             'mc' => 'required|string|max:255',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:1024',
         ]);
         $driver = User::find($id);
         $driver->name = $request->name;
@@ -119,8 +120,8 @@ class DriversController extends Controller
         }catch(\Exception $e){
             return redirect('drivers/all')->with('error', $e->getMessage());
         }
-       
 
-        
+
+
     }
 }
