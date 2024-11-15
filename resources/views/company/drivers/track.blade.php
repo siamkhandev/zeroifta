@@ -4,7 +4,7 @@
 <div class="dashbord-inner">
     <div class="container mt-5">
         <!-- Pills Navigation -->
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="pills-live-tab" data-toggle="pill" href="#pills-live" role="tab" aria-controls="pills-live" aria-selected="true">Live</a>
             </li>
@@ -14,7 +14,7 @@
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</a>
             </li>
-        </ul>
+        </ul> -->
 
         <!-- Pills Content -->
         <div class="tab-content" id="pills-tabContent">
@@ -86,35 +86,38 @@ function initMap() {
     });
 
     $.get('/api/get-fuel-stations/' + userId, function(response) {
-        if (response.status == 200) {
-            const fuelStationIcon = {
-                url: 'https://maps.google.com/mapfiles/kml/shapes/gas_stations.png',
-                scaledSize: new google.maps.Size(32, 32)
-            };
-
-            response.data.forEach(station => {
-                const marker = new google.maps.Marker({
-                    position: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                    map: map,
-                    icon: fuelStationIcon,
-                    title: station.name
-                });
-
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `<strong>${station.name}</strong>`
-                });
-
-                marker.addListener('mouseover', () => {
-                    infoWindow.open(map, marker);
-                });
-                marker.addListener('mouseout', () => {
-                    infoWindow.close();
-                });
+    if (response.status == 200) {
+        response.data.forEach(station => {
+            // Create a blue circle for each fuel station
+            const stationCircle = new google.maps.Circle({
+                strokeColor: "#0000FF",  // Blue color
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#0000FF",  // Blue color fill
+                fillOpacity: 0.35,
+                map: map,
+                center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
+                radius: 500 // Radius in meters
             });
-        } else {
-            alert(response.message);
-        }
-    });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<strong>${station.name}</strong>`
+            });
+
+            // Add event listeners for mouseover and mouseout to show and hide info window
+            google.maps.event.addListener(stationCircle, 'mouseover', function() {
+                infoWindow.setPosition(stationCircle.getCenter());
+                infoWindow.open(map);
+            });
+
+            google.maps.event.addListener(stationCircle, 'mouseout', function() {
+                infoWindow.close();
+            });
+        });
+    } else {
+        alert(response.message);
+    }
+});
 }
 
 function drawRoute(start, end) {
