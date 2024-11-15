@@ -7,29 +7,36 @@
         <div class="row">
             <!-- Left Card with User and Trip Info -->
             <div class="col-md-4">
-                <div class="card shadow-lg p-4 mb-4 bg-white rounded" style="margin-top: 20px;">
-                    <div class="card-body">
-                        <h4 class="card-title text-center mb-4">User Info</h4>
-                        <div class="user-info-card">
-                            <div class="user-info">
-                                <strong class="text-primary">Name:</strong> <span>{{ $userName }}</span>
-                            </div>
-                            <div class="user-info">
-                                <strong class="text-primary">Trip Start:</strong> <span>{{ $trip->created_at }}</span>
-                            </div>
-                            <div class="user-info">
-                                <strong class="text-primary">Trip Starting Point:</strong> <span>{{$startAddress}}</span>
-                            </div>
-                            <div class="user-info">
-                                <strong class="text-primary">Trip Ending Point:</strong> <span>{{$endAddress}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Additional Cards or Content can go here -->
-
+    <div class="card shadow-lg p-4 mb-4 bg-white rounded" style="margin-top: 20px;">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">User Info</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th class="text-primary">Name:</th>
+                            <td>{{ $userName }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-primary">Trip Start:</th>
+                            <td>{{ $trip->created_at }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-primary">Trip Starting Point:</th>
+                            <td>{{ $startAddress }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-primary">Trip Ending Point:</th>
+                            <td>{{ $endAddress }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
+    </div>
+
+    <!-- Additional Cards or Content can go here -->
+</div>
 
             <!-- Right Map Container -->
             <div class="col-md-8">
