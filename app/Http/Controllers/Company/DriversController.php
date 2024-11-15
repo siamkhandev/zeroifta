@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 
@@ -111,6 +112,22 @@ class DriversController extends Controller
         $startAddress = $this->getLocationFromCoordinates($trip->start_lat, $trip->start_lng);
         $endAddress = $this->getLocationFromCoordinates($trip->end_lat, $trip->end_lng);
         return view('company.drivers.track',get_defined_vars());
+    }
+    private function getLocationFromCoordinates($lat, $lng)
+    {
+        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+            'latlng' => "$lat,$lng",
+            'key' => 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg' // Your Google Maps API Key
+        ]);
+
+        $data = $response->json();
+
+        // Check if the response contains results
+        if (isset($data['results'][0])) {
+            return $data['results'][0]['formatted_address'];
+        } else {
+            return 'Address not found';
+        }
     }
     public function importForm()
     {
