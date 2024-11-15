@@ -3,47 +3,40 @@
 @section('content')
 <div class="dashbord-inner">
     <div class="container mt-5">
-        <!-- Pills Navigation -->
-        <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="pills-live-tab" data-toggle="pill" href="#pills-live" role="tab" aria-controls="pills-live" aria-selected="true">Live</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="pills-history-tab" data-toggle="pill" href="#pills-history" role="tab" aria-controls="pills-history" aria-selected="false">History</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</a>
-            </li>
-        </ul> -->
+        <div class="row">
+            <!-- Left Card with User and Trip Info -->
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3 mb-4 bg-white rounded">
+                    <div class="card-body">
+                        <h4 class="card-title">User Info</h4>
+                        <p><strong>Name:</strong> {{ $userName }}</p>
+                        <p><strong>Trip Start:</strong> {{ $tripStartTime }}</p>
+                        <p><strong>Trip End:</strong> {{ $tripEndTime }}</p>
+                        <p><strong>Distance:</strong> {{ $tripDistance }} km</p>
+                    </div>
+                </div>
 
-        <!-- Pills Content -->
-        <div class="tab-content" id="pills-tabContent">
-            <!-- Live Tab Content -->
-            <div class="tab-pane fade show active" id="pills-live" role="tabpanel" aria-labelledby="pills-live-tab">
+                <!-- More cards or content can go here -->
+
+            </div>
+
+            <!-- Right Map Container -->
+            <div class="col-md-8">
                 <div id="mapContainer">
                     <div id="map" style="width: 100%; height: 500px;"></div>
                 </div>
             </div>
-
-            <!-- History Tab Content -->
-            <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
-                <h4>History coming soon.</h4>
-            </div>
-
-            <!-- Profile Tab Content -->
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <h4>Profile coming soon.</h4>
-            </div>
         </div>
     </div>
 </div>
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
 
-    <script>
-       let map, routeRenderer, userMarker, startMarker, endMarker;
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
+
+<script>
+let map, routeRenderer, userMarker, startMarker, endMarker;
 const socket = io('http://zeroifta.alnairtech.com:3000');  // Socket.io server URL
 const userId = {{ $userId }};  // Pass the userId from blade
 
@@ -86,48 +79,47 @@ function initMap() {
     });
 
     $.get('/api/get-fuel-stations/' + userId, function(response) {
-    if (response.status == 200) {
-        response.data.forEach(station => {
-            // Create a smaller blue circle for each fuel station
-            const stationCircle = new google.maps.Circle({
-                strokeColor: "#0000FF",  // Blue color
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: "#0000FF",  // Blue color fill
-                fillOpacity: 1,
-                map: map,
-                center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                radius: 100 // Radius in meters
+        if (response.status == 200) {
+            response.data.forEach(station => {
+                // Create a smaller blue circle for each fuel station
+                const stationCircle = new google.maps.Circle({
+                    strokeColor: "#0000FF",  // Blue color
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#0000FF",  // Blue color fill
+                    fillOpacity: 1,
+                    map: map,
+                    center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
+                    radius: 100 // Radius in meters
+                });
+
+                // Create the InfoWindow with custom styling for blue background
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="background-color: #0000FF; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
+                            <strong>${station.name}</strong>
+                        </div>
+                    `,
+                    disableAutoPan: true // To prevent map from panning when opening the InfoWindow
+                });
+
+                google.maps.event.addListener(stationCircle, 'mouseover', function() {
+                    infoWindow.setPosition(stationCircle.getCenter());
+                    infoWindow.open(map);
+
+                    // Hide the default close button by targeting the class
+                    const closeButton = document.querySelectorAll('.gm-ui-hover-effect');
+                    closeButton.forEach(button => button.style.display = 'none');
+                });
+
+                google.maps.event.addListener(stationCircle, 'mouseout', function() {
+                    infoWindow.close();
+                });
             });
-
-            // Create the InfoWindow with custom styling for blue background
-            const infoWindow = new google.maps.InfoWindow({
-                content: `
-                    <div style="background-color: #0000FF; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
-                        <strong>${station.name}</strong>
-                    </div>
-                `,
-                disableAutoPan: true // To prevent map from panning when opening the InfoWindow
-            });
-
-            google.maps.event.addListener(stationCircle, 'mouseover', function() {
-                infoWindow.setPosition(stationCircle.getCenter());
-                infoWindow.open(map);
-
-                // Hide the default close button by targeting the class
-                const closeButton = document.querySelectorAll('.gm-ui-hover-effect');
-                closeButton.forEach(button => button.style.display = 'none');
-            });
-
-            google.maps.event.addListener(stationCircle, 'mouseout', function() {
-                infoWindow.close();
-            });
-        });
-    } else {
-        alert(response.message);
-    }
-});
-
+        } else {
+            alert(response.message);
+        }
+    });
 }
 
 function drawRoute(start, end) {
@@ -176,5 +168,5 @@ $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
 $(document).ready(function() {
     initMap();
 });
-    </script>
+</script>
 @endsection
