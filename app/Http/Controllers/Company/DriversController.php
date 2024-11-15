@@ -105,7 +105,7 @@ class DriversController extends Controller
     public function track($id)
     {
         $userName = User::find($id)->name;
-        $trip = Trip::where('driver_id', $id)->get();
+        $trip = Trip::where('user_id', $id)->first();
         return view('company.drivers.track',get_defined_vars());
     }
     public function importForm()
