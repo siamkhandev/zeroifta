@@ -1,13 +1,13 @@
 @extends('layouts.new_main')
-@section('title', 'Tracking ' . $userName . ' Location')  <!-- Set the dynamic page title here -->
+
 @section('content')
 
 <div class="dashbord-inner">
-
+        <h3>Tracking {{ $userName }} Location</h3>
         <div class="row">
             <!-- Left Card with User and Trip Info -->
             <div class="col-md-4">
-                <div class="card shadow-lg p-4 mb-4 bg-white rounded">
+                <div class="card shadow-lg p-4 mb-4 bg-white rounded" style="margin-top: 20px;">
                     <div class="card-body">
                         <h4 class="card-title text-center mb-4">User Info</h4>
                         <div class="user-info-card">
