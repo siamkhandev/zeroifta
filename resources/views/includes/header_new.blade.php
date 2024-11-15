@@ -43,7 +43,9 @@
           @elseif(Request::is('plans*'))
           <span class="bc-text">Pages / Subscriptions</span>
           <h1 class="head-1">Subscriptions</h1>
-
+          @elseif(Request::is('contactus/all*'))
+          <span class="bc-text">Pages / Contact Forms</span>
+          <h1 class="head-1">Contact Forms</h1>
           @elseif(Request::is('company/contactus/all'))
           <span class="bc-text">Pages / Contact Us</span>
           <h1 class="head-1">Contact Us</h1>
