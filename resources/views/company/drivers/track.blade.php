@@ -18,10 +18,10 @@
                                 <strong class="text-primary">Trip Start:</strong> <span>{{ $trip->created_at }}</span>
                             </div>
                             <div class="user-info">
-                                <strong class="text-primary">Trip Starting Point:</strong> <span>Test</span>
+                                <strong class="text-primary">Trip Starting Point:</strong> <span>{{$startAddress}}</span>
                             </div>
                             <div class="user-info">
-                                <strong class="text-primary">Trip Ending Point:</strong> <span>Test</span>
+                                <strong class="text-primary">Trip Ending Point:</strong> <span>{{$endAddress}}</span>
                             </div>
                         </div>
                     </div>

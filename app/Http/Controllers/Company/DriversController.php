@@ -107,6 +107,9 @@ class DriversController extends Controller
         $userName = User::find($id)->name;
         $trip = Trip::where('user_id', $id)->latest()->first();
         $userId = $id;
+        $geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json";
+        $startAddress = $this->getLocationFromCoordinates($trip->start_lat, $trip->start_lng);
+        $endAddress = $this->getLocationFromCoordinates($trip->end_lat, $trip->end_lng);
         return view('company.drivers.track',get_defined_vars());
     }
     public function importForm()
