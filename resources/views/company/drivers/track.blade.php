@@ -6,17 +6,27 @@
         <div class="row">
             <!-- Left Card with User and Trip Info -->
             <div class="col-md-4">
-                <div class="card shadow-sm p-3 mb-4 bg-white rounded">
+                <div class="card shadow-lg p-4 mb-4 bg-white rounded">
                     <div class="card-body">
-                        <h4 class="card-title">User Info</h4>
-                        <p><strong>Name:</strong> {{ $userName }}</p>
-                        <p><strong>Trip Start:</strong> {{ $trip->created_at }}</p>
-                        <p><strong>Trip Starting point:</strong>Test</p>
-                        <p><strong>Trip Ending point:</strong> Test</p>
+                        <h4 class="card-title text-center mb-4">User Info</h4>
+                        <div class="user-info-card">
+                            <div class="user-info">
+                                <strong class="text-primary">Name:</strong> <span>{{ $userName }}</span>
+                            </div>
+                            <div class="user-info">
+                                <strong class="text-primary">Trip Start:</strong> <span>{{ $trip->created_at }}</span>
+                            </div>
+                            <div class="user-info">
+                                <strong class="text-primary">Trip Starting Point:</strong> <span>Test</span>
+                            </div>
+                            <div class="user-info">
+                                <strong class="text-primary">Trip Ending Point:</strong> <span>Test</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- More cards or content can go here -->
+                <!-- Additional Cards or Content can go here -->
 
             </div>
 
@@ -169,4 +179,46 @@ $(document).ready(function() {
     initMap();
 });
 </script>
+
+<!-- Additional Styles -->
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info-card {
+        background-color: #f7f7f7;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+        margin-bottom: 15px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .user-info strong {
+        color: #007bff;
+    }
+
+    .user-info span {
+        color: #333;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    #mapContainer {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+</style>
 @endsection
