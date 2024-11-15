@@ -106,13 +106,18 @@ function initMap() {
                     <div style="background-color: #0000FF; color: white; padding: 10px; border-radius: 5px; text-align: center;">
                         <strong>${station.name}</strong>
                     </div>
-                `
+                `,
+                disableAutoPan: true // To prevent map from panning when opening the InfoWindow
             });
 
             // Add event listeners for mouseover and mouseout to show and hide info window
             google.maps.event.addListener(stationCircle, 'mouseover', function() {
                 infoWindow.setPosition(stationCircle.getCenter());
                 infoWindow.open(map);
+
+                // Hide the close button by targeting the class
+                const closeButton = document.querySelectorAll('.gm-ui-hover-effect');
+                closeButton.forEach(button => button.style.display = 'none');
             });
 
             google.maps.event.addListener(stationCircle, 'mouseout', function() {
