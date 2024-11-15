@@ -1,6 +1,7 @@
 @extends('layouts.new_main')
-
+@section('title', 'Tracking ' . $userName . ' Location')  <!-- Set the dynamic page title here -->
 @section('content')
+
 <div class="dashbord-inner">
 
         <div class="row">
