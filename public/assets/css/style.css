@@ -260,6 +260,13 @@ body {
     gap: 10px;
     justify-content: end;
 }
+.form-control:focus {
+    background: none;
+    border: none;
+}
+.dark-mode .form-control:focus {
+    color: #979797;
+}
 /* Pegination */
 .peg-main {
     display: flex;
@@ -340,6 +347,8 @@ body {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     top: 45px;
+    left: -25px;
+    box-shadow: var(--shadow1);
 }
 
 /* Links inside the dropdown */
@@ -349,6 +358,9 @@ body {
     text-decoration: none;
     display: block;
     font-size: 14px;
+}
+.dark-mode .language-dropdown .dropdown-content a {
+    background: #17153a;
 }
 
 /* Change color of dropdown links on hover */
@@ -365,6 +377,23 @@ body {
     text-decoration: none;
     font-size: 14px;
     padding: 0 0 0 3px;
+}
+.dark-mode .modal-content {
+    background: #0d0c20;
+    box-shadow: 0px 1px 6px 0px rgba(137, 137, 137, 0.5);
+}
+.modal-header {
+    justify-content: end !important;
+}
+.closeBtn {
+    border: none;
+    background: none;
+}
+.closeBtn svg path {
+    fill: #333333;
+}
+.dark-mode .closeBtn svg path {
+    fill: #ffffff;
 }
 /* Modal Common Css */
 .modal-header {
@@ -857,9 +886,7 @@ h1 {
     /* border: 1px solid var(--tableBorder); */
     border-radius: 10px;
 }
-tbody {
-    border: 1px solid var(--tableBorder);
-}
+
 .table-comm th {
     background: var(--tableHead);
     color: #ffffff;
@@ -872,6 +899,8 @@ tbody {
 .data_table
     .d-md-flex.justify-content-between.align-items-center.col-12.dt-layout-full.col-md {
     padding: 0;
+    border: 1px solid var(--tableBorder);
+    border-radius: 10px;
 }
 .dark-mode table td {
     background: transparent;
@@ -879,6 +908,9 @@ tbody {
 .dark-mode div.dt-container div.dt-search input {
     background: transparent;
     border-color: rgb(89, 88, 88);
+}
+.dark-mode .dt-search input {
+    color: #979797;
 }
 .dark-mode .dt-length label {
     color: #979797;
