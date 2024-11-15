@@ -10,9 +10,9 @@
                     <div class="card-body">
                         <h4 class="card-title">User Info</h4>
                         <p><strong>Name:</strong> {{ $userName }}</p>
-                        <p><strong>Trip Start:</strong> {{ $tripStartTime }}</p>
-                        <p><strong>Trip End:</strong> {{ $tripEndTime }}</p>
-                        <p><strong>Distance:</strong> {{ $tripDistance }} km</p>
+                        <p><strong>Trip Start:</strong> {{ $trip->created_at }}</p>
+                        <p><strong>Trip Starting point:</strong>Test</p>
+                        <p><strong>Trip Ending point:</strong> Test</p>
                     </div>
                 </div>
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\DriversImport;
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -103,7 +104,9 @@ class DriversController extends Controller
     }
     public function track($id)
     {
-        return view('company.drivers.track', ['userId' => $id]);
+        $userName = User::find($id)->name;
+        $trip = Trip::where('driver_id', $id)->get();
+        return view('company.drivers.track',get_defined_vars());
     }
     public function importForm()
     {
