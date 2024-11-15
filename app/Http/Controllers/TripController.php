@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 class TripController extends Controller
 {
-    
+
 
     public function store(Request $request)
     {
@@ -29,13 +29,13 @@ class TripController extends Controller
             return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => (object)[]]);
         }
         $validatedData['status']='active';
-        
-    
+
+
         $trip = Trip::create($validatedData);
-        
+
         // Step 4: Find and save gas stations along the route
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
-       
+
         $ftpData = $this->loadAndParseFTPData();
        if($gasStations){
         foreach ($gasStations as $station) {
@@ -55,7 +55,7 @@ class TripController extends Controller
             $storedStations[] = $fuelStation;
         }
        }
-        
+
 
         return response()->json(['status' => 200, 'message' => 'Trip and gas stations stored successfully','data'    => [
             'trip'          => $trip,
@@ -66,17 +66,17 @@ class TripController extends Controller
     {
         return Cache::remember('parsed_ftp_data', 3600, function () {
             $filePath = 'EFSLLCpricing';
-    
+
             // Connect to the FTP disk
             $ftpDisk = Storage::disk('ftp');
             if (!$ftpDisk->exists($filePath)) {
                 throw new \Exception("FTP file not found.");
             }
-    
+
             $fileContent = $ftpDisk->get($filePath);
             $rows = explode("\n", trim($fileContent));
             $parsedData = [];
-    
+
             foreach ($rows as $line) {
                 $row = explode('|', $line);
                 if (isset($row[8], $row[9])) {
@@ -85,16 +85,16 @@ class TripController extends Controller
                     $parsedData[$lat][$lng] = ['price' => $row[11] ?? 0.00];
                 }
             }
-    
+
             return $parsedData;
         });
     }
     private function findGasStations($startLat, $startLng, $endLat, $endLng)
     {
         $client = new Client();
-        $radius = 2000; // Search radius of 500 meters
+        $radius = 1000; // Search radius of 500 meters
         $distance = $this->calculateDistance($startLat, $startLng, $endLat, $endLng);
-        
+
         // Calculate the number of API requests dynamically based on route length
         $maxRequests = max(5, (int)($distance / 5)); // 1 request per 5 km, with a minimum of 5 requests
         $epsilon = 0.001; // Tolerance for RDP simplification (smaller values retain more points)
@@ -122,7 +122,7 @@ class TripController extends Controller
                     'key' => 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'
                 ]
             ]);
-        
+
             $results = json_decode($response->getBody(), true)['results'];
             foreach ($results as $result) {
                 $gasStations[] = [
@@ -249,12 +249,12 @@ class TripController extends Controller
 
         // Connect to the FTP disk
         $ftpDisk = Storage::disk('ftp');
-        
+
         // Check if the file exists
         if (!$ftpDisk->exists($filePath)) {
             return "File not found.";
         }
-        
+
         // Get the file content
         $fileContent = $ftpDisk->get($filePath);
 
@@ -264,7 +264,7 @@ class TripController extends Controller
         // Loop through the lines to find matching coordinates
         foreach ($rows as $line) {
             $row = explode('|', $line); // Split by the pipe character
-            
+
             // Check if the line contains latitude and longitude data
             // Assuming latitude is at index 8 and longitude is at index 9
             if (isset($row[8], $row[9]) && trim($row[8]) == $latitude && trim($row[9]) == $longitude) {
