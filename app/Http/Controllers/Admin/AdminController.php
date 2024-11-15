@@ -19,6 +19,9 @@ class AdminController extends Controller
         {
             $data = User::where('role','company')->take(10)->latest()->get();
         }else{
+            if(Auth::user()->is_subscribed==0){
+                return redirect('subscription');
+            }
             $data = CompanyDriver::with('driver','company')->where('company_id',Auth::id())->take(10)->latest()->get();
         }
         return view('admin.index',get_defined_vars());
@@ -96,5 +99,14 @@ class AdminController extends Controller
     public function subscription()
     {
         return view('subscription');
+    }
+    public function buy()
+    {
+        return view('buy');
+    }
+    public function pay()
+    {
+        User::whereId(Auth::id())->update(['is_subscribed'=>1]);
+        return redirect('/');
     }
 }

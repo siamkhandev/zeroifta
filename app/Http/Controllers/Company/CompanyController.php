@@ -34,7 +34,9 @@ class CompanyController extends Controller
         $company->role="company";
         $company->phone=$request->phone;
         $company->save();
-        return redirect('login')->withSuccess('Account created successfully. Now you can login.');
+        Auth::loginUsingId($company->id);
+        return redirect('subscription');
+        //return redirect('login')->withSuccess('Account created successfully. Now you can login.');
 
     }
 
