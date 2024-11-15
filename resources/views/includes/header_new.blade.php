@@ -200,7 +200,7 @@
                 @if(Auth::user()->image)
                 <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="ZeroIfta Image" onclick="toggleDropdown()" style="height: 30px;border-radius:100%" />
                 @else
-                <img src="{{asset('assets_new/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
+                <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
                 @endif
                 <!-- <img src="user_image_url.jpg" onclick="toggleDropdown()" class="dropbtn" alt="User"> -->
                 <div id="myDropdown" class="dropdown-content">
