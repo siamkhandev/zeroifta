@@ -317,7 +317,55 @@ body {
 .language-modal .buttons {
     justify-content: center;
 }
+/* Style the dropdown button */
+.language-dropdown .dropbtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
 
+/* Dropdown container - positioned relative to place the dropdown content correctly */
+.language-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown content (hidden by default) */
+.language-dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    top: 45px;
+}
+
+/* Links inside the dropdown */
+.language-dropdown .dropdown-content a {
+    color: #979797;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+}
+
+/* Change color of dropdown links on hover */
+.language-dropdown .dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu on click */
+.language-dropdown .show {
+    display: block;
+}
+.lang-text {
+    color: #979797;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 0 0 0 3px;
+}
 /* Modal Common Css */
 .modal-header {
     border-bottom: none;
@@ -633,7 +681,7 @@ Main Dashboard
     min-width: 160px;
     box-shadow: var(--shadow1);
     z-index: 1;
-    top: 52px;
+    top: 45px;
     border-radius: 5px;
     padding: 20px 0;
 }
@@ -641,6 +689,7 @@ Main Dashboard
     color: #979797;
     text-decoration: none;
     display: block;
+    font-size: 14px;
 }
 .up-img .dropdown-content svg path {
     fill: #092e75;
