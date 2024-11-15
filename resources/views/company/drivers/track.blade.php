@@ -88,7 +88,7 @@ function initMap() {
     $.get('/api/get-fuel-stations/' + userId, function(response) {
     if (response.status == 200) {
         response.data.forEach(station => {
-            // Create a blue circle for each fuel station
+            // Create a smaller blue circle for each fuel station
             const stationCircle = new google.maps.Circle({
                 strokeColor: "#0000FF",  // Blue color
                 strokeOpacity: 0.8,
@@ -97,7 +97,7 @@ function initMap() {
                 fillOpacity: 0.35,
                 map: map,
                 center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                radius: 500 // Radius in meters
+                radius: 100 // Decrease radius to make the circle smaller (in meters)
             });
 
             const infoWindow = new google.maps.InfoWindow({
@@ -118,6 +118,7 @@ function initMap() {
         alert(response.message);
     }
 });
+
 }
 
 function drawRoute(start, end) {
