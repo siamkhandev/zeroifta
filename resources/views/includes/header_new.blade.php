@@ -47,6 +47,9 @@
           @elseif(Request::is('company/contactus/all'))
           <span class="bc-text">Pages / Contact Us</span>
           <h1 class="head-1">Contact Us</h1>
+          @elseif(Request::is('drivers/create'))
+          <span class="bc-text">Pages / Create Driver</span>
+          <h1 class="head-1">Create Driver</h1>
 
           @else
           @endif
