@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="{{ auth()->user()->theme }}">
 
 <head>
   <!-- Required meta tags -->
@@ -22,7 +22,7 @@
   <title>ZeroIfta</title>
 </head>
 
-<body>
+<body class="{{Auth::user()->theme=='dark'?'dark-mode':''}}" >
   <div class="main">
     <div class="dash-main">
       @if(Auth::user()->role=='admin')

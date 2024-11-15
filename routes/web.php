@@ -12,6 +12,7 @@ use App\Http\Controllers\Company\DriverVehiclesController;
 use App\Http\Controllers\Company\VehiclesController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ThemeController;
 use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::post('login',[AdminController::class,'login'])->name('login');
 Route::get('/',[AdminController::class,'index'])->name('dashboard')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/update-theme', [ThemeController::class, 'update'])->name('user.theme.update');
     Route::get('profile',[UsersController::class,'profile'])->name('profile');
     Route::post('profile/update',[UsersController::class,'profileUpdate'])->name('profile.update');
     Route::get('password/change',[UsersController::class,'changePasswordUpdate'])->name('password.change');
