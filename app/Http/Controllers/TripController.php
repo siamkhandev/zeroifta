@@ -92,7 +92,7 @@ class TripController extends Controller
     private function findGasStations($startLat, $startLng, $endLat, $endLng)
     {
         $client = new Client();
-        $radius = 1000; // Search radius of 500 meters
+        $radius = 1000; // Search radius of 1000 meters
         $distance = $this->calculateDistance($startLat, $startLng, $endLat, $endLng);
 
         // Calculate the number of API requests dynamically based on route length
@@ -101,10 +101,10 @@ class TripController extends Controller
 
         $gasStations = [];
 
-        // Generate initial route points
-        $routePoints = $this->getRoutePoints($startLat, $startLng, $endLat, $endLng, 100); // Generate more points initially
+        // Generate initial route points (more points for better accuracy)
+        $routePoints = $this->getRoutePoints($startLat, $startLng, $endLat, $endLng, 20); // Increase number of points
 
-        // Simplify route points using RDP
+        // Simplify route points using RDP (optional, but helps to reduce unnecessary points)
         $simplifiedPoints = $this->ramerDouglasPeucker($routePoints, $epsilon);
 
         // Limit checkpoints based on calculated maxRequests
@@ -113,6 +113,7 @@ class TripController extends Controller
         // Google Places API URL
         $url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 
+        // Loop through each checkpoint and find gas stations
         foreach ($checkpoints as $point) {
             $response = $client->get($url, [
                 'query' => [
@@ -133,7 +134,7 @@ class TripController extends Controller
             }
         }
 
-        // Remove duplicate stations
+        // Remove duplicate stations (same station with the same latitude/longitude)
         $uniqueGasStations = collect($gasStations)->unique(function ($station) {
             return $station['name'] . $station['latitude'] . $station['longitude'];
         })->values()->all();
