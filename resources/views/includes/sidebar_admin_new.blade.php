@@ -144,10 +144,10 @@
           <p class="head-14Med">Light/Dark</p>
         </div>
         <div>
-          <label class="switch">
-            <input type="checkbox" id="themeCheckbox" />
-            <span class="slider round"></span>
-          </label>
+        <label class="switch">
+    <input type="checkbox" id="themeCheckbox" {{ auth()->user()->theme === 'dark' ? 'checked' : '' }} />
+    <span class="slider round"></span>
+</label>
         </div>
       </div>
     </div>

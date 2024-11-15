@@ -43,7 +43,9 @@
           @elseif(Request::is('plans*'))
           <span class="bc-text">Pages / Subscriptions</span>
           <h1 class="head-1">Subscriptions</h1>
-
+          @elseif(Request::is('contactus/all*'))
+          <span class="bc-text">Pages / Contact Forms</span>
+          <h1 class="head-1">Contact Forms</h1>
           @elseif(Request::is('company/contactus/all'))
           <span class="bc-text">Pages / Contact Us</span>
           <h1 class="head-1">Contact Us</h1>
@@ -162,7 +164,7 @@
                 @if(Auth::user()->image)
                 <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="ZeroIfta Image" onclick="toggleDropdown()" style="height: 30px;border-radius:100%" />
                 @else
-                <img src="{{asset('assets_new/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
+                <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
                 @endif
                 <!-- <img src="user_image_url.jpg" onclick="toggleDropdown()" class="dropbtn" alt="User"> -->
                 <div id="myDropdown" class="dropdown-content">

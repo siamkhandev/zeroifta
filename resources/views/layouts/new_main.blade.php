@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="{{ auth()->user()->theme }}">
 
 <head>
   <!-- Required meta tags -->
@@ -7,18 +7,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Bootstrap CSS -->
-  <link
+  <!-- <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
     rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-    crossorigin="anonymous" />
+    crossorigin="anonymous" /> -->
+  <!-- Data Table Css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href=" https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+
   <!-- Custom Css -->
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
   <link rel="icon" href="{{asset('assets/img/fav-icon.png')}}">
   <title>ZeroIfta</title>
 </head>
 
-<body>
+<body class="{{Auth::user()->theme=='dark'?'dark-mode':''}}" >
   <div class="main">
     <div class="dash-main">
       @if(Auth::user()->role=='admin')
@@ -183,6 +187,20 @@
       }
     }
   </script>
+
+  <!-- Data Table Script -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+  <script>
+    new DataTable('#example');
+  </script>
+
+
+
+
+
 
   <!-- Option 2: Separate Popper and Bootstrap JS -->
   <!--

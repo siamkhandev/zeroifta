@@ -13,9 +13,9 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
     crossorigin="anonymous" />
   <!-- Custom Css -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
   <!-- Standard Favicon -->
-  <link rel="icon" href="assets/img/fav-icon.png">
+  <link rel="icon" href="{{asset('assets/img/fav-icon.png')}}">
 
   <title>ZeroIfta</title>
 </head>
@@ -74,7 +74,7 @@
                   </svg>
                 </div>
                 <div class="up-img">
-                  <img src="assets/img/user-img.png" alt="ZeroIfta Image">
+                  <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image">
                 </div>
                 <div class="mob-menu">
                   <div id="hamburgerIcon" class="hamburger-icon">
@@ -175,9 +175,9 @@
                           </div>
                           <!-- Button -->
                           <div class="palns-btn mt-5">
-                            <button type="submit" class="mainBtn">
+                            <a href="{{route('buy')}}" class="mainBtn">
                               Buy Plan
-                            </button>
+                            </a>
                           </div>
                         </div>
 
@@ -356,9 +356,9 @@
                           </div>
                           <!-- Button -->
                           <div class="palns-btn mt-5">
-                            <button type="submit" class="mainBtn">
+                            <a href="{{route('buy')}}" class="mainBtn">
                               Buy Plan
-                            </button>
+</a>
                           </div>
                         </div>
                       </div>
@@ -477,9 +477,9 @@
                           </div>
                           <!-- Button -->
                           <div class="palns-btn mt-5">
-                            <button type="submit" class="mainBtn">
+                          <a href="{{route('buy')}}" class="mainBtn">
                               Buy Plan
-                            </button>
+</a>
                           </div>
                         </div>
 
