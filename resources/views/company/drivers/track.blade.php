@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="dashbord-inner">
-    <div class="container mt-5">
+
         <div class="row">
             <!-- Left Card with User and Trip Info -->
             <div class="col-md-4">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 </div>
 
 <!-- Scripts -->
