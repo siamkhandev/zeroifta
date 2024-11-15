@@ -97,11 +97,16 @@ function initMap() {
                 fillOpacity: 0.35,
                 map: map,
                 center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                radius: 100 // Decrease radius to make the circle smaller (in meters)
+                radius: 100 // Radius in meters
             });
 
+            // Create the InfoWindow with custom styling for blue background
             const infoWindow = new google.maps.InfoWindow({
-                content: `<strong>${station.name}</strong>`
+                content: `
+                    <div style="background-color: #0000FF; color: white; padding: 10px; border-radius: 5px; text-align: center;">
+                        <strong>${station.name}</strong>
+                    </div>
+                `
             });
 
             // Add event listeners for mouseover and mouseout to show and hide info window
