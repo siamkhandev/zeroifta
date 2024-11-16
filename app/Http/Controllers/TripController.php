@@ -100,7 +100,7 @@ class TripController extends Controller
             'query' => [
                 'origin' => "{$startLat},{$startLng}",
                 'destination' => "{$endLat},{$endLng}",
-                'key' => 'YOUR_GOOGLE_MAPS_API_KEY',
+                'key' => 'AIzaSyDvJGv7hY5yY6vZQ2mN0L5yN6mN7yN8',
             ]
         ]);
     
