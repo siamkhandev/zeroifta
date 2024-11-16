@@ -108,7 +108,7 @@ class TripController extends Controller
         $gasStations = [];
 
         // Generate initial route points (more points for better accuracy)
-        $routePoints = $this->getRoutePoints($startLat, $startLng, $endLat, $endLng, 20); // Increase number of points
+        $routePoints = $this->getRoutePoints($startLat, $startLng, $endLat, $endLng, 100); // Increase number of points
 
         // Simplify route points using RDP (optional, but helps to reduce unnecessary points)
         $simplifiedPoints = $this->ramerDouglasPeucker($routePoints, $epsilon);
