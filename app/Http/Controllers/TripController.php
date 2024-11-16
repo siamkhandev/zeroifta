@@ -42,17 +42,21 @@ class TripController extends Controller
             $lat = number_format((float) $station['latitude'], 4);
             $lng = number_format((float) $station['longitude'], 4);
 
-            $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
-            //$price = $ftpData[$station['latitude']][$station['longitude']]['price'] ?? 0.00;
-            $fuelStation= FuelStation::create([
-                'user_id'   => $validatedData['user_id'],
-                'trip_id'   => $trip->id,
-                'name'      => $station['name'],
-                'latitude'  => $station['latitude'],
-                'longitude' => $station['longitude'],
-                'price'     => $price,
-            ]);
-            $storedStations[] = $fuelStation;
+            if (isset($ftpData[$lat][$lng])) {
+                $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
+
+                // Save the valid gas station
+                $fuelStation = FuelStation::create([
+                    'user_id'   => $validatedData['user_id'],
+                    'trip_id'   => $trip->id,
+                    'name'      => $station['name'],
+                    'latitude'  => $station['latitude'],
+                    'longitude' => $station['longitude'],
+                    'price'     => $price,
+                ]);
+                $storedStations[] = $fuelStation;
+            }
+            
         }
        }
 
