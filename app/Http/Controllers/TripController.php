@@ -45,7 +45,7 @@ class TripController extends Controller
             $lng = number_format((float) $station['longitude'], 4);
 
             //if (isset($ftpData[$lat][$lng])) {
-                $price = $ftpData[$lat][$lng] ?1.00: 0.00;
+                $price = $ftpData[$lat][$lng] ?'1.00': 0.00;
 
                 // Save the valid gas station
                 $fuelStation = FuelStation::create([
