@@ -14,6 +14,7 @@ class TripController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         // Step 1: Validate request data
         $validatedData = $request->validate([
             'user_id'   => 'required|exists:users,id',
