@@ -38,7 +38,7 @@ class TripController extends Controller
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
 
         $ftpData = $this->loadAndParseFTPData();
-        dd($ftpData[1]);
+        dd($ftpData);
        if($gasStations){
         foreach ($gasStations as $station) {
             $lat = number_format((float) $station['latitude'], 4);
@@ -120,7 +120,7 @@ class TripController extends Controller
         $url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 
         // Loop through each checkpoint and find gas stations
-        foreach ($routePoints as $point) {
+        foreach ($checkpoints  as $point) {
             $response = $client->get($url, [
                 'query' => [
                     'location' => "{$point['lat']},{$point['lng']}",
