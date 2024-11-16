@@ -38,6 +38,7 @@ class TripController extends Controller
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
 
         $ftpData = $this->loadAndParseFTPData();
+        dd($ftpData);
        if($gasStations){
         foreach ($gasStations as $station) {
             $lat = number_format((float) $station['latitude'], 4);
