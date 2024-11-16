@@ -97,7 +97,7 @@ class TripController extends Controller
     private function findGasStations($startLat, $startLng, $endLat, $endLng)
     {
         $client = new Client();
-        $radius = 2000; // Search radius of 1000 meters
+        $radius = 3000; // Search radius of 1000 meters
         $distance = $this->calculateDistance($startLat, $startLng, $endLat, $endLng);
 
         // Calculate the number of API requests dynamically based on route length
