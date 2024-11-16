@@ -42,7 +42,7 @@ class TripController extends Controller
             $lat = number_format((float) $station['latitude'], 4);
             $lng = number_format((float) $station['longitude'], 4);
 
-            if (isset($ftpData[$lat][$lng])) {
+            //if (isset($ftpData[$lat][$lng])) {
                 $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
 
                 // Save the valid gas station
@@ -55,7 +55,7 @@ class TripController extends Controller
                     'price'     => $price,
                 ]);
                 $storedStations[] = $fuelStation;
-            }
+           // }
             
         }
        }
