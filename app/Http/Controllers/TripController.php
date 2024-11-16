@@ -120,7 +120,7 @@ class TripController extends Controller
         $url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 
         // Loop through each checkpoint and find gas stations
-        foreach ($checkpoints as $point) {
+        foreach ($routePoints as $point) {
             $response = $client->get($url, [
                 'query' => [
                     'location' => "{$point['lat']},{$point['lng']}",
