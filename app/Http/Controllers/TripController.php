@@ -41,8 +41,8 @@ class TripController extends Controller
         
        if($gasStations){
         foreach ($gasStations as $station) {
-            $lat = number_format((float) $station['latitude'], 4);
-            $lng = number_format((float) $station['longitude'], 4);
+            $lat = preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) $station['latitude'],  10, '.', ''));
+            $lng = preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) $station['longitude'], 10, '.', ''));
 
             //if (isset($ftpData[$lat][$lng])) {
                 $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
