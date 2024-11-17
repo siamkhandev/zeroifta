@@ -19,7 +19,7 @@
 
 <script>
 // Define the API URL (use the correct route for your Laravel API)
-const apiUrl = '/findgas'; // Change to your API route
+const apiUrl = '/api/findgas'; // Change to your API route
 
 // Example coordinates (replace with actual start and end coordinates)
 const startLat = 37.7749;
