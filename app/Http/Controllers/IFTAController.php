@@ -141,7 +141,7 @@ class IFTAController extends Controller
         $endLat = $request->input('end_lat');
         $endLng = $request->input('end_lng');
 
-        $apiKey = 'AIzaSyD5e7ZDQ5dXe0X2e0X2e0X2e0X2e0X2e0';
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
 
         // Step 1: Get the route
         $directionsUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLat,$startLng&destination=$endLat,$endLng&mode=driving&key=$apiKey";
