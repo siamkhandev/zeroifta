@@ -44,38 +44,38 @@ fetch(apiUrl, {
     },
     body: JSON.stringify(requestData),
 })
-    .then(response => response.json())
-    .then(data => {
-        // Initialize the map
-        const map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
-            center: { lat: startLat, lng: startLng }, // You can dynamically adjust this
+.then(response => response.json()) // Parse the JSON response
+.then(data => {
+    if (data.status === 200) {
+        // Handle the matching records in the response
+        const matchingRecords = data.data;
+
+        // Example of initializing the map (assuming you've set up the map already)
+        const map = L.map('map').setView([startLat, startLng], 13); // Adjust zoom level as needed
+
+        // Add a tile layer (this is just an example; you can use your own provider)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Loop through the matching records and add markers for FTP locations
+        matchingRecords.forEach(record => {
+            const { ftp_lat, ftp_lng, price, distance } = record;
+
+            // Create a marker for each matching FTP location
+            const marker = L.marker([ftp_lat, ftp_lng]).addTo(map);
+
+            // Optional: Add a popup with price and distance information
+            marker.bindPopup(`
+                <b>Price: $${price}</b><br>
+                Distance: ${distance.toFixed(2)} meters
+            `);
         });
-
-        // Loop through the fetched data and add markers to the map
-        data.forEach(record => {
-            const { ftp_lat, ftp_lng, price } = record;
-
-            // Add marker to map for each matching FTP record
-            const marker = new google.maps.Marker({
-                position: { lat: parseFloat(ftp_lat), lng: parseFloat(ftp_lng) },
-                map: map,
-                title: `Price: $${price}`,
-            });
-
-            // Add an info window to display price when clicked
-            const infoWindow = new google.maps.InfoWindow({
-                content: `<strong>Fuel Price:</strong> $${price}`,
-            });
-
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-            });
-        });
-    })
-    .catch(error => {
-        console.error('Error fetching matching records:', error);
-    });
+    } else {
+        console.error('Error fetching data:', data.message);
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+});
 </script>
 
 </body>
