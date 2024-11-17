@@ -55,12 +55,11 @@ fetch(apiUrl, {
                         
                         // Loop through the matching records and add markers for FTP locations
                         matchingRecords.forEach(record => {
-                            console.log(record);
+                            
                             const { ftp_lat, ftp_lng, price, distance } = record;
 
                             // Validate that ftp_lat and ftp_lng are valid numbers
-                            if (typeof ftp_lat === 'number' && !isNaN(ftp_lat) &&
-                                typeof ftp_lng === 'number' && !isNaN(ftp_lng)) {
+                            
                                 
                                 // Create a marker for each matching FTP location
                                 const marker = new google.maps.Marker({
@@ -78,9 +77,7 @@ fetch(apiUrl, {
                                 marker.addListener('click', function() {
                                     infoWindow.open(map, marker);
                                 });
-                            } else {
-                                console.error('Invalid coordinates for marker:', ftp_lat, ftp_lng);
-                            }
+                            
                         });
                     } else {
                         console.error('The data field is not an array:', data.data);
