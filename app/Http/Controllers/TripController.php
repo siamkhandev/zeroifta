@@ -41,8 +41,8 @@ class TripController extends Controller
         
        if($gasStations){
         foreach ($gasStations as $station) {
-            $lat = preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) $station['latitude'],  10, '.', ''));
-            $lng = preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) $station['longitude'], 10, '.', ''));
+            $lat = number_format((float) $station['latitude'], 4);
+            $lng = number_format((float) $station['longitude'], 4);
 
             //if (isset($ftpData[$lat][$lng])) {
                 $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
@@ -86,8 +86,8 @@ class TripController extends Controller
             foreach ($rows as $line) {
                 $row = explode('|', $line);
                 if (isset($row[8], $row[9])) {
-                    $lat =  preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) trim($row[8]),  10, '.', ''));
-                    $lng =  preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) trim($row[9]),  10, '.', ''));
+                    $lat = number_format((float) trim($row[8]), 4);
+                    $lng = number_format((float) trim($row[9]), 4);
                     $parsedData[$lat][$lng] = ['price' => $row[11] ?? 0.00];
                 }
             }
@@ -134,8 +134,8 @@ class TripController extends Controller
             foreach ($results as $result) {
                 $gasStations[] = [
                     'name' => $result['name'],
-                    'latitude' =>  preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($result['geometry']['location']['lat'], 10, '.', '')),
-                    'longitude' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($result['geometry']['location']['lng'] , 10, '.', '')),
+                    'latitude' => round($result['geometry']['location']['lat'], 4),
+                    'longitude' => round($result['geometry']['location']['lng'], 4),
                 ];
             }
         }
