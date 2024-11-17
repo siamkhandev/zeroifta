@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class IFTAController extends Controller
 {
@@ -225,7 +227,10 @@ public function getDecodedPolyline(Request $request)
             $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
            
             $decodedPolyline = $this->decodePolyline($encodedPolyline);
-
+            $ftpData = $this->loadAndParseFTPData();
+            foreach($decodedPolyline as $decoded){
+                dd($decoded);
+            }
             return response()->json([
                 'success' => true,
                 'decoded_polyline' => $decodedPolyline,
@@ -285,4 +290,32 @@ private function decodePolyline($encoded)
 
     return $points;
 }
+
+private function loadAndParseFTPData()
+    {
+        return Cache::remember('parsed_ftp_data', 3600, function () {
+            $filePath = 'EFSLLCpricing';
+
+            // Connect to the FTP disk
+            $ftpDisk = Storage::disk('ftp');
+            if (!$ftpDisk->exists($filePath)) {
+                throw new \Exception("FTP file not found.");
+            }
+
+            $fileContent = $ftpDisk->get($filePath);
+            $rows = explode("\n", trim($fileContent));
+            $parsedData = [];
+
+            foreach ($rows as $line) {
+                $row = explode('|', $line);
+                if (isset($row[8], $row[9])) {
+                    $lat = number_format((float) trim($row[8]), 4);
+                    $lng = number_format((float) trim($row[9]), 4);
+                    $parsedData[$lat][$lng] = ['price' => $row[11] ?? 0.00];
+                }
+            }
+
+            return $parsedData;
+        });
+    }
 }
