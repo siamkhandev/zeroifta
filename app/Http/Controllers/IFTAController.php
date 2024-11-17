@@ -144,9 +144,9 @@ class IFTAController extends Controller
         $apiKey = 'AIzaSyD5e7ZDQ5dXe0X2e0X2e0X2e0X2e0X2e0';
 
         // Step 1: Get the route
-        $directionsUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLat,$startLng&destination=$endLat,$endLng&key=$apiKey";
+        $directionsUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLat,$startLng&destination=$endLat,$endLng&mode=driving&key=$apiKey";
         $directionsResponse = Http::get($directionsUrl);
-
+        \Log::info('Directions API Response', ['response' => $directionsResponse->json()]);
         if ($directionsResponse->failed()) {
             return response()->json(['error' => 'Failed to fetch directions'], 500);
         }
