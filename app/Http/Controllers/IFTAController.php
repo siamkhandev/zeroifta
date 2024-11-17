@@ -182,8 +182,9 @@ class IFTAController extends Controller
         foreach ($placesData['results'] as $place) {
             $fuelStations->push([
                 'name' => $place['name'],
-                'lat' => $place['geometry']['location']['lat'],
-                'lng' => $place['geometry']['location']['lng'],
+                'address' => $place['vicinity'], // Include address
+                'lat' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lat'], 10, '.', '')),
+                'lng' => preg_replace('/^(\-?\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lng'], 10, '.', '')),
                 'place_id' => $place['place_id'], // Use place_id for uniqueness
             ]);
         }
