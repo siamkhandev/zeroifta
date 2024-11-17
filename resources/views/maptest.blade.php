@@ -22,10 +22,10 @@
 const apiUrl = '/api/findgas'; // Change to your API route
 
 // Example coordinates (replace with actual start and end coordinates)
-const startLat = 37.7749;
-const startLng = -122.4194;
-const endLat = 37.8044;
-const endLng = -122.2711;
+const startLat = 33.798877;
+const startLng = -84.398553;
+const endLat = 39.7615548;
+const endLng = -104.774469;
 
 // Create the request data
 const requestData = {
