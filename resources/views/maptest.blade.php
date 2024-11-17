@@ -52,9 +52,10 @@ fetch(apiUrl, {
                     // Check if 'data.data' is an array
                     if (Array.isArray(data.data)) {
                         const matchingRecords = data.data;
-                        console.log(matchingRecords);
+                        
                         // Loop through the matching records and add markers for FTP locations
                         matchingRecords.forEach(record => {
+                            console.log(record);
                             const { ftp_lat, ftp_lng, price, distance } = record;
 
                             // Validate that ftp_lat and ftp_lng are valid numbers
