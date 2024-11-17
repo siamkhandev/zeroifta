@@ -220,9 +220,10 @@ public function getDecodedPolyline(Request $request)
 
     if ($response->successful()) {
         $data = $response->json();
+        dd($data);
         if (isset($data['routes'][0]['overview_polyline']['points'])) {
             $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
-            dd($encodedPolyline);
+           
             $decodedPolyline = $this->decodePolyline($encodedPolyline);
 
             return response()->json([
