@@ -127,7 +127,7 @@ class IFTAController extends Controller
         ];
     }
 
-    public function findTruckStops(Request $request)
+    public function findFuelStations(Request $request)
 {
     $request->validate([
         'start_lat' => 'required|numeric',
