@@ -336,7 +336,7 @@ public function getDecodedPolyline(Request $request)
                 foreach ($lngData as $lng2 => $data) {
                     $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
-                    if ($distance < 1000) { // If distance is less than 100 meters
+                    if ($distance < 200) { // If distance is less than 100 meters
                         $matchingRecords[] = [
                             'polyline_lat' => $lat1,
                             'polyline_lng' => $lng1,
