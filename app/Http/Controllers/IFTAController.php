@@ -220,7 +220,7 @@ public function getDecodedPolyline(Request $request)
 
     if ($response->successful()) {
         $data = $response->json();
-        dd($data);
+      
         if (isset($data['routes'][0]['overview_polyline']['points'])) {
             $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
            
@@ -277,7 +277,10 @@ private function decodePolyline($encoded)
         $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
         $lng += $dlng;
 
-        $points[] = ['lat' => $lat * 1e-5, 'lng' => $lng * 1e-5];
+        $points[] = [
+            'lat' => number_format(floor($lat * 1e-5 * 1e4) / 1e4, 4, '.', ''),
+            'lng' => number_format(floor($lng * 1e-5 * 1e4) / 1e4, 4, '.', '')
+        ];
     }
 
     return $points;
