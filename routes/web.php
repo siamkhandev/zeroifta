@@ -33,6 +33,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/testsocket',[AdminController::class,'socket']);
 Route::get('/testftp',[AdminController::class,'testftp']);
+Route::get('maptest', function () {
+    return view('maptest');
+});
 Route::get('/read-dat-file', [UsersController::class, 'readDatFile'])->name('read.dat.file');
 Route::get('/subscription',[AdminController::class,'subscription']);
 Route::get('/buy',[AdminController::class,'buy'])->name('buy');
