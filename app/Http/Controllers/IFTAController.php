@@ -128,61 +128,70 @@ class IFTAController extends Controller
     }
 
     public function findFuelStations(Request $request)
-    {
-        $request->validate([
-            'start_lat' => 'required|numeric',
-            'start_lng' => 'required|numeric',
-            'end_lat' => 'required|numeric',
-            'end_lng' => 'required|numeric',
-        ]);
+{
+    $request->validate([
+        'start_lat' => 'required|numeric',
+        'start_lng' => 'required|numeric',
+        'end_lat' => 'required|numeric',
+        'end_lng' => 'required|numeric',
+    ]);
 
-        $startLat = $request->input('start_lat');
-        $startLng = $request->input('start_lng');
-        $endLat = $request->input('end_lat');
-        $endLng = $request->input('end_lng');
+    $startLat = $request->input('start_lat');
+    $startLng = $request->input('start_lng');
+    $endLat = $request->input('end_lat');
+    $endLng = $request->input('end_lng');
 
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+    $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
 
-        // Step 1: Get the route
-        $directionsUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLat,$startLng&destination=$endLat,$endLng&mode=driving&key=$apiKey";
-        $directionsResponse = Http::get($directionsUrl);
-        \Log::info('Directions API Response', ['response' => $directionsResponse->json()]);
-        if ($directionsResponse->failed()) {
-            return response()->json(['error' => 'Failed to fetch directions'], 500);
-        }
+    // Step 1: Get the route
+    $directionsUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLat,$startLng&destination=$endLat,$endLng&key=$apiKey";
+    $directionsResponse = Http::get($directionsUrl);
 
-        $directionsData = $directionsResponse->json();
-        $steps = collect($directionsData['routes'][0]['legs'][0]['steps']);
-
-        // Step 2: Extract waypoints along the route
-        $waypoints = $steps->map(fn($step) => [
-            'lat' => $step['end_location']['lat'],
-            'lng' => $step['end_location']['lng'],
-        ]);
-
-        // Step 3: Find fuel stations along the waypoints
-        $fuelStations = [];
-        foreach ($waypoints as $point) {
-            $lat = $point['lat'];
-            $lng = $point['lng'];
-
-            $placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=5000&type=gas_station&key=$apiKey";
-            $placesResponse = Http::get($placesUrl);
-
-            if ($placesResponse->failed()) {
-                continue;
-            }
-
-            $placesData = $placesResponse->json();
-            foreach ($placesData['results'] as $place) {
-                $fuelStations[] = [
-                    'name' => $place['name'],
-                    'lat' => $place['geometry']['location']['lat'],
-                    'lng' => $place['geometry']['location']['lng'],
-                ];
-            }
-        }
-
-        return response()->json(['fuel_stations' => $fuelStations]);
+    if ($directionsResponse->failed()) {
+        return response()->json(['error' => 'Failed to fetch directions'], 500);
     }
+
+    $directionsData = $directionsResponse->json();
+
+    if (empty($directionsData['routes'])) {
+        return response()->json(['error' => 'No route found for the given coordinates'], 404);
+    }
+
+    $steps = collect($directionsData['routes'][0]['legs'][0]['steps']);
+
+    // Step 2: Extract waypoints
+    $waypoints = $steps->map(fn($step) => [
+        'lat' => $step['end_location']['lat'],
+        'lng' => $step['end_location']['lng'],
+    ]);
+
+    // Step 3: Find fuel stations along the waypoints
+    $fuelStations = collect();
+    foreach ($waypoints as $point) {
+        $lat = $point['lat'];
+        $lng = $point['lng'];
+
+        $placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=5000&type=gas_station&key=$apiKey";
+        $placesResponse = Http::get($placesUrl);
+
+        if ($placesResponse->failed()) {
+            continue;
+        }
+
+        $placesData = $placesResponse->json();
+        foreach ($placesData['results'] as $place) {
+            $fuelStations->push([
+                'name' => $place['name'],
+                'lat' => $place['geometry']['location']['lat'],
+                'lng' => $place['geometry']['location']['lng'],
+                'place_id' => $place['place_id'], // Use place_id for uniqueness
+            ]);
+        }
+    }
+
+    // Remove duplicates by `place_id`
+    $uniqueFuelStations = $fuelStations->unique('place_id')->values();
+
+    return response()->json(['fuel_stations' => $uniqueFuelStations]);
+}
 }
