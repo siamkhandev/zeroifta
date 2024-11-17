@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map with Markers</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg&callback=initMap" async defer></script>
     <style>
         #map {
             height: 100vh;
             width: 100%;
         }
     </style>
-    
 </head>
 <body>
 
@@ -19,80 +18,89 @@
 <div id="map"></div>
 
 <script>
-// Define the API URL (use the correct route for your Laravel API)
-const apiUrl = '/api/findgas'; // Change to your API route
+// Initialize the map
+let map;
 
-// Example coordinates (replace with actual start and end coordinates)
-const startLat = 33.798877;
-const startLng = -84.398553;
-const endLat = 39.7615548;
-const endLng = -104.774469;
+function initMap() {
+    // Example coordinates (replace with actual start and end coordinates)
+    const startLat = 33.798877;
+    const startLng = -84.398553;
+    const endLat = 39.7615548;
+    const endLng = -104.774469;
 
-// Create the request data
-const requestData = {
-    start_lat: startLat,
-    start_lng: startLng,
-    end_lat: endLat,
-    end_lng: endLng,
-};
+    // Create the map centered around the start point
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: { lat: startLat, lng: startLng },
+    });
 
-// Fetch the matching records from your Laravel API
-fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: JSON.stringify(requestData),
-})
-.then(response => response.json()) // Parse the JSON response
-            .then(data => {
-                // Ensure the response status is OK
-                if (data.status === 200) {
-                    // Check if 'data.data' is an array
-                    if (Array.isArray(data.data)) {
-                        const matchingRecords = data.data;
+    // Create the request data
+    const requestData = {
+        start_lat: startLat,
+        start_lng: startLng,
+        end_lat: endLat,
+        end_lng: endLng,
+    };
 
-                        // Loop through the matching records and add markers for FTP locations
-                        matchingRecords.forEach(record => {
-                            const { ftp_lat, ftp_lng, price, distance } = record;
+    // Fetch the matching records from your Laravel API
+    fetch('/api/findgas', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+    })
+    .then(response => response.json()) // Parse the JSON response
+    .then(data => {
+        // Ensure the response status is OK
+        if (data.status === 200) {
+            // Check if 'data.data' is an array
+            if (Array.isArray(data.data)) {
+                const matchingRecords = data.data;
 
-                            // Convert ftp_lat and ftp_lng to numbers using parseFloat
-                            const lat = parseFloat(ftp_lat);
-                            const lng = parseFloat(ftp_lng);
+                // Loop through the matching records and add markers for FTP locations
+                matchingRecords.forEach(record => {
+                    const { ftp_lat, ftp_lng, price, distance } = record;
 
-                            // Validate that lat and lng are valid numbers
-                            if (!isNaN(lat) && !isNaN(lng)) {
-                                // Create a marker for each matching FTP location
-                                const marker = new google.maps.Marker({
-                                    position: { lat: lat, lng: lng },
-                                    map: map,
-                                    title: 'Fuel Station'
-                                });
+                    // Convert ftp_lat and ftp_lng to numbers using parseFloat
+                    const lat = parseFloat(ftp_lat);
+                    const lng = parseFloat(ftp_lng);
 
-                                // Optional: Add an info window to display price and distance information
-                                const infoWindow = new google.maps.InfoWindow({
-                                    content: `<b>Price: $${price}</b><br>Distance: ${distance ? distance.toFixed(2) : 'N/A'} meters`
-                                });
+                    // Validate that lat and lng are valid numbers
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        // Create a marker for each matching FTP location
+                        const marker = new google.maps.Marker({
+                            position: { lat: lat, lng: lng },
+                            map: map,  // This is the initialized map object
+                            title: 'Fuel Station',
+                        });
 
-                                // Attach the info window to the marker
-                                marker.addListener('click', function() {
-                                    infoWindow.open(map, marker);
-                                });
-                            } else {
-                                console.error('Invalid coordinates for marker:', lat, lng);
-                            }
+                        // Optional: Add an info window to display price and distance information
+                        const infoWindow = new google.maps.InfoWindow({
+                            content: `<b>Price: $${price}</b><br>Distance: ${distance ? distance.toFixed(2) : 'N/A'} meters`
+                        });
+
+                        // Attach the info window to the marker
+                        marker.addListener('click', function() {
+                            infoWindow.open(map, marker);
                         });
                     } else {
-                        console.error('The data field is not an array:', data.data);
+                        console.error('Invalid coordinates for marker:', lat, lng);
                     }
-                } else {
-                    console.error('Error fetching data:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                });
+            } else {
+                console.error('The data field is not an array:', data.data);
+            }
+        } else {
+            console.error('Error fetching data:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 </script>
 
 </body>
