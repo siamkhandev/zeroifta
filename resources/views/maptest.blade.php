@@ -57,22 +57,29 @@ fetch(apiUrl, {
                         matchingRecords.forEach(record => {
                             const { ftp_lat, ftp_lng, price, distance } = record;
 
-                            // Create a marker for each matching FTP location
-                            const marker = new google.maps.Marker({
-                                position: { lat: ftp_lat, lng: ftp_lng },
-                                map: map,
-                                title: 'Fuel Station'
-                            });
+                            // Validate that ftp_lat and ftp_lng are valid numbers
+                            if (typeof ftp_lat === 'number' && !isNaN(ftp_lat) &&
+                                typeof ftp_lng === 'number' && !isNaN(ftp_lng)) {
+                                
+                                // Create a marker for each matching FTP location
+                                const marker = new google.maps.Marker({
+                                    position: { lat: ftp_lat, lng: ftp_lng },
+                                    map: map,
+                                    title: 'Fuel Station'
+                                });
 
-                            // Optional: Add an info window to display price and distance information
-                            const infoWindow = new google.maps.InfoWindow({
-                                content: `<b>Price: $${price}</b><br>Distance: ${distance.toFixed(2)} meters`
-                            });
+                                // Optional: Add an info window to display price and distance information
+                                const infoWindow = new google.maps.InfoWindow({
+                                    content: `<b>Price: $${price}</b><br>Distance: ${distance ? distance.toFixed(2) : 'N/A'} meters`
+                                });
 
-                            // Attach the info window to the marker
-                            marker.addListener('click', function() {
-                                infoWindow.open(map, marker);
-                            });
+                                // Attach the info window to the marker
+                                marker.addListener('click', function() {
+                                    infoWindow.open(map, marker);
+                                });
+                            } else {
+                                console.error('Invalid coordinates for marker:', ftp_lat, ftp_lng);
+                            }
                         });
                     } else {
                         console.error('The data field is not an array:', data.data);
