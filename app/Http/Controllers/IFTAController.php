@@ -178,7 +178,7 @@ class IFTAController extends Controller
                 $fuelStations[] = [
                     'name' => $place['name'],
                     'lat' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lat'], 10, '.', '')),
-                    'lng' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lng'], 10, '.', '')),
+                    'lng' => preg_replace('/^(\-?\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lng'], 10, '.', '')),
                 ];
             }
         }
