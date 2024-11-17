@@ -127,7 +127,7 @@ class IFTAController extends Controller
         ];
     }
 
-    public function findFuelStations(Request $request)
+    public function findTruckStops(Request $request)
 {
     $request->validate([
         'start_lat' => 'required|numeric',
@@ -165,13 +165,13 @@ class IFTAController extends Controller
         'lng' => $step['end_location']['lng'],
     ]);
 
-    // Step 3: Find fuel stations along the waypoints
-    $fuelStations = collect();
+    // Step 3: Find truck stops along the waypoints
+    $truckStops = collect();
     foreach ($waypoints as $point) {
         $lat = $point['lat'];
         $lng = $point['lng'];
 
-        $placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=2000&type=gas_station&key=$apiKey";
+        $placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=5000&keyword=truck+stop&key=$apiKey";
         $placesResponse = Http::get($placesUrl);
 
         if ($placesResponse->failed()) {
@@ -180,19 +180,19 @@ class IFTAController extends Controller
 
         $placesData = $placesResponse->json();
         foreach ($placesData['results'] as $place) {
-            $fuelStations->push([
+            $truckStops->push([
                 'name' => $place['name'],
-                'address' => $place['vicinity'], // Include address
-                'lat' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lat'], 10, '.', '')),
-                'lng' => preg_replace('/^(\-?\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lng'], 10, '.', '')),
-                'place_id' => $place['place_id'], // Use place_id for uniqueness
+                'address' => $place['vicinity'],
+                'lat' => $place['geometry']['location']['lat'],
+                'lng' => $place['geometry']['location']['lng'],
+                'place_id' => $place['place_id'],
             ]);
         }
     }
 
     // Remove duplicates by `place_id`
-    $uniqueFuelStations = $fuelStations->unique('place_id')->values();
+    $uniqueTruckStops = $truckStops->unique('place_id')->values();
 
-    return response()->json(['fuel_stations' => $uniqueFuelStations]);
+    return response()->json(['truck_stops' => $uniqueTruckStops]);
 }
 }
