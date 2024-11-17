@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class IFTAController extends Controller
 {
@@ -146,7 +148,6 @@ class IFTAController extends Controller
         // Step 1: Get the route
         $directionsUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLat,$startLng&destination=$endLat,$endLng&mode=driving&key=$apiKey";
         $directionsResponse = Http::get($directionsUrl);
-        \Log::info('Directions API Response', ['response' => $directionsResponse->json()]);
         if ($directionsResponse->failed()) {
             return response()->json(['error' => 'Failed to fetch directions'], 500);
         }
@@ -172,17 +173,48 @@ class IFTAController extends Controller
             if ($placesResponse->failed()) {
                 continue;
             }
-
+            $ftpData = $this->loadAndParseFTPData();
             $placesData = $placesResponse->json();
             foreach ($placesData['results'] as $place) {
+                $lat = preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lat'], 10, '.', ''));
+                $lng = preg_replace('/^(\-?\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lng'], 10, '.', ''));
+                $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
                 $fuelStations[] = [
                     'name' => $place['name'],
                     'lat' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lat'], 10, '.', '')),
                     'lng' => preg_replace('/^(\-?\d+\.\d{4}).*$/', '$1', number_format($place['geometry']['location']['lng'], 10, '.', '')),
+                    'price' => $price
                 ];
             }
         }
 
         return response()->json(['fuel_stations' => $fuelStations]);
+    }
+    private function loadAndParseFTPData()
+    {
+        return Cache::remember('parsed_ftp_data', 3600, function () {
+            $filePath = 'EFSLLCpricing';
+
+            // Connect to the FTP disk
+            $ftpDisk = Storage::disk('ftp');
+            if (!$ftpDisk->exists($filePath)) {
+                throw new \Exception("FTP file not found.");
+            }
+
+            $fileContent = $ftpDisk->get($filePath);
+            $rows = explode("\n", trim($fileContent));
+            $parsedData = [];
+
+            foreach ($rows as $line) {
+                $row = explode('|', $line);
+                if (isset($row[8], $row[9])) {
+                    $lat = number_format((float) trim($row[8]), 4);
+                    $lng = number_format((float) trim($row[9]), 4);
+                    $parsedData[$lat][$lng] = ['price' => $row[11] ?? 0.00];
+                }
+            }
+
+            return $parsedData;
+        });
     }
 }
