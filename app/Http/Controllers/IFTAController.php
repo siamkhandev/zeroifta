@@ -195,4 +195,89 @@ class IFTAController extends Controller
 
     return response()->json(['truck_stops' => $uniqueTruckStops]);
 }
+
+public function getDecodedPolyline(Request $request)
+{
+    $request->validate([
+        'start_lat' => 'required|numeric',
+        'start_lng' => 'required|numeric',
+        'end_lat' => 'required|numeric',
+        'end_lng' => 'required|numeric',
+    ]);
+
+    $startLat = $request->start_lat;
+    $startLng = $request->start_lng;
+    $endLat = $request->end_lat;
+    $endLng = $request->end_lng;
+
+    // Replace with your Google API key
+    $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+
+    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+
+    // Fetch data from Google Maps API
+    $response = Http::get($url);
+
+    if ($response->successful()) {
+        $data = $response->json();
+        if (isset($data['routes'][0]['overview_polyline']['points'])) {
+            $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+            $decodedPolyline = $this->decodePolyline($encodedPolyline);
+
+            return response()->json([
+                'success' => true,
+                'decoded_polyline' => $decodedPolyline,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No route found.',
+        ], 404);
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Failed to fetch polyline.',
+    ], 500);
+}
+private function decodePolyline($encoded)
+{
+    $points = [];
+    $index = 0;
+    $len = strlen($encoded);
+    $lat = 0;
+    $lng = 0;
+
+    while ($index < $len) {
+        $b = 0;
+        $shift = 0;
+        $result = 0;
+
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1f) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
+
+        $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+        $lat += $dlat;
+
+        $shift = 0;
+        $result = 0;
+
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1f) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
+
+        $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+        $lng += $dlng;
+
+        $points[] = ['lat' => $lat * 1e-5, 'lng' => $lng * 1e-5];
+    }
+
+    return $points;
+}
 }
