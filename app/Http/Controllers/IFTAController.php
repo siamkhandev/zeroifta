@@ -225,15 +225,22 @@ public function getDecodedPolyline(Request $request)
       
         if (isset($data['routes'][0]['overview_polyline']['points'])) {
             $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
-           
+            $matchingRecords = [];
             $decodedPolyline = $this->decodePolyline($encodedPolyline);
             $ftpData = $this->loadAndParseFTPData();
             foreach($decodedPolyline as $decoded){
-                dd($decoded['lat']);
+                $lat = $decoded['lat'];
+                $lng = $decoded['lng'];
+                $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
+                $matchingRecords[] = [
+                    'lat' => $lat,
+                    'lng' => $lng,
+                    'price' => $price
+                ];
             }
             return response()->json([
                 'success' => true,
-                'decoded_polyline' => $decodedPolyline,
+                'decoded_polyline' => $matchingRecords,
             ]);
         }
 
