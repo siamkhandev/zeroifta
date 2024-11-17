@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/calculate-ifta', [IFTAController::class, 'findCheapestFuelStops']);
 //Route::post('/findgas', [IFTAController::class, 'findFuelStations']);
-Route::post('/findgas', [IFTAController::class, 'getDecodedPolyline']);
+Route::post('/findgas', [IFTAController::class, 'getDecodedPolyline'])->name('findgas');
 Route::post('login',[AuthController::class,'login']);
 Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail']);
 Route::middleware('auth:api')->group( function () {
