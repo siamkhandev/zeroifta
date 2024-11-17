@@ -52,18 +52,20 @@ fetch(apiUrl, {
                     // Check if 'data.data' is an array
                     if (Array.isArray(data.data)) {
                         const matchingRecords = data.data;
-                        
+
                         // Loop through the matching records and add markers for FTP locations
                         matchingRecords.forEach(record => {
-                            
                             const { ftp_lat, ftp_lng, price, distance } = record;
 
-                            // Validate that ftp_lat and ftp_lng are valid numbers
-                            
-                                
+                            // Convert ftp_lat and ftp_lng to numbers using parseFloat
+                            const lat = parseFloat(ftp_lat);
+                            const lng = parseFloat(ftp_lng);
+
+                            // Validate that lat and lng are valid numbers
+                            if (!isNaN(lat) && !isNaN(lng)) {
                                 // Create a marker for each matching FTP location
                                 const marker = new google.maps.Marker({
-                                    position: { lat: ftp_lat, lng: ftp_lng },
+                                    position: { lat: lat, lng: lng },
                                     map: map,
                                     title: 'Fuel Station'
                                 });
@@ -77,7 +79,9 @@ fetch(apiUrl, {
                                 marker.addListener('click', function() {
                                     infoWindow.open(map, marker);
                                 });
-                            
+                            } else {
+                                console.error('Invalid coordinates for marker:', lat, lng);
+                            }
                         });
                     } else {
                         console.error('The data field is not an array:', data.data);
