@@ -229,23 +229,51 @@ public function getDecodedPolyline(Request $request)
             $decodedPolyline = $this->decodePolyline($encodedPolyline);
             
             $ftpData = $this->loadAndParseFTPData();
-            dd($ftpData);
-            foreach($decodedPolyline as $decoded){
-                $lat = $decoded['lat'];
-                $lng = $decoded['lng'];
-                $price = $ftpData[$lat][$lng]['price']?? null;
-                if ($price !== null) {
-                    $matchingRecords[] = [
-                        'lat' => $lat,
-                        'lng' => $lng,
-                        'price' => $price
-                    ];
+            $matchingRecords = []; // Initialize an array to store matching records
+
+            // Function to calculate distance between two coordinates in meters
+            function haversineDistance($lat1, $lng1, $lat2, $lng2)
+            {
+                $earthRadius = 6371000; // Earth's radius in meters
+    
+                $latDelta = deg2rad($lat2 - $lat1);
+                $lngDelta = deg2rad($lng2 - $lng1);
+    
+                $a = sin($latDelta / 2) * sin($latDelta / 2) +
+                    cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+                    sin($lngDelta / 2) * sin($lngDelta / 2);
+    
+                $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+    
+                return $earthRadius * $c; // Distance in meters
+            }
+    
+            // Iterate through decoded polyline points
+            foreach ($decodedPolyline as $decoded) {
+                $lat1 = $decoded['lat'];
+                $lng1 = $decoded['lng'];
+    
+                // Compare with FTP data points
+                foreach ($ftpData as $lat2 => $lngData) {
+                    foreach ($lngData as $lng2 => $data) {
+                        $distance = haversineDistance($lat1, $lng1, $lat2, $lng2);
+    
+                        if ($distance < 100) { // If distance is less than 100 meters
+                            $matchingRecords[] = [
+                                'polyline_lat' => $lat1,
+                                'polyline_lng' => $lng1,
+                                'ftp_lat' => $lat2,
+                                'ftp_lng' => $lng2,
+                                'price' => $data['price'] ?? 0.00,
+                                'distance' => $distance
+                            ];
+                        }
+                    }
                 }
             }
-            return response()->json([
-                'success' => true,
-                'decoded_polyline' => $matchingRecords,
-            ]);
+    
+            // Return the matching records
+            return response()->json($matchingRecords);
         }
 
         return response()->json([
