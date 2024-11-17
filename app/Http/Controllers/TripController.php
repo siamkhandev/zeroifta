@@ -98,7 +98,7 @@ class TripController extends Controller
     private function findGasStations($startLat, $startLng, $endLat, $endLng)
     {
         $client = new Client();
-        $radius = 3000; // Search radius of 1000 meters
+        $radius = 5000; // Search radius of 1000 meters
         $distance = $this->calculateDistance($startLat, $startLng, $endLat, $endLng);
 
         // Calculate the number of API requests dynamically based on route length
@@ -134,8 +134,8 @@ class TripController extends Controller
             foreach ($results as $result) {
                 $gasStations[] = [
                     'name' => $result['name'],
-                    'latitude' => round($result['geometry']['location']['lat'], 4),
-                    'longitude' => round($result['geometry']['location']['lng'], 4),
+                    'latitude' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($result['geometry']['location']['lat'], 10, '.', '')),
+                    'longitude' => preg_replace('/^(\-?\d+\.\d{4}).*$/', '$1', number_format($result['geometry']['location']['lng'], 10, '.', '')),
                 ];
             }
         }
