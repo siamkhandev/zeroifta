@@ -231,12 +231,14 @@ public function getDecodedPolyline(Request $request)
             foreach($decodedPolyline as $decoded){
                 $lat = $decoded['lat'];
                 $lng = $decoded['lng'];
-                $price = $ftpData[$lat][$lng]['price'] ?? 0.00;
-                $matchingRecords[] = [
-                    'lat' => $lat,
-                    'lng' => $lng,
-                    'price' => $price
-                ];
+                $price = $ftpData[$lat][$lng]['price']?? null;
+                if ($price !== null) {
+                    $matchingRecords[] = [
+                        'lat' => $lat,
+                        'lng' => $lng,
+                        'price' => $price
+                    ];
+                }
             }
             return response()->json([
                 'success' => true,
