@@ -229,7 +229,7 @@ public function getDecodedPolyline(Request $request)
             $decodedPolyline = $this->decodePolyline($encodedPolyline);
             $ftpData = $this->loadAndParseFTPData();
             foreach($decodedPolyline as $decoded){
-                dd($decoded);
+                dd($decoded['lat']);
             }
             return response()->json([
                 'success' => true,
