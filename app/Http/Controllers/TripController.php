@@ -86,8 +86,8 @@ class TripController extends Controller
             foreach ($rows as $line) {
                 $row = explode('|', $line);
                 if (isset($row[8], $row[9])) {
-                    $lat = number_format((float) trim($row[8]), 4);
-                    $lng = number_format((float) trim($row[9]), 4);
+                    $lat =  preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) trim($row[8]),  10, '.', ''));
+                    $lng =  preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format((float) trim($row[9]),  10, '.', ''));
                     $parsedData[$lat][$lng] = ['price' => $row[11] ?? 0.00];
                 }
             }
