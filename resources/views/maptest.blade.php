@@ -11,10 +11,7 @@
             width: 100%;
         }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-
-<!-- Add Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
 </head>
 <body>
 
@@ -49,37 +46,44 @@ fetch(apiUrl, {
     body: JSON.stringify(requestData),
 })
 .then(response => response.json()) // Parse the JSON response
-.then(data => {
-    if (data.status === 200) {
-        // Handle the matching records in the response
-        const matchingRecords = data.data;
+            .then(data => {
+                // Ensure the response status is OK
+                if (data.status === 200) {
+                    // Check if 'data.data' is an array
+                    if (Array.isArray(data.data)) {
+                        const matchingRecords = data.data;
 
-        // Example of initializing the map (assuming you've set up the map already)
-        const map = L.map('map').setView([startLat, startLng], 13); // Adjust zoom level as needed
+                        // Loop through the matching records and add markers for FTP locations
+                        matchingRecords.forEach(record => {
+                            const { ftp_lat, ftp_lng, price, distance } = record;
 
-        // Add a tile layer (this is just an example; you can use your own provider)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                            // Create a marker for each matching FTP location
+                            const marker = new google.maps.Marker({
+                                position: { lat: ftp_lat, lng: ftp_lng },
+                                map: map,
+                                title: 'Fuel Station'
+                            });
 
-        // Loop through the matching records and add markers for FTP locations
-        matchingRecords.forEach(record => {
-            const { ftp_lat, ftp_lng, price, distance } = record;
+                            // Optional: Add an info window to display price and distance information
+                            const infoWindow = new google.maps.InfoWindow({
+                                content: `<b>Price: $${price}</b><br>Distance: ${distance.toFixed(2)} meters`
+                            });
 
-            // Create a marker for each matching FTP location
-            const marker = L.marker([ftp_lat, ftp_lng]).addTo(map);
-
-            // Optional: Add a popup with price and distance information
-            marker.bindPopup(`
-                <b>Price: $${price}</b><br>
-                Distance: ${distance.toFixed(2)} meters
-            `);
-        });
-    } else {
-        console.error('Error fetching data:', data.message);
-    }
-})
-.catch(error => {
-    console.error('Error:', error);
-});
+                            // Attach the info window to the marker
+                            marker.addListener('click', function() {
+                                infoWindow.open(map, marker);
+                            });
+                        });
+                    } else {
+                        console.error('The data field is not an array:', data.data);
+                    }
+                } else {
+                    console.error('Error fetching data:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 </script>
 
 </body>
