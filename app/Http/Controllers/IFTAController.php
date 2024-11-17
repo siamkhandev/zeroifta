@@ -236,12 +236,18 @@ public function getDecodedPolyline(Request $request)
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
 
                 // Return the matching records
-                return response()->json($matchingRecords);
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'Fuel stations fetched',
+                    'data'=>$matchingRecords
+
+                ]);
             }
 
             return response()->json([
-                'success' => false,
+                'success' => 404,
                 'message' => 'No route found.',
+                'data'=>(object)[]
             ], 404);
         }
 
@@ -338,12 +344,11 @@ public function getDecodedPolyline(Request $request)
 
                     if ($distance < 500) { // If distance is less than 100 meters
                         $matchingRecords[] = [
-                            'polyline_lat' => $lat1,
-                            'polyline_lng' => $lng1,
+                            
                             'ftp_lat' => $lat2,
                             'ftp_lng' => $lng2,
                             'price' => $data['price'],
-                            'distance' => $distance,
+                            
                         ];
                     }
                 }
