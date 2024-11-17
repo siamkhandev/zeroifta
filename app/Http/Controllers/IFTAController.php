@@ -227,8 +227,9 @@ public function getDecodedPolyline(Request $request)
             $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
             $matchingRecords = [];
             $decodedPolyline = $this->decodePolyline($encodedPolyline);
-            dd($encodedPolyline);
+            
             $ftpData = $this->loadAndParseFTPData();
+            dd($ftpData);
             foreach($decodedPolyline as $decoded){
                 $lat = $decoded['lat'];
                 $lng = $decoded['lng'];
