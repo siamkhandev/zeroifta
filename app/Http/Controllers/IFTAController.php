@@ -171,7 +171,7 @@ class IFTAController extends Controller
         $lat = $point['lat'];
         $lng = $point['lng'];
 
-        $placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=5000&type=gas_station&key=$apiKey";
+        $placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=2000&type=gas_station&key=$apiKey";
         $placesResponse = Http::get($placesUrl);
 
         if ($placesResponse->failed()) {
