@@ -134,8 +134,8 @@ class TripController extends Controller
             foreach ($results as $result) {
                 $gasStations[] = [
                     'name' => $result['name'],
-                    'latitude' => round($result['geometry']['location']['lat'], 4),
-                    'longitude' => round($result['geometry']['location']['lng'], 4),
+                    'latitude' =>  preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($result['geometry']['location']['lat'], 10, '.', '')),
+                    'longitude' => preg_replace('/^(\d+\.\d{4}).*$/', '$1', number_format($result['geometry']['location']['lng'] , 10, '.', '')),
                 ];
             }
         }

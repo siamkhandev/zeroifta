@@ -177,8 +177,8 @@ class IFTAController extends Controller
             foreach ($placesData['results'] as $place) {
                 $fuelStations[] = [
                     'name' => $place['name'],
-                    'lat' => $place['geometry']['location']['lat'],
-                    'lng' => $place['geometry']['location']['lng'],
+                    'lat' => round($place['geometry']['location']['lat'],4),
+                    'lng' => round($place['geometry']['location']['lng'],4)
                 ];
             }
         }
