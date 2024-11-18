@@ -42,7 +42,7 @@ function initMap() {
         end_lng: endLng,
         truck_mpg:8,
         fuel_tank_capacity:500,
-        total_gallons_present:160,
+        total_gallons_present:120,
     };
 
     // Fetch the matching records from your Laravel API
