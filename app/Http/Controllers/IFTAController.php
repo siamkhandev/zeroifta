@@ -243,21 +243,21 @@ public function getDecodedPolyline(Request $request)
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 // Return the matching records
                 return response()->json([
-                    'success' => 200,
+                    'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
                     'data' => $result,
                 ]);
             }
 
             return response()->json([
-                'success' => 404,
+                'status' => 404,
                 'message' => 'No route found.',
                 'data'=>(object)[]
             ], 404);
         }
 
         return response()->json([
-            'success' => false,
+            'status' => false,
             'message' => 'Failed to fetch polyline.',
         ], 500);
     }

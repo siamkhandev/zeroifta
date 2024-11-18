@@ -57,7 +57,7 @@ function initMap() {
     .then(response => response.json()) // Parse the JSON response
     .then(data => {
         // Ensure the response status is OK
-        if (data.status === 200) {
+        if (data.status == 200) {
             // Check if 'data.data' is an array
             if (Array.isArray(data.data)) {
                 const matchingRecords = data.data;
