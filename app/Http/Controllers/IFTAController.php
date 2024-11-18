@@ -263,7 +263,7 @@ public function getDecodedPolyline(Request $request)
         $unreachableStations = [];
     
         foreach ($fuelStations as $station) {
-            $distance = $this->haversineDistance($startLat, $startLng, $station['lat'], $station['lng']);
+            $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
             $distanceInMiles = $distance / 1609.34; // Convert meters to miles
             $gallonsNeeded = $distanceInMiles / $mpg;
     
