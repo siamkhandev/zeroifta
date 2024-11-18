@@ -240,18 +240,9 @@ public function getDecodedPolyline(Request $request)
                 // Find matching records
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                
-                $refuelingPlan = $this->calculateRefuelingPlan(
-                    $matchingRecords,
-                    $truckMpg,
-                    $fuelTankCapacity,
-                    $currentFuel
-                );
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 // Return the matching records
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Refueling plan generated successfully.',
-                    'data' => $refuelingPlan,
-                ]);
+                return response()->json($result);
             }
 
             return response()->json([
@@ -266,58 +257,40 @@ public function getDecodedPolyline(Request $request)
             'message' => 'Failed to fetch polyline.',
         ], 500);
     }
-    private function calculateRefuelingPlan(array $stations, $truckMpg, $tankCapacity, $currentFuel)
+    private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations)
     {
-        $plan = [];
-        $remainingFuel = $currentFuel;
+        $reachableStations = [];
+        $unreachableStations = [];
     
-        for ($i = 0; $i < count($stations); $i++) {
-            $currentStation = $stations[$i];
-            $nextStation = $stations[$i + 1] ?? null;
+        foreach ($fuelStations as $station) {
+            $distance = $this->haversineDistance($startLat, $startLng, $station['lat'], $station['lng']);
+            $distanceInMiles = $distance / 1609.34; // Convert meters to miles
+            $gallonsNeeded = $distanceInMiles / $mpg;
     
-            // Distance to the next station
-            if ($nextStation) {
-                $distanceToNext = $this->haversineDistance(
-                    $currentStation['ftp_lat'],
-                    $currentStation['ftp_lng'],
-                    $nextStation['ftp_lat'],
-                    $nextStation['ftp_lng']
-                );
+            $station['gallons_needed'] = $gallonsNeeded;
     
-                // Calculate fuel needed to reach the next station
-                $fuelNeeded = $distanceToNext / $truckMpg;
-    
-                // Check if we have enough fuel
-                if ($remainingFuel < $fuelNeeded) {
-                    $additionalFuelNeeded = min($tankCapacity - $remainingFuel, $fuelNeeded - $remainingFuel);
-                    $refuelCost = $additionalFuelNeeded * $currentStation['price'];
-    
-                    $plan[] = [
-                        'station' => $currentStation,
-                        'action' => "Refuel {$additionalFuelNeeded} gallons",
-                        'cost' => $refuelCost,
-                        'remaining_fuel' => $remainingFuel + $additionalFuelNeeded - $fuelNeeded,
-                    ];
-    
-                    $remainingFuel += $additionalFuelNeeded - $fuelNeeded;
-                } else {
-                    $remainingFuel -= $fuelNeeded;
-                    $plan[] = [
-                        'station' => $currentStation,
-                        'action' => 'No refuel needed',
-                        'remaining_fuel' => $remainingFuel,
-                    ];
-                }
+            if ($gallonsNeeded <= $currentGallons) {
+                $reachableStations[] = $station;
             } else {
-                $plan[] = [
-                    'station' => $currentStation,
-                    'action' => 'Destination reached or no further stations.',
-                    'remaining_fuel' => $remainingFuel,
-                ];
+                $unreachableStations[] = $station;
             }
         }
     
-        return $plan;
+        // Find the optimal station from reachable stations
+        if (!empty($reachableStations)) {
+            $optimalStation = collect($reachableStations)->sortBy('price')->first();
+        } else {
+            // If no reachable station, find the nearest from unreachable stations
+            $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
+        }
+    
+        // Return the optimal station data
+        return [
+            'lat' => $optimalStation['lat'],
+            'lng' => $optimalStation['lng'],
+            'price' => $optimalStation['price'],
+            'gallons_needed' => round($optimalStation['gallons_needed'], 2),
+        ];
     }
     private function decodePolyline($encoded)
     {
