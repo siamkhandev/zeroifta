@@ -205,13 +205,18 @@ public function getDecodedPolyline(Request $request)
             'start_lng' => 'required|numeric',
             'end_lat' => 'required|numeric',
             'end_lng' => 'required|numeric',
+            'truck_mpg' => 'required|numeric',
+            'fuel_tank_capacity' => 'required|numeric',
+            'total_gallons_present' => 'required|numeric',
         ]);
 
         $startLat = $request->start_lat;
         $startLng = $request->start_lng;
         $endLat = $request->end_lat;
         $endLng = $request->end_lng;
-
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
 
@@ -234,13 +239,17 @@ public function getDecodedPolyline(Request $request)
 
                 // Find matching records
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-
+                $refuelingPlan = $this->calculateRefuelingPlan(
+                    $matchingRecords,
+                    $truckMpg,
+                    $fuelTankCapacity,
+                    $currentFuel
+                );
                 // Return the matching records
                 return response()->json([
-                    'status'=>200,
-                    'message'=>'Fuel stations fetched',
-                    'data'=>$matchingRecords
-
+                    'status' => 200,
+                    'message' => 'Refueling plan generated successfully.',
+                    'data' => $refuelingPlan,
                 ]);
             }
 
@@ -256,7 +265,59 @@ public function getDecodedPolyline(Request $request)
             'message' => 'Failed to fetch polyline.',
         ], 500);
     }
-
+    private function calculateRefuelingPlan(array $stations, $truckMpg, $tankCapacity, $currentFuel)
+    {
+        $plan = [];
+        $remainingFuel = $currentFuel;
+    
+        for ($i = 0; $i < count($stations); $i++) {
+            $currentStation = $stations[$i];
+            $nextStation = $stations[$i + 1] ?? null;
+    
+            // Distance to the next station
+            if ($nextStation) {
+                $distanceToNext = $this->haversineDistance(
+                    $currentStation['ftp_lat'],
+                    $currentStation['ftp_lng'],
+                    $nextStation['ftp_lat'],
+                    $nextStation['ftp_lng']
+                );
+    
+                // Calculate fuel needed to reach the next station
+                $fuelNeeded = $distanceToNext / $truckMpg;
+    
+                // Check if we have enough fuel
+                if ($remainingFuel < $fuelNeeded) {
+                    $additionalFuelNeeded = min($tankCapacity - $remainingFuel, $fuelNeeded - $remainingFuel);
+                    $refuelCost = $additionalFuelNeeded * $currentStation['price'];
+    
+                    $plan[] = [
+                        'station' => $currentStation,
+                        'action' => "Refuel {$additionalFuelNeeded} gallons",
+                        'cost' => $refuelCost,
+                        'remaining_fuel' => $remainingFuel + $additionalFuelNeeded - $fuelNeeded,
+                    ];
+    
+                    $remainingFuel += $additionalFuelNeeded - $fuelNeeded;
+                } else {
+                    $remainingFuel -= $fuelNeeded;
+                    $plan[] = [
+                        'station' => $currentStation,
+                        'action' => 'No refuel needed',
+                        'remaining_fuel' => $remainingFuel,
+                    ];
+                }
+            } else {
+                $plan[] = [
+                    'station' => $currentStation,
+                    'action' => 'Destination reached or no further stations.',
+                    'remaining_fuel' => $remainingFuel,
+                ];
+            }
+        }
+    
+        return $plan;
+    }
     private function decodePolyline($encoded)
     {
         $points = [];
