@@ -286,8 +286,8 @@ public function getDecodedPolyline(Request $request)
     
         // Return the optimal station data
         return [
-            'lat' => $optimalStation['lat'],
-            'lng' => $optimalStation['lng'],
+            'lat' => $optimalStation['ftp_lat'],
+            'lng' => $optimalStation['ftp_lng'],
             'price' => $optimalStation['price'],
             'gallons_needed' => round($optimalStation['gallons_needed'], 2),
         ];
