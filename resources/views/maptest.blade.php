@@ -61,7 +61,7 @@ function initMap() {
 
                 // Loop through the matching records and add markers for FTP locations
                 matchingRecords.forEach(record => {
-                    const { ftp_lat, ftp_lng, price, distance } = record;
+                    const { ftp_lat, ftp_lng, price, distance, is_optimal } = record;
 
                     // Convert ftp_lat and ftp_lng to numbers using parseFloat
                     const lat = parseFloat(ftp_lat);
@@ -69,16 +69,22 @@ function initMap() {
 
                     // Validate that lat and lng are valid numbers
                     if (!isNaN(lat) && !isNaN(lng)) {
+                        // Define marker icon based on is_optimal
+                        const icon = is_optimal
+                            ? 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' // Green for optimal
+                            : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; // Red for non-optimal
+
                         // Create a marker for each matching FTP location
                         const marker = new google.maps.Marker({
                             position: { lat: lat, lng: lng },
                             map: map,  // This is the initialized map object
                             title: 'Fuel Station',
+                            icon: icon // Set the icon for the marker
                         });
 
                         // Optional: Add an info window to display price and distance information
                         const infoWindow = new google.maps.InfoWindow({
-                            content: `<b>Price: $${price}</b><br>Distance: ${distance ? distance.toFixed(2) : 'N/A'} meters`
+                            content: `<b>Price: $${price}</b><br>Distance: ${distance ? distance.toFixed(2) : 'N/A'} meters<br>Optimal: ${is_optimal ? 'Yes' : 'No'}`
                         });
 
                         // Attach the info window to the marker
@@ -100,7 +106,6 @@ function initMap() {
         console.error('Error:', error);
     });
 }
-
 </script>
 
 </body>
