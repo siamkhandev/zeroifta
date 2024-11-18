@@ -242,7 +242,11 @@ public function getDecodedPolyline(Request $request)
                
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 // Return the matching records
-                return response()->json($result);
+                return response()->json([
+                    'success' => 200,
+                    'message' => 'Fuel stations fetched successfully.',
+                    'data' => $result,
+                ]);
             }
 
             return response()->json([
@@ -258,40 +262,43 @@ public function getDecodedPolyline(Request $request)
         ], 500);
     }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations)
-    {
-        $reachableStations = [];
-        $unreachableStations = [];
-    
-        foreach ($fuelStations as $station) {
-            $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
-            $distanceInMiles = $distance / 1609.34; // Convert meters to miles
-            $gallonsNeeded = $distanceInMiles / $mpg;
-    
-            $station['gallons_needed'] = $gallonsNeeded;
-    
-            if ($gallonsNeeded <= $currentGallons) {
-                $reachableStations[] = $station;
-            } else {
-                $unreachableStations[] = $station;
-            }
-        }
-    
-        // Find the optimal station from reachable stations
-        if (!empty($reachableStations)) {
-            $optimalStation = collect($reachableStations)->sortBy('price')->first();
+{
+    $reachableStations = [];
+    $unreachableStations = [];
+
+    foreach ($fuelStations as &$station) { // Use reference to update directly
+        $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
+        $distanceInMiles = $distance / 1609.34; // Convert meters to miles
+        $gallonsNeeded = $distanceInMiles / $mpg;
+
+        $station['gallons_needed'] = $gallonsNeeded;
+
+        if ($gallonsNeeded <= $currentGallons) {
+            $reachableStations[] = $station;
         } else {
-            // If no reachable station, find the nearest from unreachable stations
-            $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
+            $unreachableStations[] = $station;
         }
-    
-        // Return the optimal station data
-        return [
-            'lat' => $optimalStation['ftp_lat'],
-            'lng' => $optimalStation['ftp_lng'],
-            'price' => $optimalStation['price'],
-            'gallons_needed' => round($optimalStation['gallons_needed'], 2),
-        ];
     }
+
+    // Find the optimal station from reachable stations
+    if (!empty($reachableStations)) {
+        $optimalStation = collect($reachableStations)->sortBy('price')->first();
+    } else {
+        // If no reachable station, find the nearest from unreachable stations
+        $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
+    }
+
+    // Mark the optimal station
+    foreach ($fuelStations as &$station) {
+        $station['is_optimal'] = (
+            $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
+            $station['ftp_lng'] == $optimalStation['ftp_lng']
+        );
+    }
+
+    // Return all stations with optimal marked
+    return $fuelStations;
+}
     private function decodePolyline($encoded)
     {
         $points = [];
