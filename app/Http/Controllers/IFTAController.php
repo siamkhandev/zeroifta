@@ -239,7 +239,7 @@ public function getDecodedPolyline(Request $request)
 
                 // Find matching records
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-                dd($matchingRecords);
+               
                 $refuelingPlan = $this->calculateRefuelingPlan(
                     $matchingRecords,
                     $truckMpg,
