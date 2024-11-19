@@ -15,7 +15,7 @@ class ReceiptController extends Controller
         if(count($receipts) >0){
             foreach ($receipts as $receipt) {
                 if (isset($receipt->receipt_image)) {
-                    $receipt->receipt_image = 'http://54.164.54.21/receipts/' . $receipt->receipt_image;
+                    $receipt->receipt_image = 'http://zeroifta.alnairtech.com/receipts/' . $receipt->receipt_image;
                 }
             }
             return response()->json(['status'=>200,'message'=>'receipts found','data'=>$receipts],200);
