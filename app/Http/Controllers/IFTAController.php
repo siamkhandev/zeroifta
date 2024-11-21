@@ -237,7 +237,7 @@ public function updateTrip(Request $request)
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
-                    'data' => $result,
+                    'data' => array_values($result),
                 ]);
             }
 
