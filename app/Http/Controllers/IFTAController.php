@@ -244,7 +244,7 @@ public function getDecodedPolyline(Request $request)
               
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-                $result->polyline = $decodedPolyline;
+                $result['polyline'] = $decodedPolyline;
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
