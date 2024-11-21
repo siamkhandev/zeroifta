@@ -379,7 +379,7 @@ public function getDecodedPolyline(Request $request)
 
             // Compare with FTP data points
             foreach ($ftpData as $lat2 => $lngData) {
-               
+               dd($lngData);
                 foreach ($lngData as $lng2 => $data) {
                     $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
@@ -387,7 +387,7 @@ public function getDecodedPolyline(Request $request)
                         $matchingRecords[] = [
                             'ftp_lat' => $lat2,
                             'ftp_lng' => $lng2,
-                            'lastprice' => $data['lastprice'],
+                            
                             'price' => $data['price'],
                             
                         ];
