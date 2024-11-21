@@ -338,36 +338,33 @@ public function getDecodedPolyline(Request $request)
 
     private function loadAndParseFTPData()
     {
-        return Cache::remember('parsed_ftp_data', 3600, function () {
-            $filePath = 'EFSLLCpricing';
-
-            // Connect to the FTP disk
-            $ftpDisk = Storage::disk('ftp');
-            if (!$ftpDisk->exists($filePath)) {
-                throw new \Exception("FTP file not found.");
+        $filePath = 'EFSLLCpricing';
+    
+        // Connect to the FTP disk
+        $ftpDisk = Storage::disk('ftp');
+        if (!$ftpDisk->exists($filePath)) {
+            throw new \Exception("FTP file not found.");
+        }
+    
+        $fileContent = $ftpDisk->get($filePath);
+        $rows = explode("\n", trim($fileContent));
+        $parsedData = [];
+    
+        foreach ($rows as $line) {
+            $row = explode('|', $line);
+    dd($row);
+            if (isset($row[8], $row[9])) {
+                $lat = number_format((float) trim($row[8]), 4);
+                $lng = number_format((float) trim($row[9]), 4);
+                $parsedData[$lat][$lng] = [
+                    'lastprice' => $row[11] ?? 0.00,
+                    'price' => $row[12] ?? 0.00,
+                ];
             }
-
-            $fileContent = $ftpDisk->get($filePath);
-            $rows = explode("\n", trim($fileContent));
-            $parsedData = [];
-
-            foreach ($rows as $line) {
-                $row = explode('|', $line);
-                dd($row);
-                if (isset($row[8], $row[9])) {
-                    $lat = number_format((float) trim($row[8]), 4);
-                    $lng = number_format((float) trim($row[9]), 4);
-                    $parsedData[$lat][$lng] = [
-                        'lastprice' => $row[11] ?? 0.00,
-                        'price' => $row[12] ?? 0.00,
-                    ];
-                }
-            }
-
-            return $parsedData;
-        });
+        }
+    
+        return $parsedData;
     }
-
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
     {
        
