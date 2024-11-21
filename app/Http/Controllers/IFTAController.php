@@ -321,30 +321,8 @@ public function updateTrip(Request $request)
     }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations)
 {
-    $reachableStations = [];
-    $unreachableStations = [];
-
-    foreach ($fuelStations as &$station) { // Use reference to update directly
-        $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
-        $distanceInMiles = $distance / 1609.34; // Convert meters to miles
-        $gallonsNeeded = $distanceInMiles / $mpg;
-
-        $station['gallons_needed'] = $gallonsNeeded;
-
-        if ($gallonsNeeded <= $currentGallons) {
-            $reachableStations[] = $station;
-        } else {
-            $unreachableStations[] = $station;
-        }
-    }
-
-    // Find the optimal station from reachable stations
-    if (!empty($reachableStations)) {
-        $optimalStation = collect($reachableStations)->sortBy('price')->first();
-    } else {
-        // If no reachable station, find the nearest from unreachable stations
-        $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
-    }
+    // Find the station with the lowest price
+    $optimalStation = collect($fuelStations)->sortBy('price')->first();
 
     // Mark the optimal station
     foreach ($fuelStations as &$station) {
