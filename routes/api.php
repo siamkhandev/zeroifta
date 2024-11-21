@@ -53,7 +53,7 @@ Route::middleware('auth:api')->group( function () {
 });
 //Route::post('/trip/start', [TripController::class, 'store']);
 Route::post('/trip/start', [IFTAController::class, 'getDecodedPolyline']);
-Route::post('/trip/update', [IFTAController::class, 'getDecodedPolyline']);
+Route::post('/trip/update', [IFTAController::class, 'updateTrip']);
 Route::post('/trip/delete', [TripController::class, 'deleteTrip']);
 Route::post('/trip/complete', [TripController::class, 'completeTrip']);
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);

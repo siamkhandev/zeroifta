@@ -198,7 +198,62 @@ class IFTAController extends Controller
 
     return response()->json(['truck_stops' => $uniqueTruckStops]);
 }
+public function updateTrip(Request $request)
+{
+    $validatedData =$request->validate([
+        'start_lat' => 'required|numeric',
+        'start_lng' => 'required|numeric',
+        'end_lat' => 'required|numeric',
+        'end_lng' => 'required|numeric',
+        'truck_mpg' => 'required|numeric',
+        'fuel_tank_capacity' => 'required|numeric',
+        'total_gallons_present' => 'required|numeric',
+    ]);
+    $startLat = $request->start_lat;
+        $startLng = $request->start_lng;
+        $endLat = $request->end_lat;
+        $endLng = $request->end_lng;
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
+        // Replace with your Google API key
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
 
+        // Fetch data from Google Maps API
+        $response = Http::get($url);
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                $ftpData = $this->loadAndParseFTPData();
+              
+                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
+                $result['polyline'] = $decodedPolyline;
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Fuel stations fetched successfully.',
+                    'data' => $result,
+                ]);
+            }
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'No route found.',
+                'data'=>(object)[]
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to fetch data from Google Maps API.',
+            'data'=>(object)[]
+        ]);
+}
 public function getDecodedPolyline(Request $request)
     {
         $validatedData =$request->validate([
