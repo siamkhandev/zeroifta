@@ -201,13 +201,13 @@ class IFTAController extends Controller
 public function updateTrip(Request $request)
 {
     $validatedData =$request->validate([
-        'start_lat' => 'required|numeric',
-        'start_lng' => 'required|numeric',
-        'end_lat' => 'required|numeric',
-        'end_lng' => 'required|numeric',
-        'truck_mpg' => 'required|numeric',
-        'fuel_tank_capacity' => 'required|numeric',
-        'total_gallons_present' => 'required|numeric',
+        'start_lat' => 'required',
+        'start_lng' => 'required',
+        'end_lat' => 'required',
+        'end_lng' => 'required',
+        'truck_mpg' => 'required',
+        'fuel_tank_capacity' => 'required',
+        'total_gallons_present' => 'required',
     ]);
     $startLat = $request->start_lat;
         $startLng = $request->start_lng;
@@ -264,13 +264,13 @@ public function updateTrip(Request $request)
     {
         $validatedData =$request->validate([
             'user_id'   => 'required|exists:users,id',
-            'start_lat' => 'required|numeric',
-            'start_lng' => 'required|numeric',
-            'end_lat' => 'required|numeric',
-            'end_lng' => 'required|numeric',
-            'truck_mpg' => 'required|numeric',
-            'fuel_tank_capacity' => 'required|numeric',
-            'total_gallons_present' => 'required|numeric',
+            'start_lat' => 'required',
+            'start_lng' => 'required',
+            'end_lat' => 'required',
+            'end_lng' => 'required',
+            'truck_mpg' => 'required',
+            'fuel_tank_capacity' => 'required',
+            'total_gallons_present' => 'required',
         ]);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
         if ($findTrip) {
