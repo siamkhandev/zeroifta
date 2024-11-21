@@ -233,11 +233,17 @@ public function updateTrip(Request $request)
               
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-                $result['polyline'] = $decodedPolyline;
+
+                // Create a separate key for the polyline
+                $responseData = [
+                    'fuel_stations' => $result, // Fuel stations with optimal station marked
+                    'polyline' => $decodedPolyline // Separate key for polyline
+                ];
+                
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
-                    'data' => array_values($result),
+                    'data' => $responseData,
                 ]);
             }
 
