@@ -367,7 +367,7 @@ public function getDecodedPolyline(Request $request)
 
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
     {
-        dd($ftpData);
+       
         $matchingRecords = [];
 
         // Iterate through decoded polyline points
@@ -377,6 +377,7 @@ public function getDecodedPolyline(Request $request)
 
             // Compare with FTP data points
             foreach ($ftpData as $lat2 => $lngData) {
+                dd($lngData);
                 foreach ($lngData as $lng2 => $data) {
                     $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
