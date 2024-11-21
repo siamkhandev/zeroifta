@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Trip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -200,7 +201,8 @@ class IFTAController extends Controller
 
 public function getDecodedPolyline(Request $request)
     {
-        $request->validate([
+        $validatedData =$request->validate([
+            'user_id'   => 'required|exists:users,id',
             'start_lat' => 'required|numeric',
             'start_lng' => 'required|numeric',
             'end_lat' => 'required|numeric',
@@ -209,6 +211,14 @@ public function getDecodedPolyline(Request $request)
             'fuel_tank_capacity' => 'required|numeric',
             'total_gallons_present' => 'required|numeric',
         ]);
+        $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
+        if ($findTrip) {
+            return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => (object)[]]);
+        }
+        $validatedData['status']='active';
+
+
+        $trip = Trip::create($validatedData);
 
         $startLat = $request->start_lat;
         $startLng = $request->start_lng;
@@ -219,7 +229,6 @@ public function getDecodedPolyline(Request $request)
         $currentFuel = $request->total_gallons_present;
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
-
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
 
         // Fetch data from Google Maps API
@@ -235,7 +244,7 @@ public function getDecodedPolyline(Request $request)
               
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-                // Return the matching records
+                $result->polyline = $decodedPolyline;
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
