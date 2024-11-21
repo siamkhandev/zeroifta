@@ -6,6 +6,7 @@ use App\Models\CompanyContactUs;
 use App\Models\CompanyDriver;
 use App\Models\Contactus;
 use App\Models\DriverVehicle;
+use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +20,8 @@ class DriverDashboardController extends Controller
         if ($dashboardData['vehicle'] && $dashboardData['vehicle']->vehicle) {
             $dashboardData['vehicle']->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $dashboardData['vehicle']->vehicle->vehicle_image;
         }
-        $dashboardData['recentTrips'] = [];
+        $trips = Trip::where('user_id', $request->driver_id)->where('status', 'completed')->get();
+        $dashboardData['recentTrips'] = $trips;
         return response()->json(['status'=>200,'message'=>'Data Fetched','data'=>$dashboardData],200);
     }
     public function contactus(Request $request)

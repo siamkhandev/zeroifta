@@ -145,7 +145,7 @@
         </div>
         <div>
         <label class="switch">
-    <input type="checkbox" id="themeCheckbox" {{ auth()->user()->theme === 'dark' ? 'checked' : '' }} />
+          <input type="checkbox" id="themeCheckbox" {{ auth()->user()->theme === 'dark' ? 'checked' : '' }} />
     <span class="slider round"></span>
 </label>
         </div>

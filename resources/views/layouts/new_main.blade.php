@@ -138,18 +138,23 @@
   <script>
     // Unified function to toggle theme
     function toggleTheme(isDark) {
-      // Toggle dark-mode class based on current or passed state
-      const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
+    // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
+    const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
+    alert(darkMode);
+   
+    document.body.classList.toggle("dark-mode", darkMode);
 
-      document.body.classList.toggle("dark-mode", darkMode);
-
-      // Update visibility of header icons
-      document.getElementById("dark-themeIcon").style.display = darkMode ? "none" : "inline-block";
-      document.getElementById("light-themeIcon").style.display = darkMode ? "inline-block" : "none";
-
-      // Update sidebar switch state
-      document.getElementById("themeCheckbox").checked = darkMode;
+    if (darkMode) {
+        document.getElementById("dark-themeIcon").style.display = "inline-block";
+        document.getElementById("light-themeIcon").style.display = "none";
+    } else {
+        document.getElementById("dark-themeIcon").style.display = "none";
+        document.getElementById("light-themeIcon").style.display = "inline-block";
     }
+
+    // Update sidebar switch state
+    document.getElementById("themeCheckbox").checked = darkMode;
+}
 
     // Event listener for sidebar switch
     document.getElementById("themeCheckbox").addEventListener("change", function() {
