@@ -232,7 +232,7 @@ public function getDecodedPolyline(Request $request)
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
                 $ftpData = $this->loadAndParseFTPData();
-                dd($ftpData);
+               
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 // Return the matching records
@@ -256,43 +256,43 @@ public function getDecodedPolyline(Request $request)
         ], 500);
     }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations)
-{
-    $reachableStations = [];
-    $unreachableStations = [];
+    {
+        $reachableStations = [];
+        $unreachableStations = [];
 
-    foreach ($fuelStations as &$station) { // Use reference to update directly
-        $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
-        $distanceInMiles = $distance / 1609.34; // Convert meters to miles
-        $gallonsNeeded = $distanceInMiles / $mpg;
+        foreach ($fuelStations as &$station) { // Use reference to update directly
+            $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
+            $distanceInMiles = $distance / 1609.34; // Convert meters to miles
+            $gallonsNeeded = $distanceInMiles / $mpg;
 
-        $station['gallons_needed'] = $gallonsNeeded;
+            $station['gallons_needed'] = $gallonsNeeded;
 
-        if ($gallonsNeeded <= $currentGallons) {
-            $reachableStations[] = $station;
-        } else {
-            $unreachableStations[] = $station;
+            if ($gallonsNeeded <= $currentGallons) {
+                $reachableStations[] = $station;
+            } else {
+                $unreachableStations[] = $station;
+            }
         }
-    }
 
-    // Find the optimal station from reachable stations
-    if (!empty($reachableStations)) {
-        $optimalStation = collect($reachableStations)->sortBy('price')->first();
-    } else {
-        // If no reachable station, find the nearest from unreachable stations
-        $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
-    }
+        // Find the optimal station from reachable stations
+        if (!empty($reachableStations)) {
+            $optimalStation = collect($reachableStations)->sortBy('price')->first();
+        } else {
+            // If no reachable station, find the nearest from unreachable stations
+            $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
+        }
 
-    // Mark the optimal station
-    foreach ($fuelStations as &$station) {
-        $station['is_optimal'] = (
-            $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
-            $station['ftp_lng'] == $optimalStation['ftp_lng']
-        );
-    }
+        // Mark the optimal station
+        foreach ($fuelStations as &$station) {
+            $station['is_optimal'] = (
+                $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
+                $station['ftp_lng'] == $optimalStation['ftp_lng']
+            );
+        }
 
-    // Return all stations with optimal marked
-    return $fuelStations;
-}
+        // Return all stations with optimal marked
+        return $fuelStations;
+    }
     private function decodePolyline($encoded)
     {
         $points = [];
@@ -381,9 +381,9 @@ public function getDecodedPolyline(Request $request)
 
                     if ($distance < 500) { // If distance is less than 100 meters
                         $matchingRecords[] = [
-                            
                             'ftp_lat' => $lat2,
                             'ftp_lng' => $lng2,
+                            'lastprice' => $data['lastprice'],
                             'price' => $data['price'],
                             
                         ];
