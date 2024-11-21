@@ -254,7 +254,7 @@ public function updateTrip(Request $request)
             'data'=>(object)[]
         ]);
 }
-public function getDecodedPolyline(Request $request)
+    public function getDecodedPolyline(Request $request)
     {
         $validatedData =$request->validate([
             'user_id'   => 'required|exists:users,id',
@@ -432,37 +432,35 @@ public function getDecodedPolyline(Request $request)
         return $parsedData;
     }
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
-    {
-       
-        $matchingRecords = [];
+{
+    $matchingRecords = [];
 
-        // Iterate through decoded polyline points
-        foreach ($decodedPolyline as $decoded) {
-            $lat1 = $decoded['lat'];
-            $lng1 = $decoded['lng'];
+    // Iterate through decoded polyline points
+    foreach ($decodedPolyline as $decoded) {
+        $lat1 = $decoded['lat'];
+        $lng1 = $decoded['lng'];
 
-            // Compare with FTP data points
-            foreach ($ftpData as $lat2 => $lngData) {
-              
-                foreach ($lngData as $lng2 => $data) {
-                    $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
+        // Compare with FTP data points
+        foreach ($ftpData as $lat2 => $lngData) {
+            foreach ($lngData as $lng2 => $data) {
+                $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
-                    if ($distance < 500) { // If distance is less than 100 meters
-                        $matchingRecords[] = [
-                            'ftp_lat' => $lat2,
-                            'ftp_lng' => $lng2,
-                            'lastprice' => $data['lastprice'],
-                            'price' => $data['price'],
-                            'discount' => $data['discount'],
-                            
-                        ];
-                    }
+                // Check if within the defined proximity
+                if ($distance < 500) { // Distance is less than 500 meters
+                    $matchingRecords[] = [
+                        'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
+                        'ftp_lng' => (string) $lng2,
+                        'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
+                        'price' => (float) $data['price'],
+                        'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
+                    ];
                 }
             }
         }
-
-        return $matchingRecords;
     }
+
+    return array_values($matchingRecords); // Force reindex to ensure JSON compatibility
+}
 
     private function haversineDistance($lat1, $lng1, $lat2, $lng2)
     {
