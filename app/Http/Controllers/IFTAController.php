@@ -352,13 +352,14 @@ public function getDecodedPolyline(Request $request)
     
         foreach ($rows as $line) {
             $row = explode('|', $line);
-
+dd($row);
             if (isset($row[8], $row[9])) {
                 $lat = number_format((float) trim($row[8]), 4);
                 $lng = number_format((float) trim($row[9]), 4);
                 $parsedData[$lat][$lng] = [
                     'lastprice' => $row[10] ?? 0.00,
                     'price' => $row[11] ?? 0.00,
+
                 ];
             }
         }
