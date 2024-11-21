@@ -303,7 +303,7 @@ public function updateTrip(Request $request)
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
-                    'data' => $result,
+                    'data' => array_values($result),
                 ]);
             }
 
@@ -320,43 +320,43 @@ public function updateTrip(Request $request)
         ], 500);
     }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations)
-    {
-        $reachableStations = [];
-        $unreachableStations = [];
+{
+    $reachableStations = [];
+    $unreachableStations = [];
 
-        foreach ($fuelStations as &$station) { // Use reference to update directly
-            $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
-            $distanceInMiles = $distance / 1609.34; // Convert meters to miles
-            $gallonsNeeded = $distanceInMiles / $mpg;
+    foreach ($fuelStations as &$station) { // Use reference to update directly
+        $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
+        $distanceInMiles = $distance / 1609.34; // Convert meters to miles
+        $gallonsNeeded = $distanceInMiles / $mpg;
 
-            $station['gallons_needed'] = $gallonsNeeded;
+        $station['gallons_needed'] = $gallonsNeeded;
 
-            if ($gallonsNeeded <= $currentGallons) {
-                $reachableStations[] = $station;
-            } else {
-                $unreachableStations[] = $station;
-            }
-        }
-
-        // Find the optimal station from reachable stations
-        if (!empty($reachableStations)) {
-            $optimalStation = collect($reachableStations)->sortBy('price')->first();
+        if ($gallonsNeeded <= $currentGallons) {
+            $reachableStations[] = $station;
         } else {
-            // If no reachable station, find the nearest from unreachable stations
-            $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
+            $unreachableStations[] = $station;
         }
-
-        // Mark the optimal station
-        foreach ($fuelStations as &$station) {
-            $station['is_optimal'] = (
-                $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
-                $station['ftp_lng'] == $optimalStation['ftp_lng']
-            );
-        }
-
-        // Return all stations with optimal marked
-        return $fuelStations;
     }
+
+    // Find the optimal station from reachable stations
+    if (!empty($reachableStations)) {
+        $optimalStation = collect($reachableStations)->sortBy('price')->first();
+    } else {
+        // If no reachable station, find the nearest from unreachable stations
+        $optimalStation = collect($unreachableStations)->sortBy('gallons_needed')->first();
+    }
+
+    // Mark the optimal station
+    foreach ($fuelStations as &$station) {
+        $station['is_optimal'] = (
+            $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
+            $station['ftp_lng'] == $optimalStation['ftp_lng']
+        );
+    }
+
+    // Return all stations re-indexed for JSON response
+    return array_values($fuelStations);
+}
     private function decodePolyline($encoded)
     {
         $points = [];
@@ -459,7 +459,7 @@ public function updateTrip(Request $request)
         }
     }
 
-    return array_values($matchingRecords); // Force reindex to ensure JSON compatibility
+    return array_values($matchingRecords); // Reindex the array for proper JSON formatting
 }
 
     private function haversineDistance($lat1, $lng1, $lat2, $lng2)
