@@ -385,7 +385,7 @@ public function getDecodedPolyline(Request $request)
                         $matchingRecords[] = [
                             'ftp_lat' => $lat2,
                             'ftp_lng' => $lng2,
-                            
+                            'lastprice' => $data['lastprice'],
                             'price' => $data['price'],
                             
                         ];
