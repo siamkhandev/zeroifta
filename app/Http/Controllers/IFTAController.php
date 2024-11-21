@@ -232,7 +232,9 @@ public function getDecodedPolyline(Request $request)
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
                 $ftpData = $this->loadAndParseFTPData();
-               
+               foreach ($ftpData as $lat => $lngData) {
+                   dd($lngData);
+               }
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 // Return the matching records
@@ -352,13 +354,13 @@ public function getDecodedPolyline(Request $request)
     
         foreach ($rows as $line) {
             $row = explode('|', $line);
-    dd($row);
+
             if (isset($row[8], $row[9])) {
                 $lat = number_format((float) trim($row[8]), 4);
                 $lng = number_format((float) trim($row[9]), 4);
                 $parsedData[$lat][$lng] = [
-                    'lastprice' => $row[11] ?? 0.00,
-                    'price' => $row[12] ?? 0.00,
+                    'lastprice' => $row[10] ?? 0.00,
+                    'price' => $row[11] ?? 0.00,
                 ];
             }
         }
