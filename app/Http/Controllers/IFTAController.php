@@ -367,6 +367,7 @@ public function getDecodedPolyline(Request $request)
 
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
     {
+        dd($ftpData);
         $matchingRecords = [];
 
         // Iterate through decoded polyline points
