@@ -411,6 +411,7 @@ public function updateTrip(Request $request)
                 $lat = number_format((float) trim($row[8]), 4);
                 $lng = number_format((float) trim($row[9]), 4);
                 $parsedData[$lat][$lng] = [
+                    'fuel_station_name'=>$row[1] ?? 'N/A',
                     'lastprice' => $row[10] ?? 0.00,
                     'price' => $row[11] ?? 0.00,
                     'discount'=> $row[18] ?? 0.00
@@ -438,6 +439,7 @@ public function updateTrip(Request $request)
                 // Check if within the defined proximity
                 if ($distance < 500) { // Distance is less than 500 meters
                     $matchingRecords[] = [
+                        'fuel_station_name'=>(string) $data['fuel_station_name'],
                         'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
                         'ftp_lng' => (string) $lng2,
                         'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
