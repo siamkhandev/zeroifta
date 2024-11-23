@@ -273,6 +273,7 @@ public function updateTrip(Request $request)
             'total_gallons_present' => 'required',
         ]);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
+        dd($findTrip );
         if ($findTrip) {
             return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => (object)[]]);
         }
