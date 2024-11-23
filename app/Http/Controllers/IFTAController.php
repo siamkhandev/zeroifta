@@ -308,6 +308,7 @@ public function updateTrip(Request $request)
 
                 // Create a separate key for the polyline
                 $responseData = [
+                    'trip_id'=>$trip->id,
                     'fuel_stations' => $result, // Fuel stations with optimal station marked
                     'polyline' => $decodedPolyline // Separate key for polyline
                 ];
