@@ -140,7 +140,7 @@
     function toggleTheme(isDark) {
     // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
     const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
-    alert(darkMode);
+
    
     document.body.classList.toggle("dark-mode", darkMode);
 
