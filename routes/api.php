@@ -38,7 +38,8 @@ Route::middleware('auth:api')->group( function () {
     Route::post('dashboard',[DriverDashboardController::class,'index']);
 
     //////vehcile
-    Route::get('vehicles/all',[VehicleController::class,'allVehicles']);
+    Route::post('vehicles/all',[VehicleController::class,'allVehicles']);
+    Route::post('trips/all',[VehicleController::class,'allTrips']);
     Route::post('vehicle',[VehicleController::class,'index']);
     Route::post('vehicle/update',[VehicleController::class,'update']);
     ////receipts

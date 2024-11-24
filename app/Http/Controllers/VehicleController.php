@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DriverVehicle;
+use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
@@ -32,9 +33,10 @@ class VehicleController extends Controller
             return response()->json(['status'=>404,'message'=>'vehicle not found','data'=> (object)[]],404);
         }
     }
-    public function allVehicles()
+    public function allVehicles(Request $request)
     {
-        $vehicles = Vehicle::all();
+        $driverVehicles = DriverVehicle::where('driver_id',$request->driver_id)->get();
+        $vehicles = Vehicle::whereIn('id', $driverVehicles->pluck('vehicle_id'))->get();
         if(count($vehicles) >0){
             foreach ($vehicles as $vehicle) {
                 if (isset($vehicle->vehicle_image)) {
@@ -47,5 +49,10 @@ class VehicleController extends Controller
         }
        
 
+    }
+    public function allTrips(Request $request)
+    {
+        $trips = Trip::where('user_id', $request->driver_id)->get();
+        return response()->json(['status'=>200,'message'=>'trips found','data'=>$trips],200);
     }
 }
