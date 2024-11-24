@@ -275,7 +275,7 @@ public function updateTrip(Request $request)
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
       
         if ($findTrip) {
-            return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => (object)[]]);
+            return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
         }
         $validatedData['status']='active';
       
