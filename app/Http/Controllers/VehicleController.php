@@ -45,7 +45,7 @@ class VehicleController extends Controller
             }
             return response()->json(['status'=>200,'message'=>'vehicles found','data'=>$vehicles],200);
         }else{
-            return response()->json(['status'=>404,'message'=>'vehicles not found','data'=>[]],404);
+            return response()->json(['status'=>404,'message'=>'vehicles not found','data'=>(object)[]],404);
         }
        
 
@@ -53,6 +53,10 @@ class VehicleController extends Controller
     public function allTrips(Request $request)
     {
         $trips = Trip::where('user_id', $request->driver_id)->get();
-        return response()->json(['status'=>200,'message'=>'trips found','data'=>$trips],200);
+        if(count($trips) >0){
+            return response()->json(['status'=>200,'message'=>'trips found','data'=>$trips],200);
+        }else{
+            return response()->json(['status'=>404,'message'=>'trips not found','data'=>(object)[]],404);
+        }
     }
 }
