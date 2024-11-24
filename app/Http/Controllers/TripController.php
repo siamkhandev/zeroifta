@@ -281,4 +281,12 @@ class TripController extends Controller
 
         return "No matching coordinates found.";
     }
+    public function getActiveTrip(Request $request){
+        $trip = Trip::where('user_id', $request->driver_id)->where('status', 'active')->first();
+        if($trip){
+            return response()->json(['status'=>200,'message'=>'trip found','data'=>$trip],200);
+        }else{
+            return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
+        }
+    }
 }
