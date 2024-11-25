@@ -298,8 +298,10 @@ class TripController extends Controller
         if($trip){
             $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
             $vehicle = Vehicle::where('id', $driverVehicle)->first();
-            $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
-            $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
+            $pickupState = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoffState = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
+            $pickup = $this->getPickupFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoff = $this->getPickupFromCoordinates($trip->end_lat, $trip->end_lng);
             $trip->pickup = $pickup;
             $trip->dropoff = $dropoff;
             $trip->vehicle = $vehicle;
@@ -324,6 +326,20 @@ class TripController extends Controller
                     return $component['long_name']; // State name
                 }
             }
+        }
+
+        return 'Address not found';
+    }
+    private function getPickupFromCoordinates($latitude, $longitude)
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        if (isset($response['results'][0]['formatted_address'])) {
+            return $response['results'][0]['formatted_address'];
         }
 
         return 'Address not found';
