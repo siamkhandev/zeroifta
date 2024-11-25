@@ -300,9 +300,12 @@ public function updateTrip(Request $request)
             $data = $response->json();
             $route = $data['routes'][0];
 
-            // Extract distance and duration
-            $distance = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null; // e.g., "100 miles"
-            $duration = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null; // e.g., "2 hours 30 minutes"
+            $distance = isset($route['legs'][0]['distance']['text']) ? str_replace(' mi', ' miles', $route['legs'][0]['distance']['text']) : null;
+        $durationParts = explode(' ', $route['legs'][0]['duration']['text']);
+        $duration = (isset($durationParts[0]) ? $durationParts[0] . ' hr' : '') . (isset($durationParts[1]) ? ' ' . $durationParts[1] . ' min' : '');
+
+        $trip->distance = $distance;
+        $trip->duration = $duration;
 
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
@@ -311,8 +314,7 @@ public function updateTrip(Request $request)
               
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-                $trip->distance = $distance;
-                $trip->duration = $duration;
+                
                 // Create a separate key for the polyline
                 $responseData = [
                     'trip_id'=>$trip->id,
