@@ -14,34 +14,53 @@ use Illuminate\Support\Facades\Validator;
 class DriverDashboardController extends Controller
 {
     public function index(Request $request)
-    {
-        $dashboardData = [];
-        $dashboardData['vehicle'] = DriverVehicle::with('vehicle')->where('driver_id',$request->driver_id)->first();
-        if ($dashboardData['vehicle'] && $dashboardData['vehicle']->vehicle) {
-            $dashboardData['vehicle']->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $dashboardData['vehicle']->vehicle->vehicle_image;
-        }
-        $trips = Trip::where('user_id', $request->driver_id)->get();
-        foreach ($trips as $trip) {
-            $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
-            $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
-            return [
-                'id' => $trip->id,
-                'user_id' => $trip->user_id,
-                'pickup' => $pickup,
-                'dropoff' => $dropoff,
-                'start_lat' => $trip->start_lat,
-                'start_lng' => $trip->start_lng,
-                'end_lat' => $trip->end_lat,
-                'end_lng' => $trip->end_lng,
-                'status' => $trip->status,
-                'created_at' => $trip->created_at->format('d M'),
-               
-            ];
-        }
+{
+    $dashboardData = [];
+    
+    // Get the vehicle data
+    $dashboardData['vehicle'] = DriverVehicle::with('vehicle')
+        ->where('driver_id', $request->driver_id)
+        ->first();
 
-        $dashboardData['recentTrips'] = $trips;
-        return response()->json(['status'=>200,'message'=>'Data Fetched','data'=>$dashboardData],200);
+    // If the vehicle exists and has a vehicle image, update the image URL
+    if ($dashboardData['vehicle'] && $dashboardData['vehicle']->vehicle) {
+        $dashboardData['vehicle']->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $dashboardData['vehicle']->vehicle->vehicle_image;
     }
+
+    // Get all trips for the given driver
+    $trips = Trip::where('user_id', $request->driver_id)->get();
+    $tripData = []; // This will hold the formatted trip data
+    
+    foreach ($trips as $trip) {
+        // Get the pickup and dropoff addresses using coordinates
+        $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
+        $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
+
+        // Add the formatted trip data to the array
+        $tripData[] = [
+            'id' => $trip->id,
+            'user_id' => $trip->user_id,
+            'pickup' => $pickup,
+            'dropoff' => $dropoff,
+            'start_lat' => $trip->start_lat,
+            'start_lng' => $trip->start_lng,
+            'end_lat' => $trip->end_lat,
+            'end_lng' => $trip->end_lng,
+            'status' => $trip->status,
+            'created_at' => $trip->created_at->format('d M'), // Format the date as requested
+        ];
+    }
+
+    // Add the formatted trip data to the dashboard data
+    $dashboardData['recentTrips'] = $tripData;
+
+    // Return the response with the formatted data
+    return response()->json([
+        'status' => 200,
+        'message' => 'Data Fetched',
+        'data' => $dashboardData
+    ], 200);
+}
     public function contactus(Request $request)
     {
         $validator = Validator::make($request->all(), [
