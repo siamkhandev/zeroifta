@@ -75,7 +75,7 @@
                 </div>
                 <div class="up-img">
                 <div class="dropdown">
-                @if(Auth::user()->image)
+                @if(Auth::user() && Auth::user()->image)
                 <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="ZeroIfta Image" onclick="toggleDropdown()" style="height: 30px;border-radius:100%" />
                 @else
                 <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
