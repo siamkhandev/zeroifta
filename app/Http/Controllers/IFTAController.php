@@ -260,103 +260,99 @@ public function updateTrip(Request $request)
             'data'=>(object)[]
         ]);
 }
-public function getDecodedPolyline(Request $request)
-{
-    $validatedData = $request->validate([
-        'user_id'   => 'required|exists:users,id',
-        'start_lat' => 'required',
-        'start_lng' => 'required',
-        'end_lat' => 'required',
-        'end_lng' => 'required',
-        'truck_mpg' => 'required',
-        'fuel_tank_capacity' => 'required',
-        'total_gallons_present' => 'required',
-    ]);
+    public function getDecodedPolyline(Request $request)
+    {
+        $validatedData =$request->validate([
+            'user_id'   => 'required|exists:users,id',
+            'start_lat' => 'required',
+            'start_lng' => 'required',
+            'end_lat' => 'required',
+            'end_lng' => 'required',
+            'truck_mpg' => 'required',
+            'fuel_tank_capacity' => 'required',
+            'total_gallons_present' => 'required',
+        ]);
+        $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
+      
+        if ($findTrip) {
+            return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
+        }
+        $validatedData['status']='active';
+      
 
-    $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
+        $trip = Trip::create($validatedData);
 
-    if ($findTrip) {
-        return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
-    }
+        $startLat = $request->start_lat;
+        $startLng = $request->start_lng;
+        $endLat = $request->end_lat;
+        $endLng = $request->end_lng;
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
+        // Replace with your Google API key
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
 
-    $validatedData['status'] = 'active';
-    $trip = Trip::create($validatedData);
+        // Fetch data from Google Maps API
+        $response = Http::get($url);
 
-    $startLat = $request->start_lat;
-    $startLng = $request->start_lng;
-    $endLat = $request->end_lat;
-    $endLng = $request->end_lng;
-    $truckMpg = $request->truck_mpg;
-    $fuelTankCapacity = $request->fuel_tank_capacity;
-    $currentFuel = $request->total_gallons_present;
+        if ($response->successful()) {
+            $data = $response->json();
 
-    // Replace with your Google API key
-    $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
-    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+            if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                $ftpData = $this->loadAndParseFTPData();
+              
+                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
 
-    // Fetch data from Google Maps API
-    $response = Http::get($url);
-
-    if ($response->successful()) {
-        $data = $response->json();
-
-        if (isset($data['routes'][0]['overview_polyline']['points'])) {
-            $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
-            $decodedPolyline = $this->decodePolyline($encodedPolyline);
-            $ftpData = $this->loadAndParseFTPData();
-
-            $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-            $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-
-            // Create a separate key for the polyline
-            $responseData = [
-                'trip_id' => $trip->id,
-                'fuel_stations' => $result, // Fuel stations with optimal station marked and distance included
-                'polyline' => $decodedPolyline, // Separate key for polyline
-            ];
+                // Create a separate key for the polyline
+                $responseData = [
+                    'trip_id'=>$trip->id,
+                    'fuel_stations' => $result, // Fuel stations with optimal station marked
+                    'polyline' => $decodedPolyline // Separate key for polyline
+                ];
+                
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Fuel stations fetched successfully.',
+                    'data' => $responseData,
+                ]);
+            }
 
             return response()->json([
-                'status' => 200,
-                'message' => 'Fuel stations fetched successfully.',
-                'data' => $responseData,
-            ]);
+                'status' => 404,
+                'message' => 'No route found.',
+                'data'=>(object)[]
+            ], 404);
         }
 
         return response()->json([
-            'status' => 404,
-            'message' => 'No route found.',
-            'data' => (object)[],
-        ], 404);
+            'status' => false,
+            'message' => 'Failed to fetch polyline.',
+        ], 500);
     }
-
-    return response()->json([
-        'status' => false,
-        'message' => 'Failed to fetch polyline.',
-    ], 500);
-}
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations)
-    {
-        $optimalStation = collect($fuelStations)->sortBy('price')->first();
+{
+    $optimalStation = collect($fuelStations)->sortBy('price')->first();
 
-        // Calculate distance to the optimal station
-        $distanceToOptimal = $this->haversineDistance($startLat, $startLng, $optimalStation['ftp_lat'], $optimalStation['ftp_lng']);
-        $distanceInMiles = $distanceToOptimal / 1609.34; // Convert meters to miles
+    foreach ($fuelStations as &$station) {
+        $distanceToStation = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
+        $fuelRequired = $distanceToStation / 1609.34 / $mpg; // Convert meters to miles
 
-        // Mark the optimal station and include the distance
-        foreach ($fuelStations as &$station) {
-            $station['is_optimal'] = (
-                $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
-                $station['ftp_lng'] == $optimalStation['ftp_lng']
-            );
+        // Calculate gallons to buy (only if fuel required exceeds current gallons)
+        $station['gallons_to_buy'] = max(0, $fuelRequired - $currentGallons);
 
-            if ($station['is_optimal']) {
-                $station['distance_from_start'] = round($distanceInMiles, 2); // Add distance (rounded to 2 decimals)
-            }
-        }
-
-        // Return all stations re-indexed for JSON response
-        return array_values($fuelStations);
+        // Mark the optimal station
+        $station['is_optimal'] = (
+            $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
+            $station['ftp_lng'] == $optimalStation['ftp_lng']
+        );
     }
+
+    return array_values($fuelStations); // Re-index for JSON response
+}
     private function decodePolyline($encoded)
     {
         $points = [];
