@@ -305,7 +305,10 @@ class TripController extends Controller
             $trip->pickup = $pickup;
             $trip->dropoff = $dropoff;
             $trip->vehicle = $vehicle;
-            $trip->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image ?? null;
+            if($trip->vehicle && $trip->vehicle->vehicle_image){
+                $trip->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+            }
+           
             return response()->json(['status'=>200,'message'=>'trip found','data'=>$trip],200);
         }else{
             return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
