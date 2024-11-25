@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,12 +20,15 @@
   <link href="{{asset('assets/css/nucleo-svg.css')}}" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{{asset('assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </head>
 <style>
-    .invalid-feedback{
-        display: block;
-    }
+  .invalid-feedback {
+    display: block;
+  }
 </style>
+
 <body class="g-sidenav-show   bg-gray-100">
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
   @if(Auth::user()->role=='admin')
@@ -41,7 +43,7 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       @yield('content')
-    <!-- @include('includes.footer') -->
+      <!-- @include('includes.footer') -->
     </div>
   </main>
   <div class="fixed-plugin">
@@ -101,7 +103,7 @@
             <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" onclick="darkMode(this)">
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -208,7 +210,6 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{asset('assets/js/argon-dashboard.min.js?v=2.0.4')}}"></script>
-
 </body>
 
 </html>

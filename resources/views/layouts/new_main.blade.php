@@ -22,7 +22,7 @@
   <title>ZeroIfta</title>
 </head>
 
-<body class="{{Auth::user()->theme=='dark'?'dark-mode':''}}" >
+<body class="{{Auth::user()->theme=='dark'?'dark-mode':''}}">
   <div class="main">
     <div class="dash-main">
       @if(Auth::user()->role=='admin')
@@ -46,10 +46,10 @@
   <!-- Optional JavaScript; choose one of the two! -->
 
   <!-- Option 1: Bootstrap Bundle with Popper -->
-  <script
+  <!-- <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
   <script src="{{asset('assets/chartjs.min.js')}}"></script>
   <script src="{{asset('assets/js/script.js')}}"></script>
   <script>
@@ -138,23 +138,23 @@
   <script>
     // Unified function to toggle theme
     function toggleTheme(isDark) {
-    // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
-    const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
+      // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
+      const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
 
-   
-    document.body.classList.toggle("dark-mode", darkMode);
 
-    if (darkMode) {
+      document.body.classList.toggle("dark-mode", darkMode);
+
+      if (darkMode) {
         document.getElementById("dark-themeIcon").style.display = "inline-block";
         document.getElementById("light-themeIcon").style.display = "none";
-    } else {
+      } else {
         document.getElementById("dark-themeIcon").style.display = "none";
         document.getElementById("light-themeIcon").style.display = "inline-block";
-    }
+      }
 
-    // Update sidebar switch state
-    document.getElementById("themeCheckbox").checked = darkMode;
-}
+      // Update sidebar switch state
+      document.getElementById("themeCheckbox").checked = darkMode;
+    }
 
     // Event listener for sidebar switch
     document.getElementById("themeCheckbox").addEventListener("change", function() {
@@ -195,7 +195,8 @@
 
   <!-- Data Table Script -->
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
   <script>
