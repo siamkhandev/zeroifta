@@ -342,8 +342,8 @@ public function updateTrip(Request $request)
         $fuelRequired = $distanceToStation / 1609.34 / $mpg; // Convert meters to miles
 
         // Calculate gallons to buy (only if fuel required exceeds current gallons)
-        $station['gallons_to_buy'] = max(0, $fuelRequired - $currentGallons);
-
+        $gallonsToBuy = max(0, $fuelRequired - $currentGallons);
+        $station['gallons_to_buy'] = round($gallonsToBuy, 2);
         // Mark the optimal station
         $station['is_optimal'] = (
             $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
