@@ -136,40 +136,39 @@
     });
   </script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-    // Ensure we have the elements before proceeding
-    const themeToggleButtons = document.querySelectorAll(".theme-toggle");
+    // Unified function to toggle theme
+    function toggleTheme(isDark) {
+      // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
+      const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
 
-    // Check if we have any toggle buttons
-    if (themeToggleButtons.length > 0) {
-        themeToggleButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                const currentTheme = button.getAttribute("data-theme");
-                const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-                // Update theme visually
-                document.body.setAttribute("data-theme", newTheme);
+      document.body.classList.toggle("dark-mode", darkMode);
 
-                // Update theme in backend via AJAX
-                fetch("/update-theme", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                    },
-                    body: JSON.stringify({ theme: newTheme }),
-                }).then((response) => {
-                    if (response.ok) {
-                        // Update the data-theme attribute of all toggle buttons
-                        themeToggleButtons.forEach((btn) => btn.setAttribute("data-theme", newTheme));
-                    }
-                });
-            });
-        });
-    } else {
-        console.warn("No theme toggle buttons found.");
+      if (darkMode) {
+        document.getElementById("dark-themeIcon").style.display = "inline-block";
+        document.getElementById("light-themeIcon").style.display = "none";
+      } else {
+        document.getElementById("dark-themeIcon").style.display = "none";
+        document.getElementById("light-themeIcon").style.display = "inline-block";
+      }
+
+      // Update sidebar switch state
+      document.getElementById("themeCheckbox").checked = darkMode;
     }
-});
+
+    // Event listener for sidebar switch
+    document.getElementById("themeCheckbox").addEventListener("change", function() {
+      toggleTheme(this.checked);
+    });
+
+    // Event listeners for header icons
+    document.getElementById("dark-themeIcon").addEventListener("click", function() {
+      toggleTheme(true);
+    });
+
+    document.getElementById("light-themeIcon").addEventListener("click", function() {
+      toggleTheme(false);
+    });
   </script>
 
 
