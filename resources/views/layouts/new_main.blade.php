@@ -136,34 +136,39 @@
     });
   </script>
   <script>
-    // Unified function to toggle theme
     document.addEventListener("DOMContentLoaded", () => {
+    // Ensure we have the elements before proceeding
     const themeToggleButtons = document.querySelectorAll(".theme-toggle");
 
-    themeToggleButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            const currentTheme = button.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
+    // Check if we have any toggle buttons
+    if (themeToggleButtons.length > 0) {
+        themeToggleButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const currentTheme = button.getAttribute("data-theme");
+                const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-            // Update theme visually
-            document.body.setAttribute("data-theme", newTheme);
+                // Update theme visually
+                document.body.setAttribute("data-theme", newTheme);
 
-            // Update theme in backend via AJAX
-            fetch("/update-theme", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                },
-                body: JSON.stringify({ theme: newTheme }),
-            }).then((response) => {
-                if (response.ok) {
-                    // Update the data-theme attribute of all toggle buttons
-                    themeToggleButtons.forEach((btn) => btn.setAttribute("data-theme", newTheme));
-                }
+                // Update theme in backend via AJAX
+                fetch("/update-theme", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                    },
+                    body: JSON.stringify({ theme: newTheme }),
+                }).then((response) => {
+                    if (response.ok) {
+                        // Update the data-theme attribute of all toggle buttons
+                        themeToggleButtons.forEach((btn) => btn.setAttribute("data-theme", newTheme));
+                    }
+                });
             });
         });
-    });
+    } else {
+        console.warn("No theme toggle buttons found.");
+    }
 });
   </script>
 
