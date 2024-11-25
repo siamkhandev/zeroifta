@@ -300,15 +300,22 @@ public function updateTrip(Request $request)
             $data = $response->json();
             $route = $data['routes'][0];
 
-            $distance = isset($route['legs'][0]['distance']['text']) ? str_replace(' mi', ' miles', $route['legs'][0]['distance']['text']) : null;
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
 
-        $durationParts = explode(' ', $route['legs'][0]['duration']['text']);
-        $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
-        $minutes = isset($durationParts[1]) ? intval(str_replace(' min', '', $durationParts[1])) : 0;
-        $duration = $hours . ' hr ' . $minutes . ' min';
+            // Format distance (e.g., "100 miles")
+            if ($distanceText) {
+                $distanceParts = explode(' ', $distanceText);
+                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
+            }
 
-        $trip->distance = $distance;
-        $trip->duration = $duration;
+            // Format duration (e.g., "2 hr 20 min")
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+            }
 
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
@@ -317,7 +324,8 @@ public function updateTrip(Request $request)
               
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-                
+                $trip->distance = $formattedDistance;
+                $trip->duration = $formattedDuration;
                 // Create a separate key for the polyline
                 $responseData = [
                     'trip_id'=>$trip->id,
