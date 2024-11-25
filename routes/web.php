@@ -36,6 +36,9 @@ Route::get('/testftp',[AdminController::class,'testftp']);
 Route::get('maptest', function () {
     return view('maptest');
 });
+Route::get('terms-and-conditions', function () {
+    return view('terms-and-conditions');
+});
 Route::get('/read-dat-file', [UsersController::class, 'readDatFile'])->name('read.dat.file');
 Route::get('/subscription',[AdminController::class,'subscription']);
 Route::get('/buy',[AdminController::class,'buy'])->name('buy');
@@ -107,7 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::get('contactus',[CompanyController::class,'contactus'])->name('contactus');
     Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('company.contactus.submit');
     ////
-    
+
 
     Route::get('/checkout', [PaymentController::class, 'showCheckoutForm'])->name('checkout.form');
     Route::post('/checkout', [PaymentController::class, 'processPayment'])->name('checkout.process');
@@ -127,6 +130,6 @@ Route::middleware('auth')->group(function () {
     Route::get('company/contactform/read/{id}',[CompanyController::class,'readForm'])->name('company.contactform.detail');
 
     /////////
-    
+
 
 });
