@@ -61,7 +61,8 @@ class VehicleController extends Controller
         $geocodedTrips = $trips->map(function ($trip) {
             $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
             $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
-
+            $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+            $vehicle = Vehicle::where('id', $driverVehicle)->first();
             return [
                 'id' => $trip->id,
                 'user_id' => $trip->user_id,
@@ -72,6 +73,7 @@ class VehicleController extends Controller
                 'end_lat' => $trip->end_lat,
                 'end_lng' => $trip->end_lng,
                 'status' => $trip->status,
+                'vehicle' => $vehicle,
                 'created_at' => $trip->created_at,
                 'updated_at' => $trip->updated_at,
             ];
