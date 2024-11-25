@@ -20,7 +20,7 @@ class DriverDashboardController extends Controller
         if ($dashboardData['vehicle'] && $dashboardData['vehicle']->vehicle) {
             $dashboardData['vehicle']->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $dashboardData['vehicle']->vehicle->vehicle_image;
         }
-        $trips = Trip::where('user_id', $request->driver_id)->where('status', 'completed')->get();
+        $trips = Trip::where('user_id', $request->driver_id)->get();
         $dashboardData['recentTrips'] = $trips;
         return response()->json(['status'=>200,'message'=>'Data Fetched','data'=>$dashboardData],200);
     }
