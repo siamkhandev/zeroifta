@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DriverVehicle;
 use App\Models\FuelStation;
 use App\Models\Trip;
+use App\Models\Vehicle;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -293,10 +295,13 @@ class TripController extends Controller
     {
         $trip = Trip::where('id', $request->trip_id)->first();
         if($trip){
+            $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+            $vehicle = Vehicle::where('id', $driverVehicle)->first();
             $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
             $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
             $trip->pickup = $pickup;
             $trip->dropoff = $dropoff;
+            $trip->vehicle = $vehicle;
             return response()->json(['status'=>200,'message'=>'trip found','data'=>$trip],200);
         }else{
             return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
