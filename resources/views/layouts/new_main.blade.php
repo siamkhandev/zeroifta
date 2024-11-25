@@ -137,38 +137,34 @@
   </script>
   <script>
     // Unified function to toggle theme
-    function toggleTheme(isDark) {
-      // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
-      const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
+    document.addEventListener("DOMContentLoaded", () => {
+    const themeToggleButtons = document.querySelectorAll(".theme-toggle");
 
+    themeToggleButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const currentTheme = button.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-      document.body.classList.toggle("dark-mode", darkMode);
+            // Update theme visually
+            document.body.setAttribute("data-theme", newTheme);
 
-      if (darkMode) {
-        document.getElementById("dark-themeIcon").style.display = "inline-block";
-        document.getElementById("light-themeIcon").style.display = "none";
-      } else {
-        document.getElementById("dark-themeIcon").style.display = "none";
-        document.getElementById("light-themeIcon").style.display = "inline-block";
-      }
-
-      // Update sidebar switch state
-      document.getElementById("themeCheckbox").checked = darkMode;
-    }
-
-    // Event listener for sidebar switch
-    document.getElementById("themeCheckbox").addEventListener("change", function() {
-      toggleTheme(this.checked);
+            // Update theme in backend via AJAX
+            fetch("/update-theme", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                },
+                body: JSON.stringify({ theme: newTheme }),
+            }).then((response) => {
+                if (response.ok) {
+                    // Update the data-theme attribute of all toggle buttons
+                    themeToggleButtons.forEach((btn) => btn.setAttribute("data-theme", newTheme));
+                }
+            });
+        });
     });
-
-    // Event listeners for header icons
-    document.getElementById("dark-themeIcon").addEventListener("click", function() {
-      toggleTheme(true);
-    });
-
-    document.getElementById("light-themeIcon").addEventListener("click", function() {
-      toggleTheme(false);
-    });
+});
   </script>
 
 
