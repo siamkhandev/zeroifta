@@ -63,7 +63,7 @@ class VehicleController extends Controller
             $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
             $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
             $vehicle = Vehicle::where('id', $driverVehicle)->first();
-            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image ?? null;
             return [
                 'id' => $trip->id,
                 'user_id' => $trip->user_id,
