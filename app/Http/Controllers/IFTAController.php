@@ -301,8 +301,11 @@ public function updateTrip(Request $request)
             $route = $data['routes'][0];
 
             $distance = isset($route['legs'][0]['distance']['text']) ? str_replace(' mi', ' miles', $route['legs'][0]['distance']['text']) : null;
+
         $durationParts = explode(' ', $route['legs'][0]['duration']['text']);
-        $duration = (isset($durationParts[0]) ? $durationParts[0] . ' hr' : '') . (isset($durationParts[1]) ? ' ' . $durationParts[1] . ' min' : '');
+        $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+        $minutes = isset($durationParts[1]) ? intval(str_replace(' min', '', $durationParts[1])) : 0;
+        $duration = $hours . ' hr ' . $minutes . ' min';
 
         $trip->distance = $distance;
         $trip->duration = $duration;
