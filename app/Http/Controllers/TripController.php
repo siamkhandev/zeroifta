@@ -248,9 +248,10 @@ class TripController extends Controller
         if (!$trip) {
             return response()->json(['status' => 404, 'message' => 'No trip found', 'data' => (object)[]]);
         }
-        $trip->status = 'completed';
+        
+        $trip->status = $request->status;
         $trip->save();
-        return response()->json(['status' => 200, 'message' => 'Trip completed successfully', 'data' => (object)[]]);
+        return response()->json(['status' => 200, 'message' => 'Trip status updated successfully', 'data' => (object)[]]);
     }
     function fetchFileDataAndMatchCoordinates($latitude, $longitude)
     {
