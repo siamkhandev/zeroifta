@@ -289,4 +289,32 @@ class TripController extends Controller
             return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
         }
     }
+    public function tripDetail(Request $request)
+    {
+        $trip = Trip::where('id', $request->trip_id)->first();
+        if($trip){
+            $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
+            $trip->pickup = $pickup;
+            $trip->dropoff = $dropoff;
+            return response()->json(['status'=>200,'message'=>'trip found','data'=>$trip],200);
+        }else{
+            return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
+        }
+    }
+
+    private function getAddressFromCoordinates($latitude, $longitude)
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        if (isset($response['results'][0]['formatted_address'])) {
+            return $response['results'][0]['formatted_address'];
+        }
+
+        return 'Address not found';
+    }
 }
