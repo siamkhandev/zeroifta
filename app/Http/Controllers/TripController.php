@@ -304,6 +304,8 @@ class TripController extends Controller
             $dropoff = $this->getPickupFromCoordinates($trip->end_lat, $trip->end_lng);
             $trip->pickup = $pickup;
             $trip->dropoff = $dropoff;
+            $trip->pickupState = $pickupState;
+            $trip->dropoffState = $dropoffState;
             $trip->vehicle = $vehicle;
             if($trip->vehicle && $trip->vehicle->vehicle_image){
                 $trip->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
