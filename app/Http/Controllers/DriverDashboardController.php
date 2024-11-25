@@ -72,7 +72,7 @@ class DriverDashboardController extends Controller
         if ($validator->fails()) {
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
-        $findCompay = CompanyDriver::where('driver_id',$request->driver_id)->first();
+        //$findCompay = CompanyDriver::where('driver_id',$request->driver_id)->first();
         $contact = new CompanyContactUs();
         //$contact->driver_id = $request->driver_id;
         $contact->company_id = $request->driver_id;

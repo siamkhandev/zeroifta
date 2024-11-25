@@ -71,7 +71,10 @@ class CompanyController extends Controller
     }
     public function contactUsForms()
     {
-        $forms = CompanyContactUs::with('company')->where('company_id',Auth::id())->orderBy('company_contact_us.id','desc')->get();
+        $drivers = CompanyDriver::where('company_id',Auth::id())->pluck('driver_id')->toArray();
+        $forms = CompanyContactUs::with('company')->whereIn('company_id',$drivers)->orderBy('company_contact_us.id','desc')->get();
+
+        //$forms = CompanyContactUs::with('company')->where('company_id',Auth::id())->orderBy('company_contact_us.id','desc')->get();
 
         return view('company.contactus.index',get_defined_vars());
     }
