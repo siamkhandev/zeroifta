@@ -21,6 +21,24 @@ class DriverDashboardController extends Controller
             $dashboardData['vehicle']->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $dashboardData['vehicle']->vehicle->vehicle_image;
         }
         $trips = Trip::where('user_id', $request->driver_id)->get();
+        foreach ($trips as $trip) {
+            $pickup = $this->getPickupFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoff = $this->getPickupFromCoordinates($trip->end_lat, $trip->end_lng);
+            return [
+                'id' => $trip->id,
+                'user_id' => $trip->user_id,
+                'pickup' => $pickup,
+                'dropoff' => $dropoff,
+                'start_lat' => $trip->start_lat,
+                'start_lng' => $trip->start_lng,
+                'end_lat' => $trip->end_lat,
+                'end_lng' => $trip->end_lng,
+                'status' => $trip->status,
+                'created_at' => $trip->created_at->format('d M'),
+               
+            ];
+        }
+
         $dashboardData['recentTrips'] = $trips;
         return response()->json(['status'=>200,'message'=>'Data Fetched','data'=>$dashboardData],200);
     }
@@ -43,5 +61,23 @@ class DriverDashboardController extends Controller
         $contact->message = $request->message;
         $contact->save();
         return response()->json(['status'=>200,'message'=>'Request submitted successfully','data'=>$contact],200);
+    }
+    private function getAddressFromCoordinates($latitude, $longitude)
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        if (isset($response['results'][0]['address_components'])) {
+            foreach ($response['results'][0]['address_components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types'])) {
+                    return $component['long_name']; // State name
+                }
+            }
+        }
+
+        return 'Address not found';
     }
 }
