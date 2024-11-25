@@ -53,10 +53,44 @@ class VehicleController extends Controller
     public function allTrips(Request $request)
     {
         $trips = Trip::where('user_id', $request->driver_id)->get();
-        if(count($trips) >0){
-            return response()->json(['status'=>200,'message'=>'trips found','data'=>$trips],200);
-        }else{
-            return response()->json(['status'=>404,'message'=>'trips not found','data'=>(object)[]],404);
+
+        if ($trips->isEmpty()) {
+            return response()->json(['status' => 404, 'message' => 'trips not found', 'data' => (object)[]], 404);
         }
+
+        $geocodedTrips = $trips->map(function ($trip) {
+            $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
+
+            return [
+                'id' => $trip->id,
+                'user_id' => $trip->user_id,
+                'pickup' => $pickup,
+                'dropoff' => $dropoff,
+                'start_lat' => $trip->start_lat,
+                'start_lng' => $trip->start_lng,
+                'end_lat' => $trip->end_lat,
+                'end_lng' => $trip->end_lng,
+                'status' => $trip->status,
+                'created_at' => $trip->created_at,
+                'updated_at' => $trip->updated_at,
+            ];
+        });
+
+        return response()->json(['status' => 200, 'message' => 'trips found', 'data' => $geocodedTrips], 200);
+    }
+    private function getAddressFromCoordinates($latitude, $longitude)
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        if (isset($response['results'][0]['formatted_address'])) {
+            return $response['results'][0]['formatted_address'];
+        }
+
+        return 'Address not found';
     }
 }
