@@ -22,8 +22,8 @@ class DriverDashboardController extends Controller
         }
         $trips = Trip::where('user_id', $request->driver_id)->get();
         foreach ($trips as $trip) {
-            $pickup = $this->getPickupFromCoordinates($trip->start_lat, $trip->start_lng);
-            $dropoff = $this->getPickupFromCoordinates($trip->end_lat, $trip->end_lng);
+            $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
             return [
                 'id' => $trip->id,
                 'user_id' => $trip->user_id,
