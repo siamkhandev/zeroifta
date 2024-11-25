@@ -90,8 +90,12 @@ class VehicleController extends Controller
         $response = file_get_contents($url);
         $response = json_decode($response, true);
 
-        if (isset($response['results'][0]['formatted_address'])) {
-            return $response['results'][0]['formatted_address'];
+        if (isset($response['results'][0]['address_components'])) {
+            foreach ($response['results'][0]['address_components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types'])) {
+                    return $component['long_name']; // State name
+                }
+            }
         }
 
         return 'Address not found';
