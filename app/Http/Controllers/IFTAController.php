@@ -336,7 +336,8 @@ class IFTAController extends Controller
                 $durationParts = explode(' ', $durationText);
                 $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
                 $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
-                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+                //$formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+                $formattedDuration = $durationText;
             }
 
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
