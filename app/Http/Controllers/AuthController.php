@@ -193,7 +193,7 @@ class AuthController extends Controller
     $user->save();
 
     // Delete the token record to prevent reuse
-    DB::table('password_resets')->where('email', $request->email)->delete();
+    DB::table('password_reset_tokens')->where('email', $request->email)->delete();
     return response()->json(['status' =>200,'message' => 'Password reset successfully.','data'=>(object)[]], 200);
 }
 }
