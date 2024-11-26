@@ -324,7 +324,7 @@ class IFTAController extends Controller
 
             $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
             $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
-dd($durationText);
+
             // Format distance (e.g., "100 miles")
             if ($distanceText) {
                 $distanceParts = explode(' ', $distanceText);
