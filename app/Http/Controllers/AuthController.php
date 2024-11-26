@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -95,21 +96,32 @@ class AuthController extends Controller
     }
     public function sendResetLinkEmail(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if ($status == Password::RESET_LINK_SENT) {
-            return response()->json(['status'=>200,'message' => __($status),'data'=>(object)[]],200);
-        }else{
-            return response()->json(['status'=>404,'message' => 'Email Not Found','data'=>(object)[]],404);
-        }
-
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+           
         ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
+        }
+        $email = $request->email;
+
+        $token = Str::random(60);
+
+        // Store the token in the password_resets table
+        DB::table('password_resets')->updateOrInsert(
+            ['email' => $email], // Where clause
+            [
+                'email' => $email,
+                'token' => bcrypt($token), // Encrypt the token for security
+                'created_at' => now(),
+            ]
+        );
+        
+        return response()->json(['status'=>200,'message' =>'Reset password token sent to given email','data'=>(object)[]],200);
+        
+
+       
     }
     public function showResetForm($token)
     {
