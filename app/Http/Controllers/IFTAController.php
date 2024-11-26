@@ -27,7 +27,7 @@ class IFTAController extends Controller
 
     private function stopsAlgorithm($route, $currentGallons, $reserveGallons, $desiredAdditionalEndingGallons)
 {
-   
+
 
     // Calculate the total fuel needed for the route
     $fuelNeeded = $this->gallonsOfFuel($route['miles'], $route['truckMPG']) + $reserveGallons + $desiredAdditionalEndingGallons;
@@ -57,7 +57,7 @@ class IFTAController extends Controller
         // Update the route for the next segment
         $remainingMiles = $route['miles'] - $routeSegmentA['miles'];
 
-      
+
 
         if ($remainingMiles > 0) {
             $routeSegmentB = $this->createRouteSegment($fuelStop['location'], $route['destination'], [
@@ -125,7 +125,7 @@ class IFTAController extends Controller
             'start' => $start,
             'end' => $end,
             'miles' => $route['miles'], // Using full route miles if segment not found
-            'truckMPG' => $route['truckMPG'], 
+            'truckMPG' => $route['truckMPG'],
             'truckTankCapacity' => $route['truckTankCapacity']
         ];
     }
@@ -198,18 +198,19 @@ class IFTAController extends Controller
 
     return response()->json(['truck_stops' => $uniqueTruckStops]);
 }
-public function updateTrip(Request $request)
-{
-    $validatedData =$request->validate([
-        'start_lat' => 'required',
-        'start_lng' => 'required',
-        'end_lat' => 'required',
-        'end_lng' => 'required',
-        'truck_mpg' => 'required',
-        'fuel_tank_capacity' => 'required',
-        'total_gallons_present' => 'required',
-    ]);
-    $startLat = $request->start_lat;
+    public function updateTrip(Request $request)
+    {
+        $validatedData =$request->validate([
+            'trip_id' => 'required|exists:trips,id',
+            'start_lat' => 'required',
+            'start_lng' => 'required',
+            'end_lat' => 'required',
+            'end_lng' => 'required',
+            'truck_mpg' => 'required',
+            'fuel_tank_capacity' => 'required',
+            'total_gallons_present' => 'required',
+        ]);
+        $startLat = $request->start_lat;
         $startLng = $request->start_lng;
         $endLat = $request->end_lat;
         $endLng = $request->end_lng;
@@ -225,21 +226,42 @@ public function updateTrip(Request $request)
 
         if ($response->successful()) {
             $data = $response->json();
+            $route = $data['routes'][0];
 
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+
+            // Format distance (e.g., "100 miles")
+            if ($distanceText) {
+                $distanceParts = explode(' ', $distanceText);
+                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
+            }
+
+            // Format duration (e.g., "2 hr 20 min")
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+            }
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
                 $ftpData = $this->loadAndParseFTPData();
-              
+
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-
+                $trip = Trip::find($request->trip_id);
+                $trip->distance = $formattedDistance;
+                $trip->duration = $formattedDuration;
                 // Create a separate key for the polyline
                 $responseData = [
+                    'trip_id' => $request->trip_id,
+                    'trip' => $trip,
                     'fuel_stations' => $result, // Fuel stations with optimal station marked
                     'polyline' => $decodedPolyline // Separate key for polyline
                 ];
-                
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
@@ -273,12 +295,12 @@ public function updateTrip(Request $request)
             'total_gallons_present' => 'required',
         ]);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
-      
+
         if ($findTrip) {
             return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
         }
         $validatedData['status']='active';
-      
+
 
         $trip = Trip::create($validatedData);
 
@@ -321,7 +343,7 @@ public function updateTrip(Request $request)
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
                 $ftpData = $this->loadAndParseFTPData();
-              
+
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 $trip->distance = $formattedDistance;
@@ -333,7 +355,7 @@ public function updateTrip(Request $request)
                     'fuel_stations' => $result, // Fuel stations with optimal station marked
                     'polyline' => $decodedPolyline // Separate key for polyline
                 ];
-                
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fuel stations fetched successfully.',
@@ -419,17 +441,17 @@ public function updateTrip(Request $request)
     private function loadAndParseFTPData()
     {
         $filePath = 'EFSLLCpricing';
-    
+
         // Connect to the FTP disk
         $ftpDisk = Storage::disk('ftp');
         if (!$ftpDisk->exists($filePath)) {
             throw new \Exception("FTP file not found.");
         }
-    
+
         $fileContent = $ftpDisk->get($filePath);
         $rows = explode("\n", trim($fileContent));
         $parsedData = [];
-    
+
         foreach ($rows as $line) {
             $row = explode('|', $line);
 
@@ -440,12 +462,13 @@ public function updateTrip(Request $request)
                     'fuel_station_name'=>$row[1] ?? 'N/A',
                     'lastprice' => $row[10] ?? 0.00,
                     'price' => $row[11] ?? 0.00,
-                    'discount'=> $row[18] ?? 0.00
+                    'discount'=> $row[18] ?? 0.00,
+                    'address' => $row[4] ?? 'N/A',
 
                 ];
             }
         }
-    
+
         return $parsedData;
     }
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
@@ -471,6 +494,7 @@ public function updateTrip(Request $request)
                         'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
                         'price' => (float) $data['price'],
                         'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
+                        'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
                     ];
                 }
             }
