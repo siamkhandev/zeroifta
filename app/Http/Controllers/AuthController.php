@@ -172,7 +172,7 @@ class AuthController extends Controller
     if ($validator->fails()) {
         return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
     }
-    $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
+    $tokenData = DB::table('password_reset_tokens')->where('email', $request->email)->first();
 
     if (!$tokenData) {
         return response()->json(['status' =>400, 'message' => 'Invalid email or token.','data'=>(object)[]], 400);
