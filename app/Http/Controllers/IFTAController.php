@@ -324,7 +324,7 @@ class IFTAController extends Controller
 
             $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
             $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
-
+dd($durationText);
             // Format distance (e.g., "100 miles")
             if ($distanceText) {
                 $distanceParts = explode(' ', $distanceText);
@@ -336,8 +336,8 @@ class IFTAController extends Controller
                 $durationParts = explode(' ', $durationText);
                 $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
                 $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
-                //$formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
-                $formattedDuration = $durationText;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+
             }
 
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
