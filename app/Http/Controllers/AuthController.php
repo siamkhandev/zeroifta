@@ -109,7 +109,7 @@ class AuthController extends Controller
         $token = Str::random(60);
 
         // Store the token in the password_resets table
-        DB::table('password_resets')->updateOrInsert(
+        DB::table('password_reset_tokens')->updateOrInsert(
             ['email' => $email], // Where clause
             [
                 'email' => $email,
@@ -163,27 +163,28 @@ class AuthController extends Controller
     if ($validator->fails()) {
         return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
     }
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password),
-            ])->save();
-        }
-    );
+    $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
 
-    if ($status === Password::PASSWORD_RESET) {
-        return response()->json([
-            'status' => 200,
-            'message' => 'Password has been reset successfully.',
-            'data' => (object)[]
-        ], 200);
+    if (!$tokenData) {
+        return response()->json(['status' =>400, 'message' => 'Invalid email or token.','data'=>(object)[]], 400);
     }
 
-    return response()->json([
-        'status' => 400,
-        'message' => 'Failed to reset password. Invalid token or email.',
-        'data' => (object)[]
-    ], 400);
+    // Check if the provided token matches the stored one
+    if (!Hash::check($request->token, $tokenData->token)) {
+        return response()->json(['status' =>400,'message' => 'Invalid token.','data'=>(object)[]], 400);
+    }
+
+    // Update the user's password
+    $user = User::where('email', $request->email)->first();
+    if (!$user) {
+        return response()->json(['status' =>404,'message' => 'User not found.','data'=>(object)[]], 404);
+    }
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    // Delete the token record to prevent reuse
+    DB::table('password_resets')->where('email', $request->email)->delete();
+    return response()->json(['status' =>200,'message' => 'Password reset successfully.','data'=>(object)[]], 200);
 }
 }
