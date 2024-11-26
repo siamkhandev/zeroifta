@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -117,8 +118,15 @@ class AuthController extends Controller
                 'created_at' => now(),
             ]
         );
+        try {
+            // You can customize the mail class ResetPasswordMail to structure the email
+            Mail::to($email)->send(new ResetPasswordMail($token));
+    
+            return response()->json(['status' => 200, 'message' => 'Reset password token sent to the given email', 'data' => (object)[]], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 500, 'message' => 'Failed to send email: ' . $e->getMessage(), 'data' => (object)[]], 500);
+        }
         
-        return response()->json(['status'=>200,'message' =>'Reset password token sent to given email','data'=>(object)[]],200);
         
 
        
