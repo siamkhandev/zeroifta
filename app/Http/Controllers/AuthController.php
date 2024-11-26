@@ -140,13 +140,17 @@ class AuthController extends Controller
                     : back()->withErrors(['email' => [__($status)]]);
     }
     public function resetPassword(Request $request)
-{
-    $request->validate([
+    {
+   
+    $validator = Validator::make($request->all(), [
         'email' => 'required|email|exists:users,email',
         'token' => 'required',
         'password' => 'required|min:8|confirmed',
     ]);
 
+    if ($validator->fails()) {
+        return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
+    }
     $status = Password::reset(
         $request->only('email', 'password', 'password_confirmation', 'token'),
         function ($user, $password) {
