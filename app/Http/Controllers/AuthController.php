@@ -139,4 +139,35 @@ class AuthController extends Controller
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
     }
+    public function resetPassword(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email|exists:users,email',
+        'token' => 'required',
+        'password' => 'required|min:8|confirmed',
+    ]);
+
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function ($user, $password) {
+            $user->forceFill([
+                'password' => Hash::make($password),
+            ])->save();
+        }
+    );
+
+    if ($status === Password::PASSWORD_RESET) {
+        return response()->json([
+            'status' => 200,
+            'message' => 'Password has been reset successfully.',
+            'data' => (object)[]
+        ], 200);
+    }
+
+    return response()->json([
+        'status' => 400,
+        'message' => 'Failed to reset password. Invalid token or email.',
+        'data' => (object)[]
+    ], 400);
+}
 }
