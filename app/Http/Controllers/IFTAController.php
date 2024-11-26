@@ -464,7 +464,7 @@ class IFTAController extends Controller
                     'lastprice' => $row[10] ?? 0.00,
                     'price' => $row[11] ?? 0.00,
                     'discount'=> $row[18] ?? 0.00,
-                    'address' => $row[4] ?? 'N/A',
+                    'address' => $row[3] ?? 'N/A',
 
                 ];
             }
