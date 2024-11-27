@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FuelStation;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -347,7 +348,20 @@ class IFTAController extends Controller
 
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
-                dd($result);
+               foreach ($result as  $value) {
+                   $fuelStation = new FuelStation();
+                   $fuelStation->name = $value['fuel_station_name'];
+                   $fuelStation->latitude = $value['ftp_lat'];
+                   $fuelStation->longitude = $value['ftp_lng'];
+                   $fuelStation->price = $value['price'];
+                   $fuelStation->lastprice = $value['lastprice'];
+                   $fuelStation->discount = $value['discount'];
+                   $fuelStation->ifta_tax = $value['IFTA_tax'];
+                   $fuelStation->is_optimal = $value['is_optimal'];
+                   $fuelStation->address = $value['address'];
+                   $fuelStation->trip_id = $trip->id;
+                   $fuelStation->save();
+               }
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
