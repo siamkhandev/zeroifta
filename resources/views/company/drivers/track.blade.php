@@ -155,7 +155,7 @@ function drawRoute(start, end) {
         icon: '{{asset("assets/img/start.png")}}',
         url: '{{asset("assets/img/start.png")}}',  // Path to the custom icon
         scaledSize: new google.maps.Size(20, 20),  // Resize the icon if necessary
-        anchor: new google.maps.Point(20, 40)
+        anchor: new google.maps.Point(10, 30)
     });
 
     endMarker = new google.maps.Marker({
