@@ -112,7 +112,7 @@ $.get('/api/get-fuel-stations/' + userId, function(response) {
                     fillOpacity: 1,
                 map: map,
                 center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                radius: 1000  // Larger radius for better visibility
+                radius: 5000  // Larger radius for better visibility
             });
 
             // Create the InfoWindow with custom styling for red background
