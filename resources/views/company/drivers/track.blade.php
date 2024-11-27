@@ -102,9 +102,9 @@ function initMap() {
     $.get('/api/get-fuel-stations/' + userId, function(response) {
     if (response.status == 200) {
         response.data.forEach(station => {
-            console.log(`Lat: ${station.latitude}, Lng: ${station.longitude}`);
+            console.log(station); // Log the station object to see its properties
+            console.log(`is_optimal: ${station.is_optimal}`); // Log is_optimal value
 
-            // Create a circle for the fuel station
             const stationCircle = new google.maps.Circle({
                 strokeColor: "#0000FF",  // Blue color
                 strokeOpacity: 0.8,
@@ -116,7 +116,6 @@ function initMap() {
                 radius: 5000  // Larger radius for better visibility
             });
 
-            // Set the background color of the InfoWindow based on is_optimal
             const infoWindow = new google.maps.InfoWindow({
                 content: `
                     <div style="background-color: ${station.is_optimal ? '#00FF00' : '#FF0000'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
@@ -126,7 +125,6 @@ function initMap() {
                 disableAutoPan: true // Prevent map from panning when opening the InfoWindow
             });
 
-            // Show the InfoWindow on mouseover with the correct background color
             google.maps.event.addListener(stationCircle, 'mouseover', function() {
                 if (currentInfoWindow) {
                     currentInfoWindow.close();
@@ -136,7 +134,6 @@ function initMap() {
                 currentInfoWindow = infoWindow;
             });
 
-            // Close the InfoWindow on mouseout
             google.maps.event.addListener(stationCircle, 'mouseout', function() {
                 infoWindow.close();
             });
