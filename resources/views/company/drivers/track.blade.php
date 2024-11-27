@@ -98,10 +98,10 @@ function initMap() {
     });
 
     $.get('/api/get-fuel-stations/' + userId, function(response) {
-        console.log(response);
+        
         if (response.status == 200) {
             response.data.forEach(station => {
-                // Create a smaller blue circle for each fuel station
+                console.log(`Lat: ${station.latitude}, Lng: ${station.longitude}`);
                 const stationCircle = new google.maps.Circle({
                     strokeColor: "#0000FF",  // Blue color
                     strokeOpacity: 0.8,
