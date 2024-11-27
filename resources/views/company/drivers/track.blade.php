@@ -71,7 +71,11 @@ function initMap() {
 
     userMarker = new google.maps.Marker({
         map: map,
-        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+        icon: {
+            url: '{{asset("assets/img/location-blue.png")}}',  // Path to the custom icon
+            scaledSize: new google.maps.Size(40, 40),  // Resize the icon if necessary
+            anchor: new google.maps.Point(20, 40)   // Adjust the anchor point to the bottom of the icon
+        }
     });
 
     // Fetch trip data
