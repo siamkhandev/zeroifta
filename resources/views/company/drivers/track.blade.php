@@ -97,49 +97,51 @@ function initMap() {
         }
     });
 
-    $.get('/api/get-fuel-stations/' + userId, function(response) {
-        
-        if (response.status == 200) {
-            response.data.forEach(station => {
-                console.log(`Lat: ${station.latitude}, Lng: ${station.longitude}`);
-                const stationCircle = new google.maps.Circle({
-                    strokeColor: "#0000FF",  // Blue color
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: "#0000FF",  // Blue color fill
-                    fillOpacity: 1,
-                    map: map,
-                    center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                    radius: 500 // Radius in meters
-                });
+    let currentInfoWindow = null;
 
-                // Create the InfoWindow with custom styling for blue background
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `
-                        <div style="background-color: #0000FF; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
-                            <strong>${station.name}</strong>
-                        </div>
-                    `,
-                    disableAutoPan: true // To prevent map from panning when opening the InfoWindow
-                });
+$.get('/api/get-fuel-stations/' + userId, function(response) {
+    if (response.status == 200) {
+        response.data.forEach(station => {
+            console.log(`Lat: ${station.latitude}, Lng: ${station.longitude}`);
 
-                google.maps.event.addListener(stationCircle, 'mouseover', function() {
-                    infoWindow.setPosition(stationCircle.getCenter());
-                    infoWindow.open(map);
-
-                    // Hide the default close button by targeting the class
-                    const closeButton = document.querySelectorAll('.gm-ui-hover-effect');
-                    closeButton.forEach(button => button.style.display = 'none');
-                });
-
-                google.maps.event.addListener(stationCircle, 'mouseout', function() {
-                    infoWindow.close();
-                });
+            const stationCircle = new google.maps.Circle({
+                strokeColor: "#FF0000",  // Red color for visibility
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",  // Red color fill
+                fillOpacity: 0.6,
+                map: map,
+                center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
+                radius: 500  // Larger radius for better visibility
             });
-        } else {
-            alert(response.message);
-        }
-    });
+
+            // Create the InfoWindow with custom styling for red background
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="background-color: #FF0000; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
+                        <strong>${station.name}</strong>
+                    </div>
+                `,
+                disableAutoPan: true // Prevent map from panning when opening the InfoWindow
+            });
+
+            google.maps.event.addListener(stationCircle, 'mouseover', function() {
+                if (currentInfoWindow) {
+                    currentInfoWindow.close();
+                }
+                infoWindow.setPosition(stationCircle.getCenter());
+                infoWindow.open(map);
+                currentInfoWindow = infoWindow;
+            });
+
+            google.maps.event.addListener(stationCircle, 'mouseout', function() {
+                infoWindow.close();
+            });
+        });
+    } else {
+        alert(response.message);
+    }
+});
 }
 
 function drawRoute(start, end) {
