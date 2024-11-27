@@ -119,7 +119,7 @@ $.get('/api/get-fuel-stations/' + userId, function(response) {
             const infoWindow = new google.maps.InfoWindow({
                 content: `
                     <div style="background-color: #FF0000; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
-                        <strong>${station.name}</strong>
+                        <strong>${station.price + '/Gallon'} </strong>
                     </div>
                 `,
                 disableAutoPan: true // Prevent map from panning when opening the InfoWindow
