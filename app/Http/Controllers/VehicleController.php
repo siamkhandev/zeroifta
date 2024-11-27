@@ -68,6 +68,10 @@ class VehicleController extends Controller
                 $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image ?? null;
 
             }
+            $startLat = $trip->start_lat;
+            $startLng = $trip->start_lng;
+            $endLat = $trip->end_lat;
+            $endLng = $trip->end_lng;
             $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
         $response = Http::get($url);
