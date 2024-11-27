@@ -151,7 +151,7 @@ function drawRoute(start, end) {
     startMarker = new google.maps.Marker({
         position: start,
         map: map,
-        label: "Start",
+        icon: '{{asset("assets/img/location-blue.png")}}',
         url: '{{asset("assets/img/location-blue.png")}}',  // Path to the custom icon
         scaledSize: new google.maps.Size(40, 40),  // Resize the icon if necessary
         anchor: new google.maps.Point(20, 40)
