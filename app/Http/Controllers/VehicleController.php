@@ -6,6 +6,7 @@ use App\Models\DriverVehicle;
 use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class VehicleController extends Controller
 {
@@ -67,6 +68,31 @@ class VehicleController extends Controller
                 $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image ?? null;
 
             }
+            $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $data = $response->json();
+            $route = $data['routes'][0];
+
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+
+            // Format distance (e.g., "100 miles")
+            if ($distanceText) {
+                $distanceParts = explode(' ', $distanceText);
+                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
+            }
+
+            // Format duration (e.g., "2 hr 20 min")
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+
+            }
+        }
             return [
                 'id' => $trip->id,
                 'user_id' => $trip->user_id,
@@ -78,6 +104,8 @@ class VehicleController extends Controller
                 'end_lng' => $trip->end_lng,
                 'status' => $trip->status,
                 'vehicle' => $vehicle,
+                'distance' => $formattedDistance,
+                'duration' => $formattedDuration,
                 'created_at' => $trip->created_at,
                 'updated_at' => $trip->updated_at,
             ];

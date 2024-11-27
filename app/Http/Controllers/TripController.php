@@ -350,7 +350,33 @@ class TripController extends Controller
             if($trip->vehicle && $trip->vehicle->vehicle_image){
                 $trip->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
             }
-           
+            $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $data = $response->json();
+            $route = $data['routes'][0];
+
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+
+            // Format distance (e.g., "100 miles")
+            if ($distanceText) {
+                $distanceParts = explode(' ', $distanceText);
+                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
+            }
+
+            // Format duration (e.g., "2 hr 20 min")
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+
+            }
+        }
+            $trip->distance = $formattedDistance;
+            $trip->duration = $formattedDuration;
             return response()->json(['status'=>200,'message'=>'trip found','data'=>$trip],200);
         }else{
             return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
