@@ -10,8 +10,10 @@ class ReceiptController extends Controller
 {
     public function index(Request $request)
     {
-        $receipts = Receipt::where('driver_id',$request->driver_id)->where('trip_id',$request->trip_id)->get();
-        
+        $receipts = Receipt::where('driver_id',$request->driver_id)
+        //->where('trip_id',$request->trip_id)
+        ->get();
+
         if(count($receipts) >0){
             foreach ($receipts as $receipt) {
                 if (isset($receipt->receipt_image)) {
