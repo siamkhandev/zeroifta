@@ -76,6 +76,7 @@ function initMap() {
 
     // Fetch trip data
     $.get('/api/user-trip/' + userId, function(response) {
+        console.log(response);
         if (response.status == 200) {
             const trip = response.data;
             const start = { lat: parseFloat(trip.start_lat), lng: parseFloat(trip.start_lng) };
