@@ -110,7 +110,7 @@ function initMap() {
                     fillOpacity: 1,
                     map: map,
                     center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                    radius: 100 // Radius in meters
+                    radius: 500 // Radius in meters
                 });
 
                 // Create the InfoWindow with custom styling for blue background
