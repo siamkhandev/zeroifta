@@ -160,7 +160,10 @@ function drawRoute(start, end) {
     endMarker = new google.maps.Marker({
         position: end,
         map: map,
-        label: "End"
+        icon: '{{asset("assets/img/location-green.png")}}',
+        url: '{{asset("assets/img/location-green.png")}}',  // Path to the custom icon
+        scaledSize: new google.maps.Size(40, 40),  // Resize the icon if necessary
+        anchor: new google.maps.Point(20, 40)
     });
 
     const directionsService = new google.maps.DirectionsService();
