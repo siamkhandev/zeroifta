@@ -99,32 +99,34 @@ function initMap() {
 
     let currentInfoWindow = null;
 
-$.get('/api/get-fuel-stations/' + userId, function(response) {
+    $.get('/api/get-fuel-stations/' + userId, function(response) {
     if (response.status == 200) {
         response.data.forEach(station => {
             console.log(`Lat: ${station.latitude}, Lng: ${station.longitude}`);
 
+            // Create a circle for the fuel station
             const stationCircle = new google.maps.Circle({
                 strokeColor: "#0000FF",  // Blue color
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: "#0000FF",  // Blue color fill
-                    fillOpacity: 1,
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#0000FF",  // Blue color fill
+                fillOpacity: 1,
                 map: map,
                 center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
                 radius: 5000  // Larger radius for better visibility
             });
 
-            // Create the InfoWindow with custom styling for red background
+            // Set the background color of the InfoWindow based on is_optimal
             const infoWindow = new google.maps.InfoWindow({
                 content: `
-                    <div style="background-color: #FF0000; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
-                        <strong>${station.price + '/Gallon'} </strong>
+                    <div style="background-color: ${station.is_optimal ? '#00FF00' : '#FF0000'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
+                        <strong>${'$' + station.price + '/Gallon'}</strong>
                     </div>
                 `,
                 disableAutoPan: true // Prevent map from panning when opening the InfoWindow
             });
 
+            // Show the InfoWindow on mouseover with the correct background color
             google.maps.event.addListener(stationCircle, 'mouseover', function() {
                 if (currentInfoWindow) {
                     currentInfoWindow.close();
@@ -134,6 +136,7 @@ $.get('/api/get-fuel-stations/' + userId, function(response) {
                 currentInfoWindow = infoWindow;
             });
 
+            // Close the InfoWindow on mouseout
             google.maps.event.addListener(stationCircle, 'mouseout', function() {
                 infoWindow.close();
             });
