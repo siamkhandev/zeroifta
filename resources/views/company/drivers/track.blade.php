@@ -103,7 +103,7 @@ function initMap() {
     if (response.status == 200) {
         response.data.forEach(station => {
             // Set circle color based on is_optimal value
-            const circleColor = station.is_optimal ? "#00FF00" : "#0000FF"; // Green if optimal, Blue if not
+            const circleColor = station.is_optimal ? "#14a832" : "#0000FF"; // Green if optimal, Blue if not
 
             const stationCircle = new google.maps.Circle({
                 strokeColor: circleColor,  // Blue color if not optimal, Green if optimal
@@ -119,7 +119,7 @@ function initMap() {
             // Create the InfoWindow with a dynamic background color based on is_optimal
             const infoWindow = new google.maps.InfoWindow({
                 content: `
-                    <div style="background-color: ${station.is_optimal ? '#00FF00' : '#FF0000'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
+                    <div style="background-color: ${station.is_optimal ? '#14a832' : '#FF0000'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
                         <strong>${'$' + station.price + '/Gallon'}</strong>
                     </div>
                 `,
