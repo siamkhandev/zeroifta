@@ -102,21 +102,24 @@ function initMap() {
     $.get('/api/get-fuel-stations/' + userId, function(response) {
     if (response.status == 200) {
         response.data.forEach(station => {
-           
+            // Set circle color based on is_optimal value
+            const circleColor = station.is_optimal ? "#00FF00" : "#0000FF"; // Green if optimal, Blue if not
+
             const stationCircle = new google.maps.Circle({
-                strokeColor: "#0000FF",  // Blue color
+                strokeColor: circleColor,  // Blue color if not optimal, Green if optimal
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: "#0000FF",  // Blue color fill
+                fillColor: circleColor,    // Green fill if optimal, Blue fill if not
                 fillOpacity: 1,
                 map: map,
                 center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
                 radius: 5000  // Larger radius for better visibility
             });
 
+            // Create the InfoWindow with a dynamic background color based on is_optimal
             const infoWindow = new google.maps.InfoWindow({
                 content: `
-                    <div style="background-color: ${station.is_optimal ? '#00FF00' : '#0000FF'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
+                    <div style="background-color: ${station.is_optimal ? '#00FF00' : '#FF0000'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
                         <strong>${'$' + station.price + '/Gallon'}</strong>
                     </div>
                 `,
