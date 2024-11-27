@@ -288,7 +288,7 @@ class TripController extends Controller
     }
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
-        $fuelStations  = FuelStation::where('trip_id', $trip->id)->get();
+        $fuelStations  = FuelStation::where('trip_id',$request->trip_id)->get();
         $startLat = $trip->start_lat;
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
@@ -327,7 +327,7 @@ class TripController extends Controller
                 'trip' => $trip,
                 'fuelStations' => $fuelStations
             ];
-            return response()->json(['status'=>200,'message'=>'trip found','data'=>$trip],200);
+            return response()->json(['status'=>200,'message'=>'trip found','data'=>$response],200);
         }else{
             return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
         }
