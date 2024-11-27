@@ -347,6 +347,7 @@ class IFTAController extends Controller
 
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
+                dd($result);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 // Create a separate key for the polyline
