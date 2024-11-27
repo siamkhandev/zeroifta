@@ -350,6 +350,7 @@ class IFTAController extends Controller
                 dd($result);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
+                $trip->user_id = (int)$trip->user_id;
                 // Create a separate key for the polyline
                 $responseData = [
                     'trip_id'=>$trip->id,
@@ -469,9 +470,9 @@ class IFTAController extends Controller
                     'fuel_station_name'=>$row[1] ?? 'N/A',
                     'lastprice' => $row[10] ?? 0.00,
                     'price' => $row[11] ?? 0.00,
-                    'discount'=> $row[18] ?? 0.00,
+                    'IFTA_tax'=> $row[18] ?? 0.00,
                     'address' => $row[3] ?? 'N/A',
-
+                    'discount' => $row[12] ?? 0.00
                 ];
             }
         }
@@ -502,6 +503,7 @@ class IFTAController extends Controller
                         'price' => (float) $data['price'],
                         'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
                         'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
+                        'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
                     ];
                 }
             }

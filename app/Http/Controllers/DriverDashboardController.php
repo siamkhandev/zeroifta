@@ -16,7 +16,7 @@ class DriverDashboardController extends Controller
     public function index(Request $request)
 {
     $dashboardData = [];
-    
+
     // Get the vehicle data
     $dashboardData['vehicle'] = DriverVehicle::with('vehicle')
         ->where('driver_id', $request->driver_id)
@@ -28,9 +28,9 @@ class DriverDashboardController extends Controller
     }
 
     // Get all trips for the given driver
-    $trips = Trip::where('user_id', $request->driver_id)->take(5)->latest()->get();
+    $trips = Trip::where('user_id', $request->driver_id)->take(5)->orderBy('created_at', 'desc')->get();
     $tripData = []; // This will hold the formatted trip data
-    
+
     foreach ($trips as $trip) {
         // Get the pickup and dropoff addresses using coordinates
         $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
