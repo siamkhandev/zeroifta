@@ -108,11 +108,11 @@ $.get('/api/get-fuel-stations/' + userId, function(response) {
                 strokeColor: "#FF0000",  // Red color for visibility
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: "#FF0000",  // Red color fill
+                fillColor: "#0000FF",
                 fillOpacity: 0.6,
                 map: map,
                 center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
-                radius: 500  // Larger radius for better visibility
+                radius: 1000  // Larger radius for better visibility
             });
 
             // Create the InfoWindow with custom styling for red background
