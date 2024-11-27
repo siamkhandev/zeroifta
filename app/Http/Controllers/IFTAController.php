@@ -377,25 +377,30 @@ class IFTAController extends Controller
         ], 500);
     }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations)
-{
-    $optimalStation = collect($fuelStations)->sortBy('price')->first();
+    {
+        $optimalStation = collect($fuelStations)->sortBy('price')->first();
 
-    foreach ($fuelStations as &$station) {
-        $distanceToStation = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
-        $fuelRequired = $distanceToStation / 1609.34 / $mpg; // Convert meters to miles
+        foreach ($fuelStations as &$station) {
+            $distanceToStation = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
+            $fuelRequired = $distanceToStation / 1609.34 / $mpg; // Convert meters to miles
 
-        // Calculate gallons to buy (only if fuel required exceeds current gallons)
-        $gallonsToBuy = max(0, $fuelRequired - $currentGallons);
-        $station['gallons_to_buy'] = round($gallonsToBuy, 2);
-        // Mark the optimal station
-        $station['is_optimal'] = (
-            $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
-            $station['ftp_lng'] == $optimalStation['ftp_lng']
-        );
+            if (
+                $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
+                $station['ftp_lng'] == $optimalStation['ftp_lng']
+            ) {
+                // Calculate gallons to buy for the optimal station
+                $gallonsToBuy = max(0, $fuelRequired - $currentGallons);
+                $station['gallons_to_buy'] = round($gallonsToBuy, 2);
+                $station['is_optimal'] = true; // Mark as optimal
+            } else {
+                // Skip `gallons_to_buy` for non-optimal stations
+                //$station['gallons_to_buy'] = null;
+                $station['is_optimal'] = false; // Mark as non-optimal
+            }
+        }
+
+        return array_values($fuelStations); // Re-index for JSON response
     }
-
-    return array_values($fuelStations); // Re-index for JSON response
-}
     private function decodePolyline($encoded)
     {
         $points = [];
@@ -463,9 +468,9 @@ class IFTAController extends Controller
                     'fuel_station_name'=>$row[1] ?? 'N/A',
                     'lastprice' => $row[10] ?? 0.00,
                     'price' => $row[11] ?? 0.00,
-                    'discount'=> $row[18] ?? 0.00,
+                    'IFTA_tax'=> $row[18] ?? 0.00,
                     'address' => $row[3] ?? 'N/A',
-
+                    'discount' => $row[12] ?? 0.00
                 ];
             }
         }
@@ -496,6 +501,7 @@ class IFTAController extends Controller
                         'price' => (float) $data['price'],
                         'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
                         'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
+                        'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
                     ];
                 }
             }
