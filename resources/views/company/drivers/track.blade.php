@@ -76,7 +76,7 @@ function initMap() {
 
     // Fetch trip data
     $.get('/api/user-trip/' + userId, function(response) {
-        console.log(response);
+       
         if (response.status == 200) {
             const trip = response.data;
             const start = { lat: parseFloat(trip.start_lat), lng: parseFloat(trip.start_lng) };
@@ -98,6 +98,7 @@ function initMap() {
     });
 
     $.get('/api/get-fuel-stations/' + userId, function(response) {
+        console.log(response);
         if (response.status == 200) {
             response.data.forEach(station => {
                 // Create a smaller blue circle for each fuel station
