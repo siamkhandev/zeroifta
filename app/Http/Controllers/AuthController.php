@@ -32,7 +32,7 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $user->token = $user->createToken('zeroifta')->accessToken;
-            $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->image;
+            $user->image = 'http://zeroifta.alnairtech.com/images/'.$user->image;
             return response()->json(['status'=>200,'message'=>'Logged in successfully','data' => $user], 200);
         } else {
             return response()->json(['status'=>401,'message'=>'Invalid Credentials','data' => (object)[]], 401);
