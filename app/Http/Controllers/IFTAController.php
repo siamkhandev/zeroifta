@@ -349,6 +349,7 @@ class IFTAController extends Controller
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
+                $trip->user_id = (int)$trip->user_id;
                 // Create a separate key for the polyline
                 $responseData = [
                     'trip_id'=>$trip->id,
