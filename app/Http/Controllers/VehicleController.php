@@ -47,12 +47,12 @@ class VehicleController extends Controller
         }else{
             return response()->json(['status'=>404,'message'=>'vehicles not found','data'=>(object)[]],404);
         }
-       
+
 
     }
     public function allTrips(Request $request)
     {
-        $trips = Trip::where('user_id', $request->driver_id)->get();
+        $trips = Trip::where('user_id', $request->driver_id)->orderBy('created_at', 'desc')->get();
 
         if ($trips->isEmpty()) {
             return response()->json(['status' => 404, 'message' => 'trips not found', 'data' => (object)[]], 404);
@@ -65,7 +65,7 @@ class VehicleController extends Controller
             $vehicle = Vehicle::where('id', $driverVehicle)->first();
             if(isset($vehicle->vehicle_image)){
                 $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image ?? null;
-            
+
             }
             return [
                 'id' => $trip->id,
