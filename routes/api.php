@@ -30,6 +30,7 @@ Route::post('/calculate-ifta', [IFTAController::class, 'findCheapestFuelStops'])
 Route::post('/findgas', [IFTAController::class, 'getDecodedPolyline'])->name('findgas');
 Route::post('login',[AuthController::class,'login']);
 Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail']);
+Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
     Route::post('password/change',[AuthController::class,'changePassword']);

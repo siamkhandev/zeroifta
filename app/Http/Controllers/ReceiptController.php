@@ -10,7 +10,7 @@ class ReceiptController extends Controller
 {
     public function index(Request $request)
     {
-        $receipts = Receipt::where('driver_id',$request->driver_id)->get();
+        $receipts = Receipt::where('driver_id',$request->driver_id)->where('trip_id',$request->trip_id)->get();
         
         if(count($receipts) >0){
             foreach ($receipts as $receipt) {
@@ -26,6 +26,7 @@ class ReceiptController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'trip_id'=>'required|exists:trips,id',
             'driver_id'=>'required|exists:users,id',
             'fuel_station_name' => 'required',
             'price_per_gallon' => 'required',
@@ -38,6 +39,7 @@ class ReceiptController extends Controller
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
         $receipt = new Receipt();
+        $receipt->trip_id = (int)$request->trip_id;
         $receipt->driver_id = (int)$request->driver_id;
         $receipt->fuel_station_name = $request->fuel_station_name;
         $receipt->price_per_gallon = $request->price_per_gallon;

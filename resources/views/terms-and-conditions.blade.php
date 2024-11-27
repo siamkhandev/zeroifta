@@ -40,17 +40,7 @@
         </div>
         <div class="right-opts">
           <div class="head-right">
-            <div class="search-div">
-              <div class="serch-tab">
-                <input type="text" placeholder="Type Here" name="" id="">
-                <span class="s-icon hs-svg">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="12" viewBox="0 0 11 12" fill="none">
-                    <circle cx="5" cy="5" r="4.3" stroke="" stroke-width="1.4"></circle>
-                    <line x1="10.0101" y1="11" x2="8" y2="8.98995" stroke="" stroke-width="1.4" stroke-linecap="round"></line>
-                  </svg>
-                </span>
-              </div>
-            </div>
+            
             <div class="opt-div">
               <div class="mob-menu">
                 <div class="mobLogo-div">

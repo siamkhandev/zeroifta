@@ -28,7 +28,7 @@ class DriverDashboardController extends Controller
     }
 
     // Get all trips for the given driver
-    $trips = Trip::where('user_id', $request->driver_id)->get();
+    $trips = Trip::where('user_id', $request->driver_id)->take(5)->latest()->get();
     $tripData = []; // This will hold the formatted trip data
     
     foreach ($trips as $trip) {

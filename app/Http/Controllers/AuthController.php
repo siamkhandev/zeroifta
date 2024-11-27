@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -95,21 +98,39 @@ class AuthController extends Controller
     }
     public function sendResetLinkEmail(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if ($status == Password::RESET_LINK_SENT) {
-            return response()->json(['status'=>200,'message' => __($status),'data'=>(object)[]],200);
-        }else{
-            return response()->json(['status'=>404,'message' => 'Email Not Found','data'=>(object)[]],404);
-        }
-
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+           
         ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
+        }
+        $email = $request->email;
+
+        $token = Str::random(60);
+
+        // Store the token in the password_resets table
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $email], // Where clause
+            [
+                'email' => $email,
+                'token' => bcrypt($token), // Encrypt the token for security
+                'created_at' => now(),
+            ]
+        );
+        try {
+            // You can customize the mail class ResetPasswordMail to structure the email
+            Mail::to($email)->send(new ResetPasswordMail($token));
+    
+            return response()->json(['status' => 200, 'message' => 'Reset password token sent to the given email', 'data' => (object)[]], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 500, 'message' => 'Failed to send email: ' . $e->getMessage(), 'data' => (object)[]], 500);
+        }
+        
+        
+
+       
     }
     public function showResetForm($token)
     {
@@ -139,4 +160,40 @@ class AuthController extends Controller
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
     }
+    public function resetPassword(Request $request)
+    {
+   
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email|exists:users,email',
+        'token' => 'required',
+        'password' => 'required|min:8|confirmed',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
+    }
+    $tokenData = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+
+    if (!$tokenData) {
+        return response()->json(['status' =>400, 'message' => 'Invalid email or token.','data'=>(object)[]], 400);
+    }
+
+    // Check if the provided token matches the stored one
+    if (!Hash::check($request->token, $tokenData->token)) {
+        return response()->json(['status' =>400,'message' => 'Invalid token.','data'=>(object)[]], 400);
+    }
+
+    // Update the user's password
+    $user = User::where('email', $request->email)->first();
+    if (!$user) {
+        return response()->json(['status' =>404,'message' => 'User not found.','data'=>(object)[]], 404);
+    }
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    // Delete the token record to prevent reuse
+    DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+    return response()->json(['status' =>200,'message' => 'Password reset successfully.','data'=>(object)[]], 200);
+}
 }
