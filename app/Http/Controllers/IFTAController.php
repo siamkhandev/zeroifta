@@ -360,6 +360,7 @@ class IFTAController extends Controller
                    $fuelStation->is_optimal = $value['is_optimal'];
                    $fuelStation->address = $value['address'];
                    $fuelStation->trip_id = $trip->id;
+                   $fuelStation->user_id = $request->user_id;
                    $fuelStation->save();
                }
                 $trip->distance = $formattedDistance;
