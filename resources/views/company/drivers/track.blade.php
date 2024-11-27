@@ -105,11 +105,11 @@ $.get('/api/get-fuel-stations/' + userId, function(response) {
             console.log(`Lat: ${station.latitude}, Lng: ${station.longitude}`);
 
             const stationCircle = new google.maps.Circle({
-                strokeColor: "#FF0000",  // Red color for visibility
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: "#0000FF",
-                fillOpacity: 0.4,
+                strokeColor: "#0000FF",  // Blue color
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#0000FF",  // Blue color fill
+                    fillOpacity: 1,
                 map: map,
                 center: { lat: parseFloat(station.latitude), lng: parseFloat(station.longitude) },
                 radius: 1000  // Larger radius for better visibility
