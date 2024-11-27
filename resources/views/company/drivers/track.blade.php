@@ -119,7 +119,7 @@ function initMap() {
             // Create the InfoWindow with a dynamic background color based on is_optimal
             const infoWindow = new google.maps.InfoWindow({
                 content: `
-                    <div style="background-color: ${station.is_optimal ? '#14a832' : '#FF0000'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
+                    <div style="background-color: ${station.is_optimal ? '#14a832' : '#0000FF'}; color: white; padding: 10px 15px; border-radius: 5px; text-align: center; height: auto; max-height: 80px;">
                         <strong>${'$' + station.price + '/Gallon'}</strong>
                     </div>
                 `,
