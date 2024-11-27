@@ -71,11 +71,7 @@ function initMap() {
 
     userMarker = new google.maps.Marker({
         map: map,
-        icon: {
-            url: 'http://zeroifta.alnairtech.com/assets/img/location-blue.png',  // Path to the custom icon
-            scaledSize: new google.maps.Size(400, 400),  // Resize the icon if necessary
-            anchor: new google.maps.Point(20, 40)   // Adjust the anchor point to the bottom of the icon
-        }
+        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
     });
 
     // Fetch trip data
@@ -155,7 +151,10 @@ function drawRoute(start, end) {
     startMarker = new google.maps.Marker({
         position: start,
         map: map,
-        label: "Start"
+        label: "Start",
+        url: '{{asset("assets/img/location-blue.png")}}',  // Path to the custom icon
+        scaledSize: new google.maps.Size(40, 40),  // Resize the icon if necessary
+        anchor: new google.maps.Point(20, 40)
     });
 
     endMarker = new google.maps.Marker({
