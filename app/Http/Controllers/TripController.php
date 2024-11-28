@@ -292,14 +292,12 @@ class TripController extends Controller
     ->map(function ($station) {
         // Convert the station to an array, keeping all attributes
         $data = $station->toArray();
-
+        dd($station->ifta_tax);
         // Add the new keys
         $data['ftp_lat'] = $data['latitude'];
         $data['ftp_lng'] = $data['longitude'];
-        $value = str_replace("\u{00a0}", '', $data['ifta_tax']); // Remove non-breaking spaces
-$value = str_replace(',', '.', $value); // Handle comma-to-dot conversion if necessary
-$convertedValue = (double)$value;
-        $data['IFTA_tax'] = $convertedValue;
+        
+        $data['IFTA_tax'] = $data['ifta_tax'];
         $data['lastprice'] = (double)$data['lastprice'];
         $data['price'] = (double)$data['price'];
         $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
