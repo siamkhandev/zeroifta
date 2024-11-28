@@ -106,7 +106,7 @@ class DriversController extends Controller
     public function track($id)
     {
         $userName = User::find($id)->name;
-        $trip = Trip::where('user_id', $id)->latest()->first();
+        $trip = Trip::where('user_id', $id)->where('status', 'active')->latest()->first();
         $userId = $id;
         $geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json";
         $startAddress = $this->getLocationFromCoordinates($trip->start_lat, $trip->start_lng);
