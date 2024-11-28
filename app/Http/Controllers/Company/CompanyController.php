@@ -94,7 +94,7 @@ class CompanyController extends Controller
         foreach ($drivers as $driver) {
             $driver->trips = Trip::where('user_id', $driver->driver->id)->where('status','active')->first();
         }
-        dd($drivers);
+        //dd($drivers);
         return view('company.fleet',compact('drivers'));
     }
 
