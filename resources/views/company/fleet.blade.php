@@ -171,7 +171,7 @@
         // Initialize the map centered at Lahore, Pakistan
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
-            center: { lat: 40.7128, lng: -74.0060 } // Center at Lahore
+            center: { lat: 39.5501, lng: -105.7821 } // Center at Lahore
         });
 
         // Establish connection to Socket.IO server
