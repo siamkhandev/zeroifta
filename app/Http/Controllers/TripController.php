@@ -228,7 +228,7 @@ class TripController extends Controller
 
     public function getTrip($user_id)
     {
-        $trip = Trip::where('user_id', $user_id)->where('status', 'active')->first();
+        $trip = Trip::where('user_id', $user_id)->where('status', 'active')->orderBy('created_at', 'desc')->first();
 
         if (!$trip) {
             return response()->json(['status' =>404, 'message' => 'No trip found for this user', 'data' => (object)[]]);
