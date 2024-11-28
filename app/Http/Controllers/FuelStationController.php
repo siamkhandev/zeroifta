@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FuelStation;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
 class FuelStationController extends Controller
@@ -33,8 +34,9 @@ class FuelStationController extends Controller
     }
     public function getFuelStations($user_id)
     {
-        $fuelStations = FuelStation::where('user_id', $user_id)->get();
-       
+        $trip = Trip::where('user_id', $user_id)->where('status', 'active')->first();
+        $fuelStations = FuelStation::where('user_id', $user_id)->where('trip_id', $trip->id)->get();
+
         return response()->json([
             'status' => 200,
             'message' => 'Fuel stations retrieved successfully',
