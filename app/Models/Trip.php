@@ -11,4 +11,10 @@ class Trip extends Model
     protected $fillable = [
         'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng','status'
     ];
+
+    public function driverVehicle()
+    {
+        return $this->hasOne(DriverVehicle::class, 'driver_id', 'user_id');
+        // Or use 'driver_id' if that is the foreign key that relates the Trip to DriverVehicle.
+    }
 }
