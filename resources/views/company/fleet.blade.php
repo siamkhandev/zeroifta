@@ -103,7 +103,7 @@
                                         <div class="vh-tabIn">
                                             <div>
                                                 <span>
-                                                @if($driver->trips->isNotEmpty())
+                                                @if($driver->trips)
                                                 <a  href="{{ route('driver.track', $driver->driver->id) }}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                         <path
                                                             d="M13.0969 20C12.9555 19.9985 12.8182 19.9527 12.7042 19.869C12.5902 19.7853 12.5053 19.668 12.4615 19.5335L9.48686 10.5016L0.454929 7.53376C0.322093 7.48779 0.206891 7.40155 0.125354 7.28705C0.0438167 7.17254 0 7.03547 0 6.8949C0 6.75434 0.0438167 6.61726 0.125354 6.50276C0.206891 6.38826 0.322093 6.30202 0.454929 6.25604L19.0934 0.0364476C19.2131 -0.00452136 19.3419 -0.0110995 19.4651 0.0174604C19.5883 0.0460203 19.701 0.108572 19.7904 0.198008C19.8799 0.287444 19.9424 0.400176 19.971 0.52339C19.9996 0.646605 19.993 0.77536 19.952 0.895023L13.7324 19.5335C13.6886 19.668 13.6037 19.7853 13.4897 19.869C13.3757 19.9527 13.2383 19.9985 13.0969 20ZM2.81432 6.89153L10.2508 9.32528C10.3519 9.3583 10.4437 9.41469 10.5189 9.48986C10.5941 9.56504 10.6504 9.65689 10.6835 9.75795L13.1172 17.1944L18.2619 1.76712L2.81432 6.89153Z"
@@ -128,18 +128,18 @@
                                         </div>
                                         <div class="pt-3">
                                             <h4>{{ $driver->driver->name }}</h4>
-                                            @if($driver->trips->isNotEmpty())
+                                            @if($driver->trips)
                                 <!-- <a style="font-weight: bold; color: blue;" href="{{ route('driver.track', $driver->driver->id) }}">
                                     Track Location
                                 </a> -->
                             @else
                                 <p class="text-muted mt-2">No trip found</p>
                             @endif
-                                            <span id="status-{{ $driver->driver->id }}" 
-                                      class="status-circle" 
+                                            <span id="status-{{ $driver->driver->id }}"
+                                      class="status-circle"
                                       style="display:inline-block; width:10px; height:10px; background-color:yellow; border-radius:50%; margin-top: -35px;float:right"></span>
                                         </div>
-                                        
+
                                     </div>
                                     @endforeach
                                 </div>
@@ -148,7 +148,7 @@
                         <div class="fleet-map">
                             <div class="mapouter">
                                 <div class="gmap_canvas" id="map">
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
         socket.on('driverLocationUpdate', function(data) {
             const driverId = data.driver_id;
             const driverLatLng = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
-            
+
             // Update driver status to online (green circle)
             updateDriverStatus(driverId, 'green');
 
