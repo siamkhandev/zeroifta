@@ -292,7 +292,7 @@ class TripController extends Controller
     ->map(function ($station) {
         // Convert the station to an array, keeping all attributes
         $data = $station->toArray();
-        dd(floatval(preg_replace('/[^0-9.-]/', '', $station->ifta_tax)));
+        dd(number_format(floatval($station->ifta_tax), 2, '.', ''));
         // Add the new keys
         $data['ftp_lat'] = $data['latitude'];
         $data['ftp_lng'] = $data['longitude'];
