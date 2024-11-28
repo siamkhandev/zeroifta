@@ -15,12 +15,12 @@
                                                     <div class="price_plans plan-com weekly-plan">
                                                         <div class="ph-area">
                                                             <h3>Cancel Subscription</h3>
-                                                            
+
                                                         </div>
                                                         <div class="pp-inn" style="height: 70px;">
                                                             <p>Press cancel button to cancel your subscription. You will no longer be charged after cancellation.</p>
                                                         </div>
-                                                        @if($userPlan->stripe_subscription_id)
+                                                        @if(isset($userPlan) && isset($userPlan->stripe_subscription_id))
                                                         <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn" style="margin-top: 20px;">Cancel Subscription</a>
                                                         @endif
                                                     </div>
