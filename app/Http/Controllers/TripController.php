@@ -296,7 +296,7 @@ class TripController extends Controller
         // Add the new keys
         $data['ftp_lat'] = $data['latitude'];
         $data['ftp_lng'] = $data['longitude'];
-        
+        $data['fuel_station_name'] = $data['name'];
         $data['IFTA_tax'] = floatval(preg_replace('/[^0-9.-]/', '', $station->ifta_tax));
         $data['lastprice'] = (double)$data['lastprice'];
         $data['price'] = (double)$data['price'];
@@ -304,7 +304,7 @@ class TripController extends Controller
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] : "";
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
         // Optionally remove the old keys if not needed
-        unset($data['latitude'], $data['longitude'],$data['ifta_tax']);
+        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name']);
 
         return $data;
     });
