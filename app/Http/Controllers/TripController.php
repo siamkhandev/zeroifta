@@ -300,7 +300,7 @@ class TripController extends Controller
         $data['lastprice'] = (double)$data['lastprice'];
         $data['price'] = (double)$data['price'];
         $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
-        $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] : null;
+        $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] : "";
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
         // Optionally remove the old keys if not needed
         unset($data['latitude'], $data['longitude']);

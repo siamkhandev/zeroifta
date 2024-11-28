@@ -438,7 +438,7 @@ class IFTAController extends Controller
             $station['is_optimal'] = true; // Mark as optimal
         } else {
             // Skip `gallons_to_buy` for non-optimal stations
-            $station['gallons_to_buy'] = null;
+            $station['gallons_to_buy'] = "";
             $station['is_optimal'] = false; // Mark as non-optimal
         }
     }
