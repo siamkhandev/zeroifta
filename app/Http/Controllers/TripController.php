@@ -296,14 +296,15 @@ class TripController extends Controller
         // Add the new keys
         $data['ftp_lat'] = $data['latitude'];
         $data['ftp_lng'] = $data['longitude'];
-        $data['IFTA_tax'] = (double)$data['ifta_tax'];
+        
+        $data['IFTA_tax'] = $data['ifta_tax'];
         $data['lastprice'] = (double)$data['lastprice'];
         $data['price'] = (double)$data['price'];
         $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] : "";
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
         // Optionally remove the old keys if not needed
-        unset($data['latitude'], $data['longitude']);
+        unset($data['latitude'], $data['longitude'],$data['IFTA_tax']);
 
         return $data;
     });
@@ -347,7 +348,7 @@ class TripController extends Controller
             $response = [
                 'trip_id' => $trip->id,
                 'trip' => $trip,
-                'fuelStations' => $fuelStations,
+                'fuel_stations' => $fuelStations,
                 'polyline' => $decodedPolyline
             ];
             return response()->json(['status'=>200,'message'=>'trip found','data'=>$response],200);
