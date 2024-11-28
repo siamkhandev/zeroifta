@@ -253,6 +253,23 @@ class IFTAController extends Controller
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
                 $trip = Trip::find($request->trip_id);
+                foreach ($result as  $value) {
+                    $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
+                    $fuelStation->name = $value['fuel_station_name'];
+                    $fuelStation->latitude = $value['ftp_lat'];
+                    $fuelStation->longitude = $value['ftp_lng'];
+                    $fuelStation->price = $value['price'];
+                    $fuelStation->lastprice = $value['lastprice'];
+                    $fuelStation->discount = $value['discount'];
+                    $fuelStation->ifta_tax = $value['IFTA_tax'];
+                    $fuelStation->is_optimal = $value['is_optimal'];
+                    $fuelStation->address = $value['address'];
+                    $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
+                    $fuelStation->trip_id = $trip->id;
+                    $fuelStation->user_id = $request->user_id;
+                    $fuelStation->update();
+                }
+
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 // Create a separate key for the polyline
@@ -359,6 +376,7 @@ class IFTAController extends Controller
                    $fuelStation->ifta_tax = $value['IFTA_tax'];
                    $fuelStation->is_optimal = $value['is_optimal'];
                    $fuelStation->address = $value['address'];
+                   $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
                    $fuelStation->trip_id = $trip->id;
                    $fuelStation->user_id = $request->user_id;
                    $fuelStation->save();
