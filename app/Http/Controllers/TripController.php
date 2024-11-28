@@ -297,6 +297,9 @@ class TripController extends Controller
         $data['ftp_lat'] = $data['latitude'];
         $data['ftp_lng'] = $data['longitude'];
         $data['IFTA_tax'] = (double)$data['ifta_tax'];
+        $data['lastprice'] = (double)$data['lastprice'];
+        $data['price'] = (double)$data['price'];
+        $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (float)$data['gallons_to_buy'] : null;
         // Optionally remove the old keys if not needed
         unset($data['latitude'], $data['longitude']);
