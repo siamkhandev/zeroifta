@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DriverVehicle;
 use App\Models\Trip;
 use App\Models\Vehicle;
+use GuzzleHttp\Promise\Promise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
@@ -145,8 +146,8 @@ class VehicleController extends Controller
         }
 
         // Wait for all requests to complete and return responses
-        $responses = \GuzzleHttp\Promise\settle($promises)->wait();
 
+        $responses = Promise\settle($promises)->wait();
         // Process and return API responses
         return array_map(function ($response) {
             if ($response['state'] === 'fulfilled') {
