@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\DriverVehicle;
 use App\Models\Trip;
 use App\Models\Vehicle;
-use GuzzleHttp\Promise\Promise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class VehicleController extends Controller
 {
@@ -56,63 +53,50 @@ class VehicleController extends Controller
     }
     public function allTrips(Request $request)
     {
-        // Eager load the related models to minimize the number of queries
-        $trips = Trip::with(['driverVehicle.vehicle'])
-            ->where('user_id', $request->driver_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $trips = Trip::where('user_id', $request->driver_id)->orderBy('created_at', 'desc')->get();
 
         if ($trips->isEmpty()) {
             return response()->json(['status' => 404, 'message' => 'trips not found', 'data' => (object)[]], 404);
         }
 
-        // Prepare the data for Google Maps API requests
-        $requests = [];
-        foreach ($trips as $trip) {
+        $geocodedTrips = $trips->map(function ($trip) {
             $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
             $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
-            $vehicle = $trip->driverVehicle->vehicle;
+            $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+            $vehicle = Vehicle::where('id', $driverVehicle)->first();
+            if(isset($vehicle->vehicle_image)){
+                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image ?? null;
 
-            // Check if vehicle image exists, update URL if necessary
-            if (isset($vehicle->vehicle_image)) {
-                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
             }
+            $startLat = $trip->start_lat;
+            $startLng = $trip->start_lng;
+            $endLat = $trip->end_lat;
+            $endLng = $trip->end_lng;
+            $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $data = $response->json();
+            $route = $data['routes'][0];
 
-            // Prepare request data for Google API
-            $requests[] = [
-                'start_lat' => $trip->start_lat,
-                'start_lng' => $trip->start_lng,
-                'end_lat' => $trip->end_lat,
-                'end_lng' => $trip->end_lng,
-                'vehicle' => $vehicle
-            ];
-        }
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
 
-        // Call Google API in parallel (for optimization, parallel requests using Guzzle can be implemented here)
-        $apiResponses = $this->getGoogleDirections($requests);
-
-        // Process the API responses
-        $geocodedTrips = $trips->map(function ($trip, $index) use ($apiResponses, $pickup, $dropoff, $vehicle) {
-            $apiResponse = $apiResponses[$index] ?? null;
-
-            if ($apiResponse && isset($apiResponse['distanceText'], $apiResponse['durationText'])) {
-                // Format the distance and duration from the API response
-                $distanceText = $apiResponse['distanceText'];
-                $durationText = $apiResponse['durationText'];
-
-                // Format distance (e.g., "100 miles")
+            // Format distance (e.g., "100 miles")
+            if ($distanceText) {
                 $distanceParts = explode(' ', $distanceText);
                 $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
-
-                // Format duration (e.g., "2 hr 20 min")
-                $durationParts = explode(' ', $durationText);
-                $hours = $durationParts[0] ?? 0;
-                $minutes = $durationParts[2] ?? 0;
-                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
-            } else {
-                $formattedDistance = $formattedDuration = 'N/A';
             }
 
+            // Format duration (e.g., "2 hr 20 min")
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+
+            }
+        }
             return [
                 'id' => $trip->id,
                 'user_id' => $trip->user_id,
@@ -132,37 +116,6 @@ class VehicleController extends Controller
         });
 
         return response()->json(['status' => 200, 'message' => 'trips found', 'data' => $geocodedTrips], 200);
-    }
-
-    private function getGoogleDirections($requests)
-    {
-        // Use Guzzle to make parallel requests to Google Directions API for each trip
-        $client = new \GuzzleHttp\Client();
-        $promises = [];
-
-        foreach ($requests as $request) {
-            $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$request['start_lat']},{$request['start_lng']}&destination={$request['end_lat']},{$request['end_lng']}&key=YOUR_GOOGLE_API_KEY";
-            $promises[] = $client->getAsync($url);
-        }
-
-        // Wait for all requests to complete and return responses
-
-        $responses = Promise\settle($promises)->wait();
-        // Process and return API responses
-        return array_map(function ($response) {
-            if ($response['state'] === 'fulfilled') {
-                $data = json_decode($response['value']->getBody()->getContents(), true);
-                $route = $data['routes'][0] ?? [];
-                return [
-                    'distanceText' => $route['legs'][0]['distance']['text'] ?? 'N/A',
-                    'durationText' => $route['legs'][0]['duration']['text'] ?? 'N/A',
-                ];
-            }
-            return [
-                'distanceText' => 'N/A',
-                'durationText' => 'N/A',
-            ];
-        }, $responses);
     }
     private function getAddressFromCoordinates($latitude, $longitude)
     {
