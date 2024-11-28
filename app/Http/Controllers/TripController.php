@@ -288,7 +288,20 @@ class TripController extends Controller
     }
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
-        $fuelStations  = FuelStation::where('trip_id',$request->trip_id)->get();
+        $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()
+    ->map(function ($station) {
+        // Convert the station to an array, keeping all attributes
+        $data = $station->toArray();
+
+        // Add the new keys
+        $data['ftp_lat'] = $data['latitude'];
+        $data['ftp_lng'] = $data['longitude'];
+
+        // Optionally remove the old keys if not needed
+        unset($data['latitude'], $data['longitude']);
+
+        return $data;
+    });
         $startLat = $trip->start_lat;
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
