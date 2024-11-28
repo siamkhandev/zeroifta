@@ -18,7 +18,7 @@ class TripController extends Controller
 
     public function store(Request $request)
     {
-        
+
         // Step 1: Validate request data
         $validatedData = $request->validate([
             'user_id'   => 'required|exists:users,id',
@@ -42,7 +42,7 @@ class TripController extends Controller
         $gasStations = $this->findGasStations($validatedData['start_lat'], $validatedData['start_lng'], $validatedData['end_lat'], $validatedData['end_lng']);
 
         $ftpData = $this->loadAndParseFTPData();
-        
+
        if($gasStations){
         foreach ($gasStations as $station) {
             $lat = number_format((float) $station['latitude'], 4);
@@ -62,7 +62,7 @@ class TripController extends Controller
                 ]);
                 $storedStations[] = $fuelStation;
             //}
-            
+
         }
        }
 
@@ -250,7 +250,7 @@ class TripController extends Controller
         if (!$trip) {
             return response()->json(['status' => 404, 'message' => 'No trip found', 'data' => (object)[]]);
         }
-        
+
         $trip->status = $request->status;
         $trip->save();
         return response()->json(['status' => 200, 'message' => 'Trip status updated successfully', 'data' => (object)[]]);
@@ -317,6 +317,10 @@ class TripController extends Controller
                 $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
 
             }
+            if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                $decodedPolyline = $this->decodePolyline($encodedPolyline);
+            }
         }
         if($trip){
             $trip->distance = $formattedDistance;
@@ -325,12 +329,55 @@ class TripController extends Controller
             $response = [
                 'trip_id' => $trip->id,
                 'trip' => $trip,
-                'fuelStations' => $fuelStations
+                'fuelStations' => $fuelStations,
+                'polyline' => $decodedPolyline
             ];
             return response()->json(['status'=>200,'message'=>'trip found','data'=>$response],200);
         }else{
             return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
         }
+    }
+    private function decodePolyline($encoded)
+    {
+        $points = [];
+        $index = 0;
+        $len = strlen($encoded);
+        $lat = 0;
+        $lng = 0;
+
+        while ($index < $len) {
+            $b = 0;
+            $shift = 0;
+            $result = 0;
+
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
+
+            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lat += $dlat;
+
+            $shift = 0;
+            $result = 0;
+
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
+
+            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lng += $dlng;
+
+            $points[] = [
+                'lat' => number_format($lat * 1e-5, 5),
+                'lng' => number_format($lng * 1e-5, 5),
+            ];
+        }
+
+        return $points;
     }
     public function tripDetail(Request $request)
     {
