@@ -296,8 +296,10 @@ class TripController extends Controller
         // Add the new keys
         $data['ftp_lat'] = $data['latitude'];
         $data['ftp_lng'] = $data['longitude'];
-        
-        $data['IFTA_tax'] = (double)$data['ifta_tax'];
+        $value = str_replace("\u{00a0}", '', $data['ifta_tax']); // Remove non-breaking spaces
+$value = str_replace(',', '.', $value); // Handle comma-to-dot conversion if necessary
+$convertedValue = (double)$value;
+        $data['IFTA_tax'] = $convertedValue;
         $data['lastprice'] = (double)$data['lastprice'];
         $data['price'] = (double)$data['price'];
         $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
