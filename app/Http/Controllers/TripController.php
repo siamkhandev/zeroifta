@@ -298,8 +298,8 @@ class TripController extends Controller
         $data['ftp_lng'] = $data['longitude'];
         $data['fuel_station_name'] = $data['name'];
         $data['IFTA_tax'] = floatval(preg_replace('/[^0-9.-]/', '', $station->ifta_tax));
-        $data['lastprice'] = (double)$data['lastprice'];
-        $data['price'] = (double)$data['price'];
+        $data['lastprice'] = floatval(preg_replace('/[^0-9.-]/', '', $station->lastprice));
+        $data['price'] = floatval(preg_replace('/[^0-9.-]/', '', $station->price));
         $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] : "";
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
