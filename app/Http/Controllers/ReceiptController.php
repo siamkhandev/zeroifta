@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Receipt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class ReceiptController extends Controller
 {
@@ -34,7 +35,7 @@ class ReceiptController extends Controller
             'price_per_gallon' => 'required',
             'gallons_bought' => 'required',
             'location' => 'required',
-            'image'=>'required'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240', // max 10MB
         ]);
 
         if ($validator->fails()) {
@@ -48,9 +49,28 @@ class ReceiptController extends Controller
         $receipt->gallons_bought = $request->gallons_bought;
         $receipt->location = $request->location;
         if($request->hasFile('image')){
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('receipts'), $imageName);
-            $receipt->receipt_image= $imageName;
+            // Generate a unique name for the image
+    $imageName = time() . '.' . $request->image->extension();
+
+    // Define the path to save the compressed image
+    $destinationPath = public_path('receipts');
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+    }
+
+    // Load the image using Intervention Image
+    $compressedImage = Image::make($request->image->getRealPath())
+        ->resize(1200, null, function ($constraint) {
+            $constraint->aspectRatio(); // Maintain aspect ratio
+            $constraint->upsize(); // Prevent upsizing
+        })
+        ->encode('jpg', 75); // Compress with 75% quality
+
+    // Save the compressed image
+    $compressedImage->save($destinationPath . '/' . $imageName);
+
+    // Save the file name in the database
+    $receipt->receipt_image = $imageName;
         }
         $receipt->save();
 
