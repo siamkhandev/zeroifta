@@ -74,7 +74,7 @@ class VehicleController extends Controller
             }
             return response()->json(['status'=>200,'message'=>'vehicles found','data'=>$vehicles],200);
         }else{
-            return response()->json(['status'=>404,'message'=>'vehicles not found','data'=>(object)[]],404);
+            return response()->json(['status'=>404,'message'=>'vehicles not found','data'=>[]],404);
         }
 
 
