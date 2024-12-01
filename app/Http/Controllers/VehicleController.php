@@ -84,7 +84,7 @@ class VehicleController extends Controller
         $trips = Trip::where('user_id', $request->driver_id)->orderBy('created_at', 'desc')->get();
 
         if ($trips->isEmpty()) {
-            return response()->json(['status' => 404, 'message' => 'trips not found', 'data' => (object)[]], 404);
+            return response()->json(['status' => 404, 'message' => 'trips not found', 'data' => []], 404);
         }
 
         $geocodedTrips = $trips->map(function ($trip) {
