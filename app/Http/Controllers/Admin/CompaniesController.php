@@ -9,6 +9,7 @@ use App\Models\DriverVehicle;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompaniesController extends Controller
 {
@@ -50,10 +51,24 @@ class CompaniesController extends Controller
     }
     public function delete($id)
     {
-        Vehicle::where('company_id',$id)->delete();
-        DriverVehicle::where('company_id',$id)->delete();
-        CompanyDriver::where('company_id',$id)->delete();
-        User::whereId($id)->delete();
-        return redirect()->back()->withError('Company Deleted Successfully');
+        try {
+            // Disable foreign key checks
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+    
+            // Perform deletion
+            Vehicle::where('company_id', $id)->delete();
+            DriverVehicle::where('company_id', $id)->delete();
+            CompanyDriver::where('company_id', $id)->delete();
+            User::whereId($id)->delete();
+    
+            // Enable foreign key checks
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    
+            DB::commit();
+            return redirect()->back()->with('error', 'Company Deleted Successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 }
