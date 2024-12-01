@@ -19,7 +19,7 @@ class DriversController extends Controller
 {
     public function index()
     {
-        $drivers= CompanyDriver::with('driver','company')->where('company_id',Auth::id())->get();
+        $drivers= CompanyDriver::with('driver','company')->where('company_id',Auth::id())->latest()->get();
         return view('company.drivers.index',get_defined_vars());
     }
     public function create()
