@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanyContactUs;
+use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -50,6 +52,7 @@ class CompaniesController extends Controller
     {
         Vehicle::where('company_id',$id)->delete();
         DriverVehicle::where('company_id',$id)->delete();
+        CompanyDriver::where('company_id',$id)->delete();
         User::whereId($id)->delete();
         return redirect()->back()->withError('Company Deleted Successfully');
     }
