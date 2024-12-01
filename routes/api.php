@@ -43,6 +43,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('trips/all',[VehicleController::class,'allTrips']);
     Route::post('trip/detail',[TripController::class,'tripDetail']);
     Route::post('vehicle',[VehicleController::class,'index']);
+    Route::post('vehicle/add',[VehicleController::class,'addVehicle']);
     Route::post('vehicle/update',[VehicleController::class,'update']);
     ////receipts
     Route::post('receipts',[ReceiptController::class,'index']);

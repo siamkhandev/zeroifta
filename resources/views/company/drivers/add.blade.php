@@ -65,7 +65,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Profile Picture</label>
-                        <input type="file" required class="form-control login-input" id="exampleFormControlInput1"  name="image"  />
+                        <input type="file"  class="form-control login-input" id="exampleFormControlInput1"  name="image"  />
                     </div>
                     @error('image')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -76,7 +76,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Password</label>
-                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Password" name="password"  />
+                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Password" name="password"  value="{{old('password')}}"/>
                     </div>
                     @error('password')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -87,7 +87,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
-                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Confirm Password" name="password_confirmation"  />
+                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Confirm Password" name="password_confirmation"  value="{{old('password_confirmation')}}"/>
                     </div>
 
                 </div>

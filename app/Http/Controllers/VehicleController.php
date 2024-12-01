@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class VehicleController extends Controller
@@ -19,6 +21,32 @@ class VehicleController extends Controller
         }else{
             return response()->json(['status'=>404,'message'=>'vehicle not found','data'=> (object)[]],404);
         }
+    }
+    public function addVehicle(Request $request)
+    {
+        $data = $request->validate([
+            'vehicle_type' => 'required',
+            'vehicle_number' => 'required',
+            'odometer_reading' => 'required',
+            'mpg' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
+
+        ]);
+        $companyId = CompanyDriver::where('driver_id',Auth::id())->first();
+        $vehicle = new Vehicle();
+        $vehicle->vehicle_type = $request->vehicle_type;
+        $vehicle->vehicle_number = $request->vehicle_number;
+        $vehicle->odometer_reading	 = $request->odometer_reading;
+        $vehicle->company_id =  $companyId->company_id;
+        $vehicle->mpg= $request->mpg;
+        $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
+        if($request->hasFile('image')){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('vehicles'), $imageName);
+            $vehicle->vehicle_image= $imageName;
+        }
+        $vehicle->save();
+        return response()->json(['status'=>200,'message'=>'Vehcile Added Successfully','data'=>$vehicle],200);
     }
     public function update(Request $request)
     {
