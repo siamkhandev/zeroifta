@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DriverVehicle;
 use App\Models\FuelStation;
 use App\Models\Trip;
+use App\Models\Tripstop;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -272,12 +275,17 @@ class IFTAController extends Controller
 
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
+                $stops = Tripstop::where('trip_id', $trip->id)->get();
+                $driverVehicle = DriverVehicle::where('user_id', $request->user_id)->first();
+                $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
                 // Create a separate key for the polyline
                 $responseData = [
                     'trip_id' => $request->trip_id,
                     'trip' => $trip,
                     'fuel_stations' => $result, // Fuel stations with optimal station marked
-                    'polyline' => $decodedPolyline // Separate key for polyline
+                    'polyline' => $decodedPolyline,
+                    'stops' => $stops,
+                    'vehicle' => $vehicle
                 ];
 
                 return response()->json([
@@ -384,12 +392,15 @@ class IFTAController extends Controller
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
-                // Create a separate key for the polyline
+                $vehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+                $vehicle = Vehicle::where('id', $vehicle)->first();
                 $responseData = [
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
-                    'fuel_stations' => $result, // Fuel stations with optimal station marked
-                    'polyline' => $decodedPolyline // Separate key for polyline
+                    'fuel_stations' => $result,
+                    'polyline' => $decodedPolyline,
+                    'stops'=>[],
+                    'vehicle' => $vehicle
                 ];
 
                 return response()->json([

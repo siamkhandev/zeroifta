@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DriverVehicle;
 use App\Models\FuelStation;
 use App\Models\Trip;
+use App\Models\Tripstop;
 use App\Models\Vehicle;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -292,7 +293,7 @@ class TripController extends Controller
     ->map(function ($station) {
         // Convert the station to an array, keeping all attributes
         $data = $station->toArray();
-       
+
         // Add the new keys
         $data['ftp_lat'] = $data['latitude'];
         $data['ftp_lng'] = $data['longitude'];
@@ -341,6 +342,9 @@ class TripController extends Controller
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
             }
         }
+        $stops = Tripstop::where('trip_id', $trip->id)->get();
+        $driverVehicle = DriverVehicle::where('user_id', $request->user_id)->first();
+        $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
@@ -349,7 +353,9 @@ class TripController extends Controller
                 'trip_id' => $trip->id,
                 'trip' => $trip,
                 'fuel_stations' => $fuelStations,
-                'polyline' => $decodedPolyline
+                'polyline' => $decodedPolyline,
+                'stops' => $stops,
+                'vehicle' => $vehicle
             ];
             return response()->json(['status'=>200,'message'=>'trip found','data'=>$response],200);
         }else{
