@@ -15,21 +15,12 @@ class StopController extends Controller
 {
     public function store(Request $request)
     {
-        $data = $request->all();
-        $data['stops'] = array_map(function ($stop) {
-            return [
-                'stop_name' => $stop["'stop_name'"] ?? null,
-                'stop_lat' => $stop["'stop_lat'"] ?? null,
-                'stop_lng' => $stop["'stop_lng'"] ?? null,
-            ];
-        }, $data['stops'] ?? []);
-
-        // Validate the cleaned data
-        $validator = Validator::make($data, [
+       // dd($request->all());
+        $validator = Validator::make($request->all(), [
             'trip_id' => 'required|exists:trips,id',
             'stops' => 'required|array',
-            'stops.*.stop_lat' => 'required|numeric',
-            'stops.*.stop_lng' => 'required|numeric',
+            'stops.*.stop_lat' => 'required|string',
+            'stops.*.stop_lng' => 'required|string',
             'stops.*.stop_name' => 'nullable|string',
         ]);
 
