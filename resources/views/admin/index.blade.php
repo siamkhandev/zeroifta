@@ -187,7 +187,7 @@
                         @if($con->company && $con->company->image !== null)
                         <img src="{{asset('images')}}/{{$con->company->image}}" alt="kal" class="border-radius-lg shadow" style="height: 30px;">
                         @else
-                        <img src="{{asset('images/com.png')}}" alt="kal" class="border-radius-lg shadow" style="height: 30px;">
+                        <img src="{{asset('images/com.png')}}" alt="kal" class="border-radius-lg shadow">
                         @endif
                       </div>
                       <div class="fc-content">

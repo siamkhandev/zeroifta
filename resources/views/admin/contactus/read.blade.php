@@ -51,7 +51,7 @@
     <div class="formChat-input mt-5">
       <textarea id="message" class="form-control" placeholder="Type your message here" rows="2"></textarea>
       <span class="sendChat-icon">
-      <a class="btn btn-primary mt-2" onclick="sendMessage()"> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+      <a class="mt-2" onclick="sendMessage()"> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
           <path d="M3.58594 20V4L22.5859 12L3.58594 20ZM5.58594 17L17.4359 12L5.58594 7V10.5L11.5859 12L5.58594 13.5V17Z" fill="#5F6368" />
         </svg>
         </a>
@@ -114,7 +114,7 @@ async function fetchMessages() {
             const bubbleClass = message.sender === '{{ auth()->user()->name }}' ? 'bg-primary text-white' : 'bg-light';
             messagesHtml += `
                 <div class="admin-span mb-3 ${senderClass}">
-                    <div class="p-2 rounded ${bubbleClass}">
+                    <div class="p-2 rounded admn-chatSpan ${bubbleClass}">
                         <strong>${message.sender}:</strong> ${message.message}
                         <small class="d-block text-end ${isReadClass}">${new Date(message.created_at).toLocaleString()}</small>
                     </div>

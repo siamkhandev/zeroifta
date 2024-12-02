@@ -23,6 +23,7 @@
 </head>
 
 <body class="{{Auth::user()->theme=='dark'?'dark-mode':''}}">
+
   <div class="main">
     <div class="dash-main">
       @if(Auth::user()->role=='admin')
@@ -135,63 +136,74 @@
       },
     });
   </script>
+
+
   <script>
-    // Unified function to toggle theme
-    function toggleTheme(isDark) {
-      // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
-      const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
+    document.addEventListener("DOMContentLoaded", function() {
+      // Unified function to toggle theme
+      function toggleTheme(isDark) {
+        // Determine dark mode state: if isDark is passed, use it; otherwise, toggle based on current state
+        const darkMode = typeof isDark === "boolean" ? isDark : !document.body.classList.contains("dark-mode");
 
+        // Toggle the dark-mode class on the body
+        document.body.classList.toggle("dark-mode", darkMode);
 
-      document.body.classList.toggle("dark-mode", darkMode);
+        // Update the icons in the header
+        if (darkMode) {
+          document.getElementById("dark-themeIcon").style.display = "none";
+          document.getElementById("light-themeIcon").style.display = "inline-block";
+        } else {
+          document.getElementById("dark-themeIcon").style.display = "inline-block";
+          document.getElementById("light-themeIcon").style.display = "none";
+        }
 
-      if (darkMode) {
-        document.getElementById("dark-themeIcon").style.display = "inline-block";
-        document.getElementById("light-themeIcon").style.display = "none";
-      } else {
-        document.getElementById("dark-themeIcon").style.display = "none";
-        document.getElementById("light-themeIcon").style.display = "inline-block";
-      }
-
-      // Update sidebar switch state
-      document.getElementById("themeCheckbox").checked = darkMode;
-    }
-
-    // Event listener for sidebar switch
-    document.getElementById("themeCheckbox").addEventListener("change", function() {
-      toggleTheme(this.checked);
-    });
-
-    // Event listeners for header icons
-    document.getElementById("dark-themeIcon").addEventListener("click", function() {
-      toggleTheme(true);
-    });
-
-    document.getElementById("light-themeIcon").addEventListener("click", function() {
-      toggleTheme(false);
-    });
-  </script>
-
-
-  <!-- Language DropDown -->
-  <script>
-    // When the user clicks on the button, toggle between hiding and showing the dropdown content
-    document.querySelector('.language-dropdown .dropbtn').onclick = function() {
-      document.getElementById("languageDropdown").classList.toggle("show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function(event) {
-      if (!event.target.matches('.language-dropdown .dropbtn')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        for (var i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
+        // Update the sidebar toggle switch
+        const themeCheckbox = document.getElementById("themeCheckbox");
+        if (themeCheckbox) {
+          themeCheckbox.checked = darkMode;
         }
       }
-    }
+
+      // Synchronize state on page load
+      function initializeTheme() {
+        // Ensure the page starts in light mode by default
+        document.body.classList.remove("dark-mode"); // Remove dark-mode class
+        document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
+        document.getElementById("light-themeIcon").style.display = "none"; // Hide light theme icon
+        const themeCheckbox = document.getElementById("themeCheckbox");
+        if (themeCheckbox) {
+          themeCheckbox.checked = false; // Ensure toggle switch is unchecked (light mode)
+        }
+      }
+
+      // Event listener for the sidebar toggle
+      const themeCheckbox = document.getElementById("themeCheckbox");
+      if (themeCheckbox) {
+        themeCheckbox.addEventListener("change", function() {
+          toggleTheme(this.checked);
+        });
+      }
+
+      // Event listeners for header icons
+      const darkThemeIcon = document.getElementById("dark-themeIcon");
+      if (darkThemeIcon) {
+        darkThemeIcon.addEventListener("click", function() {
+          toggleTheme(true);
+        });
+      }
+
+      const lightThemeIcon = document.getElementById("light-themeIcon");
+      if (lightThemeIcon) {
+        lightThemeIcon.addEventListener("click", function() {
+          toggleTheme(false);
+        });
+      }
+
+      // Initialize theme on page load
+      initializeTheme();
+    });
   </script>
+
 
   <!-- Data Table Script -->
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

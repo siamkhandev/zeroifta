@@ -381,6 +381,10 @@ select:-webkit-autofill:focus {
     border: none;
     background: none;
 }
+.lag-span img {
+    width: 25px;
+    height: 20px;
+}
 .dark-mode .lag-span .dropdown-menu.show {
     background: #17153a !important;
     box-shadow: var(--shadow1);
@@ -700,6 +704,11 @@ Main Dashboard
     color: #979797;
     font-size: 14px;
 }
+.main_menuDD {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 /* User Drop Down */
 .up-img .dropdown {
     position: relative;
@@ -774,6 +783,11 @@ SideBar
     padding: 0 20px 6px 20px;
     margin: 0 0 20px 0;
 }
+.dark-themeIcon,
+.light-themeIcon {
+    cursor: pointer;
+}
+
 .logo-div img {
     width: 100px;
 }
@@ -786,6 +800,9 @@ SideBar
     display: flex;
     align-items: center;
     gap: 20px;
+}
+.mobLogo-div svg {
+    width: 100px;
 }
 .sc-pad {
     padding: 0 20px;
@@ -1044,6 +1061,7 @@ h1 {
 }
 .user-area img {
     height: 30px;
+    width: 30px;
     border-radius: 50%;
 }
 .ub-div {
@@ -1064,6 +1082,7 @@ h1 {
 .uh-img {
     height: 60px;
     width: 60px;
+    border-radius: 100%;
 }
 .uh-head .uh-head {
     color: #ffffff;
@@ -1110,6 +1129,12 @@ h1 {
     display: block;
     max-width: 500px;
     font-size: 14px;
+}
+.admin-rply .admin-span .bg-primary {
+    background: rgb(11 51 129) !important;
+}
+.admin-rply .admin-span .bg-primary .small {
+    color: #ffffff !important;
 }
 .dark-mode .admin-rply span {
     background: #29265a;
