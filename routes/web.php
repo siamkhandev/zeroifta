@@ -11,6 +11,8 @@ use App\Http\Controllers\Company\DriversController;
 use App\Http\Controllers\Company\DriverVehiclesController;
 use App\Http\Controllers\Company\VehiclesController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\NewPasswordController;
+use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ThemeController;
 use App\Models\CompanyContactUs;
@@ -50,7 +52,10 @@ Route::get('company/register',[CompanyController::class,'create'])->name('compan
 Route::post('company/register',[CompanyController::class,'store'])->name('register');
 Route::post('login',[AdminController::class,'login'])->name('login');
 Route::get('/',[AdminController::class,'index'])->name('dashboard')->middleware('auth');
-
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 Route::middleware('auth')->group(function () {
     Route::post('/update-theme', [ThemeController::class, 'update'])->name('user.theme.update');
     Route::get('profile',[UsersController::class,'profile'])->name('profile');

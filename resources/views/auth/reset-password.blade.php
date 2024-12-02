@@ -48,8 +48,8 @@
 
             <div class="authRight_inn">
               <div class="pb-4">
-                <h3 class="blue pb-1">Sign In</h3>
-                <p class="gray1">Enter your email and password to sign in</p>
+                <h3 class="blue pb-1">Reset Password</h3>
+                <p class="gray1">Enter your password and confirm password</p>
               </div>
               @if(Session::has('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
@@ -67,8 +67,9 @@
               </button>
             </div>
               @endif
-              <form method="POST" action="{{ route('login') }}">
+              <form method="POST" action="{{ route('password.update') }}">
                 @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
                 <div class="log_input mb-3">
                     <label for="email" class="pb-1">Email</label>
                     <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus />
@@ -78,7 +79,6 @@
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-
                 <div class="log_input mb-3 pass-input">
                     <label for="password" class="pb-1">Password</label>
                     <input type="password" class="form-control login-input @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="current-password" placeholder="Type Password" />
@@ -99,23 +99,30 @@
                     </span>
                     </div>
                 </div>
+                <div class="log_input mb-3 pass-input">
+                    <label for="password" class="pb-1">Confirm Password</label>
+                    <input type="password" class="form-control login-input @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" required  placeholder="Type Confirm Password" />
 
-  <div class="re-fog">
-    <div class="form-group">
-      <label for="remember-me" class="text-info">
-        <input id="remember-me" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
-        <span class="rf-text">Remember Me</span>
-      </label>
-    </div>
-    <div class="forget-pass">
-      <a class="rf-text" href="{{ route('password.request') }}">Forgot Password?</a>
-    </div>
-  </div>
-
-  <div class="btn-div log-btn text-center">
-    <button type="submit" class="mainBtn">Login</button>
-  </div>
-</form>
+                    <!-- Password Icon -->
+                    <div class="show-pass" onclick="togglePassword()">
+                    <span id="show-icon" style="display: inline;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#a5a9ad">
+                        <!-- SVG path for eye icon -->
+                        <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z" />
+                        </svg>
+                    </span>
+                    <span id="hide-icon" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#a5a9ad">
+                        <!-- SVG path for eye-off icon -->
+                        <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z" />
+                        </svg>
+                    </span>
+                    </div>
+                </div>
+                <div class="btn-div log-btn text-center">
+                    <button type="submit" class="mainBtn">Reset</button>
+                </div>
+                </form>
               <div class="or_div">
                 <hr />
                 <span class="or-span">
@@ -124,9 +131,9 @@
               </div>
               <div class="auth_end-div">
                 <p>
-                  <span class="gray1">Don't you have an account?</span>
+                 
                   <span>
-                    <a class="blue" href="{{route('register')}}">Sign up</a>
+                    <a class="blue" href="{{route('login')}}">Login</a>
                   </span>
                 </p>
               </div>
