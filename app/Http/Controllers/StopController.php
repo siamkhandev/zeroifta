@@ -15,11 +15,12 @@ class StopController extends Controller
 {
     public function store(Request $request)
     {
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'trip_id' => 'required|exists:trips,id',
             'stops' => 'required|array',
-            'stops.*.stop_lat' => 'required|numeric',
-            'stops.*.stop_lng' => 'required|numeric',
+            'stops.*.stop_lat' => 'required|string',
+            'stops.*.stop_lng' => 'required|string',
             'stops.*.stop_name' => 'nullable|string',
         ]);
 
