@@ -185,9 +185,9 @@
                     <div class="user-area">
                       <div>
                         @if($con->company->image)
-                        <img src="{{asset('images')}}/{{$con->company->image}}" alt="kal" class="border-radius-lg shadow" style="height: 30px;">
+                        <img src="{{asset('images')}}/{{$con->company->image}}" alt="kal" class="border-radius-lg shadow">
                         @else
-                        <img src="{{asset('images/com.png')}}" alt="kal" class="border-radius-lg shadow" style="height: 30px;">
+                        <img src="{{asset('images/com.png')}}" alt="kal" class="border-radius-lg shadow">
                         @endif
                       </div>
                       <div class="fc-content">
