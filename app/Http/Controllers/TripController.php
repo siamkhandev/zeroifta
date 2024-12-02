@@ -594,7 +594,7 @@ class TripController extends Controller
                 'stops' => $request->stops,
                 'vehicle' => $vehicle
             ];
-            return response()->json(['status'=>200,'message'=>'trip found','data'=>$response],200);
+            return response()->json(['status'=>200,'message'=>'stops added','data'=>$response],200);
         }else{
             return response()->json(['status'=>404,'message'=>'trip not found','data'=>[]],404);
         }
