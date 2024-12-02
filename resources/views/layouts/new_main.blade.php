@@ -158,36 +158,46 @@
         }
 
         // Update the sidebar toggle switch
-        document.getElementById("themeCheckbox").checked = darkMode;
+        const themeCheckbox = document.getElementById("themeCheckbox");
+        if (themeCheckbox) {
+          themeCheckbox.checked = darkMode;
+        }
       }
 
       // Synchronize state on page load
       function initializeTheme() {
-        const isDarkMode = document.body.classList.contains("dark-mode");
-        document.getElementById("themeCheckbox").checked = isDarkMode;
-
-        if (isDarkMode) {
-          document.getElementById("dark-themeIcon").style.display = "none";
-          document.getElementById("light-themeIcon").style.display = "inline-block";
-        } else {
-          document.getElementById("dark-themeIcon").style.display = "inline-block";
-          document.getElementById("light-themeIcon").style.display = "none";
+        // Ensure the page starts in light mode by default
+        document.body.classList.remove("dark-mode"); // Remove dark-mode class
+        document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
+        document.getElementById("light-themeIcon").style.display = "none"; // Hide light theme icon
+        const themeCheckbox = document.getElementById("themeCheckbox");
+        if (themeCheckbox) {
+          themeCheckbox.checked = false; // Ensure toggle switch is unchecked (light mode)
         }
       }
 
       // Event listener for the sidebar toggle
-      document.getElementById("themeCheckbox").addEventListener("change", function() {
-        toggleTheme(this.checked);
-      });
+      const themeCheckbox = document.getElementById("themeCheckbox");
+      if (themeCheckbox) {
+        themeCheckbox.addEventListener("change", function() {
+          toggleTheme(this.checked);
+        });
+      }
 
       // Event listeners for header icons
-      document.getElementById("dark-themeIcon").addEventListener("click", function() {
-        toggleTheme(true);
-      });
+      const darkThemeIcon = document.getElementById("dark-themeIcon");
+      if (darkThemeIcon) {
+        darkThemeIcon.addEventListener("click", function() {
+          toggleTheme(true);
+        });
+      }
 
-      document.getElementById("light-themeIcon").addEventListener("click", function() {
-        toggleTheme(false);
-      });
+      const lightThemeIcon = document.getElementById("light-themeIcon");
+      if (lightThemeIcon) {
+        lightThemeIcon.addEventListener("click", function() {
+          toggleTheme(false);
+        });
+      }
 
       // Initialize theme on page load
       initializeTheme();

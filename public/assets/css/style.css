@@ -704,6 +704,11 @@ Main Dashboard
     color: #979797;
     font-size: 14px;
 }
+.main_menuDD {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 /* User Drop Down */
 .up-img .dropdown {
     position: relative;
@@ -778,6 +783,11 @@ SideBar
     padding: 0 20px 6px 20px;
     margin: 0 0 20px 0;
 }
+.dark-themeIcon,
+.light-themeIcon {
+    cursor: pointer;
+}
+
 .logo-div img {
     width: 100px;
 }
@@ -790,6 +800,9 @@ SideBar
     display: flex;
     align-items: center;
     gap: 20px;
+}
+.mobLogo-div svg {
+    width: 100px;
 }
 .sc-pad {
     padding: 0 20px;
