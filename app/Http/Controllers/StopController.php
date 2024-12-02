@@ -15,7 +15,7 @@ class StopController extends Controller
 {
     public function store(Request $request)
     {
-        dd($request->all());
+       // dd($request->all());
         $validator = Validator::make($request->all(), [
             'trip_id' => 'required|exists:trips,id',
             'stops' => 'required|array',
