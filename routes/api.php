@@ -65,4 +65,4 @@ Route::post('/trip/complete', [TripController::class, 'completeTrip']);
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
 Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
-Route::post('stops/add',[StopController::class,'store']);
+Route::post('stops/add',[TripController::class,'storeStop']);
