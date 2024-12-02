@@ -51,14 +51,11 @@
                 <h3 class="blue pb-1">Forget Password</h3>
                 <p class="gray1">Enter your email reset password</p>
               </div>
-              @if(Session::has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
-                {{Session::get('success')}}
-                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              @endif
+              @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
               @if(Session::has('error'))
               <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #dd4957;color:white">
               {{Session::get('error')}}
