@@ -346,7 +346,9 @@ class TripController extends Controller
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
         $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
-        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+        if($vehicle && $vehicle->vehicle_image != null){
+            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+        }
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
@@ -582,6 +584,9 @@ class TripController extends Controller
         }
         $vehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
         $vehicle = Vehicle::where('id', $vehicle)->first();
+        if($vehicle && $vehicle->vehicle_image != null){
+            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+        }
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
