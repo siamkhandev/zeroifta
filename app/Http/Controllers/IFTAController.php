@@ -269,7 +269,7 @@ class IFTAController extends Controller
                     $fuelStation->address = $value['address'];
                     $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
                     $fuelStation->trip_id = $trip->id;
-                    $fuelStation->user_id = $request->user_id;
+                    $fuelStation->user_id = $trip->user_id;
                     $fuelStation->update();
                 }
 
