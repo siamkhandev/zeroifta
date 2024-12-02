@@ -254,7 +254,7 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                 $trip = Trip::find($request->trip_id);
                 foreach ($result as  $value) {
                     $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
