@@ -278,6 +278,7 @@ class IFTAController extends Controller
                 $stops = Tripstop::where('trip_id', $trip->id)->get();
                 $driverVehicle = DriverVehicle::where('user_id', $request->user_id)->first();
                 $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
                 // Create a separate key for the polyline
                 $responseData = [
                     'trip_id' => $request->trip_id,
@@ -394,6 +395,7 @@ class IFTAController extends Controller
                 $trip->user_id = (int)$trip->user_id;
                 $vehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
                 $vehicle = Vehicle::where('id', $vehicle)->first();
+                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
                 $responseData = [
                     'trip_id'=>$trip->id,
                     'trip' => $trip,

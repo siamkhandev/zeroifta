@@ -345,6 +345,7 @@ class TripController extends Controller
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         $driverVehicle = DriverVehicle::where('user_id', $request->user_id)->first();
         $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
@@ -410,6 +411,7 @@ class TripController extends Controller
         if($trip){
             $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
             $vehicle = Vehicle::where('id', $driverVehicle)->first();
+
             $pickupState = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
             $dropoffState = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
             $pickup = $this->getPickupFromCoordinates($trip->start_lat, $trip->start_lng);
