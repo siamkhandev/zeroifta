@@ -236,6 +236,7 @@
                     </div>
                   </li>
                   <li class="dropdown-content">
+                  <a href="{{route('logout')}}">
                     <div class="hdd-inn">
                       <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="red">
@@ -244,12 +245,13 @@
                       </div>
                       <div>
                         <span>
-                          <a href="{{route('logout')}}"><span>Logout</span></a>
+                          <span>Logout</span>
                         </span>
 
                       </div>
 
                     </div>
+</a>
                   </li>
                 </ul>
                 </d>

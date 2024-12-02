@@ -184,7 +184,7 @@
                   <div class="form_div mb-3">
                     <div class="user-area">
                       <div>
-                        @if($con->company->image)
+                        @if($con->company && $con->company->image !== null)
                         <img src="{{asset('images')}}/{{$con->company->image}}" alt="kal" class="border-radius-lg shadow" style="height: 30px;">
                         @else
                         <img src="{{asset('images/com.png')}}" alt="kal" class="border-radius-lg shadow" style="height: 30px;">
