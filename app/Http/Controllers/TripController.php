@@ -586,12 +586,13 @@ class TripController extends Controller
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
             $trip->user_id = (int)$trip->user_id;
+            $stops = Tripstop::where('trip_id', $trip->id)->get();
             $response = [
                 'trip_id' => $trip->id,
                 'trip' => $trip,
                 'fuel_stations' => $fuelStations,
                 'polyline' => $decodedPolyline,
-                'stops' => $request->stops,
+                'stops' => $stops,
                 'vehicle' => $vehicle
             ];
             return response()->json(['status'=>200,'message'=>'stops added','data'=>$response],200);
