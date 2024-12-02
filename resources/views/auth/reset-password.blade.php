@@ -67,7 +67,7 @@
               </button>
             </div>
               @endif
-              <form method="POST" action="{{ route('password.update') }}">
+              <form method="POST" action="{{ route('password.updatepas') }}">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">
                 <div class="log_input mb-3">

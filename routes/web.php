@@ -55,7 +55,7 @@ Route::get('/',[AdminController::class,'index'])->name('dashboard')->middleware(
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
 Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.updatepas');
 Route::middleware('auth')->group(function () {
     Route::post('/update-theme', [ThemeController::class, 'update'])->name('user.theme.update');
     Route::get('profile',[UsersController::class,'profile'])->name('profile');
