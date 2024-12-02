@@ -99,6 +99,11 @@
                     </span>
                     </div>
                 </div>
+                @error('password')
+                <span class="invalid-feedback" role="alert" style="display: block;">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                 <div class="log_input mb-3 pass-input">
                     <label for="password" class="pb-1">Confirm Password</label>
                     <input type="password" class="form-control login-input @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" required  placeholder="Type Confirm Password" />
@@ -131,7 +136,7 @@
               </div>
               <div class="auth_end-div">
                 <p>
-                 
+                 <span>Do you have an account?</span>
                   <span>
                     <a class="blue" href="{{route('login')}}">Login</a>
                   </span>
