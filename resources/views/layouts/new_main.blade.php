@@ -22,7 +22,7 @@
   <title>ZeroIfta</title>
 </head>
 
-<body class="{{auth::user()->theme==='dark' ? 'dark-mode':''}}">
+<body class="dark-mode">
 
   <div class="main">
     <div class="dash-main">
