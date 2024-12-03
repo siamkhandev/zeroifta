@@ -172,11 +172,11 @@
         toggleTheme(isDarkMode === "true");
         if(isDarkMode === "true"){
           document.body.classList.add("dark-mode");
-          document.getElementById("light-themeIcon").style.display = "block"; // Hide light theme icon
+          document.getElementById("light-themeIcon").style.display = "inline-block"; // Hide light theme icon
           themeCheckbox.checked = true;
         }else{
             document.body.classList.remove("dark-mode"); // Remove dark-mode class
-            document.getElementById("dark-themeIcon").style.display = "block"; // Show dark theme icon
+            document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
             themeCheckbox.checked = false;
         }
 
