@@ -306,7 +306,7 @@ class TripController extends Controller
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] :null;
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
         // Optionally remove the old keys if not needed
-        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name'],$data['vehicle_id']);
+        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name']);
 
         return $data;
     });
@@ -354,7 +354,7 @@ class TripController extends Controller
             $vehicle = null;
         }
        
-        
+        unset($trip->vehicle_id);
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
@@ -551,7 +551,7 @@ class TripController extends Controller
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] :null;
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
         // Optionally remove the old keys if not needed
-        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name'],$data['vehicle_id']);
+        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name']);
 
         return $data;
     });
