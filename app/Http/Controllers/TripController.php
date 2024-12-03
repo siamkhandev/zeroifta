@@ -555,6 +555,7 @@ class TripController extends Controller
 
         return $data;
     });
+        unset($trip->vehicle_id);
         $startLat = $trip->start_lat;
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
