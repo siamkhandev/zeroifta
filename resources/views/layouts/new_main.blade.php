@@ -158,7 +158,7 @@
         }
 
         // Update the sidebar toggle switch
-        const themeCheckbox = document.getElementById("themeCheckbox");
+        const themeCheckbox = document.getElementById("themeCheckbox1");
         if (themeCheckbox) {
           themeCheckbox.checked = darkMode;
         }
@@ -170,14 +170,14 @@
         document.body.classList.remove("dark-mode"); // Remove dark-mode class
         document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
         document.getElementById("light-themeIcon").style.display = "none"; // Hide light theme icon
-        const themeCheckbox = document.getElementById("themeCheckbox");
+        const themeCheckbox = document.getElementById("themeCheckbox1");
         if (themeCheckbox) {
           themeCheckbox.checked = false; // Ensure toggle switch is unchecked (light mode)
         }
       }
 
       // Event listener for the sidebar toggle
-      const themeCheckbox = document.getElementById("themeCheckbox");
+      const themeCheckbox = document.getElementById("themeCheckbox1");
       if (themeCheckbox) {
         themeCheckbox.addEventListener("change", function() {
           toggleTheme(this.checked);
