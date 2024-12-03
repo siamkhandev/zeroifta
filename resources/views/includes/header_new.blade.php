@@ -87,7 +87,7 @@
             </div>
           </div>
           <div class="menu-opt">
-            @if(auth->user()->theme==='light')
+            @if(auth()->user()->theme==='light')
             <div id="dark-themeIcon" class="dark-themeIcon hf-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
                 <path
