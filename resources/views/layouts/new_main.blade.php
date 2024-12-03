@@ -166,14 +166,24 @@
 
       // Synchronize state on page load
       function initializeTheme() {
-        // Ensure the page starts in light mode by default
-        document.body.classList.remove("dark-mode"); // Remove dark-mode class
-        document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
-        document.getElementById("light-themeIcon").style.display = "none"; // Hide light theme icon
         const themeCheckbox = document.getElementById("themeCheckbox");
-        if (themeCheckbox) {
-          themeCheckbox.checked = false; // Ensure toggle switch is unchecked (light mode)
+        // Ensure the page starts in light mode by default
+        var isDarkMode = "{{ auth::user()->theme === 'dark' ? 'true' : 'false' }}";
+        toggleTheme(isDarkMode === "true");
+        if(isDarkMode === "true"){
+          document.body.classList.add("dark-mode");
+          document.getElementById("light-themeIcon").style.display = "none"; // Hide light theme icon
+          themeCheckbox.checked = true;
+        }else{
+            document.body.classList.remove("dark-mode"); // Remove dark-mode class
+            document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
+            themeCheckbox.checked = false;
         }
+
+
+
+
+
       }
 
       // Event listener for the sidebar toggle
