@@ -177,6 +177,7 @@
 
           themeCheckbox.checked = true;
         }else{
+            alert("here");
             document.body.classList.remove("dark-mode"); // Remove dark-mode class
             document.getElementById("light-themeIcon").style.display = "none";
             document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
