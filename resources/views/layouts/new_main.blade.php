@@ -217,6 +217,41 @@
       // Initialize theme on page load
       initializeTheme();
     });
+    document.addEventListener('DOMContentLoaded', function () {
+    const darkModeIcon = document.querySelector('.dark-themeIcon');
+    const lightModeIcon = document.querySelector('.light-themeIcon');
+
+    // Fetch the user's preferred theme from the backend
+    fetch('/get-theme')
+        .then(response => response.json())
+        .then(data => {
+            document.body.classList.toggle('dark', data.theme === 'dark');
+            toggleIcons(data.theme);
+        });
+
+    darkModeIcon.addEventListener('click', () => setTheme('dark'));
+    lightModeIcon.addEventListener('click', () => setTheme('light'));
+
+    function setTheme(theme) {
+        document.body.classList.toggle('dark', theme === 'dark');
+        toggleIcons(theme);
+
+        // Update theme in the database
+        fetch('/update-theme', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ theme })
+        });
+    }
+
+    function toggleIcons(theme) {
+        darkModeIcon.style.display = theme === 'dark' ? 'none' : 'inline';
+        lightModeIcon.style.display = theme === 'dark' ? 'inline' : 'none';
+    }
+});
   </script>
 
 
