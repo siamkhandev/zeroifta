@@ -147,13 +147,13 @@
 
         // Toggle the dark-mode class on the body
         document.body.classList.toggle("dark-mode", darkMode);
-        alert(darkMode);
+
         // Update the icons in the header
-        if (darkMode==="true") {
+        if (darkMode==true) {
           document.getElementById("dark-themeIcon").style.display = "none";
           document.getElementById("light-themeIcon").style.display = "inline-block";
         } else {
-            alert("here");
+
           document.getElementById("dark-themeIcon").style.display = "inline-block";
           document.getElementById("light-themeIcon").style.display = "none";
         }
