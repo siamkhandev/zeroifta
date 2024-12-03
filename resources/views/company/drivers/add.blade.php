@@ -32,20 +32,9 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Driver ID</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Last Name" name="last_name" value="{{old('last_name')}}"/>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Driver ID" name="driver_id" value="{{old('driver_id')}}"/>
                     </div>
-                    @error('last_name')
-                            <span class="invalid-feedback" role="alert" style="display: block;">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email</label>
-                        <input type="email" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
-                    </div>
-                    @error('email')
+                    @error('driver_id')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -64,10 +53,62 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">DOT</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add DOT" name="dot" value="{{old('dot')}}" />
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">License State</label>
+                        <select name="license_state" id="state" class="form-control login-input" required>
+                            <option value="">-- Select a State --</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                        </select>
                     </div>
-                    @error('dot')
+                    @error('phone')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -75,10 +116,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">MC</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{old('mc')}}" />
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">License Number</label>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Number" name="license_number" value="{{old('license_number')}}" />
                     </div>
-                    @error('mc')
+                    @error('license_number')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -86,15 +127,39 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Profile Picture</label>
-                        <input type="file"  class="form-control login-input" id="exampleFormControlInput1"  name="image"  />
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">License Start Date</label>
+                        <input type="date" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Start Date" name="license_start_date" value="{{old('license_start_date')}}" />
                     </div>
-                    @error('image')
+                    @error('license_start_date')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                 </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email</label>
+                        <input type="email" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
+                    </div>
+                    @error('email')
+                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Username</label>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Username" name="username" value="{{old('username')}}" />
+                    </div>
+                    @error('username')
+                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                
+               
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Password</label>

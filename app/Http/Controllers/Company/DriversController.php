@@ -31,28 +31,34 @@ class DriversController extends Controller
     {
 
         $data = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
             'phone' => 'required|string|max:20',
             'password' => 'required|string|min:8|confirmed',
-            'dot' => 'required|string|max:255',
-            'mc' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'username' => 'required|string|max:255',
+            'driver_id' => 'required|string|max:255',
+            'license_number' => 'required|string|max:255',
+            'license_state' => 'required|string|max:255',
+            'license_start_date' => 'required|string|max:255',
         ]);
 
         $driver = new User();
-        $driver->name = $request->name;
+        $driver->first_name = $request->first_name;
+        $driver->last_name = $request->last_name;
+        $driver->name = $request->first_name.' '.$request->last_name;
+        $driver->username = $request->username;
+        $driver->driver_id = $request->driver_id;
+        $driver->license_number = $request->license_number;
+        $driver->license_state = $request->license_state;
+        $driver->license_start_date = $request->license_start_date;
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
         $driver->password= Hash::make($request->password);
-        $driver->dot=$request->dot;
+      
         $driver->role='driver';
-        $driver->mc=$request->mc;
-        if($request->hasFile('image')){
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('drivers'), $imageName);
-            $driver->driver_image= $imageName;
-        }
+       
+       
         $driver->save();
         $companyDriver = new CompanyDriver();
         $companyDriver->driver_id =$driver->id;
