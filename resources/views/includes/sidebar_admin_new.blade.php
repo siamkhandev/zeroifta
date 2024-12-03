@@ -134,7 +134,7 @@
     </div>
   </div>
   <!-- Theme Color Div -->
-   <!-- {{dd(auth()->user()->theme)}} -->
+
   <div class="sc-pad">
     <div class="themeColr-div">
       <!-- <div class="">
