@@ -153,7 +153,7 @@
           document.getElementById("dark-themeIcon").style.display = "none";
           document.getElementById("light-themeIcon").style.display = "inline-block";
         } else {
-alert("yes");
+
           document.getElementById("dark-themeIcon").style.display = "inline-block";
           document.getElementById("light-themeIcon").style.display = "none";
         }
