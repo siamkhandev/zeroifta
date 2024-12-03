@@ -52,8 +52,8 @@
               <th scope="col">Name</th>
               <th scope="col">Email</th>
 
-              <th scope="col">Dot#</th>
-              <th scope="col">MC</th>
+              <th scope="col">License Number</th>
+              <th scope="col">License Start Date</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -84,8 +84,8 @@
                   <p>{{$driver->driver->phone}}</p>
                 </div>
               </td>
-              <td>{{$driver->driver->dot}}</td>
-              <td>{{$driver->driver->mc}}</td>
+              <td>{{$driver->driver->license_number}}</td>
+              <td>{{$driver->driver->license_start_date}}</td>
 
               <td>
                 <div class="tabAction-list">
