@@ -20,6 +20,28 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Last Name</label>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Last Name" name="last_name" value="{{old('last_name')}}"/>
+                    </div>
+                    @error('last_name')
+                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Driver ID</label>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Last Name" name="last_name" value="{{old('last_name')}}"/>
+                    </div>
+                    @error('last_name')
+                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email</label>
                         <input type="email" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
                     </div>

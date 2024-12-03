@@ -291,7 +291,7 @@ class TripController extends Controller
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
         $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()
-    ->map(function ($station) {
+        ->map(function ($station) {
         // Convert the station to an array, keeping all attributes
         $data = $station->toArray();
 
@@ -306,7 +306,7 @@ class TripController extends Controller
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] :null;
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
         // Optionally remove the old keys if not needed
-        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name']);
+        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name'],$data['vehicle_id']);
 
         return $data;
     });
@@ -551,7 +551,7 @@ class TripController extends Controller
         $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] :null;
         $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
         // Optionally remove the old keys if not needed
-        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name']);
+        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name'],$data['vehicle_id']);
 
         return $data;
     });
