@@ -48,8 +48,11 @@ class DriverVehiclesController extends Controller
     public function edit($id)
     {
         $vehicle = DriverVehicle::find($id);
+       
         $drivers = CompanyDriver::with('driver')->where('company_id',Auth::id())->get();
-        $vehicles = Vehicle::where('company_id',Auth::id())->get();
+        $vehicles = Vehicle::where('company_id',Auth::id())->pluck('id');
+        $check = DriverVehicle::whereIn('vehicle_id',$vehicles)->get();
+        $vehicles = Vehicle::where('company_id',Auth::id())->whereNotIn('id',$check->pluck('vehicle_id'))->get();
         return view('company.driver_vehicles.edit',get_defined_vars());
     }
     public function update(Request $request,$id)
