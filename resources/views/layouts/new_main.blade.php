@@ -153,6 +153,7 @@
           document.getElementById("dark-themeIcon").style.display = "none";
           document.getElementById("light-themeIcon").style.display = "inline-block";
         } else {
+            alert("here");
           document.getElementById("dark-themeIcon").style.display = "inline-block";
           document.getElementById("light-themeIcon").style.display = "none";
         }
@@ -177,7 +178,7 @@
 
           themeCheckbox.checked = true;
         }else{
-            alert("here");
+
             document.body.classList.remove("dark-mode"); // Remove dark-mode class
             document.getElementById("light-themeIcon").style.display = "none";
             document.getElementById("dark-themeIcon").style.display = "inline-block"; // Show dark theme icon
