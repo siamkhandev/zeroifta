@@ -9,10 +9,10 @@
             <div class="row pt-3">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">First Name</label>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type First Name" name="first_name" value="{{old('first_name')}}"/>
                     </div>
-                    @error('name')
+                    @error('first_name')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>

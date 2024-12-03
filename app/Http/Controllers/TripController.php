@@ -347,11 +347,14 @@ class TripController extends Controller
         $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
         if($driverVehicle && $driverVehicle->vehicle_id != null){
             $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+            if($vehicle && $vehicle->vehicle_image != null){
+                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+            }
+        }else{
+            $vehicle = null;
         }
        
-        if($vehicle && $vehicle->vehicle_image != null){
-            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
-        }
+        
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
@@ -588,11 +591,15 @@ class TripController extends Controller
         $vehiclefind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
         if($vehiclefind){
             $vehicle = Vehicle::where('id', $vehiclefind)->first();
+            if($vehicle && $vehicle->vehicle_image != null){
+                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+            }
+        }else{
+            $vehicle =null;
+
         }
        
-        if($vehicle && $vehicle->vehicle_image != null){
-            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
-        }
+        
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;

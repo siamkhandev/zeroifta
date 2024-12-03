@@ -279,11 +279,15 @@ class IFTAController extends Controller
                 $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
                 if($driverVehicle){
                     $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+                    if($vehicle && $vehicle->vehicle_image != null){
+                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                    }
+                }else{
+
+                    $vehicle=null;
                 }
                 
-                if($vehicle && $vehicle->vehicle_image != null){
-                    $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
-                }
+                
                 // Create a separate key for the polyline
                 $responseData = [
                     'trip_id' => $request->trip_id,
@@ -401,11 +405,14 @@ class IFTAController extends Controller
                 $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
                 if($vehicleFind){
                     $vehicle = Vehicle::where('id', $vehicleFind)->first();
+                    if($vehicle && $vehicle->vehicle_image != null){
+                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                    }
+                }else{
+                    $vehicle = null;
                 }
                 
-                if($vehicle && $vehicle->vehicle_image != null){
-                    $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
-                }
+                
                 
                 $responseData = [
                     'trip_id'=>$trip->id,
