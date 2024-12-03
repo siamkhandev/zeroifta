@@ -173,7 +173,7 @@
         if(isDarkMode === "true"){
           document.body.classList.add("dark-mode");
           document.getElementById("dark-themeIcon").style.display = "none";
-
+          document.getElementById("light-themeIcon").style.display = "inline-block";
 
           themeCheckbox.checked = true;
         }else{
