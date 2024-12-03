@@ -277,7 +277,10 @@ class IFTAController extends Controller
                 $trip->duration = $formattedDuration;
                 $stops = Tripstop::where('trip_id', $trip->id)->get();
                 $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
-                $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+                if($driverVehicle){
+                    $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+                }
+                
                 if($vehicle && $vehicle->vehicle_image != null){
                     $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
                 }
@@ -395,8 +398,11 @@ class IFTAController extends Controller
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
-                $vehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
-                $vehicle = Vehicle::where('id', $vehicle)->first();
+                $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+                if($vehicleFind){
+                    $vehicle = Vehicle::where('id', $vehicleFind)->first();
+                }
+                
                 if($vehicle && $vehicle->vehicle_image != null){
                     $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
                 }

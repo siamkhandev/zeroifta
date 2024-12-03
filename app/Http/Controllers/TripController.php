@@ -345,7 +345,10 @@ class TripController extends Controller
         }
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
-        $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+        if($driverVehicle && $driverVehicle->vehicle_id != null){
+            $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+        }
+       
         if($vehicle && $vehicle->vehicle_image != null){
             $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
         }
@@ -582,8 +585,11 @@ class TripController extends Controller
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
             }
         }
-        $vehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
-        $vehicle = Vehicle::where('id', $vehicle)->first();
+        $vehiclefind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+        if($vehiclefind){
+            $vehicle = Vehicle::where('id', $vehiclefind)->first();
+        }
+       
         if($vehicle && $vehicle->vehicle_image != null){
             $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
         }
