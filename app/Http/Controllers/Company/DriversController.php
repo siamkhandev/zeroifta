@@ -74,24 +74,30 @@ class DriversController extends Controller
     public function update(Request $request,$id)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$id.'|max:255',
             'phone' => 'required|string|max:20',
-            'dot' => 'required|string|max:255',
-            'mc' => 'required|string|max:255',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:1024',
+            'driver_id' => 'required|string|max:255',
+            'license_number' => 'required|string|max:255',
+            'license_state' => 'required|string|max:255',
+            'license_start_date' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+
         ]);
         $driver = User::find($id);
-        $driver->name = $request->name;
+        $driver->first_name = $request->first_name;
+        $driver->last_name = $request->last_name;
+        $driver->username = $request->username;
+        $driver->driver_id = $request->driver_id;
+        $driver->license_number = $request->license_number;
+        $driver->license_state = $request->license_state;
+        $driver->license_start_date = $request->license_start_date;
+
+        $driver->name = $request->first_name.' '.$request->last_name;
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
-        $driver->dot=$request->dot;
-        $driver->mc=$request->mc;
-        if($request->hasFile('image')){
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('drivers'), $imageName);
-            $driver->driver_image= $imageName;
-        }
+       
         $driver->update();
         return redirect('drivers/all')->withSuccess('Driver Updated Successfully');
     }
