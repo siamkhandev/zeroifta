@@ -33,7 +33,8 @@ class AdminController extends Controller
             'password' => 'required',
 
         ]);
-        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+        $remember = $request->has('remember');
+        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password],$remember)){
             if(Auth::user()->role=='driver'){
                 Auth::logout();
                 return redirect()->back();

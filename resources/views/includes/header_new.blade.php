@@ -111,7 +111,7 @@
               <div class="dropdown-center">
                 <button class="lang_btn" type="" data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="dropbtn">
-                    <img src="assets/img/english.png" alt="Lang_icon">
+                    <img src="assets/img/us2.png" alt="Lang_icon">
                   </span>
                   <span class="dropbtn lang-text">English</span>
                 </button>
@@ -119,7 +119,7 @@
                   <li>
                     <a class="dropdown-item" href="#">
                       <span class="dropbtn">
-                        <img src="assets/img/english.png" alt="Lang_icon">
+                        <img src="assets/img/us2.png" alt="Lang_icon">
                       </span>
                       <span class="dropbtn lang-text">English</span>
                     </a>
