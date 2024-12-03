@@ -147,7 +147,7 @@
 
         // Toggle the dark-mode class on the body
         document.body.classList.toggle("dark-mode", darkMode);
-
+        alert(darkMode);
         // Update the icons in the header
         if (darkMode==="true") {
           document.getElementById("dark-themeIcon").style.display = "none";
