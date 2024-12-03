@@ -134,6 +134,7 @@
     </div>
   </div>
   <!-- Theme Color Div -->
+   {{dd(auth()->user()->theme)}}
   <div class="sc-pad">
     <div class="themeColr-div">
       <!-- <div class="">
@@ -146,8 +147,8 @@
         <div>
         <label class="switch">
           <input type="checkbox" id="themeCheckbox" {{ auth()->user()->theme === 'dark' ? 'checked' : '' }} />
-    <span class="slider round"></span>
-</label>
+            <span class="slider round"></span>
+            </label>
         </div>
       </div>
     </div>
