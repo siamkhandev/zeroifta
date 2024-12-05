@@ -113,38 +113,26 @@ public function index(Request $request)
         ->take(5)
         ->get();
 
-    $tripData = $trips->map(function ($trip) {
-        $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
-        $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
+    // Pre-fetch all address details in one batch (reduce API calls)
+    $coordinates = $trips->flatMap(function ($trip) {
+        return [
+            ['lat' => $trip->start_lat, 'lng' => $trip->start_lng],
+            ['lat' => $trip->end_lat, 'lng' => $trip->end_lng],
+        ];
+    })->unique();
 
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Use env for API key
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$trip->start_lat},{$trip->start_lng}&destination={$trip->end_lat},{$trip->end_lng}&key={$apiKey}";
-        $response = Http::get($url);
+    $addresses = $this->batchGetAddressesFromCoordinates($coordinates);
 
-        $distance = $duration = null;
-        if ($response->successful()) {
-            $data = $response->json();
-            $route = $data['routes'][0] ?? null;
+    // Pre-fetch distances and durations in one batch (reduce API calls)
+    $routes = $this->batchGetRoutesFromCoordinates($trips);
 
-            if ($route) {
-                $distance = $route['legs'][0]['distance']['text'] ?? null;
-                $duration = $route['legs'][0]['duration']['text'] ?? null;
+    // Map trips with pre-fetched data
+    $tripData = $trips->map(function ($trip) use ($addresses, $routes) {
+        $pickup = $addresses[$trip->start_lat . ',' . $trip->start_lng] ?? 'Unknown Location';
+        $dropoff = $addresses[$trip->end_lat . ',' . $trip->end_lng] ?? 'Unknown Location';
 
-                // Ensure distance in miles
-                if ($distance) {
-                    $distanceParts = explode(' ', $distance);
-                    $distance = $distanceParts[0] . ' miles';
-                }
-
-                // Ensure duration in "hr min" format
-                if ($duration) {
-                    $durationParts = explode(' ', $duration);
-                    $hours = $durationParts[0] ?? 0;
-                    $minutes = $durationParts[2] ?? 0;
-                    $duration = "{$hours} hr {$minutes} min";
-                }
-            }
-        }
+        $routeKey = "{$trip->start_lat},{$trip->start_lng}-{$trip->end_lat},{$trip->end_lng}";
+        $route = $routes[$routeKey] ?? ['distance' => null, 'duration' => null];
 
         return [
             'id' => $trip->id,
@@ -155,8 +143,8 @@ public function index(Request $request)
             'start_lng' => $trip->start_lng,
             'end_lat' => $trip->end_lat,
             'end_lng' => $trip->end_lng,
-            'distance' => $distance,
-            'duration' => $duration,
+            'distance' => $route['distance'],
+            'duration' => $route['duration'],
             'status' => $trip->status,
             'created_at' => $trip->created_at->format('d M'),
         ];
@@ -171,6 +159,60 @@ public function index(Request $request)
         'data' => $dashboardData,
     ]);
 }
+
+/**
+ * Batch fetch addresses for a list of coordinates.
+ */
+private function batchGetAddressesFromCoordinates($coordinates)
+{
+    $results = [];
+    foreach ($coordinates as $coordinate) {
+        $lat = $coordinate['lat'];
+        $lng = $coordinate['lng'];
+
+        // You can optimize this further by caching the results
+        $results["$lat,$lng"] = $this->getAddressFromCoordinates($lat, $lng);
+    }
+    return $results;
+}
+
+/**
+ * Batch fetch routes for a list of trips.
+ */
+private function batchGetRoutesFromCoordinates($trips)
+{
+    $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Use env for API key
+    $results = [];
+
+    foreach ($trips as $trip) {
+        $start = "{$trip->start_lat},{$trip->start_lng}";
+        $end = "{$trip->end_lat},{$trip->end_lng}";
+        $routeKey = "$start-$end";
+
+        // You can optimize this further by caching the results
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$start}&destination={$end}&key={$apiKey}";
+        $response = Http::get($url);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            $route = $data['routes'][0] ?? null;
+
+            if ($route) {
+                $distance = $route['legs'][0]['distance']['text'] ?? null;
+                $duration = $route['legs'][0]['duration']['text'] ?? null;
+
+                // Format distance and duration
+                $distance = $distance ? explode(' ', $distance)[0] . ' miles' : null;
+                $duration = $duration ? str_replace(['hours', 'mins'], ['hr', 'min'], $duration) : null;
+
+                $results[$routeKey] = compact('distance', 'duration');
+            }
+        }
+    }
+
+    return $results;
+}
+
 
     public function contactus(Request $request)
     {
