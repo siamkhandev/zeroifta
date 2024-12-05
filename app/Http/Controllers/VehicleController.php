@@ -102,7 +102,10 @@ public function allTrips(Request $request)
         $vehicle = $vehicles[$vehicleId] ?? null;
 
         if ($vehicle && isset($vehicle->vehicle_image)) {
-            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+            // Ensure the image URL is not repeatedly prefixed
+            if (!str_starts_with($vehicle->vehicle_image, 'http://')) {
+                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+            }
         }
 
         // Caching geocode addresses
