@@ -415,97 +415,93 @@ class TripController extends Controller
         return $points;
     }
     public function tripDetail(Request $request)
-{
-    $trip = Trip::where('id', $request->trip_id)->first();
+    {
+        $trip = Trip::where('id', $request->trip_id)->first();
+        if($trip){
+            $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+            $vehicle = Vehicle::where('id', $driverVehicle)->first();
 
-    if ($trip) {
-        $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
-        $vehicle = Vehicle::where('id', $driverVehicle)->first();
-
-        $pickupState = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng, 'state');
-        $dropoffState = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng, 'state');
-        $pickup = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng, 'address');
-        $dropoff = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng, 'address');
-
-        $trip->pickup = $pickup;
-        $trip->dropoff = $dropoff;
-        $trip->pickupState = $pickupState;
-        $trip->dropoffState = $dropoffState;
-        $trip->vehicle = $vehicle;
-
-        if ($trip->vehicle && $trip->vehicle->vehicle_image) {
-            $trip->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
-        }
-
-        $routeData = $this->getRouteData($trip->start_lat, $trip->start_lng, $trip->end_lat, $trip->end_lng);
-
-        if ($routeData) {
-            $trip->distance = $routeData['distance'];
-            $trip->duration = $routeData['duration'];
-        }
-
-        return response()->json(['status' => 200, 'message' => 'Trip found', 'data' => $trip], 200);
-    } else {
-        return response()->json(['status' => 404, 'message' => 'Trip not found', 'data' => (object)[]], 404);
-    }
-}
-
-private function getAddressFromCoordinates($latitude, $longitude, $type = 'address')
-{
-    $apiKey = env('GOOGLE_MAPS_API_KEY'); // Retrieve API key from .env
-    $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
-
-    $response = Http::get($url);
-
-    if ($response->successful()) {
-        $data = $response->json();
-        if (isset($data['results'][0])) {
-            if ($type == 'state' && isset($data['results'][0]['address_components'])) {
-                foreach ($data['results'][0]['address_components'] as $component) {
-                    if (in_array('administrative_area_level_1', $component['types'])) {
-                        return $component['long_name']; // State name
-                    }
-                }
+            $pickupState = $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoffState = $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng);
+            $pickup = $this->getPickupFromCoordinates($trip->start_lat, $trip->start_lng);
+            $dropoff = $this->getPickupFromCoordinates($trip->end_lat, $trip->end_lng);
+            $trip->pickup = $pickup;
+            $trip->dropoff = $dropoff;
+            $trip->pickupState = $pickupState;
+            $trip->dropoffState = $dropoffState;
+            $trip->vehicle = $vehicle;
+            if($trip->vehicle && $trip->vehicle->vehicle_image){
+                $trip->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
             }
+            $startLat = $trip->start_lat;
+            $startLng = $trip->start_lng;
+            $endLat = $trip->end_lat;
+            $endLng = $trip->end_lng;
+            $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $data = $response->json();
+            $route = $data['routes'][0];
 
-            if ($type == 'address' && isset($data['results'][0]['formatted_address'])) {
-                return $data['results'][0]['formatted_address']; // Full address
-            }
-        }
-    }
-
-    return 'Address not found';
-}
-
-private function getRouteData($startLat, $startLng, $endLat, $endLng)
-{
-    $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
-    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
-
-    $response = Http::get($url);
-
-    if ($response->successful()) {
-        $data = $response->json();
-        if (isset($data['routes'][0]['legs'][0])) {
-            $route = $data['routes'][0]['legs'][0];
-            $distanceText = $route['distance']['text'] ?? null;
-            $durationText = $route['duration']['text'] ?? null;
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
 
             // Format distance (e.g., "100 miles")
-            $formattedDistance = $distanceText ? explode(' ', $distanceText)[0] . ' miles' : null;
+            if ($distanceText) {
+                $distanceParts = explode(' ', $distanceText);
+                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
+            }
 
             // Format duration (e.g., "2 hr 20 min")
-            $formattedDuration = $durationText ? implode(' ', explode(' ', $durationText)) : null;
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
 
-            return [
-                'distance' => $formattedDistance,
-                'duration' => $formattedDuration
-            ];
+            }
+        }
+            $trip->distance = $formattedDistance;
+            $trip->duration = $formattedDuration;
+            return response()->json(['status'=>200,'message'=>'trip found','data'=>$trip],200);
+        }else{
+            return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
         }
     }
 
-    return null;
-}
+    private function getAddressFromCoordinates($latitude, $longitude)
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        if (isset($response['results'][0]['address_components'])) {
+            foreach ($response['results'][0]['address_components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types'])) {
+                    return $component['long_name']; // State name
+                }
+            }
+        }
+
+        return 'Address not found';
+    }
+    private function getPickupFromCoordinates($latitude, $longitude)
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        if (isset($response['results'][0]['formatted_address'])) {
+            return $response['results'][0]['formatted_address'];
+        }
+
+        return 'Address not found';
+    }
     public function storeStop(Request $request)
     {
        // dd($request->all());
