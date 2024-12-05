@@ -9,22 +9,30 @@ use Illuminate\Support\Facades\Validator;
 class ReceiptController extends Controller
 {
     public function index(Request $request)
-    {
-        $receipts = Receipt::where('driver_id',$request->driver_id)
-        //->where('trip_id',$request->trip_id)
+{
+    // Query receipts for the given driver_id, only select necessary columns
+    $receipts = Receipt::where('driver_id', $request->driver_id)
+        ->select('id', 'driver_id', 'receipt_image') // Only select necessary columns
         ->get();
 
-        if(count($receipts) >0){
-            foreach ($receipts as $receipt) {
-                if (isset($receipt->receipt_image)) {
-                    $receipt->receipt_image = 'http://zeroifta.alnairtech.com/receipts/' . $receipt->receipt_image;
-                }
+    // Check if any receipts are found
+    if ($receipts->isNotEmpty()) {
+        // Prepend the base URL to receipt_image using array_map for better performance
+        $receipts->transform(function ($receipt) {
+            if (isset($receipt->receipt_image)) {
+                $receipt->receipt_image = 'http://zeroifta.alnairtech.com/receipts/' . $receipt->receipt_image;
             }
-            return response()->json(['status'=>200,'message'=>'receipts found','data'=>$receipts],200);
-        }else{
-            return response()->json(['status'=>404,'message'=>'receipts not found','data'=>[]],404);
-        }
+            return $receipt;
+        });
+
+        // Return the result
+        return response()->json(['status' => 200, 'message' => 'Receipts found', 'data' => $receipts], 200);
     }
+
+    // Return response when no receipts found
+    return response()->json(['status' => 404, 'message' => 'Receipts not found', 'data' => []], 404);
+}
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
