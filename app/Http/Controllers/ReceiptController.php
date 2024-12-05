@@ -12,7 +12,7 @@ class ReceiptController extends Controller
 {
     // Query receipts for the given driver_id, only select necessary columns
     $receipts = Receipt::where('driver_id', $request->driver_id)
-        ->select('id', 'driver_id', 'receipt_image') // Only select necessary columns
+        ->select('id', 'driver_id', 'receipt_image','fuel_station_name', 'price_per_gallon', 'gallons_bought', 'location') // Only select necessary columns
         ->get();
 
     // Check if any receipts are found
