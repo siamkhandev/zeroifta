@@ -364,6 +364,7 @@ class TripController extends Controller
                 'trip' => $trip,
                 'fuel_stations' => $fuelStations,
                 'polyline' => $decodedPolyline,
+                'encoded_polyline'=>$encodedPolyline,
                 'stops' => $stops,
                 'vehicle' => $vehicle
             ];
@@ -611,6 +612,7 @@ class TripController extends Controller
                 'trip' => $trip,
                 'fuel_stations' => $fuelStations,
                 'polyline' => $decodedPolyline,
+                'encoded_polyline'=>$encodedPolyline,
                 'stops' => $stops,
                 'vehicle' => $vehicle
             ];

@@ -294,6 +294,7 @@ class IFTAController extends Controller
                     'trip' => $trip,
                     'fuel_stations' => $result, // Fuel stations with optimal station marked
                     'polyline' => $decodedPolyline,
+                    'encoded_polyline'=>$encodedPolyline,
                     'stops' => $stops,
                     'vehicle' => $vehicle
                 ];
@@ -419,6 +420,7 @@ class IFTAController extends Controller
                     'trip' => $trip,
                     'fuel_stations' => $result,
                     'polyline' => $decodedPolyline,
+                    'encoded_polyline'=>$encodedPolyline,
                     'stops'=>[],
                     'vehicle' => $vehicle
                 ];
