@@ -15,7 +15,7 @@
   <!-- Menu -->
   <div class="main-menu">
     <div class="sc-pad">
-      <h4 class="head-14Med">Main Menu</h4>
+      <h4 class="head-14Med">{{ __('messages.Main Menu')}}</h4>
     </div>
     <div class="pt-2">
       <ul class="sidebar-list">
@@ -36,7 +36,7 @@
                 </defs>
               </svg>
             </span>
-            <span class="head-14Nor">Dashboard</span>
+            <span class="head-14Nor">{{ __('messages.Dashboard')}}</span>
           </a>
         </li>
         <li>
@@ -48,7 +48,7 @@
                   fill="" />
               </svg>
             </span>
-            <span class="head-14Nor">Profile Management</span>
+            <span class="head-14Nor">{{__('messages.Profile Management')}}</span>
           </a>
         </li>
         <li>
@@ -60,7 +60,7 @@
                   fill="" />
               </svg>
             </span>
-            <span class="head-14Nor">Manage Subscriptions</span>
+            <span class="head-14Nor">{{__('messages.Manage Subscriptions')}}</span>
           </a>
         </li>
         <li>
@@ -72,7 +72,7 @@
                   fill="" />
               </svg>
             </span>
-            <span class="head-14Nor">Manage Companies</span>
+            <span class="head-14Nor">{{__('messages.Manage Companies')}}</span>
           </a>
         </li>
         <li>
@@ -84,7 +84,7 @@
                   fill="" />
               </svg>
             </span>
-            <span class="head-14Nor">Manage Payments</span>
+            <span class="head-14Nor">{{__('messages.Manage Payments')}}</span>
           </a>
         </li>
         <li>
@@ -96,7 +96,7 @@
                   fill="" />
               </svg>
             </span>
-            <span class="head-14Nor">Manage Fuel Taxes</span>
+            <span class="head-14Nor">{{__('messages.Manage Fuel Taxes')}}</span>
           </a>
         </li>
         <li>
@@ -115,7 +115,7 @@
                 </defs>
               </svg>
             </span>
-            <span class="head-14Nor">Reporting & Analytics</span>
+            <span class="head-14Nor">{{__('messages.Reporting & Analytics')}}</span>
           </a>
         </li>
         <li>
@@ -127,7 +127,7 @@
                   fill="" />
               </svg>
             </span>
-            <span class="head-14Nor">Contact Forms</span>
+            <span class="head-14Nor">{{__('messages.Contact Forms')}}</span>
           </a>
         </li>
       </ul>
@@ -142,7 +142,7 @@
       </div> -->
       <div class="light-dark pt-3">
         <div>
-          <p class="head-14Med">Light/Dark</p>
+          <p class="head-14Med">{{__('messages.Light/Dark')}}</p>
         </div>
         <div>
         <label class="switch">

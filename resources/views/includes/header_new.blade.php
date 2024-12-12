@@ -109,29 +109,43 @@
             <!-- Language -->
             <div class="lag-span">
               <div class="dropdown-center">
+              @if(LaravelLocalization::getCurrentLocaleName()=="English")
                 <button class="lang_btn" type="" data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="dropbtn">
                     <img src="{{asset('assets/img/us2.png')}}" alt="Lang_icon">
                   </span>
                   <span class="dropbtn lang-text">English</span>
                 </button>
+                @else
+                <button class="lang_btn" type="" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="dropbtn">
+                    <img src="{{asset('assets/img/spanish.png')}}" alt="Lang_icon">
+                  </span>
+                  <span class="dropbtn lang-text">Spanish</span>
+                </button>
+                @endif
                 <ul class="dropdown-menu">
+                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                @if($properties['native'] == "English")
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                       <span class="dropbtn">
                         <img src="{{asset('assets/img/us2.png')}}" alt="Lang_icon">
                       </span>
                       <span class="dropbtn lang-text">English</span>
                     </a>
                   </li>
+                  @else
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                       <span class="">
-                        <img src="assets/img/spanish.png" alt="Lang_icon">
+                        <img src="{{asset('assets/img/spanish.png')}}" alt="Lang_icon">
                       </span>
                       <span class="ps-2 lang-text">Spanish</span>
                     </a>
                   </li>
+                  @endif
+                  @endforeach
                 </ul>
               </div>
             </div>
