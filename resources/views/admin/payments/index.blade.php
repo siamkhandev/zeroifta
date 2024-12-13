@@ -2,7 +2,7 @@
 @section('content')
 <div class="dashbord-inner">
   <!-- Section 1 -->
-  
+
 
   <!-- Data Table -->
   <div class="sec1-style">
@@ -10,11 +10,11 @@
       <table id="example" class="table table-comm">
         <thead>
           <tr>
-          <th scope="col">Company Name</th>
-              <th scope="col">Plan Name</th>
-              <th scope="col">Payments</th>
-              <th scope="col">Status</th>
-              <th scope="col">Purchased date</th>
+          <th scope="col">{{__('messages.Company Name')}}</th>
+              <th scope="col">{{__('messages.Plan Name')}}</th>
+              <th scope="col">{{__('messages.Payments')}}</th>
+              <th scope="col">{{__('messages.Status')}}</th>
+              <th scope="col">{{__('messages.Purchased date')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -35,9 +35,9 @@
               </td>
           </tr>
           @endforeach
-         
-          
-          
+
+
+
         </tbody>
       </table>
     </div>
