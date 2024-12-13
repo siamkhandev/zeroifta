@@ -9,7 +9,7 @@
             <div class="row pt-3">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">First Name</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.First Name')}}</label>
                         <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type First Name" name="first_name" value="{{old('first_name')}}"/>
                     </div>
                     @error('first_name')
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Last Name</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Last Name')}}</label>
                         <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Last Name" name="last_name" value="{{old('last_name')}}"/>
                     </div>
                     @error('last_name')
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Driver ID</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Driver ID')}}</label>
                         <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Driver ID" name="driver_id" value="{{old('driver_id')}}"/>
                     </div>
                     @error('driver_id')
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Phone</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Phone')}}</label>
                         <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Phone" name="phone" value="{{old('phone')}}" />
                     </div>
                     @error('phone')
@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">License State</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License State')}}</label>
                         <select name="license_state" id="state" class="form-control login-input" required>
                             <option value="">-- Select a State --</option>
                             <option value="AL">Alabama</option>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">License Number</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Number')}}</label>
                         <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Number" name="license_number" value="{{old('license_number')}}" />
                     </div>
                     @error('license_number')
@@ -127,7 +127,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">License Start Date</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Start Date')}}</label>
                         <input type="date" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Start Date" name="license_start_date" value="{{old('license_start_date')}}" />
                     </div>
                     @error('license_start_date')
@@ -138,7 +138,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Email')}}</label>
                         <input type="email" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
                     </div>
                     @error('email')
@@ -149,7 +149,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Username</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Username')}}</label>
                         <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Username" name="username" value="{{old('username')}}" />
                     </div>
                     @error('username')
@@ -158,11 +158,11 @@
                             </span>
                         @enderror
                 </div>
-                
-               
+
+
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Password</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Password')}}</label>
                         <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Password" name="password"  value="{{old('password')}}"/>
                     </div>
                     @error('password')
@@ -173,15 +173,15 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Confirm Password')}}</label>
                         <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Confirm Password" name="password_confirmation"  value="{{old('password_confirmation')}}"/>
                     </div>
 
                 </div>
             </div>
             <div class="buttons mt-5">
-                <a href="{{route('drivers.all')}}" class="cancelBtn">Cancel</a>
-                <button type="submit"  class="mainBtn">Submit</a>
+                <a href="{{route('drivers.all')}}" class="cancelBtn">{{__('messages.Cancel')}}</a>
+                <button type="submit"  class="mainBtn">{{__('messages.Submit')}}</a>
             </div>
         </div>
     </div>

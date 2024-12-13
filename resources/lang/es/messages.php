@@ -74,6 +74,17 @@ return [
     "Tax"=>"Impuesto",
     "Subject"=>"Asunto",
     "Close"=>"Cerrar",
+    "Import Vehicles"=>"Importar vehiculos",
+    "Import Drivers"=>"Importar conductores",
+    "License Number"=>"Numero de licencia",
+    "License Start Date"=>"Fecha de inicio de la licencia",
+    "License State"=>"Estado de la licencia",
+    "Username"=>"Nombre de usuario",
+    "First Name"=>"Nombre",
+    "Last Name"=>"Apellido",
+    "Driver ID"=>"ID de conductor",
+    "File (Excel)"=>"Archivo (Excel)",
+    "Download Sample File"=>"Descargar archivo de muestra",
 
 
 ];

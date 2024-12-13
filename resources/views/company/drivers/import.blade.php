@@ -5,13 +5,13 @@
 
     <div class="profileForm-area mb-4">
         <div class="sec1-style">
-        
+
         <form method="post" action="{{route('drivers.import')}}" enctype="multipart/form-data">
             @csrf
             <div class="row pt-3">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">File (Excel)</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.File (Excel)')}}</label>
                         <input type="file" class="form-control login-input" id="exampleFormControlInput1"  name="file" />
                     </div>
                     @error('file')
@@ -20,12 +20,12 @@
                             </span>
                         @enderror
                 </div>
-               
-               
+
+
             </div>
             <div class="buttons mt-5">
-            <a href="{{ asset('drivers.xlsx') }}" download class="btn btn-warning" style="float: right;">Download Sample File</a>
-                <button type="submit"  class="mainBtn">Submit</a>
+            <a href="{{ asset('drivers.xlsx') }}" download class="btn btn-warning" style="float: right;">{{__('messages.Download Sample File')}}</a>
+                <button type="submit"  class="mainBtn">{{__('messages.Submit')}}</a>
             </div>
         </div>
     </div>

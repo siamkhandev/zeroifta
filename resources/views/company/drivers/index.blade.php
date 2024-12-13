@@ -32,8 +32,8 @@
             </div>
           </div>
           <div class="filter-btn">
-            <a class="blueLine_btn" href="{{route('drivers.create')}}">Add Driver+</a>
-            <a class="blueLine_btn" href="{{route('drivers.importform')}}">Import Drivers+</a>
+            <a class="blueLine_btn" href="{{route('drivers.create')}}">{{__('messages.Add Driver')}} +</a>
+            <a class="blueLine_btn" href="{{route('drivers.importform')}}">{{__('messages.Import Drivers')}} +</a>
           </div>
         </div>
       </div>
@@ -49,12 +49,12 @@
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </th>
-              <th scope="col">Name</th>
-              <th scope="col">Email</th>
+              <th scope="col">{{__('messages.Name')}}</th>
+              <th scope="col">{{__('messages.Email')}}</th>
 
-              <th scope="col">License Number</th>
-              <th scope="col">License Start Date</th>
-              <th scope="col">Action</th>
+              <th scope="col">{{__('messages.License Number')}}</th>
+              <th scope="col">{{__('messages.License Start Date')}}</th>
+              <th scope="col">{{__('messages.Action')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -137,11 +137,11 @@
                                   fill="#B60F0F" />
                               </svg>
                               <div class="pt-3">
-                                <p class="gray1">Are you sure you want to delete this?</p>
+                                <p class="gray1">{{__('messages.Are you sure you want to delete this?')}}</p>
                               </div>
                               <div class="buttons pt-3">
-                                <button type="button" class="cancelBtn" data-bs-dismiss="modal">Close</button>
-                                <a href="{{route('driver.delete',$driver->driver->id)}}" class="mainBtn">Submit</a>
+                                <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
+                                <a href="{{route('driver.delete',$driver->driver->id)}}" class="mainBtn">{{__('messages.Submit')}}</a>
                               </div>
                             </div>
                           </div>
