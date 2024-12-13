@@ -121,8 +121,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/drivers/import', [DriversController::class, 'import'])->name('drivers.import');
 
             Route::get('fleet',[CompanyController::class,'fleet'])->name('fleet');
-            Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
         });
+        Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
     });
     Route::get('contactus',[CompanyController::class,'contactus'])->name('contactus');
     Route::post('contactus',[CompanyController::class,'submitContactUs'])->name('company.contactus.submit');
