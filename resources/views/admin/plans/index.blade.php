@@ -121,7 +121,7 @@
                             fill="#B60F0F" />
                         </svg>
                         <div class="pt-3">
-                          <p class="gray1">Are you sure you want to delete this?</p>
+                          <p class="gray1">{{__('messages.Are_you_sure_you_want_to_delete_this?')}}</p>
                         </div>
                         <div class="buttons pt-3">
                           <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>

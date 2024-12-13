@@ -76,5 +76,6 @@ return [
     "State Code"=>"State Code",
     "Tax"=>"Tax",
     "Subject"=>"Subject",
+    "Close"=>"Close",
 
 ];

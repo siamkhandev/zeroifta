@@ -121,6 +121,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/drivers/import', [DriversController::class, 'import'])->name('drivers.import');
 
             Route::get('fleet',[CompanyController::class,'fleet'])->name('fleet');
+            Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
         });
     });
     Route::get('contactus',[CompanyController::class,'contactus'])->name('contactus');
@@ -136,7 +137,7 @@ Route::middleware('auth')->group(function () {
     Route::get('purchase/{id}', [PaymentController::class, 'purchase'])->name('purchase');
     Route::get('subscribe', [CompanyController::class, 'showPlans'])->name('subscribe');
     Route::post('pay', [PaymentController::class, 'subscribe'])->name('pay');
-    Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
+
     Route::get('/cancel-subscription/{id}', [PaymentController::class, 'cancel'])->name('cancel.subscription');
     Route::post('/messages', [ContactUsController::class, 'store'])->name('messages.store');
     Route::get('/messages/{contact_id}', [ContactUsController::class, 'fetchMessages'])->name('messages.fetch');

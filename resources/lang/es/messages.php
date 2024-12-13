@@ -73,6 +73,7 @@ return [
     "State Code"=>"Codigo del estado",
     "Tax"=>"Impuesto",
     "Subject"=>"Asunto",
+    "Close"=>"Cerrar",
 
 
 ];
