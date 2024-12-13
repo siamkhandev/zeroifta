@@ -13,15 +13,15 @@
           @endif
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>{{ $form->company->name }} Contact Form</h6>
+              <h6>{{ $form->company->name }} {{__('messages.Contact Form')}}</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Subject</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Message</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{__('messages.Subject')}}</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{__('messages.Message')}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -48,7 +48,7 @@
 
               <div class="mt-3">
                 <textarea id="message" class="form-control" placeholder="Type your message here"></textarea>
-                <button class="btn btn-primary mt-2" onclick="sendMessage()">Send</button>
+                <button class="btn btn-primary mt-2" onclick="sendMessage()">{{__('messages.Send')}}</button>
               </div>
             </div>
           </div>

@@ -85,6 +85,23 @@ return [
     "Driver ID"=>"ID de conductor",
     "File (Excel)"=>"Archivo (Excel)",
     "Download Sample File"=>"Descargar archivo de muestra",
+    "Add Driver"=>"Agregar conductor",
+    "Vehicle Type"=>"Tipo de vehiculo",
+    "Add Vehicle"=>"Agregar vehiculo",
+    "Vehicle Number"=>"Numero de vehiculo",
+    "Odometer Reading"=>"Lectura de odometro",
+    "MPG"=>"MPG",
+    "Add Driver Vehicle"=>"Agregar vehiculo de conductor",
+    "Driver Name"=>"Nombre del conductor",
+    "Driver Email"=>"Correo del conductor",
+    "Driver Phone"=>"Telefono del conductor",
+    "Fuel Tank Capacity"=>"Capacidad de tanque de combustible",
+    "Assign Vehicle"=>"Asignar vehiculo",
+    "Vehicle Image"=>"Imagen del vehiculo",
+    "Driver" =>"Conductor",
+    "Vehicle" =>"Vehiculo",
+    "Message" =>"Mensaje",
+    "Send" =>"Enviar",
 
 
 ];

@@ -32,8 +32,8 @@
             </div>
           </div>
           <div class="filter-btn">
-            <a class="blueLine_btn" href="{{route('vehicles.create')}}">Add Vehicle+</a>
-            <a class="blueLine_btn" href="{{route('vehicles.importform')}}">Import Vehicles+</a>
+            <a class="blueLine_btn" href="{{route('vehicles.create')}}">{{__('messages.Add Vehicle')}}+</a>
+            <a class="blueLine_btn" href="{{route('vehicles.importform')}}">{{__('messages.Import Vehicles')}}+</a>
           </div>
         </div>
       </div>
@@ -49,12 +49,12 @@
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </th>
-              <th scope="col">Vehicle Type</th>
-              <th scope="col">Vehicle Number</th>
-              <th scope="col">Odometer Reading</th>
-              <th scope="col">MPG</th>
-              <th scope="col">Fuel Tank Capacity</th>
-              <th scope="col">Action</th>
+              <th scope="col">{{__('messages.Vehicle Type')}}</th>
+              <th scope="col">{{__('messages.Vehicle Number')}}</th>
+              <th scope="col">{{__('messages.Odometer Reading')}}</th>
+              <th scope="col">{{__('messages.MPG')}}</th>
+              <th scope="col">{{__('messages.Fuel Tank Capacity')}}</th>
+              <th scope="col">{{__('messages.Action')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -138,11 +138,11 @@
                                   fill="#B60F0F" />
                               </svg>
                               <div class="pt-3">
-                                <p class="gray1">Are you sure you want to delete this?</p>
+                                <p class="gray1">{{__('messages.Are you sure you want to delete this?')}}</p>
                               </div>
                               <div class="buttons pt-3">
-                                <button type="button" class="cancelBtn" data-bs-dismiss="modal">Close</button>
-                                <a href="{{route('vehicle.delete',$vehicle->id)}}" class="mainBtn">Submit</a>
+                                <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
+                                <a href="{{route('vehicle.delete',$vehicle->id)}}" class="mainBtn">{{__('messages.Submit')}}</a>
                               </div>
                             </div>
                           </div>
