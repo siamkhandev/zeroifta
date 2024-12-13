@@ -102,6 +102,10 @@ return [
     "Vehicle" =>"Vehiculo",
     "Message" =>"Mensaje",
     "Send" =>"Enviar",
+    "Subscription Plans"=>"Planes de suscripcion",
+    "Cancel Subscription"=>"Cancelar suscripcion",
+    "Press cancel button to cancel your subscription. You will no longer be charged after cancellation."=>"Presione el boton de cancelar para cancelar su suscripcion. No se le cobrara despues de la cancelacion.",
+    "Purchase"=>"Comprar",
 
 
 ];

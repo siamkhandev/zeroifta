@@ -111,5 +111,9 @@ return [
     "Driver" =>"Driver",
     "Vehicle" =>"Vehicle",
     "Message" =>"Message",
-    "Send"=>"Send"
+    "Send"=>"Send",
+    "Subscription Plans"=>"Subscription Plans",
+    "Cancel Subscription"=>"Cancel Subscription",
+    "Press cancel button to cancel your subscription. You will no longer be charged after cancellation."=>"Press cancel button to cancel your subscription. You will no longer be charged after cancellation.",
+    "Purchase"=>"Purchase",
 ];
