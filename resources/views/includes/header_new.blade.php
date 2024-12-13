@@ -178,7 +178,7 @@
                       </div>
                       <div>
                         <span>
-                          <a href="{{route('password.change')}}"><span>Change Password</span></a>
+                          <a href="{{route('password.change')}}"><span>{{__('messages.change_password')}}</span></a>
                         </span>
 
                       </div>
@@ -195,7 +195,7 @@
                       </div>
                       <div>
                         <span>
-                          <span>Logout</span>
+                          <span>{{__('messages.Logout')}}</span>
                         </span>
 
                       </div>
