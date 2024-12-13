@@ -26,8 +26,8 @@
 
     <!-- Chat Area -->
     <div class="fchat-inn">
-      <!--------------------------------------------------------- 
-      User Chat 
+      <!---------------------------------------------------------
+      User Chat
       --------------------------------------------------->
       <!-- Chat Tb 1 -->
       <div class="userchat-tab">
@@ -35,15 +35,15 @@
           <span>{{ $form->description }}</span>
         </div>
         <!-- Chat Tb 1 -->
-      
+
       </div>
-      <!--------------------------------------------------------- 
-      Admin Reply Chat 
+      <!---------------------------------------------------------
+      Admin Reply Chat
       --------------------------------------------------->
-      <div class="admin-rply" id="messages"> 
-       
+      <div class="admin-rply" id="messages">
+
         <!-- Chat Tb 1 -->
-        
+
       </div>
     </div>
 
@@ -126,7 +126,7 @@ async function fetchMessages() {
         console.error('Error fetching messages:', error);
     }
 }
-    
+
 </script>
 
 

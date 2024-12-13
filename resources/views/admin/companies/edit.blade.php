@@ -9,7 +9,7 @@
             <div class="row pt-3">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Name')}}</label>
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Name"  name="name"  value="{{$company->name}}"/>
                     </div>
                     @error('name')
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Email Address</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Email Address')}}</label>
                         <input type="email" class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Email" name="email"  value="{{$company->email}}"/>
                     </div>
                     @error('email')
@@ -29,11 +29,11 @@
                                 </span>
                             @enderror
                 </div>
-               
-               
+
+
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Phone</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Phone')}}</label>
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" name="phone" placeholder="Add Phone" value="{{$company->phone}}" />
                     </div>
                     @error('phone')
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">MC</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.MC')}}</label>
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MC" name="mc" value="{{$company->mc}}"/>
                     </div>
                     @error('mc')
@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">City</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.City')}}</label>
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" name="city" placeholder="City" value="{{$company->city}}"/>
                     </div>
                     @error('city')
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">State</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.State')}}</label>
                         <select name="state" class="form-control login-input" name="state">
                       <option value="">Select state</option>
                       <option value="Alabama" {{$company->state=="Alabama" ? 'selected':''}}> Alabama</option>
@@ -113,7 +113,7 @@
                         North Dakota</option>
                                     <option value="Ohio" {{$company->state=="Ohio" ? 'selected':''}}>
                         Ohio</option>
-                                    <option value="Oklahoma" {{$company->state=="Oklahoma" ? 'selected':''}}> 
+                                    <option value="Oklahoma" {{$company->state=="Oklahoma" ? 'selected':''}}>
                         Oklahoma</option>
                                     <option value="Oregon" {{$company->state=="Oregon" ? 'selected':''}}>
                         Oregon</option>
@@ -148,13 +148,13 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">ZIP</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.ZIP')}}</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="zip" placeholder="ZIP" value="{{$company->zip}}"/>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Dot</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="dot" placeholder="DOT" value="{{$company->dot}}"/>
                     </div>
                     @error('dot')
@@ -165,7 +165,7 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Contact Person Name</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Contact Person Name')}}</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_name" placeholder="Contact Person Name" value="{{$company->contact_person_name}}"/>
                     </div>
                     @error('contact_person_name')
@@ -176,7 +176,7 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Contact Person Email</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Contact Person Email')}}</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_email" placeholder="Contact Person Email" value="{{$company->contact_person_email}}"/>
                     </div>
                     @error('contact_person_email')
@@ -187,7 +187,7 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Contact Person Phone</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Contact Person Phone')}}</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1"  name="contact_person_phone" placeholder="Contact Person Phone" value="{{$company->contact_person_phone}}"/>
                     </div>
                     @error('contact_person_phone')
@@ -198,8 +198,8 @@
                 </div>
             </div>
             <div class="buttons">
-                <a href="{{route('companies')}}" class="cancelBtn">Cancel</a>
-                <button type="submit"  class="mainBtn">Submit</button>
+                <a href="{{route('companies')}}" class="cancelBtn">{{__('messages.Cancel')}}</a>
+                <button type="submit"  class="mainBtn">{{__('messages.Submit')}}</button>
             </div>
         </div>
 </form>

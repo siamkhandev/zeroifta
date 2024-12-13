@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="filter-btn">
-            <a class="blueLine_btn" href="{{route('plans.create')}}">Add Plan +</a>
+            <a class="blueLine_btn" href="{{route('plans.create')}}">{{__('messages.Add Plan')}} +</a>
           </div>
         </div>
       </div>
@@ -49,10 +49,10 @@
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </th>
-              <th scope="col">Plan Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Recurring</th>
-              <th scope="col">Action</th>
+              <th scope="col">{{__('messages.Plan Name')}}</th>
+              <th scope="col">{{__('messages.Price')}}</th>
+              <th scope="col">{{__('messages.Recurring')}}</th>
+              <th scope="col">{{__('messages.Action')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -124,8 +124,8 @@
                           <p class="gray1">Are you sure you want to delete this?</p>
                         </div>
                         <div class="buttons pt-3">
-                          <button type="button" class="cancelBtn" data-bs-dismiss="modal">Close</button>
-                          <a href="{{route('plans.delete',$plan->id)}}" class="mainBtn">Submit</a>
+                          <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
+                          <a href="{{route('plans.delete',$plan->id)}}" class="mainBtn">{{__('messages.Submit')}}</a>
                         </div>
                       </div>
                     </div>

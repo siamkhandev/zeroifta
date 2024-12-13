@@ -29,11 +29,11 @@
                 <input id="remember-me" name="remember-me" type="checkbox" />
               </span>
             </th>
-            <th scope="col">Company Name</th>
-            <th scope="col">Subject</th>
-            <th scope="col">Contact</th>
-            <th scope="col">Date</th>
-            <th scope="col">Action</th>
+            <th scope="col">{{__('messages.Company Name')}}</th>
+            <th scope="col">{{__('messages.Subject')}}</th>
+            <th scope="col">{{__('messages.Contact')}}</th>
+            <th scope="col">{{__('messages.Date')}}</th>
+            <th scope="col">{{__('messages.Action')}}</th>
           </tr>
         </thead>
         <tbody>

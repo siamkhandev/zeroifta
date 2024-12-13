@@ -9,7 +9,7 @@
             <div class="row pt-3">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Name</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Name')}}</label>
                         <input type="text" class="form-control login-input" required id="exampleFormControlInput1" placeholder="Type Name" name="name" value="{{old('name')}}"/>
                     </div>
                     @error('name')
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Price</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Price')}}</label>
                         <input type="number" class="form-control login-input" required min="0" id="exampleFormControlInput1" placeholder="Add Price" name="price" value="{{old('price')}}" />
                     </div>
                     @error('price')
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-1">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Billing Period</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Billing Period')}}</label>
                         <select class="form-control login-input" id="exampleFormControlInput1" name="billing_period" required>
                                 <option value="month">Monthly</option>
                                 <option value="year">Yearly</option>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-1">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Is Recurring?</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Is Recurring?')}}</label>
                         <select class="form-control login-input" id="recurring" name="recurring" required>
                                   <option value="1">Yes</option>
                                   <option value="0">No</option>
@@ -60,7 +60,7 @@
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Description</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Plan Description')}}</label>
                         <div class="textArea dash-input">
                             <textarea class="" name="description" id="" rows="3" placeholder="Type Here" ></textarea>
                         </div>
@@ -68,8 +68,8 @@
                 </div>
             </div>
             <div class="buttons mt-5">
-                <a href="{{route('plans')}}" class="cancelBtn">Cancel</a>
-                <button type="submit"  class="mainBtn">Submit</a>
+                <a href="{{route('plans')}}" class="cancelBtn">{{__('messages.Cancel')}}</a>
+                <button type="submit"  class="mainBtn">{{__('messages.Submit')}}</a>
             </div>
         </div>
     </div>

@@ -13,12 +13,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Total Companies</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Total Companies')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\User::whereRole('company')->count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Total Drivers</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Total Drivers')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyDriver::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -34,12 +34,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Subscription</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Subscription')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Total Vehicles</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Total Vehicles')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Vehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -54,12 +54,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Payments</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Payments')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Driver Vehicles</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Driver Vehicles')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\DriverVehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -74,12 +74,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Contact Form</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Contact Form')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyContactUs::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">Contact Form</h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Contact Form')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Contactus::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -95,9 +95,9 @@
         <div class="sec1-style">
           <div class="inHead-span">
             <h2 class="head-20Med">@if(Auth::user()->role=='admin')
-              Companies overview
+            {{__('messages.Companies overview')}}
               @else
-              Drivers overview
+              {{__('messages.Drivers overview')}}
               @endif</h2>
           </div>
           <div>
@@ -118,9 +118,9 @@
               <div class="sec1-style">
                 <div class="inHead-span">
                   <h2 class="head-20Med">@if(Auth::user()->role=='admin')
-                    Companies overview
+                  {{__('messages.Companies overview')}}
                     @else
-                    Drivers overview
+                    {{__('messages.Drivers overview')}}
                     @endif</h2>
                 </div>
                 @if(Auth::user()->role=='admin')
@@ -128,9 +128,9 @@
                   <table class="table table-comm">
                     <thead>
                       <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone</th>
+                        <th scope="col">{{__('messages.Name')}}</th>
+                        <th scope="col">{{__('messages.Email')}}</th>
+                        <th scope="col">{{__('messages.Phone')}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -150,9 +150,9 @@
                   <table class="table table-comm">
                     <thead>
                       <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone</th>
+                        <th scope="col">{{__('messages.Name')}}</th>
+                        <th scope="col">{{__('messages.Email')}}</th>
+                        <th scope="col">{{__('messages.Phone')}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -177,7 +177,7 @@
             <div class="col-lg-6 col-md-12 col.sm-12 col-12 mb-4">
               <div class="sec1-style">
                 <div class="inHead-span">
-                  <h2 class="head-20Med">Contact Forms</h2>
+                  <h2 class="head-20Med">{{__('messages.Contact Forms')}}</h2>
                 </div>
                 <div>
                   @foreach($contacts as $con)
@@ -199,7 +199,7 @@
                     </div>
                     <div class="ub-div">
                       <a class="blueBtn" href="{{route('admin.contactus')}}">
-                        <span class="">View Detail</span>
+                        <span class="">{{__('messages.View Detail')}}</span>
                         <span class="grayfilled-svg">
                           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="">
                             <path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z" />

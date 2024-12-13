@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="filter-btn">
-            <a class="blueLine_btn" href="{{route('fuel_taxes.create')}}">Add Fuel Tax +</a>
+            <a class="blueLine_btn" href="{{route('fuel_taxes.create')}}">{{__('messages.Add Fuel Tax')}} +</a>
           </div>
         </div>
       </div>
@@ -49,10 +49,10 @@
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </th>
-              <th scope="col">State</th>
-              <th scope="col">Alpha Code</th>
-              <th scope="col">IFTA Tax%</th>
-              <th scope="col">Action</th>
+              <th scope="col">{{__('messages.State')}}</th>
+              <th scope="col">{{__('messages.Alpha Code')}}</th>
+              <th scope="col">{{__('messages.IFTA Tax%')}}</th>
+              <th scope="col">{{__('messages.Action')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -122,11 +122,11 @@
                             fill="#B60F0F" />
                         </svg>
                         <div class="pt-3">
-                          <p class="gray1">Are you sure you want to delete this?</p>
+                          <p class="gray1">{{__('messages.Are you sure you want to delete this?')}}</p>
                         </div>
                         <div class="buttons pt-3">
-                          <button type="button" class="cancelBtn" data-bs-dismiss="modal">Close</button>
-                          <a href="{{route('fuel_taxes.delete',$tax->id)}}" class="mainBtn">Submit</a>
+                          <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
+                          <a href="{{route('fuel_taxes.delete',$tax->id)}}" class="mainBtn">{{__('messages.Submit')}}</a>
                         </div>
                       </div>
                     </div>
