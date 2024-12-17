@@ -588,7 +588,7 @@ class TripController extends Controller
             if ($route) {
                 $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
                 $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
-
+            }
                 // Format distance (e.g., "100 miles")
                 if ($distanceText) {
                     $distanceParts = explode(' ', $distanceText);
@@ -607,7 +607,7 @@ class TripController extends Controller
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
                 }
-            }
+            
         }
         $vehiclefind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
         if($vehiclefind){
