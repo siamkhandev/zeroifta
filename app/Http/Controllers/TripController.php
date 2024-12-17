@@ -327,6 +327,7 @@ class TripController extends Controller
         if ($waypoints) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
+        dd($url);
         $response = Http::get($url);
         if ($response->successful()) {
             $data = $response->json();
