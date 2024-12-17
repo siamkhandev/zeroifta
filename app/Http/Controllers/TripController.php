@@ -317,9 +317,12 @@ class TripController extends Controller
         
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
-        $waypoints = $stops->map(function ($stop) {
-            return "{$stop->stop_lat},{$stop->stop_lng}";
-        })->implode('|');
+        if($stops){
+            $waypoints = $stops->map(function ($stop) {
+                return "{$stop->stop_lat},{$stop->stop_lng}";
+            })->implode('|');
+        }
+        
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
         if ($waypoints) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
