@@ -314,8 +314,16 @@ class TripController extends Controller
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
+        
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $stops = Tripstop::where('trip_id', $trip->id)->get();
+        $waypoints = $stops->map(function ($stop) {
+            return "{$stop->stop_lat},{$stop->stop_lng}";
+        })->implode('|');
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        if ($waypoints) {
+            $url .= "&waypoints=optimize:true|{$waypoints}";
+        }
         $response = Http::get($url);
         if ($response->successful()) {
             $data = $response->json();
@@ -562,7 +570,14 @@ class TripController extends Controller
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $stops = Tripstop::where('trip_id', $trip->id)->get();
+        $waypoints = $stops->map(function ($stop) {
+            return "{$stop->stop_lat},{$stop->stop_lng}";
+        })->implode('|');
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        if ($waypoints) {
+            $url .= "&waypoints=optimize:true|{$waypoints}";
+        }
         $response = Http::get($url);
         if ($response->successful()) {
             $data = $response->json();
