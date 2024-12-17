@@ -53,6 +53,7 @@
     crossorigin="anonymous"></script> -->
   <script src="{{asset('assets/chartjs.min.js')}}"></script>
   <script src="{{asset('assets/js/script.js')}}"></script>
+ 
   <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
@@ -261,6 +262,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+  @yield('scripts')
   <script>
     new DataTable('#example');
   </script>

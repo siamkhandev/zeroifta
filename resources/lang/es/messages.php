@@ -106,6 +106,13 @@ return [
     "Cancel Subscription"=>"Cancelar suscripcion",
     "Press cancel button to cancel your subscription. You will no longer be charged after cancellation."=>"Presione el boton de cancelar para cancelar su suscripcion. No se le cobrara despues de la cancelacion.",
     "Purchase"=>"Comprar",
+    "Vehicle ID"=>"ID de vehiculo",
+    "VIN"=>"VIN",
+    "Vehicle Model"=>"Modelo de vehiculo",
+    "Vehicle Make"=>"Fabricante de vehiculo",
+    "Vehicle Year"=>"Año de vehiculo",
+    "Fuel Type"=>"Tipo de combustible",
+    "Secondary Fuel Tank Capacity"=>"Capacidad de tanque de combustible secundario",
 
 
 ];

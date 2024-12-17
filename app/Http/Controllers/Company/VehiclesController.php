@@ -23,12 +23,20 @@ class VehiclesController extends Controller
     public function store(Request $request)
 
     {
+        
         $data = $request->validate([
-            'vehicle_type' => 'required',
-            'vehicle_number' => 'required',
+            'vehicle_id'=>'required',
+            "vin"=>'required',
+            "year"=>'required',
+            "truck_make"=>'required',
+            "vehicle_model"=>'required',
+            "fuel_type"=>'required',
+            "license_state"=>'required',
+            "license_number"=>'required',
+           
             'odometer_reading' => 'required',
             'mpg' => 'required',
-           'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
+            'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
         $vehicle = new Vehicle();
@@ -38,6 +46,15 @@ class VehiclesController extends Controller
         $vehicle->company_id = Auth::id();
         $vehicle->mpg= $request->mpg;
         $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
+        $vehicle->vehicle_id = $request->vehicle_id;
+        $vehicle->vin = $request->vin;
+        $vehicle->model = $request->vehicle_model;
+        $vehicle->make = $request->truck_make;
+        $vehicle->make_year = $request->year;
+        $vehicle->fuel_type = $request->fuel_type;
+        $vehicle->license = $request->license_state;
+        $vehicle->license_plate_number = $request->license_number;
+        $vehicle->secondary_tank_capacity= $request->secondary_fuel_tank_capacity;
         if($request->hasFile('image')){
             $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('vehicles'), $imageName);

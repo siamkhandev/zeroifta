@@ -116,4 +116,11 @@ return [
     "Cancel Subscription"=>"Cancel Subscription",
     "Press cancel button to cancel your subscription. You will no longer be charged after cancellation."=>"Press cancel button to cancel your subscription. You will no longer be charged after cancellation.",
     "Purchase"=>"Purchase",
+    "Vehicle ID"=>"Vehicle ID",
+    "VIN"=>"VIN",
+    "Vehicle Model"=>"Vehicle Model",
+    "Vehicle Make"=>"Vehicle Make",
+    "Vehicle Year"=>"Vehicle Year",
+    "Fuel Type"=>"Fuel Type",
+"Secondary Fuel Tank Capacity"=>"Secondary Fuel Tank Capacity",
 ];
