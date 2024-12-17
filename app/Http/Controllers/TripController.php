@@ -576,7 +576,7 @@ class TripController extends Controller
                 return "{$stop->stop_lat},{$stop->stop_lng}";
             })->implode('|');
         }
-        
+        dd($waypoints);
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
         if ($waypoints) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
