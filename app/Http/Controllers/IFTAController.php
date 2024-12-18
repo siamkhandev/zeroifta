@@ -360,7 +360,7 @@ class IFTAController extends Controller
 
         // Fetch data from Google Maps API
         $response = Http::get($url);
-
+        dd($response);
         if ($response->successful()) {
             $data = $response->json();
             $route = $data['routes'][0];
