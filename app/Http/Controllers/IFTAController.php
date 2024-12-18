@@ -340,7 +340,7 @@ class IFTAController extends Controller
             return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
         }
         $validatedData['status']='active';
-        $vehicle_id = DriverVehicle::where('user_id', $validatedData['user_id'])->first();
+        $vehicle_id = DriverVehicle::where('driver_id', $validatedData['user_id'])->first();
         if ($vehicle_id) {
             $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
         }
