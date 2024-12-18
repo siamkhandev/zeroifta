@@ -363,7 +363,7 @@ class IFTAController extends Controller
        
         if ($response->successful()) {
             $data = $response->json();
-            dd($data);
+           if($data['routes'] && $data['routes'][0]){
             $route = $data['routes'][0];
 
             $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
@@ -439,11 +439,15 @@ class IFTAController extends Controller
                 ]);
             }
 
+           
+           }else{
             return response()->json([
                 'status' => 404,
                 'message' => 'No route found.',
                 'data'=>(object)[]
             ], 404);
+           }
+            
         }
 
         return response()->json([
