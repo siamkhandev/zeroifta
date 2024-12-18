@@ -367,12 +367,12 @@ public function getDecodedPolyline(Request $request)
         $response = Http::get($url);
 
         if (!$response->successful()) {
-            throw new Exception('Failed to fetch data from Google Maps API.');
+            return response()->json(['status'=>500,'message'=>"no route found",'data'=>[]]);
         }
 
         $data = $response->json();
         if (empty($data['routes'][0])) {
-            throw new Exception('No routes found.');
+            return response()->json(['status'=>404,'message'=>"no route found",'data'=>[]]);
         }
 
         $route = $data['routes'][0];
@@ -422,18 +422,18 @@ public function getDecodedPolyline(Request $request)
         if ($vehicle && $vehicle->vehicle_image) {
             $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
         }
-
+        $responseData=[
+            'trip_id' => $trip->id,
+            'trip' => $trip,
+            'fuel_stations' => $result,
+            'polyline' => $decodedPolyline,
+            'encoded_polyline' => $encodedPolyline,
+            'vehicle' => $vehicle
+        ];
         return response()->json([
             'status' => 200,
             'message' => 'Fuel stations fetched successfully.',
-            'data' => [
-                'trip_id' => $trip->id,
-                'trip' => $trip,
-                'fuel_stations' => $result,
-                'polyline' => $decodedPolyline,
-                'encoded_polyline' => $encodedPolyline,
-                'vehicle' => $vehicle
-            ],
+            'data' => $responseData
         ]);
 
     } catch (Exception $e) {
@@ -441,6 +441,7 @@ public function getDecodedPolyline(Request $request)
         return response()->json([
             'status' => 500,
             'message' => $e->getMessage(),
+            'data'=>(object)[]
         ]);
     }
 }
