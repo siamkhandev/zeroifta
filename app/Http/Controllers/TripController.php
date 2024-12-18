@@ -618,7 +618,9 @@ class TripController extends Controller
                     $ftpData = $this->loadAndParseFTPData();
                     $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                     $currentTrip = Trip::where('id', $trip->id)->first();
-                    $findVehicle = Vehicle::where('id', $currentTrip->vehicle_id)->first();
+                    $vehicle_id = DriverVehicle::where('user_id', $currentTrip->user_id)->first();
+
+                    $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
                     $truckMpg = $findVehicle->mpg;
                     $currentFuel = $findVehicle->fuel_left;
                     $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
