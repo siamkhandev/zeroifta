@@ -56,6 +56,10 @@ class DriverDashboardController extends Controller
 
             return [
                 'id' => $trip->id,
+                'start_lat'=>$trip->start_lat,
+                'start_lng'=>$trip->start_lng,
+                'end_lat'=>$trip->end_lat,
+                'end_lng'=>$trip->end_lng,
                 'user_id' => $trip->user_id,
                 'pickup' => $addresses[$pickupKey] ?? 'Unknown Location',
                 'dropoff' => $addresses[$dropoffKey] ?? 'Unknown Location',
