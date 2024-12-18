@@ -230,90 +230,99 @@ class IFTAController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
-            $route = $data['routes'][0];
+            if($data['routes'] && $data['routes'][0]){
+                $route = $data['routes'][0];
 
-            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
-            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+                $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+                $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
 
-            // Format distance (e.g., "100 miles")
-            if ($distanceText) {
-                $distanceParts = explode(' ', $distanceText);
-                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
-            }
-
-            // Format duration (e.g., "2 hr 20 min")
-            if ($durationText) {
-                $durationParts = explode(' ', $durationText);
-                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
-                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
-                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
-            }
-            if (isset($data['routes'][0]['overview_polyline']['points'])) {
-                $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
-                $decodedPolyline = $this->decodePolyline($encodedPolyline);
-                $ftpData = $this->loadAndParseFTPData();
-
-                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
-                $trip = Trip::find($request->trip_id);
-                foreach ($result as  $value) {
-                    $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
-                    $fuelStation->name = $value['fuel_station_name'];
-                    $fuelStation->latitude = $value['ftp_lat'];
-                    $fuelStation->longitude = $value['ftp_lng'];
-                    $fuelStation->price = $value['price'];
-                    $fuelStation->lastprice = $value['lastprice'];
-                    $fuelStation->discount = $value['discount'];
-                    $fuelStation->ifta_tax = $value['IFTA_tax'];
-                    $fuelStation->is_optimal = $value['is_optimal'];
-                    $fuelStation->address = $value['address'];
-                    $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
-                    $fuelStation->trip_id = $trip->id;
-                    $fuelStation->user_id = $trip->user_id;
-                    $fuelStation->update();
+                // Format distance (e.g., "100 miles")
+                if ($distanceText) {
+                    $distanceParts = explode(' ', $distanceText);
+                    $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
                 }
 
-                $trip->distance = $formattedDistance;
-                $trip->duration = $formattedDuration;
-                $stops = Tripstop::where('trip_id', $trip->id)->get();
-                $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
-                if($driverVehicle){
-                    $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
-                    $vehicle->update([
-                        'fuel_left'=> $currentFuel,
-                    ]);
-                    if($vehicle && $vehicle->vehicle_image != null){
-                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                // Format duration (e.g., "2 hr 20 min")
+                if ($durationText) {
+                    $durationParts = explode(' ', $durationText);
+                    $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                    $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                    $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+                }
+                if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                    $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                    $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                    $ftpData = $this->loadAndParseFTPData();
+
+                    $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                    $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                    $trip = Trip::find($request->trip_id);
+                    foreach ($result as  $value) {
+                        $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
+                        $fuelStation->name = $value['fuel_station_name'];
+                        $fuelStation->latitude = $value['ftp_lat'];
+                        $fuelStation->longitude = $value['ftp_lng'];
+                        $fuelStation->price = $value['price'];
+                        $fuelStation->lastprice = $value['lastprice'];
+                        $fuelStation->discount = $value['discount'];
+                        $fuelStation->ifta_tax = $value['IFTA_tax'];
+                        $fuelStation->is_optimal = $value['is_optimal'];
+                        $fuelStation->address = $value['address'];
+                        $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
+                        $fuelStation->trip_id = $trip->id;
+                        $fuelStation->user_id = $trip->user_id;
+                        $fuelStation->update();
                     }
-                }else{
 
-                    $vehicle=null;
+                    $trip->distance = $formattedDistance;
+                    $trip->duration = $formattedDuration;
+                    $stops = Tripstop::where('trip_id', $trip->id)->get();
+                    $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
+                    if($driverVehicle){
+                        $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+                        $vehicle->update([
+                            'fuel_left'=> $currentFuel,
+                        ]);
+                        if($vehicle && $vehicle->vehicle_image != null){
+                            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                        }
+                    }else{
+
+                        $vehicle=null;
+                    }
+
+
+                    // Create a separate key for the polyline
+                    $responseData = [
+                        'trip_id' => $request->trip_id,
+                        'trip' => $trip,
+                        'fuel_stations' => $result, // Fuel stations with optimal station marked
+                        'polyline' => $decodedPolyline,
+                        'encoded_polyline'=>$encodedPolyline,
+                        'stops' => $stops,
+                        'vehicle' => $vehicle
+                    ];
+
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'Fuel stations fetched successfully.',
+                        'data' => $responseData,
+                    ]);
                 }
-
-
-                // Create a separate key for the polyline
-                $responseData = [
-                    'trip_id' => $request->trip_id,
-                    'trip' => $trip,
-                    'fuel_stations' => $result, // Fuel stations with optimal station marked
-                    'polyline' => $decodedPolyline,
-                    'encoded_polyline'=>$encodedPolyline,
-                    'stops' => $stops,
-                    'vehicle' => $vehicle
-                ];
 
                 return response()->json([
-                    'status' => 200,
-                    'message' => 'Fuel stations fetched successfully.',
-                    'data' => $responseData,
+                    'status' => 404,
+                    'message' => 'No route found.',
+                    'data'=>(object)[]
+                ], 404);
+            }else{
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Failed to fetch data from Google Maps API.',
+                    'data'=>(object)[]
                 ]);
             }
 
-            return response()->json([
-                'status' => 404,
-                'message' => 'No route found.',
-                'data'=>(object)[]
-            ], 404);
         }
 
         return response()->json([
@@ -442,10 +451,10 @@ class IFTAController extends Controller
            
            }else{
             return response()->json([
-                'status' => 404,
-                'message' => 'No route found.',
+                'status' => 500,
+                'message' => 'Failed to fetch data from Google Maps API.',
                 'data'=>(object)[]
-            ], 404);
+            ]);
            }
             
         }
