@@ -7,10 +7,8 @@ use App\Models\FuelStation;
 use App\Models\Trip;
 use App\Models\Tripstop;
 use App\Models\Vehicle;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -333,118 +331,139 @@ class IFTAController extends Controller
             'data'=>(object)[]
         ]);
 }
-public function getDecodedPolyline(Request $request)
-{
-    $validatedData = $request->validate([
-        'user_id'   => 'required|exists:users,id',
-        'start_lat' => 'required',
-        'start_lng' => 'required',
-        'end_lat'   => 'required',
-        'end_lng'   => 'required',
-        'truck_mpg' => 'required',
-        'fuel_tank_capacity' => 'required',
-        'total_gallons_present' => 'required',
-    ]);
+    public function getDecodedPolyline(Request $request)
+    {
+        $validatedData =$request->validate([
+            'user_id'   => 'required|exists:users,id',
+            'start_lat' => 'required',
+            'start_lng' => 'required',
+            'end_lat' => 'required',
+            'end_lng' => 'required',
+            'truck_mpg' => 'required',
+            'fuel_tank_capacity' => 'required',
+            'total_gallons_present' => 'required',
+        ]);
+        $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
 
-    $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
-    if ($findTrip) {
-        return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
-    }
+        if ($findTrip) {
+            return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
+        }
+        $validatedData['status']='active';
+        $vehicle_id = DriverVehicle::where('driver_id', $validatedData['user_id'])->first();
+        if ($vehicle_id) {
+            $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
+        }
 
-    $validatedData['status'] = 'active';
-    $vehicle_id = DriverVehicle::where('driver_id', $validatedData['user_id'])->first();
-    if ($vehicle_id) {
-        $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
-    }
-
-    DB::beginTransaction();
-    try {
         $trip = Trip::create($validatedData);
 
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$request->start_lat},{$request->start_lng}&destination={$request->end_lat},{$request->end_lng}&key={$apiKey}";
+        $startLat = $request->start_lat;
+        $startLng = $request->start_lng;
+        $endLat = $request->end_lat;
+        $endLng = $request->end_lng;
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
+        // Replace with your Google API key
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
 
+        // Fetch data from Google Maps API
         $response = Http::get($url);
+       
+        if ($response->successful()) {
+            $data = $response->json();
+           if($data['routes'] && $data['routes'][0]){
+            $route = $data['routes'][0];
 
-        if (!$response->successful()) {
-            return response()->json(['status'=>500,'message'=>"no route found",'data'=>[]]);
-        }
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
 
-        $data = $response->json();
-        if (empty($data['routes'][0])) {
-            return response()->json(['status'=>404,'message'=>"no route found",'data'=>[]]);
-        }
+            // Format distance (e.g., "100 miles")
+            if ($distanceText) {
+                $distanceParts = explode(' ', $distanceText);
+                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
+            }
 
-        $route = $data['routes'][0];
-        $distanceText = $route['legs'][0]['distance']['text'] ?? null;
-        $durationText = $route['legs'][0]['duration']['text'] ?? null;
+            // Format duration (e.g., "2 hr 20 min")
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
 
-        $formattedDistance = $distanceText ? explode(' ', $distanceText)[0] . ' miles' : null;
-        $formattedDuration = $durationText ? $durationText : null;
+            }
 
-        $encodedPolyline = $route['overview_polyline']['points'] ?? null;
-        if (!$encodedPolyline) {
-            throw new Exception('Polyline encoding not found.');
-        }
+            if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                $ftpData = $this->loadAndParseFTPData();
 
-        $decodedPolyline = $this->decodePolyline($encodedPolyline);
-        $ftpData = $this->loadAndParseFTPData();
-        $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+               foreach ($result as  $value) {
+                   $fuelStation = new FuelStation();
+                   $fuelStation->name = $value['fuel_station_name'];
+                   $fuelStation->latitude = $value['ftp_lat'];
+                   $fuelStation->longitude = $value['ftp_lng'];
+                   $fuelStation->price = $value['price'];
+                   $fuelStation->lastprice = $value['lastprice'];
+                   $fuelStation->discount = $value['discount'];
+                   $fuelStation->ifta_tax = $value['IFTA_tax'];
+                   $fuelStation->is_optimal = $value['is_optimal'];
+                   $fuelStation->address = $value['address'];
+                   $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
+                   $fuelStation->trip_id = $trip->id;
+                   $fuelStation->user_id = $request->user_id;
+                   $fuelStation->save();
+               }
+                $trip->distance = $formattedDistance;
+                $trip->duration = $formattedDuration;
+                $trip->user_id = (int)$trip->user_id;
+                $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+                if($vehicleFind){
+                    $vehicle = Vehicle::where('id', $vehicleFind)->first();
+                    if($vehicle && $vehicle->vehicle_image != null){
+                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                    }
+                }else{
+                    $vehicle = null;
+                }
 
-        $result = $this->findOptimalFuelStation(
-            $request->start_lat, $request->start_lng, $request->truck_mpg, $request->total_gallons_present, 
-            $matchingRecords, $request->end_lat, $request->end_lng
-        );
 
-        foreach ($result as $value) {
-            FuelStation::create([
-                'name' => $value['fuel_station_name'],
-                'latitude' => $value['ftp_lat'],
-                'longitude' => $value['ftp_lng'],
-                'price' => $value['price'],
-                'lastprice' => $value['lastprice'],
-                'discount' => $value['discount'],
-                'ifta_tax' => $value['IFTA_tax'],
-                'is_optimal' => $value['is_optimal'],
-                'address' => $value['address'],
-                'gallons_to_buy' => $value['gallons_to_buy'],
-                'trip_id' => $trip->id,
-                'user_id' => $request->user_id
+
+                $responseData = [
+                    'trip_id'=>$trip->id,
+                    'trip' => $trip,
+                    'fuel_stations' => $result,
+                    'polyline' => $decodedPolyline,
+                    'encoded_polyline'=>$encodedPolyline,
+                    'stops'=>[],
+                    'vehicle' => $vehicle
+                ];
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Fuel stations fetched successfully.',
+                    'data' => $responseData,
+                ]);
+            }
+
+           
+           }else{
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to fetch data from Google Maps API.',
+                'data'=>(object)[]
             ]);
+           }
+            
         }
 
-        $trip->update(['distance' => $formattedDistance, 'duration' => $formattedDuration]);
-
-        DB::commit();
-
-        $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
-        $vehicle = $vehicleFind ? Vehicle::find($vehicleFind) : null;
-        if ($vehicle && $vehicle->vehicle_image) {
-            $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
-        }
-        $responseData=[
-            'trip_id' => $trip->id,
-            'trip' => $trip,
-            'fuel_stations' => $result,
-            'polyline' => $decodedPolyline,
-            'encoded_polyline' => $encodedPolyline,
-            'vehicle' => $vehicle
-        ];
         return response()->json([
-            'status' => 200,
-            'message' => 'Fuel stations fetched successfully.',
-            'data' => $responseData
-        ]);
-
-    } catch (Exception $e) {
-        DB::rollBack();
-        return response()->json([
-            'status' => 500,
-            'message' => $e->getMessage(),
-            'data'=>(object)[]
-        ]);
+            'status' => false,
+            'message' => 'Failed to fetch polyline.',
+        ], 500);
     }
-}
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
     {
         $optimalStation = collect($fuelStations)->sortBy('price')->first();
