@@ -359,6 +359,31 @@ class TripController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                $ftpData = $this->loadAndParseFTPData();
+                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                $currentTrip = Trip::where('id', $trip->id)->first();
+                $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
+
+                $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
+                $truckMpg = $findVehicle->mpg;
+                $currentFuel = $findVehicle->fuel_left;
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                foreach ($result as  $value) {
+                    $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
+                    $fuelStation->name = $value['fuel_station_name'];
+                    $fuelStation->latitude = $value['ftp_lat'];
+                    $fuelStation->longitude = $value['ftp_lng'];
+                    $fuelStation->price = $value['price'];
+                    $fuelStation->lastprice = $value['lastprice'];
+                    $fuelStation->discount = $value['discount'];
+                    $fuelStation->ifta_tax = $value['IFTA_tax'];
+                    $fuelStation->is_optimal = $value['is_optimal'];
+                    $fuelStation->address = $value['address'];
+                    $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
+                    $fuelStation->trip_id = $trip->id;
+                    $fuelStation->user_id = $trip->user_id;
+                    $fuelStation->update();
+                }
             }
         }
         $stops = Tripstop::where('trip_id', $trip->id)->get();
@@ -380,7 +405,7 @@ class TripController extends Controller
             $response = [
                 'trip_id' => $trip->id,
                 'trip' => $trip,
-                'fuel_stations' => $fuelStations,
+                'fuel_stations' => $result,
                 'polyline' => $decodedPolyline,
                 'encoded_polyline'=>$encodedPolyline,
                 'stops' => $stops,
