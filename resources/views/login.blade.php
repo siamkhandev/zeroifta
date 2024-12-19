@@ -71,7 +71,7 @@
                 @csrf
                 <div class="log_input mb-3">
                     <label for="email" class="pb-1">Email</label>
-                    <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email"  value="{{ session('remember_email') ?? old('email') required autocomplete="email" autofocus />
+                    <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email"  value="{{ session('remember_email') ?? old('email') }}" required autocomplete="email" autofocus />
                 </div>
                 @error('email')
                 <span class="invalid-feedback" role="alert" style="display: block;">
