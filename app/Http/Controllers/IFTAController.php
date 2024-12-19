@@ -429,7 +429,7 @@ public function getDecodedPolyline(Request $request)
 
 private function fetchGoogleMapsData($startLat, $startLng, $endLat, $endLng)
 {
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
+    $apiKey = "AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg";
     $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
 
     $response = Http::get($url);
