@@ -71,7 +71,7 @@
                 @csrf
                 <div class="log_input mb-3">
                     <label for="email" class="pb-1">Email</label>
-                    <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email"  value="{{ session('remember_email') ?? old('email') }}" required autocomplete="email" autofocus />
+                    <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email"  value="{{ old('email') }}" required autocomplete="email" autofocus />
                 </div>
                 @error('email')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -81,7 +81,7 @@
 
             <div class="log_input mb-3 pass-input">
                     <label for="password" class="pb-1">Password</label>
-                    <input type="password" class="form-control login-input @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="current-password" placeholder="Type Password"  value="{{ session('remember_password') }}"/>
+                    <input type="password" class="form-control login-input @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="current-password" placeholder="Type Password"  />
 
                     <!-- Password Icon -->
                     <div class="show-pass" onclick="togglePassword()">
@@ -103,7 +103,7 @@
   <div class="re-fog">
     <div class="form-group">
       <label for="remember-me" class="text-info">
-        <input id="remember-me" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} {{ request()->cookie('remember_email') ? 'checked' : '' }}/>
+        <input id="remember-me" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}/>
         <span class="rf-text">Remember Me</span>
       </label>
     </div>
