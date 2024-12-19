@@ -406,37 +406,35 @@ class IFTAController extends Controller
 
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
-                $fuelStations = [];
                foreach ($result as  $value) {
-                    $fuelStations[] = [
-                        'name' => $value['fuel_station_name'],
-                        'latitude' => $value['ftp_lat'],
-                        'longitude' => $value['ftp_lng'],
-                        'price' => $value['price'],
-                        'lastprice' => $value['lastprice'],
-                        'discount' => $value['discount'],
-                        'ifta_tax' => $value['IFTA_tax'],
-                        'is_optimal' => $value['is_optimal'],
-                        'address' => $value['address'],
-                        'gallons_to_buy' => $value['gallons_to_buy'],
-                        'trip_id' => $trip->id,
-                        'user_id' => $validatedData['user_id'],
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
+                   $fuelStation = new FuelStation();
+                   $fuelStation->name = $value['fuel_station_name'];
+                   $fuelStation->latitude = $value['ftp_lat'];
+                   $fuelStation->longitude = $value['ftp_lng'];
+                   $fuelStation->price = $value['price'];
+                   $fuelStation->lastprice = $value['lastprice'];
+                   $fuelStation->discount = $value['discount'];
+                   $fuelStation->ifta_tax = $value['IFTA_tax'];
+                   $fuelStation->is_optimal = $value['is_optimal'];
+                   $fuelStation->address = $value['address'];
+                   $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
+                   $fuelStation->trip_id = $trip->id;
+                   $fuelStation->user_id = $request->user_id;
+                   $fuelStation->save();
                }
-               FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
                 $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
-                $vehicle = null;
-                if ($vehicleFind) {
-                    $vehicle = Vehicle::select('vehicle_image')->find($vehicleFind);
-                    if ($vehicle && $vehicle->vehicle_image) {
-                        $vehicle->vehicle_image = asset('vehicles/' . $vehicle->vehicle_image);
+                if($vehicleFind){
+                    $vehicle = Vehicle::where('id', $vehicleFind)->first();
+                    if($vehicle && $vehicle->vehicle_image != null){
+                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
                     }
+                }else{
+                    $vehicle = null;
                 }
+
 
 
                 $responseData = [
