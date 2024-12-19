@@ -362,7 +362,7 @@ class IFTAController extends Controller
             $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
         }
 
-        $trip = Trip::create($validatedData);
+
 
         $startLat = $request->start_lat;
         $startLng = $request->start_lng;
@@ -381,6 +381,7 @@ class IFTAController extends Controller
         if ($response->successful()) {
             $data = $response->json();
            if($data['routes'] && $data['routes'][0]){
+            $trip = Trip::create($validatedData);
             $route = $data['routes'][0];
 
             $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
