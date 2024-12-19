@@ -9,6 +9,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -34,6 +35,13 @@ class AdminController extends Controller
 
         ]);
         $remember = $request->has('remember');
+        if ($request->has('remember_me')) {
+            Cookie::queue('remember_email', $request->email, 60 * 24 * 30); // 30 days
+            Cookie::queue('remember_password', $request->password, 60 * 24 * 30); // 30 days
+        } else {
+            Cookie::queue(Cookie::forget('remember_email'));
+            Cookie::queue(Cookie::forget('remember_password'));
+        }
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password],$remember)){
             if(Auth::user()->role=='driver'){
                 Auth::logout();

@@ -103,7 +103,7 @@
   <div class="re-fog">
     <div class="form-group">
       <label for="remember-me" class="text-info">
-        <input id="remember-me" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
+        <input id="remember-me" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} {{ request()->cookie('remember_email') ? 'checked' : '' }}/>
         <span class="rf-text">Remember Me</span>
       </label>
     </div>
