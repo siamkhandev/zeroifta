@@ -23,7 +23,7 @@ class VehiclesController extends Controller
     public function store(Request $request)
 
     {
-        
+
         $data = $request->validate([
             'vehicle_id'=>'required',
             "vin"=>'required',
@@ -33,7 +33,7 @@ class VehiclesController extends Controller
             "fuel_type"=>'required',
             "license_state"=>'required',
             "license_number"=>'required',
-           
+
             'odometer_reading' => 'required',
             'mpg' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
@@ -71,10 +71,18 @@ class VehiclesController extends Controller
     public function update(Request $request,$id)
     {
         $data = $request->validate([
-            'vehicle_type' => 'required',
-            'vehicle_number' => 'required',
+            'vehicle_id'=>'required',
+            "vin"=>'required',
+            "year"=>'required',
+            "truck_make"=>'required',
+            "vehicle_model"=>'required',
+            "fuel_type"=>'required',
+            "license_state"=>'required',
+            "license_number"=>'required',
+
             'odometer_reading' => 'required',
             'mpg' => 'required',
+            'image' => 'mimes:jpeg,png,jpg,gif|max:1024',
 
 
         ]);
