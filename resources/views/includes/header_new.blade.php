@@ -1,65 +1,83 @@
 <div class="">
   <div class="header-main">
     <div>
-      <div class="head-left">
-        <div class="bread_crum">
-          @if(Request::is('/'))
-          <span class="bc-text">Pages / Dashboard</span>
-          <h1 class="head-1">Main Dashboard</h1>
-          @elseif(Request::is('fleet'))
-          <span class="bc-text">Pages / Fleet Management</span>
-          <h1 class="head-1">Fleet Management</h1>
-          @elseif(Request::is('profile'))
-          <span class="bc-text">Pages / Profile Management</span>
-          <h1 class="head-1">Profile Management</h1>
 
-          @elseif(Request::is('vehicles*'))
-          <span class="bc-text">Pages / Vehicles</span>
-          <h1 class="head-1">Manage Vehicles</h1>
-          @elseif(Request::is('vehicle/create'))
-          <span class="bc-text">Pages / Vehicles</span>
-          <h1 class="head-1">Create Vehicles</h1>
-          @elseif(Request::is('drivers/all'))
-          <span class="bc-text">Pages / Drivers</span>
-          <h1 class="head-1">Manage Drivers</h1>
-          @elseif(Request::is('driver/vehicles*'))
-          <span class="bc-text">Pages / Driver Vehicles</span>
-          <h1 class="head-1">Manage Driver Vehicles</h1>
-          @elseif(Request::is('subscribe'))
-          <span class="bc-text">Pages / Subscribe</span>
-          <h1 class="head-1">Subscriptions</h1>
-          @elseif(Request::is('company.contactus'))
-          <span class="bc-text">Pages / Contact Us</span>
-          <h1 class="head-1">Contact Us</h1>
-          @elseif(Request::is('allvehicles'))
-          <span class="bc-text">Pages / All Vehicles</span>
-          <h1 class="head-1">All Vehicles</h1>
-          @elseif(Request::is('fuel_taxes*'))
-          <span class="bc-text">Pages / Fuel Taxes</span>
-          <h1 class="head-1">Fuel Taxes</h1>
-          @elseif(Request::is('payments*'))
-          <span class="bc-text">Pages / Payments</span>
-          <h1 class="head-1">Payments</h1>
-          @elseif(Request::is('companies*'))
-          <span class="bc-text">Pages / Companies</span>
-          <h1 class="head-1">Companies</h1>
-          @elseif(Request::is('plans*'))
-          <span class="bc-text">Pages / Subscriptions</span>
-          <h1 class="head-1">Subscriptions</h1>
-          @elseif(Request::is('contactus/all*'))
-          <span class="bc-text">Pages / Contact Forms</span>
-          <h1 class="head-1">Contact Forms</h1>
-          @elseif(Request::is('company/contactus/all'))
-          <span class="bc-text">Pages / Contact Us</span>
-          <h1 class="head-1">Contact Us</h1>
-          @elseif(Request::is('drivers/create'))
-          <span class="bc-text">Pages / Create Driver</span>
-          <h1 class="head-1">Create Driver</h1>
+    <div class="head-left">
+    <div class="bread_crum">
+        @php
+            $currentSegment = Request::segment(2); // Adjust segment index based on your route structure
+        @endphp
 
-          @else
-          @endif
-        </div>
-      </div>
+        @if($currentSegment == '')
+        <span class="bc-text">Pages / Dashboard</span>
+        <h1 class="head-1">Main Dashboard</h1>
+
+        @elseif($currentSegment == 'fleet')
+        <span class="bc-text">Pages / Fleet Management</span>
+        <h1 class="head-1">Fleet Management</h1>
+
+        @elseif($currentSegment == 'profile')
+        <span class="bc-text">Pages / Profile Management</span>
+        <h1 class="head-1">Profile Management</h1>
+
+        @elseif(str_contains($currentSegment, 'vehicles'))
+        <span class="bc-text">Pages / Vehicles</span>
+        <h1 class="head-1">Manage Vehicles</h1>
+
+        @elseif($currentSegment == 'vehicle' && Request::segment(3) == 'create')
+        <span class="bc-text">Pages / Vehicles</span>
+        <h1 class="head-1">Create Vehicles</h1>
+
+        @elseif($currentSegment == 'drivers' && Request::segment(3) == 'all')
+        <span class="bc-text">Pages / Drivers</span>
+        <h1 class="head-1">Manage Drivers</h1>
+
+        @elseif(str_contains($currentSegment, 'driver/vehicles'))
+        <span class="bc-text">Pages / Driver Vehicles</span>
+        <h1 class="head-1">Manage Driver Vehicles</h1>
+
+        @elseif($currentSegment == 'subscribe')
+        <span class="bc-text">Pages / Subscribe</span>
+        <h1 class="head-1">Subscriptions</h1>
+
+        @elseif($currentSegment == 'company.contactus')
+        <span class="bc-text">Pages / Contact Us</span>
+        <h1 class="head-1">Contact Us</h1>
+
+        @elseif($currentSegment == 'allvehicles')
+        <span class="bc-text">Pages / All Vehicles</span>
+        <h1 class="head-1">All Vehicles</h1>
+
+        @elseif(str_contains($currentSegment, 'fuel_taxes'))
+        <span class="bc-text">Pages / Fuel Taxes</span>
+        <h1 class="head-1">Fuel Taxes</h1>
+
+        @elseif(str_contains($currentSegment, 'payments'))
+        <span class="bc-text">Pages / Payments</span>
+        <h1 class="head-1">Payments</h1>
+
+        @elseif(str_contains($currentSegment, 'companies'))
+        <span class="bc-text">Pages / Companies</span>
+        <h1 class="head-1">Companies</h1>
+
+        @elseif(str_contains($currentSegment, 'plans'))
+        <span class="bc-text">Pages / Subscriptions</span>
+        <h1 class="head-1">Subscriptions</h1>
+
+        @elseif(str_contains($currentSegment, 'contactus/all'))
+        <span class="bc-text">Pages / Contact Forms</span>
+        <h1 class="head-1">Contact Forms</h1>
+
+        @elseif(str_contains($currentSegment, 'drivers/create'))
+        <span class="bc-text">Pages / Create Driver</span>
+        <h1 class="head-1">Create Driver</h1>
+
+        @else
+        <!-- Default case -->
+        @endif
+    </div>
+</div>
+
     </div>
     <div class="right-opts">
 
