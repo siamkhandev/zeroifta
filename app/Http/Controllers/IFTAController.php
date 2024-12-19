@@ -550,85 +550,82 @@ class IFTAController extends Controller
     }
 
     private function loadAndParseFTPData()
-{
-    $filePath = 'EFSLLCpricing';
+    {
+        $filePath = 'EFSLLCpricing';
 
-    // Connect to the FTP disk
-    $ftpDisk = Storage::disk('ftp');
-    if (!$ftpDisk->exists($filePath)) {
-        throw new \Exception("FTP file not found.");
-    }
-
-    // Stream the file content
-    $stream = $ftpDisk->readStream($filePath);
-    if (!$stream) {
-        throw new \Exception("Failed to open FTP file stream.");
-    }
-
-    $parsedData = [];
-    $lineNumber = 0;
-
-    // Read the file line by line
-    while (($line = fgets($stream)) !== false) {
-        $lineNumber++;
-        $row = explode('|', trim($line));
-
-        // Ensure the line has sufficient columns
-        if (isset($row[8], $row[9])) {
-            $lat = number_format((float) trim($row[8]), 4);
-            $lng = number_format((float) trim($row[9]), 4);
-
-            // Create a composite key to avoid nested array structure
-            $compositeKey = "{$lat},{$lng}";
-
-            $parsedData[$compositeKey] = [
-                'fuel_station_name' => $row[1] ?? 'N/A',
-                'lastprice' => (float) ($row[10] ?? 0.00),
-                'price' => (float) ($row[11] ?? 0.00),
-                'IFTA_tax' => (float) ($row[18] ?? 0.00),
-                'address' => $row[3] ?? 'N/A',
-                'discount' => (float) ($row[12] ?? 0.00),
-            ];
+        // Connect to the FTP disk
+        $ftpDisk = Storage::disk('ftp');
+        if (!$ftpDisk->exists($filePath)) {
+            throw new \Exception("FTP file not found.");
         }
+
+        $fileContent = $ftpDisk->get($filePath);
+        $rows = explode("\n", trim($fileContent));
+        $parsedData = [];
+
+        foreach ($rows as $line) {
+            $row = explode('|', $line);
+
+            if (isset($row[8], $row[9])) {
+                $lat = number_format((float) trim($row[8]), 4);
+                $lng = number_format((float) trim($row[9]), 4);
+                $parsedData[$lat][$lng] = [
+                    'fuel_station_name'=>$row[1] ?? 'N/A',
+                    'lastprice' => $row[10] ?? 0.00,
+                    'price' => $row[11] ?? 0.00,
+                    'IFTA_tax'=> $row[18] ?? 0.00,
+                    'address' => $row[3] ?? 'N/A',
+                    'discount' => $row[12] ?? 0.00
+                ];
+            }
+        }
+
+        return $parsedData;
     }
-
-    fclose($stream);
-
-    return $parsedData;
-}
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
     {
         $matchingRecords = [];
+
+        // Flatten FTP data into a single array for faster iteration
+        $flattenedFtpData = [];
+        foreach ($ftpData as $lat2 => $lngData) {
+            foreach ($lngData as $lng2 => $data) {
+                $flattenedFtpData[] = [
+                    'lat' => (float) $lat2,
+                    'lng' => (float) $lng2,
+                    'data' => $data
+                ];
+            }
+        }
 
         // Iterate through decoded polyline points
         foreach ($decodedPolyline as $decoded) {
             $lat1 = $decoded['lat'];
             $lng1 = $decoded['lng'];
 
-            // Compare with FTP data points
-            foreach ($ftpData as $lat2 => $lngData) {
-                foreach ($lngData as $lng2 => $data) {
-                    $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
+            foreach ($flattenedFtpData as $ftpPoint) {
+                $distance = $this->haversineDistance($lat1, $lng1, $ftpPoint['lat'], $ftpPoint['lng']);
 
-                    // Check if within the defined proximity
-                    if ($distance < 500) { // Distance is less than 500 meters
-                        $matchingRecords[] = [
-                            'fuel_station_name'=>(string) $data['fuel_station_name'],
-                            'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
-                            'ftp_lng' => (string) $lng2,
-                            'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
-                            'price' => (float) $data['price'],
-                            'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
-                            'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
-                            'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
-                        ];
-                    }
+                // Check if within the defined proximity
+                if ($distance < 500) { // Distance is less than 500 meters
+                    $data = $ftpPoint['data'];
+                    $matchingRecords[] = [
+                        'fuel_station_name' => (string) $data['fuel_station_name'],
+                        'ftp_lat' => (string) $ftpPoint['lat'], // Ensure lat/lng are strings for consistency
+                        'ftp_lng' => (string) $ftpPoint['lng'],
+                        'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
+                        'price' => (float) $data['price'],
+                        'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
+                        'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
+                        'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
+                    ];
                 }
             }
         }
 
         return array_values($matchingRecords); // Reindex the array for proper JSON formatting
     }
+
 
     private function haversineDistance($lat1, $lng1, $lat2, $lng2)
     {
