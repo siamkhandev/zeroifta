@@ -430,15 +430,13 @@ class IFTAController extends Controller
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
                 $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
-                if($vehicleFind){
-                    $vehicle = Vehicle::where('id', $vehicleFind)->first();
-                    if($vehicle && $vehicle->vehicle_image != null){
-                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                $vehicle = null;
+                if ($vehicleFind) {
+                    $vehicle = Vehicle::select('vehicle_image')->find($vehicleFind);
+                    if ($vehicle && $vehicle->vehicle_image) {
+                        $vehicle->vehicle_image = asset('vehicles/' . $vehicle->vehicle_image);
                     }
-                }else{
-                    $vehicle = null;
                 }
-
 
 
                 $responseData = [
@@ -552,38 +550,52 @@ class IFTAController extends Controller
     }
 
     private function loadAndParseFTPData()
-    {
-        $filePath = 'EFSLLCpricing';
+{
+    $filePath = 'EFSLLCpricing';
 
-        // Connect to the FTP disk
-        $ftpDisk = Storage::disk('ftp');
-        if (!$ftpDisk->exists($filePath)) {
-            throw new \Exception("FTP file not found.");
-        }
-
-        $fileContent = $ftpDisk->get($filePath);
-        $rows = explode("\n", trim($fileContent));
-        $parsedData = [];
-
-        foreach ($rows as $line) {
-            $row = explode('|', $line);
-
-            if (isset($row[8], $row[9])) {
-                $lat = number_format((float) trim($row[8]), 4);
-                $lng = number_format((float) trim($row[9]), 4);
-                $parsedData[$lat][$lng] = [
-                    'fuel_station_name'=>$row[1] ?? 'N/A',
-                    'lastprice' => $row[10] ?? 0.00,
-                    'price' => $row[11] ?? 0.00,
-                    'IFTA_tax'=> $row[18] ?? 0.00,
-                    'address' => $row[3] ?? 'N/A',
-                    'discount' => $row[12] ?? 0.00
-                ];
-            }
-        }
-
-        return $parsedData;
+    // Connect to the FTP disk
+    $ftpDisk = Storage::disk('ftp');
+    if (!$ftpDisk->exists($filePath)) {
+        throw new \Exception("FTP file not found.");
     }
+
+    // Stream the file content
+    $stream = $ftpDisk->readStream($filePath);
+    if (!$stream) {
+        throw new \Exception("Failed to open FTP file stream.");
+    }
+
+    $parsedData = [];
+    $lineNumber = 0;
+
+    // Read the file line by line
+    while (($line = fgets($stream)) !== false) {
+        $lineNumber++;
+        $row = explode('|', trim($line));
+
+        // Ensure the line has sufficient columns
+        if (isset($row[8], $row[9])) {
+            $lat = number_format((float) trim($row[8]), 4);
+            $lng = number_format((float) trim($row[9]), 4);
+
+            // Create a composite key to avoid nested array structure
+            $compositeKey = "{$lat},{$lng}";
+
+            $parsedData[$compositeKey] = [
+                'fuel_station_name' => $row[1] ?? 'N/A',
+                'lastprice' => (float) ($row[10] ?? 0.00),
+                'price' => (float) ($row[11] ?? 0.00),
+                'IFTA_tax' => (float) ($row[18] ?? 0.00),
+                'address' => $row[3] ?? 'N/A',
+                'discount' => (float) ($row[12] ?? 0.00),
+            ];
+        }
+    }
+
+    fclose($stream);
+
+    return $parsedData;
+}
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
     {
         $matchingRecords = [];
