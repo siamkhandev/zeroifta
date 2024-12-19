@@ -31,6 +31,9 @@
           @elseif(Request::is('company.contactus'))
           <span class="bc-text">Pages / Contact Us</span>
           <h1 class="head-1">Contact Us</h1>
+          @elseif(Request::is('allvehicles'))
+          <span class="bc-text">Pages / All Vehicles</span>
+          <h1 class="head-1">All Vehicles</h1>
           @elseif(Request::is('fuel_taxes*'))
           <span class="bc-text">Pages / Fuel Taxes</span>
           <h1 class="head-1">Fuel Taxes</h1>

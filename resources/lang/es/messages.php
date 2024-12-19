@@ -113,6 +113,7 @@ return [
     "Vehicle Year"=>"Año de vehiculo",
     "Fuel Type"=>"Tipo de combustible",
     "Secondary Fuel Tank Capacity"=>"Capacidad de tanque de combustible secundario",
+    "Image"=>"Imagen",
 
 
 ];

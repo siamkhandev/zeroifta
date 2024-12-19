@@ -122,5 +122,6 @@ return [
     "Vehicle Make"=>"Vehicle Make",
     "Vehicle Year"=>"Vehicle Year",
     "Fuel Type"=>"Fuel Type",
-"Secondary Fuel Tank Capacity"=>"Secondary Fuel Tank Capacity",
+    "Secondary Fuel Tank Capacity"=>"Secondary Fuel Tank Capacity",
+    "Image"=>"Image",
 ];
