@@ -124,4 +124,6 @@ return [
     "Fuel Type"=>"Fuel Type",
     "Secondary Fuel Tank Capacity"=>"Secondary Fuel Tank Capacity",
     "Image"=>"Image",
+    "Logout"=>"Logout",
+    "Change Password"=>"Change Password",
 ];
