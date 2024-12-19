@@ -71,7 +71,7 @@
                 @csrf
                 <div class="log_input mb-3">
                     <label for="email" class="pb-1">Email</label>
-                    <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus />
+                    <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email"  value="{{ old('email') ?? request()->cookie('remember_email') }}" required autocomplete="email" autofocus />
                 </div>
                 @error('email')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -79,9 +79,9 @@
                 </span>
                 @enderror
 
-                <div class="log_input mb-3 pass-input">
+            <div class="log_input mb-3 pass-input">
                     <label for="password" class="pb-1">Password</label>
-                    <input type="password" class="form-control login-input @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="current-password" placeholder="Type Password" />
+                    <input type="password" class="form-control login-input @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="current-password" placeholder="Type Password"  value="{{ request()->cookie('remember_password') }}"/>
 
                     <!-- Password Icon -->
                     <div class="show-pass" onclick="togglePassword()">
