@@ -36,11 +36,8 @@ class AdminController extends Controller
         ]);
         $remember = $request->has('remember');
         if ($request->has('remember_me')) {
-            Cookie::queue('remember_email', $request->email, 60 * 24 * 30); // 30 days
-            Cookie::queue('remember_password', $request->password, 60 * 24 * 30); // 30 days
-        } else {
-            Cookie::queue(Cookie::forget('remember_email'));
-            Cookie::queue(Cookie::forget('remember_password'));
+            $request->session()->put('remember_email', $request->email);
+            $request->session()->put('remember_password', $request->password);
         }
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password],$remember)){
             if(Auth::user()->role=='driver'){
@@ -52,10 +49,21 @@ class AdminController extends Controller
             return redirect()->back()->withInput()->withErrors(['email' => 'Invalid Credentials']);
         }
     }
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('login');
+        $remember_email = $request->session()->get('remember_email');
+        $remember_password = $request->session()->get('remember_password');
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Re-store the credentials
+        if ($remember_email && $remember_password) {
+            $request->session()->put('remember_email', $remember_email);
+            $request->session()->put('remember_password', $remember_password);
+        }
+            return redirect('login');
     }
     public function contactUsForms()
     {
