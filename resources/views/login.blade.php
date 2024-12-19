@@ -161,6 +161,39 @@
     }
   }
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const emailField = document.getElementById("email");
+        const passwordField = document.getElementById("password");
+        const rememberCheckbox = document.getElementById("remember");
+
+        // Load saved credentials
+        const savedEmail = localStorage.getItem("remember_email");
+        const savedPassword = localStorage.getItem("remember_password");
+
+        if (savedEmail) {
+            emailField.value = savedEmail;
+        }
+        if (savedPassword) {
+            passwordField.value = savedPassword;
+        }
+        if (savedEmail || savedPassword) {
+            rememberCheckbox.checked = true;
+        }
+
+        // Save credentials on form submit if "Remember Me" is checked
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function () {
+            if (rememberCheckbox.checked) {
+                localStorage.setItem("remember_email", emailField.value);
+                localStorage.setItem("remember_password", passwordField.value);
+            } else {
+                localStorage.removeItem("remember_email");
+                localStorage.removeItem("remember_password");
+            }
+        });
+    });
+</script>
   <!-- Option 2: Separate Popper and Bootstrap JS -->
   <!--
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
