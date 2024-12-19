@@ -361,9 +361,6 @@ class IFTAController extends Controller
         if ($vehicle_id) {
             $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
         }
-
-
-
         $startLat = $request->start_lat;
         $startLng = $request->start_lng;
         $endLat = $request->end_lat;
@@ -410,21 +407,24 @@ class IFTAController extends Controller
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                foreach ($result as  $value) {
-                   $fuelStation = new FuelStation();
-                   $fuelStation->name = $value['fuel_station_name'];
-                   $fuelStation->latitude = $value['ftp_lat'];
-                   $fuelStation->longitude = $value['ftp_lng'];
-                   $fuelStation->price = $value['price'];
-                   $fuelStation->lastprice = $value['lastprice'];
-                   $fuelStation->discount = $value['discount'];
-                   $fuelStation->ifta_tax = $value['IFTA_tax'];
-                   $fuelStation->is_optimal = $value['is_optimal'];
-                   $fuelStation->address = $value['address'];
-                   $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
-                   $fuelStation->trip_id = $trip->id;
-                   $fuelStation->user_id = $request->user_id;
-                   $fuelStation->save();
+                    $fuelStations[] = [
+                        'name' => $value['fuel_station_name'],
+                        'latitude' => $value['ftp_lat'],
+                        'longitude' => $value['ftp_lng'],
+                        'price' => $value['price'],
+                        'lastprice' => $value['lastprice'],
+                        'discount' => $value['discount'],
+                        'ifta_tax' => $value['IFTA_tax'],
+                        'is_optimal' => $value['is_optimal'],
+                        'address' => $value['address'],
+                        'gallons_to_buy' => $value['gallons_to_buy'],
+                        'trip_id' => $trip->id,
+                        'user_id' => $validatedData['user_id'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
                }
+               FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
