@@ -52,17 +52,7 @@ class AdminController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        $remember_email = $request->session()->get('remember_email');
-        $remember_password = $request->session()->get('remember_password');
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        // Re-store the credentials
-        if ($remember_email && $remember_password) {
-            $request->session()->put('remember_email', $remember_email);
-            $request->session()->put('remember_password', $remember_password);
-        }
             return redirect('login');
     }
     public function contactUsForms()
