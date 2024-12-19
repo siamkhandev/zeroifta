@@ -81,7 +81,7 @@
               </td>
               <td>
                 <div>
-                  <p>{{$vehicle->vehicle_number}}</p>
+                  <p>{{$vehicle->license_number}}</p>
 
                 </div>
               </td>
