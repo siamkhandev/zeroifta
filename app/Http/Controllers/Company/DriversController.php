@@ -34,13 +34,13 @@ class DriversController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|numeric|max:20',
             'password' => 'required|string|min:8|confirmed',
             'username' => 'required|string|max:255',
             'driver_id' => 'required|string|max:255',
             'license_number' => 'required|string|max:255',
             'license_state' => 'required|string|max:255',
-            'license_start_date' => 'required|string|max:255',
+           'license_start_date' => 'required|date|before_or_equal:today',
         ]);
 
         $driver = new User();
@@ -55,10 +55,10 @@ class DriversController extends Controller
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
         $driver->password= Hash::make($request->password);
-      
+
         $driver->role='driver';
-       
-       
+
+
         $driver->save();
         $companyDriver = new CompanyDriver();
         $companyDriver->driver_id =$driver->id;
@@ -97,7 +97,7 @@ class DriversController extends Controller
         $driver->name = $request->first_name.' '.$request->last_name;
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
-       
+
         $driver->update();
         return redirect('drivers/all')->withSuccess('Driver Updated Successfully');
     }

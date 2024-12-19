@@ -187,3 +187,9 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+<script>
+    // Set the max attribute to today's date using JavaScript
+    document.getElementById('exampleFormControlInput1').setAttribute('max', new Date().toISOString().split('T')[0]);
+</script>
+@endsection
