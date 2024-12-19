@@ -586,46 +586,35 @@ class IFTAController extends Controller
     {
         $matchingRecords = [];
 
-        // Flatten FTP data into a single array for faster iteration
-        $flattenedFtpData = [];
-        foreach ($ftpData as $lat2 => $lngData) {
-            foreach ($lngData as $lng2 => $data) {
-                $flattenedFtpData[] = [
-                    'lat' => (float) $lat2,
-                    'lng' => (float) $lng2,
-                    'data' => $data
-                ];
-            }
-        }
-
         // Iterate through decoded polyline points
         foreach ($decodedPolyline as $decoded) {
             $lat1 = $decoded['lat'];
             $lng1 = $decoded['lng'];
 
-            foreach ($flattenedFtpData as $ftpPoint) {
-                $distance = $this->haversineDistance($lat1, $lng1, $ftpPoint['lat'], $ftpPoint['lng']);
+            // Compare with FTP data points
+            foreach ($ftpData as $lat2 => $lngData) {
+                foreach ($lngData as $lng2 => $data) {
+                    $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
-                // Check if within the defined proximity
-                if ($distance < 500) { // Distance is less than 500 meters
-                    $data = $ftpPoint['data'];
-                    $matchingRecords[] = [
-                        'fuel_station_name' => (string) $data['fuel_station_name'],
-                        'ftp_lat' => (string) $ftpPoint['lat'], // Ensure lat/lng are strings for consistency
-                        'ftp_lng' => (string) $ftpPoint['lng'],
-                        'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
-                        'price' => (float) $data['price'],
-                        'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
-                        'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
-                        'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
-                    ];
+                    // Check if within the defined proximity
+                    if ($distance < 500) { // Distance is less than 500 meters
+                        $matchingRecords[] = [
+                            'fuel_station_name'=>(string) $data['fuel_station_name'],
+                            'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
+                            'ftp_lng' => (string) $lng2,
+                            'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
+                            'price' => (float) $data['price'],
+                            'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
+                            'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
+                            'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
+                        ];
+                    }
                 }
             }
         }
 
         return array_values($matchingRecords); // Reindex the array for proper JSON formatting
     }
-
 
     private function haversineDistance($lat1, $lng1, $lat2, $lng2)
     {
