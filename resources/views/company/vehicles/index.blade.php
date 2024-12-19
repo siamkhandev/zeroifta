@@ -76,7 +76,7 @@
                     <img src="{{asset('vehicles/blank.png')}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
                     @endif
                   </span>
-                  <span> {{$vehicle->vehicle_type}}</span>
+                  <span> {{$vehicle->make}} {{$vehicle->model}} {{$vehicle->make_year}}</span>
                 </div>
               </td>
               <td>
