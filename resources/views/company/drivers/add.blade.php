@@ -128,7 +128,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Start Date')}}</label>
-                        <input type="date" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Start Date" name="license_start_date" value="{{old('license_start_date')}}" />
+                        <input type="date" required class="form-control login-input" id="licenseStartDate" placeholder="Add License Start Date" name="license_start_date" value="{{old('license_start_date')}}" />
                     </div>
                     @error('license_start_date')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -190,6 +190,6 @@
 @section('scripts')
 <script>
     // Set the max attribute to today's date using JavaScript
-    document.getElementById('exampleFormControlInput1').setAttribute('max', new Date().toISOString().split('T')[0]);
+    document.getElementById('licenseStartDate').setAttribute('max', new Date().toISOString().split('T')[0]);
 </script>
 @endsection
