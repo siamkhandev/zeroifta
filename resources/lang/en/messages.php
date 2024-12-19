@@ -125,5 +125,5 @@ return [
     "Secondary Fuel Tank Capacity"=>"Secondary Fuel Tank Capacity",
     "Image"=>"Image",
     "Logout"=>"Logout",
-    "Change_password"=>"Change Password",
+    "change_password"=>"Change Password",
 ];

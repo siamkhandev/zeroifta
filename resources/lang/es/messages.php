@@ -115,7 +115,7 @@ return [
     "Secondary Fuel Tank Capacity"=>"Capacidad de tanque de combustible secundario",
     "Image"=>"Imagen",
     "Logout"=>"Cerrar sesion",
-    "Change_password"=>"Cambiar contraseña",
+    "change_password"=>"Cambiar contraseña",
 
 
 ];
