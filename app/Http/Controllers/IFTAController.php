@@ -339,158 +339,296 @@ class IFTAController extends Controller
             'data'=>(object)[]
         ]);
 }
-public function getDecodedPolyline(Request $request)
-{
-    $validatedData = $request->validate([
-        'user_id' => 'required|exists:users,id',
-        'start_lat' => 'required',
-        'start_lng' => 'required',
-        'end_lat' => 'required',
-        'end_lng' => 'required',
-        'truck_mpg' => 'required',
-        'fuel_tank_capacity' => 'required',
-        'total_gallons_present' => 'required',
-    ]);
-
-    $activeTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
-    if ($activeTrip) {
-        return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $activeTrip]);
-    }
-
-    $validatedData['status'] = 'active';
-    $vehicle = DriverVehicle::where('driver_id', $validatedData['user_id'])->first();
-    if ($vehicle) {
-        $validatedData['vehicle_id'] = $vehicle->vehicle_id;
-    }
-
-    $trip = Trip::create($validatedData);
-
-    $googleMapsResponse = $this->fetchGoogleMapsData(
-        $validatedData['start_lat'],
-        $validatedData['start_lng'],
-        $validatedData['end_lat'],
-        $validatedData['end_lng']
-    );
-
-    if (!$googleMapsResponse['success']) {
-        return response()->json(['status' => 500, 'message' => 'Failed to fetch data from Google Maps API.', 'data' => (object) []]);
-    }
-
-    $route = $googleMapsResponse['data']['routes'][0] ?? null;
-    if (!$route) {
-        return response()->json(['status' => 500, 'message' => 'No route data available.', 'data' => (object) []]);
-    }
-
-    $distanceText = $route['legs'][0]['distance']['text'] ?? null;
-    $durationText = $route['legs'][0]['duration']['text'] ?? null;
-    $encodedPolyline = $route['overview_polyline']['points'] ?? null;
-
-    if ($encodedPolyline) {
-        $decodedPolyline = $this->decodePolyline($encodedPolyline);
-        $ftpData = $this->loadAndParseFTPData();
-        $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-
-        $fuelStations = $this->findOptimalFuelStations(
-            $validatedData['start_lat'],
-            $validatedData['start_lng'],
-            $validatedData['truck_mpg'],
-            $validatedData['total_gallons_present'],
-            $matchingRecords,
-            $validatedData['end_lat'],
-            $validatedData['end_lng']
-        );
-
-        $this->saveFuelStations($fuelStations, $trip->id, $validatedData['user_id']);
-
-        $trip->update([
-            'distance' => $this->formatDistance($distanceText),
-            'duration' => $this->formatDuration($durationText),
+    public function getDecodedPolyline(Request $request)
+    {
+        $validatedData =$request->validate([
+            'user_id'   => 'required|exists:users,id',
+            'start_lat' => 'required',
+            'start_lng' => 'required',
+            'end_lat' => 'required',
+            'end_lng' => 'required',
+            'truck_mpg' => 'required',
+            'fuel_tank_capacity' => 'required',
+            'total_gallons_present' => 'required',
         ]);
+        $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
 
-        $vehicleDetails = $this->getVehicleDetails($validatedData['user_id']);
+        if ($findTrip) {
+            return response()->json(['status' => 422, 'message' => 'Trip already exists for this user', 'data' => $findTrip]);
+        }
+        $validatedData['status']='active';
+        $vehicle_id = DriverVehicle::where('driver_id', $validatedData['user_id'])->first();
+        if ($vehicle_id) {
+            $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
+        }
+
+        $trip = Trip::create($validatedData);
+
+        $startLat = $request->start_lat;
+        $startLng = $request->start_lng;
+        $endLat = $request->end_lat;
+        $endLng = $request->end_lng;
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
+        // Replace with your Google API key
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+
+        // Fetch data from Google Maps API
+        $response = Http::get($url);
+
+        if ($response->successful()) {
+            $data = $response->json();
+           if($data['routes'] && $data['routes'][0]){
+            $route = $data['routes'][0];
+
+            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
+            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+
+            // Format distance (e.g., "100 miles")
+            if ($distanceText) {
+                $distanceParts = explode(' ', $distanceText);
+                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
+            }
+
+            // Format duration (e.g., "2 hr 20 min")
+            if ($durationText) {
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+
+            }
+
+            if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                $ftpData = $this->loadAndParseFTPData();
+
+                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+               foreach ($result as  $value) {
+                   $fuelStation = new FuelStation();
+                   $fuelStation->name = $value['fuel_station_name'];
+                   $fuelStation->latitude = $value['ftp_lat'];
+                   $fuelStation->longitude = $value['ftp_lng'];
+                   $fuelStation->price = $value['price'];
+                   $fuelStation->lastprice = $value['lastprice'];
+                   $fuelStation->discount = $value['discount'];
+                   $fuelStation->ifta_tax = $value['IFTA_tax'];
+                   $fuelStation->is_optimal = $value['is_optimal'];
+                   $fuelStation->address = $value['address'];
+                   $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
+                   $fuelStation->trip_id = $trip->id;
+                   $fuelStation->user_id = $request->user_id;
+                   $fuelStation->save();
+               }
+                $trip->distance = $formattedDistance;
+                $trip->duration = $formattedDuration;
+                $trip->user_id = (int)$trip->user_id;
+                $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+                if($vehicleFind){
+                    $vehicle = Vehicle::where('id', $vehicleFind)->first();
+                    if($vehicle && $vehicle->vehicle_image != null){
+                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                    }
+                }else{
+                    $vehicle = null;
+                }
+
+
+
+                $responseData = [
+                    'trip_id'=>$trip->id,
+                    'trip' => $trip,
+                    'fuel_stations' => $result,
+                    'polyline' => $decodedPolyline,
+                    'encoded_polyline'=>$encodedPolyline,
+                    'stops'=>[],
+                    'vehicle' => $vehicle
+                ];
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Fuel stations fetched successfully.',
+                    'data' => $responseData,
+                ]);
+            }
+
+
+           }else{
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to fetch data from Google Maps API.',
+                'data'=>(object)[]
+            ]);
+           }
+
+        }
 
         return response()->json([
-            'status' => 200,
-            'message' => 'Fuel stations fetched successfully.',
-            'data' => [
-                'trip_id' => $trip->id,
-                'trip' => $trip,
-                'fuel_stations' => $fuelStations,
-                'polyline' => $decodedPolyline,
-                'encoded_polyline' => $encodedPolyline,
-                'stops' => [],
-                'vehicle' => $vehicleDetails,
-            ],
-        ]);
+            'status' => false,
+            'message' => 'Failed to fetch polyline.',
+        ], 500);
     }
+    private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
+    {
+        $optimalStation = collect($fuelStations)->sortBy('price')->first();
 
-    return response()->json(['status' => 500, 'message' => 'Failed to decode polyline.', 'data' => (object) []]);
-}
+        foreach ($fuelStations as &$station) {
+            if (
+                $station['ftp_lat'] == $optimalStation['ftp_lat'] &&
+                $station['ftp_lng'] == $optimalStation['ftp_lng']
+            ) {
+                // Calculate distance from the optimal station to the destination
+                $distanceToDestination = $this->haversineDistance(
+                    $station['ftp_lat'],
+                    $station['ftp_lng'],
+                    $destinationLat,
+                    $destinationLng
+                );
 
-private function fetchGoogleMapsData($startLat, $startLng, $endLat, $endLng)
-{
-    $apiKey = "AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg";
-    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+                // Convert distance to miles and calculate gallons needed
+                $distanceInMiles = $distanceToDestination / 1609.34; // Convert meters to miles
+                $fuelRequired = $distanceInMiles / $mpg; // Fuel needed in gallons
 
-    $response = Http::get($url);
-    if ($response->successful()) {
-        return ['success' => true, 'data' => $response->json()];
-    }
-
-    return ['success' => false, 'data' => null];
-}
-
-private function saveFuelStations($fuelStations, $tripId, $userId)
-{
-    foreach ($fuelStations as $station) {
-        FuelStation::create([
-            'name' => $station['fuel_station_name'],
-            'latitude' => $station['ftp_lat'],
-            'longitude' => $station['ftp_lng'],
-            'price' => $station['price'],
-            'lastprice' => $station['lastprice'],
-            'discount' => $station['discount'],
-            'ifta_tax' => $station['IFTA_tax'],
-            'is_optimal' => $station['is_optimal'],
-            'address' => $station['address'],
-            'gallons_to_buy' => $station['gallons_to_buy'],
-            'trip_id' => $tripId,
-            'user_id' => $userId,
-        ]);
-    }
-}
-
-private function formatDistance($distanceText)
-{
-    if (!$distanceText) return null;
-
-    $distanceParts = explode(' ', $distanceText);
-    return $distanceParts[0] . ' miles';
-}
-
-private function formatDuration($durationText)
-{
-    if (!$durationText) return null;
-
-    $durationParts = explode(' ', $durationText);
-    $hours = $durationParts[0] ?? 0;
-    $minutes = $durationParts[2] ?? 0;
-
-    return "$hours hr $minutes min";
-}
-
-private function getVehicleDetails($userId)
-{
-    $vehicleId = DriverVehicle::where('driver_id', $userId)->value('vehicle_id');
-    if ($vehicleId) {
-        $vehicle = Vehicle::find($vehicleId);
-        if ($vehicle && $vehicle->vehicle_image) {
-            $vehicle->vehicle_image = url("vehicles/{$vehicle->vehicle_image}");
+                // Calculate gallons to buy
+                $gallonsToBuy = max(0, $fuelRequired - $currentGallons);
+                $station['gallons_to_buy'] = round($gallonsToBuy, 2);
+                $station['is_optimal'] = true; // Mark as optimal
+            } else {
+                // Skip `gallons_to_buy` for non-optimal stations
+                $station['gallons_to_buy'] = null;
+                $station['is_optimal'] = false; // Mark as non-optimal
+            }
         }
-        return $vehicle;
+
+        return array_values($fuelStations); // Re-index for JSON response
+    }
+    private function decodePolyline($encoded)
+    {
+        $points = [];
+        $index = 0;
+        $len = strlen($encoded);
+        $lat = 0;
+        $lng = 0;
+
+        while ($index < $len) {
+            $b = 0;
+            $shift = 0;
+            $result = 0;
+
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
+
+            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lat += $dlat;
+
+            $shift = 0;
+            $result = 0;
+
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
+
+            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lng += $dlng;
+
+            $points[] = [
+                'lat' => number_format($lat * 1e-5, 5),
+                'lng' => number_format($lng * 1e-5, 5),
+            ];
+        }
+
+        return $points;
     }
 
-    return null;
-}
+    private function loadAndParseFTPData()
+    {
+        $filePath = 'EFSLLCpricing';
 
+        // Connect to the FTP disk
+        $ftpDisk = Storage::disk('ftp');
+        if (!$ftpDisk->exists($filePath)) {
+            throw new \Exception("FTP file not found.");
+        }
+
+        $fileContent = $ftpDisk->get($filePath);
+        $rows = explode("\n", trim($fileContent));
+        $parsedData = [];
+
+        foreach ($rows as $line) {
+            $row = explode('|', $line);
+
+            if (isset($row[8], $row[9])) {
+                $lat = number_format((float) trim($row[8]), 4);
+                $lng = number_format((float) trim($row[9]), 4);
+                $parsedData[$lat][$lng] = [
+                    'fuel_station_name'=>$row[1] ?? 'N/A',
+                    'lastprice' => $row[10] ?? 0.00,
+                    'price' => $row[11] ?? 0.00,
+                    'IFTA_tax'=> $row[18] ?? 0.00,
+                    'address' => $row[3] ?? 'N/A',
+                    'discount' => $row[12] ?? 0.00
+                ];
+            }
+        }
+
+        return $parsedData;
+    }
+    private function findMatchingRecords(array $decodedPolyline, array $ftpData)
+    {
+        $matchingRecords = [];
+
+        // Iterate through decoded polyline points
+        foreach ($decodedPolyline as $decoded) {
+            $lat1 = $decoded['lat'];
+            $lng1 = $decoded['lng'];
+
+            // Compare with FTP data points
+            foreach ($ftpData as $lat2 => $lngData) {
+                foreach ($lngData as $lng2 => $data) {
+                    $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
+
+                    // Check if within the defined proximity
+                    if ($distance < 500) { // Distance is less than 500 meters
+                        $matchingRecords[] = [
+                            'fuel_station_name'=>(string) $data['fuel_station_name'],
+                            'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
+                            'ftp_lng' => (string) $lng2,
+                            'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
+                            'price' => (float) $data['price'],
+                            'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
+                            'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
+                            'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
+                        ];
+                    }
+                }
+            }
+        }
+
+        return array_values($matchingRecords); // Reindex the array for proper JSON formatting
+    }
+
+    private function haversineDistance($lat1, $lng1, $lat2, $lng2)
+    {
+        $earthRadius = 6371000; // Earth's radius in meters
+
+        $latDelta = deg2rad($lat2 - $lat1);
+        $lngDelta = deg2rad($lng2 - $lng1);
+
+        $a = sin($latDelta / 2) * sin($latDelta / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($lngDelta / 2) * sin($lngDelta / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c; // Distance in meters
+    }
 }
