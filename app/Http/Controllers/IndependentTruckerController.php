@@ -12,7 +12,7 @@ class IndependentTruckerController extends Controller
 {
     public function store(Request $request)
     {
-dd($request->all());
+
         $data = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -26,7 +26,7 @@ dd($request->all());
            'license_start_date' => 'required|date|before_or_equal:today',
         ]);
         $company = new User();
-        $company->name=$request->name;
+        $company->name=$request->first_name.' '.$request->last_name;;
         $company->email=$request->email;
         $company->password=Hash::make($request->password);
         $company->role="company";
