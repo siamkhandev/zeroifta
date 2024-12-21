@@ -69,3 +69,4 @@ Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFu
 Route::post('stops/add',[TripController::class,'storeStop']);
 ///
 Route::post('register',[IndependentTruckerController::class,'store']);
+Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
