@@ -5,6 +5,7 @@ use App\Http\Controllers\DriverContactUsController;
 use App\Http\Controllers\DriverDashboardController;
 use App\Http\Controllers\FuelStationController;
 use App\Http\Controllers\IFTAController;
+use App\Http\Controllers\IndependentTruckerController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\StopController;
 use App\Http\Controllers\TripController;
@@ -66,3 +67,5 @@ Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
 Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
 Route::post('stops/add',[TripController::class,'storeStop']);
+///
+Route::post('register',[IndependentTruckerController::class,'store']);

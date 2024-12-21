@@ -32,6 +32,7 @@ class CompanyController extends Controller
         $company->email=$request->email;
         $company->password=Hash::make($request->password);
         $company->role="company";
+        $company->register_type = 'user';
         $company->phone=$request->phone;
         $company->save();
         Auth::loginUsingId($company->id);
