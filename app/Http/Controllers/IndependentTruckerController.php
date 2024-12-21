@@ -17,7 +17,7 @@ class IndependentTruckerController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
-            'phone' => 'required|numeric|max:20',
+            'phone' => 'required|numeric',
             'password' => 'required|string|min:8|confirmed',
             'username' => 'required|string|max:255',
             'driver_id' => 'required|string|max:255',
