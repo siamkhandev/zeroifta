@@ -25,14 +25,14 @@ class IndependentTruckerController extends Controller
             'license_state' => 'required|string|max:255',
            'license_start_date' => 'required|date|before_or_equal:today',
         ]);
-        $company = new User();
-        $company->name=$request->first_name.' '.$request->last_name;;
-        $company->email=$request->email;
-        $company->password=Hash::make($request->password);
-        $company->role="company";
-        $company->register_type = 'trucker';
-        $company->phone=$request->phone;
-        $company->save();
+        // $company = new User();
+        // $company->name=$request->first_name.' '.$request->last_name;;
+        // $company->email=$request->email;
+        // $company->password=Hash::make($request->password);
+        // $company->role="company";
+        // $company->register_type = 'trucker';
+        // $company->phone=$request->phone;
+        // $company->save();
         
         $driver = new User();
         $driver->first_name = $request->first_name;
@@ -52,7 +52,7 @@ class IndependentTruckerController extends Controller
         $driver->save();
         $companyDriver = new CompanyDriver();
         $companyDriver->driver_id =$driver->id;
-        $companyDriver->company_id =$company->id;
+        $companyDriver->company_id =$driver->id;
         $companyDriver->save();
         return response()->json([
             'status'=>200,
