@@ -46,7 +46,7 @@ class IndependentTruckerController extends Controller
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
         $driver->password= Hash::make($request->password);
-        $driver->role='driver';
+        $driver->role='trucker';
 
 
         $driver->save();
