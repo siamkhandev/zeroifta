@@ -103,11 +103,11 @@ class IndependentTruckerController extends Controller
         }
         $vehicle->save();
 
-            $driver_vehicle = new DriverVehicle();
-            $driver_vehicle->driver_id = $request->driver_id;
-            $driver_vehicle->vehicle_id = $vehicle->id;
-            $driver_vehicle->company_id = $request->driver_id;
-            $driver_vehicle->save();
+        $driver_vehicle = new DriverVehicle();
+        $driver_vehicle->driver_id = $request->driver_id;
+        $driver_vehicle->vehicle_id = $vehicle->id;
+        $driver_vehicle->company_id = $request->driver_id;
+        $driver_vehicle->save();
         return response()->json(['status'=>200,'message'=>'Vehicle add successfully','data'=>$vehicle]);
        
     }
