@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CompanyDriver;
+use App\Models\DriverVehicle;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -101,6 +102,12 @@ class IndependentTruckerController extends Controller
             $vehicle->vehicle_image= $imageName;
         }
         $vehicle->save();
+
+            $driver_vehicle = new DriverVehicle();
+            $driver_vehicle->driver_id = $request->driver_id;
+            $driver_vehicle->vehicle_id = $vehicle->id;
+            $driver_vehicle->company_id = $request->driver_id;
+            $driver_vehicle->save();
         return response()->json(['status'=>200,'message'=>'Vehicle add successfully','data'=>$vehicle]);
        
     }
