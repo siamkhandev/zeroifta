@@ -75,14 +75,14 @@
                 </div>
                 <div class="up-img">
                 <div class="dropdown">
-                @if(Auth::user()->image)
+                @if(Auth::user() && Auth::user()->image)
                 <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="ZeroIfta Image" onclick="toggleDropdown()" style="height: 30px;border-radius:100%" />
                 @else
                 <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
                 @endif
                 <!-- <img src="user_image_url.jpg" onclick="toggleDropdown()" class="dropbtn" alt="User"> -->
                 <div id="myDropdown" class="dropdown-content">
-                  
+
                   <div class="hdd-inn">
                     <div>
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
