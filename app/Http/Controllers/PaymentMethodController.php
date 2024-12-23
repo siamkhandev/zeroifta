@@ -31,6 +31,11 @@ class PaymentMethodController extends Controller
 
         return response()->json(['status'=>200,'message' => 'Payment method added successfully', 'data' => $paymentMethod]);
     }
+    public function getPaymentMethod($id)
+    {
+        $paymentMethod = PaymentMethod::where('id', $id)->firstOrFail();
+        return response()->json(['status'=>200,'message' => 'Payment method fetched successfully', 'data' => $paymentMethod]);
+    }
     public function editPaymentMethod(Request $request, $id)
     {
         $validated = $request->validate([

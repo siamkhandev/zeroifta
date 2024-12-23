@@ -74,6 +74,7 @@ Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
 ///
 Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
 Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
+Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
 Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
 Route::delete('/payment-methods/{id}', [PaymentMethodController::class, 'deletePaymentMethod']);
 Route::patch('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
