@@ -22,7 +22,7 @@ class IndependentTruckerController extends Controller
             'phone' => 'required|numeric',
             'password' => 'required|string|min:8|confirmed',
             'username' => 'required|string|max:255',
-            'driver_id' => 'required|string|max:255',
+            'driver_id' => 'required|string|max:255,unique:users,driver_id',
             'license_number' => 'required|string|max:255',
             'license_state' => 'required|string|max:255',
            'license_start_date' => 'required|date|before_or_equal:today',
@@ -35,7 +35,7 @@ class IndependentTruckerController extends Controller
         // $company->register_type = 'trucker';
         // $company->phone=$request->phone;
         // $company->save();
-        
+
         $driver = new User();
         $driver->first_name = $request->first_name;
         $driver->last_name = $request->last_name;
@@ -109,6 +109,6 @@ class IndependentTruckerController extends Controller
         $driver_vehicle->company_id = $request->driver_id;
         $driver_vehicle->save();
         return response()->json(['status'=>200,'message'=>'Vehicle add successfully','data'=>$vehicle]);
-       
+
     }
 }
