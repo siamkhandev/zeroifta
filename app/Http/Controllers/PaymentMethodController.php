@@ -51,9 +51,9 @@ class PaymentMethodController extends Controller
 
         return response()->json(['status'=>200,'message' => 'Payment method updated successfully', 'data' => $paymentMethod]);
     }
-    public function deletePaymentMethod(Request $request)
+    public function deletePaymentMethod($id)
     {
-        $paymentMethod = PaymentMethod::where('id',$request->payment_method_id)->firstOrFail();
+        $paymentMethod = PaymentMethod::where('id',$id)->firstOrFail();
 
         $paymentMethod->delete();
 
