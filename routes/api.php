@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverDashboardController;
 use App\Http\Controllers\FuelStationController;
 use App\Http\Controllers\IFTAController;
 use App\Http\Controllers\IndependentTruckerController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\StopController;
 use App\Http\Controllers\TripController;
@@ -70,3 +71,9 @@ Route::post('stops/add',[TripController::class,'storeStop']);
 ///
 Route::post('register',[IndependentTruckerController::class,'store']);
 Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
+///
+Route::get('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
+Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
+Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
+Route::delete('/payment-methods/{id}', [PaymentMethodController::class, 'deletePaymentMethod']);
+Route::patch('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
