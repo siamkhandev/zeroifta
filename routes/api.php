@@ -48,7 +48,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('vehicle',[VehicleController::class,'index']);
     Route::post('vehicle/add',[VehicleController::class,'addVehicle']);
     Route::post('vehicle/update',[VehicleController::class,'update']);
-    Route::delete('vehicle/delete',[VehicleController::class,'delete']);
+    Route::delete('vehicle/{id}',[VehicleController::class,'delete']);
     ////receipts
     Route::post('receipts',[ReceiptController::class,'index']);
     Route::post('receipt/create',[ReceiptController::class,'create']);
