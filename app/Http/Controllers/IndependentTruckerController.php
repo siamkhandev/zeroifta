@@ -67,8 +67,8 @@ class IndependentTruckerController extends Controller
     {
 
         $data = $request->validate([
-            'vehicle_id'=>'required',
-            "vin"=>'required',
+            'vehicle_id'=>'required|unique:vehicles,vehicle_id',
+            "vin"=>'required|unique:vehicles,vin',
             "year"=>'required',
             "truck_make"=>'required',
             "vehicle_model"=>'required',
@@ -80,6 +80,7 @@ class IndependentTruckerController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
+        
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->vehicle_number = $request->vehicle_number;
