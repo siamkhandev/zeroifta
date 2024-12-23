@@ -82,104 +82,104 @@ class VehicleController extends Controller
     }
 
 
-public function allTrips(Request $request)
-{
-    $trips = Trip::where('user_id', $request->driver_id)->orderBy('created_at', 'desc')->get();
+    public function allTrips(Request $request)
+    {
+        $trips = Trip::where('user_id', $request->driver_id)->orderBy('created_at', 'desc')->get();
 
-    if ($trips->isEmpty()) {
-        return response()->json(['status' => 404, 'message' => 'Trips not found', 'data' => []], 404);
+        if ($trips->isEmpty()) {
+            return response()->json(['status' => 404, 'message' => 'Trips not found', 'data' => []], 404);
+        }
+
+        // Preload vehicle data for all trips
+        $driverVehicles = DriverVehicle::whereIn('driver_id', [$request->driver_id])->pluck('vehicle_id', 'driver_id');
+        $vehicles = Vehicle::whereIn('id', $driverVehicles)->get()->keyBy('id');
+
+        // API key (move to .env for security)
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+
+        $geocodedTrips = $trips->map(function ($trip) use ($driverVehicles, $vehicles, $apiKey) {
+            $vehicleId = $driverVehicles[$trip->user_id] ?? null;
+            $vehicle = $vehicles[$vehicleId] ?? null;
+
+            if ($vehicle && isset($vehicle->vehicle_image)) {
+                // Ensure the image URL is not repeatedly prefixed
+                if (!str_starts_with($vehicle->vehicle_image, 'http://')) {
+                    $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                }
+            }
+
+            // Caching geocode addresses
+            $pickupAddress = Cache::remember(
+                "pickup_{$trip->start_lat}_{$trip->start_lng}",
+                86400,
+                fn() => $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng, $apiKey)
+            );
+
+            $dropoffAddress = Cache::remember(
+                "dropoff_{$trip->end_lat}_{$trip->end_lng}",
+                86400,
+                fn() => $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng, $apiKey)
+            );
+
+            // Caching route distance and duration
+            $directions = Cache::remember(
+                "directions_{$trip->start_lat}_{$trip->start_lng}_{$trip->end_lat}_{$trip->end_lng}",
+                86400,
+                fn() => $this->getDirections($trip->start_lat, $trip->start_lng, $trip->end_lat, $trip->end_lng, $apiKey)
+            );
+
+            return [
+                'id' => $trip->id,
+                'user_id' => $trip->user_id,
+                'pickup' => $pickupAddress,
+                'dropoff' => $dropoffAddress,
+                'start_lat' => $trip->start_lat,
+                'start_lng' => $trip->start_lng,
+                'end_lat' => $trip->end_lat,
+                'end_lng' => $trip->end_lng,
+                'status' => $trip->status,
+                'vehicle' => $vehicle,
+                'distance' => $directions['distance'] ?? null,
+                'duration' => $directions['duration'] ?? null,
+                'created_at' => $trip->created_at,
+                'updated_at' => $trip->updated_at,
+            ];
+        });
+
+        return response()->json(['status' => 200, 'message' => 'Trips found', 'data' => $geocodedTrips], 200);
     }
 
-    // Preload vehicle data for all trips
-    $driverVehicles = DriverVehicle::whereIn('driver_id', [$request->driver_id])->pluck('vehicle_id', 'driver_id');
-    $vehicles = Vehicle::whereIn('id', $driverVehicles)->get()->keyBy('id');
+    private function getAddressFromCoordinates($latitude, $longitude, $apiKey)
+    {
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+        $response = Http::get($url);
 
-    // API key (move to .env for security)
-    $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
-
-    $geocodedTrips = $trips->map(function ($trip) use ($driverVehicles, $vehicles, $apiKey) {
-        $vehicleId = $driverVehicles[$trip->user_id] ?? null;
-        $vehicle = $vehicles[$vehicleId] ?? null;
-
-        if ($vehicle && isset($vehicle->vehicle_image)) {
-            // Ensure the image URL is not repeatedly prefixed
-            if (!str_starts_with($vehicle->vehicle_image, 'http://')) {
-                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+        if ($response->successful() && isset($response->json()['results'][0]['address_components'])) {
+            foreach ($response->json()['results'][0]['address_components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types'])) {
+                    return $component['long_name']; // State name
+                }
             }
         }
 
-        // Caching geocode addresses
-        $pickupAddress = Cache::remember(
-            "pickup_{$trip->start_lat}_{$trip->start_lng}",
-            86400,
-            fn() => $this->getAddressFromCoordinates($trip->start_lat, $trip->start_lng, $apiKey)
-        );
+        return 'Address not found';
+    }
 
-        $dropoffAddress = Cache::remember(
-            "dropoff_{$trip->end_lat}_{$trip->end_lng}",
-            86400,
-            fn() => $this->getAddressFromCoordinates($trip->end_lat, $trip->end_lng, $apiKey)
-        );
+    private function getDirections($startLat, $startLng, $endLat, $endLng, $apiKey)
+    {
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $response = Http::get($url);
 
-        // Caching route distance and duration
-        $directions = Cache::remember(
-            "directions_{$trip->start_lat}_{$trip->start_lng}_{$trip->end_lat}_{$trip->end_lng}",
-            86400,
-            fn() => $this->getDirections($trip->start_lat, $trip->start_lng, $trip->end_lat, $trip->end_lng, $apiKey)
-        );
-
-        return [
-            'id' => $trip->id,
-            'user_id' => $trip->user_id,
-            'pickup' => $pickupAddress,
-            'dropoff' => $dropoffAddress,
-            'start_lat' => $trip->start_lat,
-            'start_lng' => $trip->start_lng,
-            'end_lat' => $trip->end_lat,
-            'end_lng' => $trip->end_lng,
-            'status' => $trip->status,
-            'vehicle' => $vehicle,
-            'distance' => $directions['distance'] ?? null,
-            'duration' => $directions['duration'] ?? null,
-            'created_at' => $trip->created_at,
-            'updated_at' => $trip->updated_at,
-        ];
-    });
-
-    return response()->json(['status' => 200, 'message' => 'Trips found', 'data' => $geocodedTrips], 200);
-}
-
-private function getAddressFromCoordinates($latitude, $longitude, $apiKey)
-{
-    $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
-    $response = Http::get($url);
-
-    if ($response->successful() && isset($response->json()['results'][0]['address_components'])) {
-        foreach ($response->json()['results'][0]['address_components'] as $component) {
-            if (in_array('administrative_area_level_1', $component['types'])) {
-                return $component['long_name']; // State name
-            }
+        if ($response->successful() && isset($response->json()['routes'][0])) {
+            $route = $response->json()['routes'][0];
+            return [
+                'distance' => $route['legs'][0]['distance']['text'] ?? null,
+                'duration' => $route['legs'][0]['duration']['text'] ?? null,
+            ];
         }
+
+        return null;
     }
-
-    return 'Address not found';
-}
-
-private function getDirections($startLat, $startLng, $endLat, $endLng, $apiKey)
-{
-    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
-    $response = Http::get($url);
-
-    if ($response->successful() && isset($response->json()['routes'][0])) {
-        $route = $response->json()['routes'][0];
-        return [
-            'distance' => $route['legs'][0]['distance']['text'] ?? null,
-            'duration' => $route['legs'][0]['duration']['text'] ?? null,
-        ];
-    }
-
-    return null;
-}
 
 
     // public function allTrips(Request $request)
@@ -266,4 +266,16 @@ private function getDirections($startLat, $startLng, $endLat, $endLng, $apiKey)
 
     //     return 'Address not found';
     // }
+
+    public function delete($id)
+    {
+        $checkTrip = Trip::where('vehicle_id',$id)->first();
+        if($checkTrip){
+            return response()->json(['status' => 400, 'message' => 'Vehicle is in use', 'data' => (object)[]], 400);
+        }else{
+            $vehicle = Vehicle::findOrFail($id);
+            $vehicle->delete();
+            return response()->json(['status' => 200, 'message' => 'Vehicle deleted successfully', 'data' => (object)[]], 200);
+        }
+    }
 }
