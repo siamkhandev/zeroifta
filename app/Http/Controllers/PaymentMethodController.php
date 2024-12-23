@@ -59,12 +59,12 @@ class PaymentMethodController extends Controller
 
         return response()->json(['status'=>200,'message' => 'Payment method deleted successfully','data' => (object)[]]);
     }
-    public function makeDefault(Request $request)
+    public function makeDefault(Request $request,$id)
     {
-        $paymentMethod = PaymentMethod::where('id', $request->payment_method_id)->firstOrFail();
+        $paymentMethod = PaymentMethod::where('id', $id)->firstOrFail();
 
         // Reset all default flags for the user
-        PaymentMethod::where('id', $request->payment_method_id)->update(['is_default' => false]);
+        PaymentMethod::where('id', $id)->update(['is_default' => false]);
 
         // Set this method as default
         $paymentMethod->update(['is_default' => true]);

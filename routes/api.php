@@ -77,4 +77,4 @@ Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPayme
 Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
 Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
 Route::delete('/payment-methods/{id}', [PaymentMethodController::class, 'deletePaymentMethod']);
-Route::patch('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
+Route::post('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
