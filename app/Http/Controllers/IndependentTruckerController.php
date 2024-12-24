@@ -22,7 +22,7 @@ class IndependentTruckerController extends Controller
             'phone' => 'required|numeric',
             'password' => 'required|string|min:8|confirmed',
             'username' => 'required|string|max:255',
-            'driver_id' => 'required|string|max:255,unique:users,driver_id',
+            //'driver_id' => 'required|string|max:255,unique:users,driver_id',
             'license_number' => 'required|string|max:255',
             'license_state' => 'required|string|max:255',
            'license_start_date' => 'required|date|before_or_equal:today',
@@ -41,7 +41,7 @@ class IndependentTruckerController extends Controller
         $driver->last_name = $request->last_name;
         $driver->name = $request->first_name.' '.$request->last_name;
         $driver->username = $request->username;
-        $driver->driver_id = $request->driver_id;
+        //$driver->driver_id = $request->driver_id;
         $driver->license_number = $request->license_number;
         $driver->license_state = $request->license_state;
         $driver->license_start_date = $request->license_start_date;
@@ -80,7 +80,7 @@ class IndependentTruckerController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
-        
+
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->vehicle_number = $request->vehicle_number;
