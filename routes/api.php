@@ -48,6 +48,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('vehicle',[VehicleController::class,'index']);
     Route::post('vehicle/add',[VehicleController::class,'addVehicle']);
     Route::post('vehicle/update',[VehicleController::class,'update']);
+    Route::delete('vehicle/{id}',[VehicleController::class,'delete']);
     ////receipts
     Route::post('receipts',[ReceiptController::class,'index']);
     Route::post('receipt/create',[ReceiptController::class,'create']);
@@ -72,8 +73,9 @@ Route::post('stops/add',[TripController::class,'storeStop']);
 Route::post('register',[IndependentTruckerController::class,'store']);
 Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
 ///
-Route::get('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
+Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
 Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
+Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
 Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
 Route::delete('/payment-methods/{id}', [PaymentMethodController::class, 'deletePaymentMethod']);
-Route::patch('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
+Route::post('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
