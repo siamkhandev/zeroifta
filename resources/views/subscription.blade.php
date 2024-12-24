@@ -23,6 +23,7 @@
 <body>
   <div class="subs-PlansMain">
     <div class="container">
+
       <!-- Header Area -->
       <div class="header-main">
         <div>
@@ -74,29 +75,29 @@
                   </svg>
                 </div>
                 <div class="up-img">
-                <div class="dropdown">
-                @if(Auth::user() && Auth::user()->image)
-                <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="ZeroIfta Image" onclick="toggleDropdown()" style="height: 30px;border-radius:100%" />
-                @else
-                <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
-                @endif
-                <!-- <img src="user_image_url.jpg" onclick="toggleDropdown()" class="dropbtn" alt="User"> -->
-                <div id="myDropdown" class="dropdown-content">
+                  <div class="dropdown">
+                    @if(Auth::user() && Auth::user()->image)
+                    <img src="{{asset('images')}}/{{Auth::user()->image}}" alt="ZeroIfta Image" onclick="toggleDropdown()" style="height: 30px;border-radius:100%" />
+                    @else
+                    <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
+                    @endif
+                    <!-- <img src="user_image_url.jpg" onclick="toggleDropdown()" class="dropbtn" alt="User"> -->
+                    <div id="myDropdown" class="dropdown-content">
 
-                  <div class="hdd-inn">
-                    <div>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
-                        <path d="M13.5625 11.4375H12.4641C12.3891 11.4375 12.3188 11.4703 12.2719 11.5281C12.1625 11.661 12.0453 11.7891 11.9219 11.911C11.417 12.4163 10.819 12.8191 10.1609 13.0969C9.47915 13.3849 8.74636 13.5326 8.00625 13.5313C7.25781 13.5313 6.53281 13.3844 5.85156 13.0969C5.19347 12.8191 4.59547 12.4163 4.09063 11.911C3.58487 11.4073 3.1816 10.8103 2.90313 10.1531C2.61406 9.4719 2.46875 8.74846 2.46875 8.00002C2.46875 7.25159 2.61563 6.52815 2.90313 5.8469C3.18125 5.18909 3.58125 4.5969 4.09063 4.08909C4.6 3.58127 5.19219 3.18127 5.85156 2.90315C6.53281 2.61565 7.25781 2.46877 8.00625 2.46877C8.75469 2.46877 9.47969 2.61409 10.1609 2.90315C10.8203 3.18127 11.4125 3.58127 11.9219 4.08909C12.0453 4.21252 12.1609 4.34065 12.2719 4.4719C12.3188 4.52971 12.3906 4.56252 12.4641 4.56252H13.5625C13.6609 4.56252 13.7219 4.45315 13.6672 4.37034C12.4688 2.50784 10.3719 1.27502 7.98906 1.28127C4.24531 1.29065 1.24375 4.32971 1.28125 8.06877C1.31875 11.7485 4.31563 14.7188 8.00625 14.7188C10.3828 14.7188 12.4703 13.4875 13.6672 11.6297C13.7203 11.5469 13.6609 11.4375 13.5625 11.4375ZM14.9516 7.90159L12.7344 6.15159C12.6516 6.08596 12.5312 6.14534 12.5312 6.25002V7.43752H7.625C7.55625 7.43752 7.5 7.49377 7.5 7.56252V8.43752C7.5 8.50627 7.55625 8.56252 7.625 8.56252H12.5312V9.75002C12.5312 9.85471 12.6531 9.91409 12.7344 9.84846L14.9516 8.09846C14.9665 8.08677 14.9786 8.07183 14.9869 8.05477C14.9952 8.03772 14.9995 8.019 14.9995 8.00002C14.9995 7.98105 14.9952 7.96233 14.9869 7.94527C14.9786 7.92822 14.9665 7.91328 14.9516 7.90159Z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <a href="{{route('logout')}}"><span>Logout</span></a>
-                    </div>
+                      <div class="hdd-inn">
+                        <div>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
+                            <path d="M13.5625 11.4375H12.4641C12.3891 11.4375 12.3188 11.4703 12.2719 11.5281C12.1625 11.661 12.0453 11.7891 11.9219 11.911C11.417 12.4163 10.819 12.8191 10.1609 13.0969C9.47915 13.3849 8.74636 13.5326 8.00625 13.5313C7.25781 13.5313 6.53281 13.3844 5.85156 13.0969C5.19347 12.8191 4.59547 12.4163 4.09063 11.911C3.58487 11.4073 3.1816 10.8103 2.90313 10.1531C2.61406 9.4719 2.46875 8.74846 2.46875 8.00002C2.46875 7.25159 2.61563 6.52815 2.90313 5.8469C3.18125 5.18909 3.58125 4.5969 4.09063 4.08909C4.6 3.58127 5.19219 3.18127 5.85156 2.90315C6.53281 2.61565 7.25781 2.46877 8.00625 2.46877C8.75469 2.46877 9.47969 2.61409 10.1609 2.90315C10.8203 3.18127 11.4125 3.58127 11.9219 4.08909C12.0453 4.21252 12.1609 4.34065 12.2719 4.4719C12.3188 4.52971 12.3906 4.56252 12.4641 4.56252H13.5625C13.6609 4.56252 13.7219 4.45315 13.6672 4.37034C12.4688 2.50784 10.3719 1.27502 7.98906 1.28127C4.24531 1.29065 1.24375 4.32971 1.28125 8.06877C1.31875 11.7485 4.31563 14.7188 8.00625 14.7188C10.3828 14.7188 12.4703 13.4875 13.6672 11.6297C13.7203 11.5469 13.6609 11.4375 13.5625 11.4375ZM14.9516 7.90159L12.7344 6.15159C12.6516 6.08596 12.5312 6.14534 12.5312 6.25002V7.43752H7.625C7.55625 7.43752 7.5 7.49377 7.5 7.56252V8.43752C7.5 8.50627 7.55625 8.56252 7.625 8.56252H12.5312V9.75002C12.5312 9.85471 12.6531 9.91409 12.7344 9.84846L14.9516 8.09846C14.9665 8.08677 14.9786 8.07183 14.9869 8.05477C14.9952 8.03772 14.9995 8.019 14.9995 8.00002C14.9995 7.98105 14.9952 7.96233 14.9869 7.94527C14.9786 7.92822 14.9665 7.91328 14.9516 7.90159Z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <a href="{{route('logout')}}"><span>Logout</span></a>
+                        </div>
 
+                      </div>
+
+                    </div>
                   </div>
-
-                </div>
-              </div>
                 </div>
                 <div class="mob-menu">
                   <div id="hamburgerIcon" class="hamburger-icon">
@@ -115,399 +116,804 @@
           <div class="manage-comp mb-4">
             <div class="Filters-main mb-3 mb-md-4">
               <div class="sec1-style">
+                <div class="text-center inHead-span">
+                  <h2 class="head-20Med">Subscription Plans</h2>
+                </div>
+                <div class="mt-3 mb-5">
+                  <div class="sub-toggel text-center">
+                    <div>
+                      <p>Monthly</p>
+                    </div>
+                    <div>
+                      <label class="switch">
+                        <input type="checkbox" id="themeCheckbox">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <div>
+                        <p>Yearly</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="subs_plan">
-                  <div class="inHead-span">
-                    <h2 class="head-20Med">Subscription Plans</h2>
-                  </div>
-                  <div class="row">
-                    <!-- Plan 1 -->
-                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
-                      <div class="price_plans sbsp-com weekly-plan">
-                        <div class="ph-area">
-                          <h3>Basic Plan</h3>
-                          <p> $55 - Monthly</p>
-                        </div>
-                        <div class="sbp-section">
-                          <div>
-                            <h4 class="pb-3">Features</h4>
-                            <div class="pp-inn">
-                              <ul>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Fuel Station Recommendations</p>
-                                    <p class="usp-para">Get the best fuel stops based on the unburdened fuel price to maximize savings.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Monthly Savings and IFTA Reports</p>
-                                    <p class="usp-para">Review your savings each month to track how much yo've kept in your pocket.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Customize odometer reading and truck MPG's</p>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="pt-5">
-                            <h4 class="pb-3">What's Not Included:</h4>
-                            <div class="pp-inn">
-                              <ul>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
-                                      <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">No live vehicle tracking or alerts.</p>
-                                    <p class="usp-para">Get the best fuel stops based on the unburdened fuel price to maximize savings.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
-                                      <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-para">No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount.</p>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <!-- Button -->
-                          <div class="palns-btn mt-5">
-                            <a href="{{route('buy')}}" class="mainBtn">
-                              Buy Plan
-                            </a>
-                          </div>
-                        </div>
 
+                  <!-- Monthly Plan -->
+                  <div id="monthly_plans" class="monthly_plans">
+                    <div class="row">
+                      <!-- Plan 1 -->
+                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                        <div class="price_plans sbsp-com weekly-plan">
+                          <div class="ph-area">
+                            <h3>Basic Plan</h3>
+                            <p> $55 - Monthly</p>
+                          </div>
+                          <div class="sbp-section">
+                            <div>
+                              <h4 class="pb-3">Features</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fuel Station Recommendations</p>
+                                      <p class="usp-para">Get the best fuel stops based on the unburdened fuel price to maximize savings.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Monthly Savings and IFTA Reports</p>
+                                      <p class="usp-para">Review your savings each month to track how much you've kept in your pocket.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Customize odometer reading and truck MPG's</p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="pt-5">
+                              <h4 class="pb-3">What's Not Included:</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                        <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">No live vehicle tracking or alerts.</p>
+                                      <p class="usp-para">Get the best fuel stops based on the unburdened fuel price to maximize savings.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                        <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-para">No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                        <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-para">Can't customize fuel tank capacity </p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <!-- Button -->
+                            <div class="palns-btn mt-5">
+                              <a href="{{route('buy')}}" class="mainBtn">
+                                Buy Plan
+                              </a>
+                            </div>
+                          </div>
+
+                        </div>
                       </div>
-                    </div>
-                    <!-- Plan 2 -->
-                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
-                      <div class="price_pm sbsp-com montly-plan top-plan">
-                        <div class="pop-div">
-                          <span>Recommended</span>
-                        </div>
-                        <div class="ph-area">
-                          <h3>Premium Plan</h3>
-                          <p> $67 - Monthly</p>
-                        </div>
-                        <div class="sbp-section">
-                          <!-- Sec 1 -->
-                          <div>
-                            <h4 class="pb-3">Features</h4>
-                            <div class="pp-inn">
-                              <ul>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">All Features of the Basic Plan.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Automatic IFTA Reporting: Simplify compliance with automated tax </p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Customize odometer reading and truck MPG's</p>
-                                  </div>
-                                </li>
-                              </ul>
+                      <!-- Plan 2 -->
+                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                        <div class="price_pm sbsp-com montly-plan top-plan">
+                          <div class="pop-div">
+                            <span>Recommended</span>
+                          </div>
+                          <div class="ph-area">
+                            <h3>Premium Plan</h3>
+                            <p> $67 - Monthly</p>
+                          </div>
+                          <div class="sbp-section">
+                            <!-- Sec 1 -->
+                            <div>
+                              <h4 class="pb-3">Features</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">All Features of the Basic Plan.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Automatic IFTA Reporting: </p>
+                                      <p class="usp-para">Simplify compliance with automated tax reporting.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fully Customizable App and Features:</p>
+                                      <p class="usp-para">
+                                        <b>Tailor the app to your needs.</b>
+                                      </p>
+                                      <ul class="pt-2">
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#19A130">
+                                            <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+                                          </svg> -->
+                                            <p>
+                                              <b>1.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Adjust settings like minimum gallons to fuel,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>2.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Add unlimited stops to trips,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>3.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Change the default reserve fuel amount,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>4.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Customize odometer reading and truck MPG's,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>5.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Customizable alerts (choose at wish preferred distances to get notified of your upcoming stop)
+                                            </p>
+                                          </div>
+                                        </li>
+                                      </ul>
+
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Live Vehicle Tracking: </p>
+                                      <p class="usp-para">Monitor your fleet in real-time and track your trucks' positions.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Alerts and Notifications: </p>
+                                      <p class="usp-para">Receive alerts if drivers miss suggested fuel stops or deviate from planned routes.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Advanced Trip Planning and Analytics: </p>
+                                      <p class="usp-para">Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data.</p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+
+
+                            <!-- Button -->
+                            <div class="palns-btn mt-5">
+                              <a href="{{route('buy')}}" class="mainBtn">
+                                Buy Plan
+                              </a>
                             </div>
                           </div>
-                          <!-- Sec 2 -->
-                          <div class="pt-3">
-                            <h4 class="pb-3">Reporting:</h4>
-                            <div class="pp-inn">
-                              <ul>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-para">
-                                      Fully Customizable App and Features: Tailor the app to your needs.
-                                    </p>
-                                  </div>
-                                </li>
-
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-para">Adjust settings like minimum gallons to fuel.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-para">Add unlimited stops to trips. </p>
-                                  </div>
-                                </li>
-
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-para">Change the default reserve fuel amount.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-para">Customize odometer reading and truck MPG's</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-para">Customizable alerts (choose at wish preferred distances to get notified of your upcoming stop) </p>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
+                        </div>
+                      </div>
+                      <!-- Plan 3 -->
+                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                        <div class="price_plans sbsp-com weekly-plan">
+                          <div class="ph-area">
+                            <h3>Premium+ Subscription </h3>
+                            <p> $97 - Monthly</p>
                           </div>
-                          <!-- Sec 3 -->
-                          <div>
-                            <div class="pb-3">
-                              <h4 class="pb-1">Customizable alerts </h4>
-                              <p class="usp-para">
-                                Customizable alerts
-                                (choose at wish preferred distances to get notified of your upcoming stop)
+                          <div class="sbp-section">
+                            <div>
+                              <p class="usp-para pb-2">
+                                Our Premium+ Subscription offers the most comprehensive set of features designed to elevate your
+                                fleet management experience. This plan includes everything from our Basic and Premium plans,
+                                plus advanced integrations to maximize efficiency and streamline operations.
                               </p>
-                            </div>
+                              <h4 class="pb-3">What's Included</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fuel Station Recommendations</p>
+                                      <p class="usp-para">Based on unburdened fuel prices for smarter fueling decisions.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Monthly Savings Reports</p>
+                                      <p class="usp-para"> Track your savings and optimize your costs.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Automatic IFTA Reporting</p>
+                                      <p class="usp-para">Eliminate audits and simplify tax compliance with automated reporting.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Live Vehicle Tracking and Alerts</p>
+                                      <p class="usp-para">Real-time tracking of all trucks, with alerts for missed fuel stops and deviations from optimized routes.</p>
+                                    </div>
+                                  </li>
 
-                            <div class="pp-inn">
-                              <ul>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130"></path>
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Live Vehicle Tracking</p>
-                                    <p class="usp-para">Monitor your fleet in real-time and track your trucks positions.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130"></path>
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Alerts and Notifications</p>
-                                    <p class="usp-para"> Receive alerts if drivers miss suggested fuel stops or deviate from planned routes.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130"></path>
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Advanced Trip Planning and Analytics</p>
-                                    <p class="usp-para">
-                                      Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data.
-                                    </p>
-                                  </div>
-                                </li>
-                              </ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fully Customizable App</p>
+                                      <p class="usp-para">Set your minimum fueling amounts, add stops, and personalize features to fit your unique needs.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Admin Panel API Integration</p>
+                                      <p class="usp-para">
+                                        Sync your existing fleet software with ZeroIFTA. All truck, driver,
+                                        and essential fleet information is automatically shared and
+                                        updated without manual input, ensuring a streamlined workflow between systems.
+                                      </p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Real-Time Data Sync</p>
+                                      <p class="usp-para">
+                                        Maintain accurate fleet information with automatic updates, helping you keep track of crucial data effortlessly.
+                                      </p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <!-- Button -->
+                            <div class="palns-btn mt-5">
+                              <a href="{{route('buy')}}" class="mainBtn">
+                                Buy Plan
+                              </a>
                             </div>
                           </div>
-                          <!-- Button -->
-                          <div class="palns-btn mt-5">
-                            <a href="{{route('buy')}}" class="mainBtn">
-                              Buy Plan
-</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Plan 3 -->
-                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
-                      <div class="price_plans sbsp-com weekly-plan">
-                        <div class="ph-area">
-                          <h3>Premium+ Subscription </h3>
-                          <p> $97 - Monthly</p>
-                        </div>
-                        <div class="sbp-section">
-                          <div>
-                            <p class="usp-para pb-2">
-                              Our Premium+ Subscription offers the most comprehensive set of features designed to elevate your fleet
-                              management experience. This plan includes everything from our Basic and Premium plans, plus advanced
-                              integrations to maximize efficiency and streamline operations.
-                            </p>
-                            <h4 class="pb-3">What's Included</h4>
-                            <div class="pp-inn">
-                              <ul>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Fuel Station Recommendations</p>
-                                    <p class="usp-para">Based on unburdened fuel prices for smarter fueling decisions.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Monthly Savings Reports</p>
-                                    <p class="usp-para"> Track your savings and optimize your costs.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Automatic IFTA Reporting</p>
-                                    <p class="usp-para">Eliminate audits and simplify tax compliance with automated reporting.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Automatic IFTA Reporting</p>
-                                    <p class="usp-para">Eliminate audits and simplify tax compliance with automated reporting.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Live Vehicle Tracking and Alerts</p>
-                                    <p class="usp-para">Real-time tracking of all trucks, with alerts for missed fuel stops and deviations from optimized routes.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Fully Customizable App</p>
-                                    <p class="usp-para">Set your minimum fueling amounts, add stops, and personalize features to fit your unique needs.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Admin Panel API Integration</p>
-                                    <p class="usp-para">Sync your existing fleet software with ZeroIFTA. All truck,
-                                      driver, and essential fleet information is automatically shared and updated without
-                                      manual input, ensuring a streamlined workflow between systems.</p>
-                                  </div>
-                                </li>
-                                <li class="sbp-list mb-3">
-                                  <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                                      <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
-                                    </svg>
-                                  </span>
-                                  <div>
-                                    <p class="usp-head">Real-Time Data Sync</p>
-                                    <p class="usp-para">
-                                      Maintain accurate fleet information with automatic updates, helping you keep track of crucial data effortlessly.
-                                    </p>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <!-- Button -->
-                          <div class="palns-btn mt-5">
-                          <a href="{{route('buy')}}" class="mainBtn">
-                              Buy Plan
-</a>
-                          </div>
-                        </div>
 
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <!-- Yearly Plan -->
+                  <div id="yearly_plans" class="yearly_plans">
+                    <div class="text-center mb-5 mt-3">
+                      <p>
+                        Invest in the Premium+ Yearly Subscription today and experience the complete power of ZeroIFTA!
+                      </p>
+                    </div>
+                    <div class="row">
+                      <!-- Plan 1 -->
+                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                        <div class="price_plans sbsp-com weekly-plan">
+                          <div class="ph-area">
+                            <h3>Basic Plan</h3>
+                            <p> $595 - Year</p>
+                            <span class="pt-1 usp-para">Equivalent to $51.25 per month (10% discount)</span>
+                          </div>
+                          <div class="sbp-section">
+                            <div>
+                              <h4 class="pb-3">Features</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fuel Station Recommendations</p>
+                                      <p class="usp-para">Get the best fuel stops based on the unburdened fuel price to maximize savings.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Monthly Savings and IFTA Reports</p>
+                                      <p class="usp-para">Review your savings each month to track how much you've kept in your pocket.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Customize odometer reading and truck MPG's</p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="pt-5">
+                              <h4 class="pb-3">What's Not Included:</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                        <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">No live vehicle tracking or alerts.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                        <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-para">No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                        <path d="M10.0934 10.0146L5.92676 5.8479M10.0934 10.0146L14.2601 14.1812M10.0934 10.0146L14.2601 5.8479M10.0934 10.0146L5.92676 14.1812" stroke="#B60F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-para">Can't customize fuel tank capacity </p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <!-- Button -->
+                            <div class="palns-btn mt-5">
+                              <a href="{{route('buy')}}" class="mainBtn">
+                                Buy Plan
+                              </a>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <!-- Plan 2 -->
+                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                        <div class="price_pm sbsp-com montly-plan top-plan">
+                          <div class="pop-div">
+                            <span>Recommended</span>
+                          </div>
+                          <div class="ph-area">
+                            <h3>Premium Plan</h3>
+                            <p> $730 - Year</p>
+                            <span class="pt-1 usp-para">Equivalent to $60.83 per month (around 9% discount)</span>
+                          </div>
+                          <div class="sbp-section">
+                            <!-- Sec 1 -->
+                            <div>
+                              <h4 class="pb-3">Features</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">All Features of the Basic Plan.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Automatic IFTA Reporting: </p>
+                                      <p class="usp-para">Simplify compliance with automated tax reporting.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fully Customizable App and Features:</p>
+                                      <p class="usp-para">
+                                        <b>Tailor the app to your needs.</b>
+                                      </p>
+                                      <ul class="pt-2">
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#19A130">
+                                            <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+                                          </svg> -->
+                                            <p>
+                                              <b>1.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Adjust settings like minimum gallons to fuel,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>2.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Add unlimited stops to trips,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>3.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Change the default reserve fuel amount,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>4.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Customize odometer reading and truck MPG's,
+                                            </p>
+                                          </div>
+                                        </li>
+                                        <li class="sbp-list mb-3">
+                                          <span style="color: #19A130">
+                                            <p>
+                                              <b>5.</b>
+                                            </p>
+                                          </span>
+                                          <div>
+                                            <p class="usp-para">
+                                              Customizable alerts (choose at wish preferred distances to get notified of your upcoming stop)
+                                            </p>
+                                          </div>
+                                        </li>
+                                      </ul>
+
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Live Vehicle Tracking: </p>
+                                      <p class="usp-para">Monitor your fleet in real-time and track your trucks' positions.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Alerts and Notifications: </p>
+                                      <p class="usp-para">Receive alerts if drivers miss suggested fuel stops or deviate from planned routes.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Advanced Trip Planning and Analytics: </p>
+                                      <p class="usp-para">Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data.</p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+
+
+                            <!-- Button -->
+                            <div class="palns-btn mt-5">
+                              <a href="{{route('buy')}}" class="mainBtn">
+                                Buy Plan
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Plan 3 -->
+                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                        <div class="price_plans sbsp-com weekly-plan">
+                          <div class="ph-area">
+                            <h3>Premium+ Subscription </h3>
+                            <p> $9950 - Year</p>
+                          </div>
+                          <div class="sbp-section">
+                            <div>
+                              <p class="usp-para pb-2">
+                                The Premium+ Yearly Subscription gives you full access to all of ZeroIFTA's most
+                                powerful features at a discounted rate, offering the ultimate solution for
+                                fleet management and fuel optimization.
+                              </p>
+                              <h4 class="pb-3">What's Included</h4>
+                              <div class="pp-inn">
+                                <ul>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fuel Station Recommendations:</p>
+                                      <p class="usp-para">Based on unburdened fuel prices for smarter fueling decisions.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Monthly Savings Reports:</p>
+                                      <p class="usp-para"> Track your savings and optimize your costs.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Automatic IFTA Reporting:</p>
+                                      <p class="usp-para">Eliminate audits and simplify tax compliance with automated reporting.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Live Vehicle Tracking and Alerts:</p>
+                                      <p class="usp-para">Monitor your fleet in real-time and receive alerts for missed stops or route changes.</p>
+                                    </div>
+                                  </li>
+
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Fully Customizable App:</p>
+                                      <p class="usp-para">Adjust settings like minimum gallons to fuel, add stops, and tailor the app to fit your needs.</p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Advanced Trip Planning and Analytics:</p>
+                                      <p class="usp-para">
+                                        Utilize predictive fuel pricing, weather data, and vehicle performance insights for efficient route planning.
+                                      </p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">API Integration with Admin Panel:</p>
+                                      <p class="usp-para">
+                                        Seamlessly connect your software with ZeroIFTA, ensuring all truck, driver, and crucial fleet information is automatically shared and synced without manual input.
+                                      </p>
+                                    </div>
+                                  </li>
+                                  <li class="sbp-list mb-3">
+                                    <span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                                        <path d="M6.26598 19.073C5.80585 19.073 5.41195 18.8989 5.08428 18.5508C4.75661 18.2026 4.59277 17.7841 4.59277 17.2952V4.85078C4.59277 4.36189 4.75661 3.94337 5.08428 3.59522C5.41195 3.24707 5.80585 3.073 6.26598 3.073H17.9784C18.0899 3.073 18.1945 3.08411 18.2921 3.10633C18.3897 3.12855 18.4873 3.16189 18.5849 3.20633L17.0372 4.85078H6.26598V17.2952H17.9784V11.3841L19.6516 9.60633V17.2952C19.6516 17.7841 19.4878 18.2026 19.1601 18.5508C18.8324 18.8989 18.4385 19.073 17.9784 19.073H6.26598ZM11.7248 15.5174L6.998 10.4952L8.16924 9.25078L11.7248 13.0286L19.4006 4.873L20.5928 6.09522L11.7248 15.5174Z" fill="#19A130" />
+                                      </svg>
+                                    </span>
+                                    <div>
+                                      <p class="usp-head">Special Yearly Rate: $995:</p>
+                                      <p class="usp-para">
+                                        Secure the full suite of Premium+ features for a whole year and save over 15% compared to the monthly plan.
+                                        Enjoy seamless integration, powerful analytics, and advanced tools designed to
+                                        maximize your fleet's efficiency and keep your business running smoothly.
+                                      </p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <!-- Button -->
+                            <div class="palns-btn mt-5">
+                              <a href="{{route('buy')}}" class="mainBtn">
+                                Buy Plan
+                              </a>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -518,4 +924,6 @@
   </div>
 </body>
 <script src="{{asset('assets/js/script.js')}}"></script>
+
+
 </html>

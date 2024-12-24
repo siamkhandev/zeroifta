@@ -1365,6 +1365,18 @@ Companies Managemnet
 /* ========================================================================
 Subscription Plan
 ========================================================================= */
+.sub-toggel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.sub-toggel .slider {
+    background-color: #0c388b;
+}
+.sub-toggel .slider:before {
+    background-color: #ffffff;
+}
 .plan-com {
     border-radius: 10px;
     text-align: center;
