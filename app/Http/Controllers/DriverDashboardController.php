@@ -29,7 +29,7 @@ class DriverDashboardController extends Controller
         if ($vehicle && $vehicle->vehicle) {
             $vehicle->vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle->vehicle_image);
         }
-        //$dashboardData['vehicle'] = $vehicle;
+        $dashboardData['vehicle'] = $vehicle;
 
         // Fetch the last 5 trips
         $trips = Trip::select('id', 'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng', 'status', 'created_at')
