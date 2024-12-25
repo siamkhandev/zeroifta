@@ -22,18 +22,27 @@ class DriverDashboardController extends Controller
         $dashboardData = [];
 
         // Fetch vehicle data
-        $vehicle = DriverVehicle::with('vehicle:id,vehicle_image,vehicle_number,mpg,odometer_reading,fuel_left,fuel_tank_capacity,model,make,make_year,license_plate_number') // Select only required fields
-            ->where('driver_id', $request->driver_id)
-            ->first();
-            if ($vehicle && $vehicle->vehicle) {
-                // Merge nested vehicle data into the main vehicle object
-                $vehicleData = array_merge($vehicle->toArray(), $vehicle->vehicle->toArray());
-                $vehicleData['vehicle_image'] = url('vehicles/' . $vehicle->vehicle->vehicle_image);
-                unset($vehicleData['vehicle']); // Remove the nested vehicle object
-            } else {
-                $vehicleData = null; // No vehicle data
-            }
-            $dashboardData['vehicle'] = $vehicleData;
+        $vehicle = Vehicle::select(
+            'id',
+            'vehicle_image',
+            'vehicle_number',
+            'mpg',
+            'odometer_reading',
+            'fuel_left',
+            'fuel_tank_capacity',
+            'model',
+            'make',
+            'make_year',
+            'license_plate_number'
+        )
+        ->whereHas('driverVehicle', function ($query) use ($request) {
+            $query->where('driver_id', $request->driver_id);
+        })
+        ->first();
+        if ($vehicle) {
+            $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+        }
+            $dashboardData['vehicle'] = $vehicle;
         
         
 
