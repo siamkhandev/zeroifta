@@ -22,7 +22,7 @@ class DriverDashboardController extends Controller
         $dashboardData = [];
 
         // Fetch vehicle data
-        $vehicle = DriverVehicle::with('vehicle:id,vehicle_image,vehicle_number,mpg,odometer_reading,fuel_left,fuel_tank_capacity') // Select only required fields
+        $vehicle = DriverVehicle::with('vehicle:id,vehicle_image,vehicle_number,mpg,odometer_reading,fuel_left,fuel_tank_capacity','model','make','year','license_plate_number') // Select only required fields
             ->where('driver_id', $request->driver_id)
             ->first();
 

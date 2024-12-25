@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPasswordMail;
+use App\Models\DriverVehicle;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +35,12 @@ class AuthController extends Controller
             $user = Auth::user();
             $user->token = $user->createToken('zeroifta')->accessToken;
             $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->driver_image;
+            $vehicle = DriverVehicle::with('vehicle:id,vehicle_image,vehicle_number,mpg,odometer_reading,fuel_left,fuel_tank_capacity','model','make','year','license_plate_number') // Select only required fields
+            ->where('driver_id', $request->driver_id)
+            ->first();
+            $user->vehicle = $vehicle;
+            $checkSubscription = Payment::where('company_id',$user->id)->where('status','active')->first();
+            $user->subscription = $checkSubscription;
             return response()->json(['status'=>200,'message'=>'Logged in successfully','data' => $user], 200);
         } else {
             return response()->json(['status'=>401,'message'=>'Invalid Credentials','data' => (object)[]], 401);
