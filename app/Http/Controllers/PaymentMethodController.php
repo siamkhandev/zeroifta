@@ -19,14 +19,16 @@ class PaymentMethodController extends Controller
             'card_number' => 'nullable|string|max:16',
             'card_holder_name' => 'nullable|string|max:255',
             'expiry_date' => 'nullable|date_format:m/y',
+            'cvv' => 'nullable|numeric|digits_between:3,4', // Add CVV validation
         ]);
 
         $paymentMethod = PaymentMethod::create([
-            'user_id' =>$request->user_id,
+            'user_id' => $request->user_id,
             'method_name' => $validated['method_name'],
             'card_number' => $validated['card_number'],
             'card_holder_name' => $validated['card_holder_name'],
             'expiry_date' => $validated['expiry_date'],
+            'cvv' => $validated['cvv'], // Include CVV in create statement
         ]);
 
         return response()->json(['status'=>200,'message' => 'Payment method added successfully', 'data' => $paymentMethod]);
@@ -43,6 +45,8 @@ class PaymentMethodController extends Controller
             'card_number' => 'nullable|string|max:16',
             'card_holder_name' => 'nullable|string|max:255',
             'expiry_date' => 'nullable|date_format:m/y',
+            'cvv' => 'nullable|numeric|digits_between:3,4',
+
         ]);
 
         $paymentMethod = PaymentMethod::where('id', $id)->firstOrFail();

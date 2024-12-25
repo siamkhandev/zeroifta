@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('payment_methods', function (Blueprint $table) {
+            $table->string('cvv')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('payment_methods', function (Blueprint $table) {
+            $table->dropColumn('cvv');
         });
     }
 };
