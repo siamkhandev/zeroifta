@@ -78,6 +78,53 @@ class AuthController extends Controller
         $user->image = 'http://zeroifta.alnairtech.com/images/'.$user->image;
         return response()->json(['status'=>200,'message'=>'Profile Fetched successfully','data' => $user], 200);
     }
+    public function getProfile(Request $request)
+    {
+        $user = User::find($request->user_id);
+        if($user){
+            $vehicle = Vehicle::select(
+                'id',
+                'vehicle_image',
+                'vehicle_number',
+                'mpg',
+                'odometer_reading',
+                'fuel_left',
+                'fuel_tank_capacity',
+                'model',
+                'make',
+                'make_year',
+                'license_plate_number'
+            )
+            ->whereHas('driverVehicle', function ($query) use ($request) {
+                $query->where('driver_id', $request->driver_id);
+            })
+            ->first();
+            if ($vehicle) {
+                $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+            }
+            $user->vehicle = $vehicle;
+            $checkSubscription = Payment::where('company_id',$user->id)->where('status','active')->first();
+            $user->subscription = $checkSubscription;
+            return response()->json(['status'=>200,'message'=>'profile fetched successfully','data'=>$user]);
+        }else{
+            return response()->json(['status'=>404,'message'=>'No user found','data'=>(object)[]]);
+        }
+    }
+    public function selectVehicle(Request $request)
+    {
+        $driver_vehicle = DriverVehicle::where('driver_id',$request->user_id)->first();
+        if($driver_vehicle){
+            $driver_vehicle->delete();
+        }
+        DriverVehicle::create(
+            [
+                'driver_id'=>$request->user_id,
+                'vehicle_id'=>$request->vehicle_id,
+            ]
+            );
+        $vehicle = Vehicle::select('id','vehicle_image','vehicle_number','mpg','odometer_reading','fuel_left','fuel_tank_capacity','model','make','make_year','license_plate_number')->whereId($request->vehicle_id)->first();
+        return response()->json(['status'=>200,'message'=>'vehicle selecte successfully','data'=>$vehicle]);
+    }
     public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [

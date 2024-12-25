@@ -12,6 +12,7 @@ use App\Http\Controllers\StopController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,8 @@ Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
+    Route::post('get-profile',[AuthController::class,'getProfile']);
+    Route::post('select-vehicle',[AuthController::class,'selectVehicle']);
     Route::post('password/change',[AuthController::class,'changePassword']);
     Route::post('profile/update',[AuthController::class,'profileUpdate']);
     ////dashboard/////
