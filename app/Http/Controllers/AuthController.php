@@ -49,8 +49,8 @@ class AuthController extends Controller
                 'make_year',
                 'license_plate_number'
             )
-            ->whereHas('driverVehicle', function ($query) use ($request) {
-                $query->where('driver_id', $request->driver_id);
+            ->whereHas('driverVehicle', function ($query) use ($request,$user) {
+                $query->where('driver_id', $user->id);
             })
             ->first();
             if ($vehicle) {
