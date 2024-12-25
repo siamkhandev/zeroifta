@@ -66,7 +66,7 @@ class VehicleController extends Controller
     public function allVehicles(Request $request)
     {
         $driverVehicles = DriverVehicle::where('driver_id',$request->driver_id)->get();
-        $vehicles = Vehicle::whereIn('id', $driverVehicles->pluck('vehicle_id'))->get();
+        $vehicles = Vehicle::whereIn('id', $driverVehicles->pluck('vehicle_id'))->select('id','vehicle_image','vehicle_number','mpg','odometer_reading','fuel_left','fuel_tank_capacity')->get();
         if(count($vehicles) >0){
             foreach ($vehicles as $vehicle) {
                 if (isset($vehicle->vehicle_image)) {
