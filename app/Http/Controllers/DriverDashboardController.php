@@ -25,11 +25,17 @@ class DriverDashboardController extends Controller
         $vehicle = DriverVehicle::with('vehicle:id,vehicle_image,vehicle_number,mpg,odometer_reading,fuel_left,fuel_tank_capacity,model,make,make_year,license_plate_number') // Select only required fields
             ->where('driver_id', $request->driver_id)
             ->first();
-
-        if ($vehicle && $vehicle->vehicle) {
-            $vehicle->vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle->vehicle_image);
-        }
-        $dashboardData['vehicle'] = $vehicle;
+            if ($vehicle && $vehicle->vehicle) {
+                // Merge nested vehicle data into the main vehicle object
+                $vehicleData = array_merge($vehicle->toArray(), $vehicle->vehicle->toArray());
+                $vehicleData['vehicle_image'] = url('vehicles/' . $vehicle->vehicle->vehicle_image);
+                unset($vehicleData['vehicle']); // Remove the nested vehicle object
+            } else {
+                $vehicleData = null; // No vehicle data
+            }
+            $dashboardData['vehicle'] = $vehicleData;
+        
+        
 
         // Fetch the last 5 trips
         $trips = Trip::select('id', 'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng', 'status', 'created_at')
