@@ -124,7 +124,8 @@ class AuthController extends Controller
             ]
             );
         $vehicle = Vehicle::select('id','vehicle_image','vehicle_number','mpg','odometer_reading','fuel_left','fuel_tank_capacity','model','make','make_year','license_plate_number')->whereId($request->vehicle_id)->first();
-        return response()->json(['status'=>200,'message'=>'vehicle selecte successfully','data'=>$vehicle]);
+        $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+        return response()->json(['status'=>200,'message'=>'vehicle selected successfully','data'=>$vehicle]);
     }
     public function changePassword(Request $request)
     {
