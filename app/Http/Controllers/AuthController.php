@@ -35,7 +35,7 @@ class AuthController extends Controller
             $user = Auth::user();
             $user->token = $user->createToken('zeroifta')->accessToken;
             $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->driver_image;
-            $vehicle = DriverVehicle::with('vehicle:id,vehicle_image,vehicle_number,mpg,odometer_reading,fuel_left,fuel_tank_capacity','model','make','year','license_plate_number') // Select only required fields
+            $vehicle = DriverVehicle::with('vehicle:id,vehicle_image,vehicle_number,mpg,odometer_reading,fuel_left,fuel_tank_capacity,model,make,make_year,license_plate_number') // Select only required fields
             ->where('driver_id', $request->driver_id)
             ->first();
             $user->vehicle = $vehicle;
