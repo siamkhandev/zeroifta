@@ -6,6 +6,7 @@ use App\Mail\ResetPasswordMail;
 use App\Models\DriverVehicle;
 use App\Models\Payment;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
