@@ -83,7 +83,7 @@ class IndependentTruckerController extends Controller
 
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
-        $vehicle->vehicle_number = $request->vehicle_number;
+        $vehicle->vehicle_number = $request->license_number;
         $vehicle->odometer_reading	 = $request->odometer_reading;
         $vehicle->company_id = $request->driver_id;
         $vehicle->mpg= $request->mpg;
