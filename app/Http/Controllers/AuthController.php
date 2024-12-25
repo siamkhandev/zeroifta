@@ -120,6 +120,7 @@ class AuthController extends Controller
             [
                 'driver_id'=>$request->user_id,
                 'vehicle_id'=>$request->vehicle_id,
+                'company_id'=>$request->user_id,
             ]
             );
         $vehicle = Vehicle::select('id','vehicle_image','vehicle_number','mpg','odometer_reading','fuel_left','fuel_tank_capacity','model','make','make_year','license_plate_number')->whereId($request->vehicle_id)->first();
