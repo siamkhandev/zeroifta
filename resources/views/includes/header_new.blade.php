@@ -76,7 +76,12 @@
     @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'create')
         <span class="bc-text">Pages / Create Driver</span>
         <h1 class="head-1">Create Driver</h1>
-
+        @elseif($currentSegment2 == 'company' && $currentSegment3 == 'contactus')
+        <span class="bc-text">Pages / Contact Us</span>
+        <h1 class="head-1">Contact Us</h1>
+        @elseif($currentSegment2 == 'subscribe')
+        <span class="bc-text">Pages / Subscriptions</span>
+        <h1 class="head-1">Subscriptions </h1>
     @else
         <!-- Default case -->
     @endif
