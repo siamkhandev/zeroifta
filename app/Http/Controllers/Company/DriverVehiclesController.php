@@ -32,6 +32,10 @@ class DriverVehiclesController extends Controller
             'vehicle_id' => 'required',
 
         ]);
+        $checkVehicle = DriverVehicle::where('vehicle_id',$request->vehicle_id)->first();
+        if($checkVehicle){
+            return redirect()->back()->withError('Vehicle already assigned. Please select another vehicle or remove the vehicle from the driver.');
+        }
         $check = DriverVehicle::where('driver_id',$request->driver_id)->where('vehicle_id',$request->vehicle_id)->first();
         if(!$check){
             $vehicle = new DriverVehicle();

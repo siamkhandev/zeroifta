@@ -4,78 +4,84 @@
 
     <div class="head-left">
     <div class="bread_crum">
-        @php
-            $currentSegment = Request::segment(2); // Adjust segment index based on your route structure
-        @endphp
+    @php
+        $currentSegment2 = Request::segment(2); // Second segment
+        $currentSegment3 = Request::segment(3); // Third segment
+    @endphp
 
-        @if($currentSegment == '')
+    @if($currentSegment2 == '')
         <span class="bc-text">Pages / Dashboard</span>
         <h1 class="head-1">Main Dashboard</h1>
 
-        @elseif($currentSegment == 'fleet')
+    @elseif($currentSegment2 == 'fleet')
         <span class="bc-text">Pages / Fleet Management</span>
         <h1 class="head-1">Fleet Management</h1>
 
-        @elseif($currentSegment == 'profile')
+    @elseif($currentSegment2 == 'profile')
         <span class="bc-text">Pages / Profile Management</span>
         <h1 class="head-1">Profile Management</h1>
 
-        @elseif(str_contains($currentSegment, 'vehicles'))
+    @elseif($currentSegment2 == 'vehicles')
         <span class="bc-text">Pages / Vehicles</span>
         <h1 class="head-1">Manage Vehicles</h1>
 
-        @elseif($currentSegment == 'vehicle' && Request::segment(3) == 'create')
+    @elseif($currentSegment2 == 'vehicle' && $currentSegment3 == 'create')
         <span class="bc-text">Pages / Vehicles</span>
         <h1 class="head-1">Create Vehicles</h1>
 
-        @elseif($currentSegment == 'drivers' && Request::segment(3) == 'all')
+    @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'all')
         <span class="bc-text">Pages / Drivers</span>
         <h1 class="head-1">Manage Drivers</h1>
 
-        @elseif(str_contains($currentSegment, 'driver/vehicles'))
+    @elseif($currentSegment2 == 'driver' && $currentSegment3 == 'vehicles')
         <span class="bc-text">Pages / Driver Vehicles</span>
         <h1 class="head-1">Manage Driver Vehicles</h1>
 
-        @elseif($currentSegment == 'subscribe')
+    @elseif($currentSegment2 == 'driver' && $currentSegment3 == 'vehicles/add')
+        <span class="bc-text">Pages / Driver Vehicles</span>
+        <h1 class="head-1">Add Driver Vehicles</h1>
+
+    @elseif($currentSegment2 == 'subscribe')
         <span class="bc-text">Pages / Subscribe</span>
         <h1 class="head-1">Subscriptions</h1>
 
-        @elseif($currentSegment == 'company.contactus')
+    @elseif($currentSegment2 == 'company.contactus')
         <span class="bc-text">Pages / Contact Us</span>
         <h1 class="head-1">Contact Us</h1>
 
-        @elseif($currentSegment == 'allvehicles')
+    @elseif($currentSegment2 == 'allvehicles')
         <span class="bc-text">Pages / All Vehicles</span>
         <h1 class="head-1">All Vehicles</h1>
 
-        @elseif(str_contains($currentSegment, 'fuel_taxes'))
+    @elseif(str_contains($currentSegment2, 'fuel_taxes'))
         <span class="bc-text">Pages / Fuel Taxes</span>
         <h1 class="head-1">Fuel Taxes</h1>
 
-        @elseif(str_contains($currentSegment, 'payments'))
+    @elseif(str_contains($currentSegment2, 'payments'))
         <span class="bc-text">Pages / Payments</span>
         <h1 class="head-1">Payments</h1>
 
-        @elseif(str_contains($currentSegment, 'companies'))
+    @elseif(str_contains($currentSegment2, 'companies'))
         <span class="bc-text">Pages / Companies</span>
         <h1 class="head-1">Companies</h1>
 
-        @elseif(str_contains($currentSegment, 'plans'))
+    @elseif(str_contains($currentSegment2, 'plans'))
         <span class="bc-text">Pages / Subscriptions</span>
         <h1 class="head-1">Subscriptions</h1>
 
-        @elseif(str_contains($currentSegment, 'contactus/all'))
+    @elseif(str_contains($currentSegment2, 'contactus/all'))
         <span class="bc-text">Pages / Contact Forms</span>
         <h1 class="head-1">Contact Forms</h1>
 
-        @elseif(str_contains($currentSegment, 'drivers/create'))
+    @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'create')
         <span class="bc-text">Pages / Create Driver</span>
         <h1 class="head-1">Create Driver</h1>
 
-        @else
+    @else
         <!-- Default case -->
-        @endif
-    </div>
+    @endif
+</div>
+
 </div>
 
     </div>
