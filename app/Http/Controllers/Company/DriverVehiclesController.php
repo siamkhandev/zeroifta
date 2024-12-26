@@ -58,6 +58,7 @@ class DriverVehiclesController extends Controller
 
 public function reassign(Request $request)
 {
+    dd($request->all());
     $data = $request->validate([
         'driver_vehicle_id' => 'required|exists:driver_vehicles,id',
         'driver_id' => 'required|exists:drivers,id',
