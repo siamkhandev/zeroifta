@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use App\Models\Subscription;
+use App\Models\User;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 
@@ -23,17 +25,20 @@ class SubscriptionController extends Controller
         $request->validate([
             'plan_id' => 'required|string',
             'payment_method_id' => 'required|string',
-            'has_trial' => 'boolean',
+
         ]);
 
-        $user = auth()->user();
+        $user =User::find($request->user_id);
+        $plan = Plan::findOrFail($request->plan_id);
 
+        // Determine if the plan has a trial
+        $hasTrial = $plan->price == 0 ?? false;
         // Create the subscription
         $subscription = $this->subscriptionService->createSubscription(
             $user,
             $request->plan_id,
             $request->payment_method_id,
-            $request->has('has_trial') && $request->has_trial
+            $hasTrial
         );
 
         return response()->json([
