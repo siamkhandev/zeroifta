@@ -1365,11 +1365,42 @@ Companies Managemnet
 /* ========================================================================
 Subscription Plan
 ========================================================================= */
+.blink_me {
+    animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0.2;
+    }
+}
+.subs-PlansMain {
+    padding: 0 150px;
+}
+.plans-toggel {
+    margin: 20px 0 50px 0;
+}
 .sub-toggel {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+.usp-green {
+    color: #19a130;
+    font-size: 15px;
+    font-weight: 600;
+}
+.usp-yellow {
+    font-size: 15px;
+    font-weight: 600;
+    color: #b60f0f;
+}
+.usp-ys {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffbc13;
+    text-transform: capitalize;
 }
 .sub-toggel .slider {
     background-color: #0c388b;
