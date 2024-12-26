@@ -54,7 +54,7 @@ class SubscriptionService
                 $user->stripe_customer_id = $stripeCustomer->id;
                 $user->save();
             }
-
+            $paymentMethod = \App\Models\PaymentMethod::findOrFail($paymentMethodId);
             // Retrieve and attach the payment method to the customer
             $paymentMethod = \Stripe\PaymentMethod::retrieve($paymentMethodId);
             $paymentMethod->attach(['customer' => $user->stripe_customer_id]);

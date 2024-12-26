@@ -22,7 +22,7 @@ class DriverVehiclesController extends Controller
         $drivers = CompanyDriver::with('driver')->where('company_id',Auth::id())->get();
         $vehicles = Vehicle::where('company_id',Auth::id())->pluck('id');
         $check = DriverVehicle::whereIn('vehicle_id',$vehicles)->get();
-        $vehicles = Vehicle::where('company_id',Auth::id())->whereNotIn('id',$check->pluck('vehicle_id'))->get();
+        //$vehicles = Vehicle::where('company_id',Auth::id())->whereNotIn('id',$check->pluck('vehicle_id'))->get();
         return view('company.driver_vehicles.create',get_defined_vars());
     }
     public function store(Request $request)
@@ -30,7 +30,7 @@ class DriverVehiclesController extends Controller
         $data = $request->validate([
             'driver_id' => 'required',
             'vehicle_id' => 'required',
-           
+
         ]);
         $check = DriverVehicle::where('driver_id',$request->driver_id)->where('vehicle_id',$request->vehicle_id)->first();
         if(!$check){
@@ -43,12 +43,12 @@ class DriverVehiclesController extends Controller
         }else{
             return redirect()->back()->withError('Vehicle already assigned');
         }
-      
+
     }
     public function edit($id)
     {
         $vehicle = DriverVehicle::find($id);
-       
+
         $drivers = CompanyDriver::with('driver')->where('company_id',Auth::id())->get();
         $vehicles = Vehicle::where('company_id',Auth::id())->pluck('id');
         $check = DriverVehicle::whereIn('vehicle_id',$vehicles)->get();
@@ -57,8 +57,8 @@ class DriverVehiclesController extends Controller
     }
     public function update(Request $request,$id)
     {
-       
-        
+
+
         // $check = DriverVehicle::where('driver_id',$request->driver_id)->where('vehicle_id',$request->vehicle_id)->first();
         // if(!$check){
             $vehicle = DriverVehicle::find($id);
