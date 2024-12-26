@@ -70,7 +70,7 @@
                 <!-- Message will be populated dynamically -->
             </div>
             <form id="reassignForm" action="{{route('driver_vehicles.reassign')}}" method="post">
-                <input type="hidden" name="driver_vehicle_id" value="">
+                <input type="hidden" name="driver_vehicle_id" value="" id="driverVehicleId">
                 <input type="hidden" name="driver_id" value="">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -104,7 +104,8 @@
                 // Show modal
                 const modal = document.getElementById('reassignModal');
                 modal.querySelector('.modal-body').innerText = data.message;
-                modal.querySelector('form').dataset.driverVehicleId = data.driver_vehicle_id;
+                $("#driverVehicleId").val(data.driver_vehicle_id);
+                //modal.querySelector('form').dataset.driverVehicleId = data.driver_vehicle_id;
                 modal.querySelector('form input[name="driver_id"]').value = formData.get('driver_id');
                 $('#reassignModal').modal('show');
             } else if (data.status === 'success') {
