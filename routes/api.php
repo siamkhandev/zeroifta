@@ -9,6 +9,7 @@ use App\Http\Controllers\IndependentTruckerController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\StopController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Http\Request;
@@ -82,3 +83,15 @@ Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPayment
 Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
 Route::delete('/payment-methods/{id}', [PaymentMethodController::class, 'deletePaymentMethod']);
 Route::post('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
+
+/////
+Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+
+// Get available subscription plans
+Route::get('/subscription/plans', [SubscriptionController::class, 'getPlans']);
+
+// Cancel subscription
+Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
+
+// Get subscription details
+Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
