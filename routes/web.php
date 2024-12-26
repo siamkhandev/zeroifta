@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
         Route::get('vehicle/delete/{id}', [VehiclesController::class, 'delete'])->name('vehicle.delete');
         Route::get('/vehicles/import', [VehiclesController::class, 'importForm'])->name('vehicles.importform');
         Route::post('/vehicles/import', [VehiclesController::class, 'import'])->name('vehicle.import');
-
+        Route::post('/vehicles/check-vin', [VehiclesController::class, 'checkVin'])->name('vehicle.checkVin');
         Route::get('/driver/vehicles', [DriverVehiclesController::class, 'index'])->name('driver_vehicles');
         Route::get('driver/vehicles/add', [DriverVehiclesController::class, 'create'])->name('driver_vehicles.add');
         Route::post('driver/vehicles/store', [DriverVehiclesController::class, 'store'])->name('driver_vehicles.store');
@@ -110,7 +110,7 @@ Route::middleware('auth')->group(function () {
         Route::post('driver/vehicles/update/{id}', [DriverVehiclesController::class, 'update'])->name('driver_vehicles.update');
         Route::get('driver/vehicles/delete/{id}', [DriverVehiclesController::class, 'destroy'])->name('driver_vehicles.delete');
         Route::post('/driver-vehicles/check-driver-assignment', [DriverVehiclesController::class, 'checkDriverAssignment'])->name('driver_vehicles.check_driver_assignment');
-Route::post('/driver-vehicles/check-vehicle-assignment', [DriverVehiclesController::class, 'checkVehicleAssignment'])->name('driver_vehicles.check_vehicle_assignment');
+        Route::post('/driver-vehicles/check-vehicle-assignment', [DriverVehiclesController::class, 'checkVehicleAssignment'])->name('driver_vehicles.check_vehicle_assignment');
         Route::get('drivers/all', [DriversController::class, 'index'])->name('drivers.all');
         Route::get('drivers/create', [DriversController::class, 'create'])->name('drivers.create');
         Route::post('drivers/store', [DriversController::class, 'store'])->name('driver.store');

@@ -246,6 +246,7 @@
                 <button type="submit"  class="mainBtn">{{__('messages.Submit')}}</a>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -253,38 +254,29 @@
 @endsection
 @section('scripts')
 <script>
-$(document).ready(function() {
-    $('#checkVinBtn').on('click', function() {
-        const vin = $('#vinInput').val().trim();
+document.getElementById('checkVinBtn').addEventListener('click', function () {
+    const vin = document.getElementById('vinInput').value;
 
-        if (vin.length !== 17) {
-            alert('Please enter a valid 17-character VIN.');
-            return;
+    fetch("{{ route('vehicle.checkVin') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ vin })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Populate vehicle details
+            document.getElementById('make').textContent = data.data.make;
+            document.getElementById('model').textContent = data.data.model;
+            document.getElementById('year').textContent = data.data.year;
+        } else {
+            alert(data.message);
         }
-
-        $.ajax({
-            url: `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/${vin}?format=json`,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                const vehicleData = data.Results[0];
-
-                if (vehicleData.Make && vehicleData.Model && vehicleData.VIN) {
-                    $('#make').text(vehicleData.Make);
-                    $('#model').text(vehicleData.Model);
-                    $('#vinResult').text(vehicleData.ModelYear);
-                    $('#vehicleInfo').show();
-                } else {
-                    alert('No vehicle information found for this VIN.');
-                    $('#vehicleInfo').hide();
-                }
-            },
-            error: function() {
-                alert('An error occurred while checking the VIN.');
-                $('#vehicleInfo').hide();
-            }
-        });
-    });
+    })
+    .catch(error => console.error('Error:', error));
 });
 </script>
 @endsection
