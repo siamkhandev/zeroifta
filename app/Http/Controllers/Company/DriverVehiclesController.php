@@ -58,26 +58,23 @@ class DriverVehiclesController extends Controller
 
 public function reassign(Request $request)
 {
+   
     $data = $request->validate([
         'driver_vehicle_id' => 'required|exists:driver_vehicles,id',
-        'new_driver_id' => 'required|exists:drivers,id',
-        'vehicle_id' => 'required|exists:vehicles,id',
+        'driver_id' => 'required|exists:users,id',
     ]);
 
-    // Remove current assignment
-    $currentAssignment = DriverVehicle::find($request->driver_vehicle_id);
-    if ($currentAssignment) {
-        $currentAssignment->delete();
-    }
+   
+        $driverVehicle = DriverVehicle::find($data['driver_vehicle_id']);
+        
+        $driverVehicle->driver_id = $data['driver_id'];
+        $driverVehicle->save();
 
-    // Assign the vehicle to the new driver
-    DriverVehicle::create([
-        'driver_id' => $request->new_driver_id,
-        'vehicle_id' => $request->vehicle_id,
-        'company_id' => Auth::id(),
-    ]);
-
-    return redirect()->route('driver_vehicles')->with('success', 'Vehicle reassigned successfully.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Vehicle reassigned successfully.',
+        ]);
+    
 }
 public function checkAssignment(Request $request)
 {
