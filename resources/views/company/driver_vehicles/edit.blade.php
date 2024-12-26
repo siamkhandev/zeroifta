@@ -49,4 +49,58 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="reassignModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="reassignForm" action="{{ route('driver_vehicles.reassign') }}" method="post">
+            @csrf
+            <input type="hidden" name="driver_vehicle_id" id="driver_vehicle_id" value="{{ $vehicle->id }}">
+            <input type="hidden" name="new_driver_id" id="new_driver_id">
+            <input type="hidden" name="vehicle_id" id="vehicle_id">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reassign Vehicle</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Reassign</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function () {
+    $('select[name="vehicle_id"]').on('change', function () {
+        const vehicleId = $(this).val();
+        const driverId = $('select[name="driver_id"]').val();
+
+        if (vehicleId) {
+            $.ajax({
+                url: '{{ route("driver_vehicles.check_assignment") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    vehicle_id: vehicleId,
+                    driver_id: driverId,
+                },
+                success: function (response) {
+                    if (response.assigned && response.current_driver) {
+                        // Populate the modal
+                        $('#modalMessage').text(`This vehicle is already assigned to driver ${response.current_driver}. Do you want to reassign it?`);
+                        $('#new_driver_id').val(driverId);
+                        $('#vehicle_id').val(vehicleId);
+                        $('#reassignModal').modal('show');
+                    }
+                },
+            });
+        }
+    });
+});
+</script>
 @endsection
