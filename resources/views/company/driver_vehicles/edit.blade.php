@@ -30,7 +30,7 @@
                         <select name="vehicle_id" class="form-control login-input" >
                         <option value="">Select</option>
                         @foreach($vehicles as $vehicle1)
-                        <option value="{{$vehicle1->id}}" {{$vehicle->vehicle_id ==$vehicle1->id ? 'selected':'' }}>{{$vehicle1->vehicle_number}}</option>
+                        <option value="{{$vehicle1->id}}" {{$vehicle->vehicle_id ==$vehicle1->id ? 'selected':'' }}>{{$vehicle1->license_plate_number}} - {{$vehicle1->make}}</option>
                         @endforeach
                       </select>
                     </div>
