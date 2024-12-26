@@ -121,7 +121,7 @@ public function checkVehicleAssignment(Request $request)
     }
     public function update(Request $request,$id)
     {
-// dd($request->all());
+dd($request->all());
 
         // $check = DriverVehicle::where('driver_id',$request->driver_id)->where('vehicle_id',$request->vehicle_id)->first();
         // if(!$check){
