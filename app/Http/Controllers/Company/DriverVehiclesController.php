@@ -65,6 +65,7 @@ public function reassign(Request $request)
 
     try {
         $driverVehicle = DriverVehicle::findOrFail($data['driver_vehicle_id']);
+        dd($driverVehicle);
         $driverVehicle->driver_id = $data['driver_id'];
         $driverVehicle->save();
 
