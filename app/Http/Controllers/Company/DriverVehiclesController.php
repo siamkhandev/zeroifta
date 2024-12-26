@@ -42,6 +42,11 @@ class DriverVehiclesController extends Controller
             'driver_vehicle_id' => $checkVehicle->id
         ]);
     }
+    $checkDriver = DriverVehicle::where('driver_id', $request->driver_id)->first();
+
+    if ($checkDriver) {
+        DriverVehicle::where('driver_id', $request->driver_id)->delete();
+    }
 
     // Assign the vehicle if not already assigned
     $vehicle = new DriverVehicle();
