@@ -188,7 +188,11 @@
                                 </li>
                               </ul>
                             </div>
-
+                            <div class="text-center mb-5 mt-3">
+                              <p class="usp-para">
+                                Invest in the Premium + Yearly Subscription today and experience the complete power of ZeroIFTA!
+                              </p>
+                            </div>
 
                           </div>
 
@@ -572,7 +576,7 @@
                   <div id="yearly_plans" class="yearly_plans">
                     <div class="text-center mb-5 mt-3">
                       <p>
-                        Invest in the Premium+ Yearly Subscription today and experience the complete power of ZeroIFTA!
+                        Invest in the Premium + Yearly Subscription today and experience the complete power of ZeroIFTA!
                       </p>
                     </div>
                     <div class="row">
