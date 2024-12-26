@@ -105,6 +105,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/driver/vehicles', [DriverVehiclesController::class, 'index'])->name('driver_vehicles');
         Route::get('driver/vehicles/add', [DriverVehiclesController::class, 'create'])->name('driver_vehicles.add');
         Route::post('driver/vehicles/store', [DriverVehiclesController::class, 'store'])->name('driver_vehicles.store');
+        Route::post('driver/vehicles/reassign', [DriverVehiclesController::class, 'reassign'])->name('driver_vehicles.reassign');
         Route::get('driver/vehicles/edit/{id}', [DriverVehiclesController::class, 'edit'])->name('driver_vehicles.edit');
         Route::post('driver/vehicles/update/{id}', [DriverVehiclesController::class, 'update'])->name('driver_vehicles.update');
         Route::get('driver/vehicles/delete/{id}', [DriverVehiclesController::class, 'destroy'])->name('driver_vehicles.delete');

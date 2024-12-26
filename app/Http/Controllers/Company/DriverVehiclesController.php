@@ -26,29 +26,52 @@ class DriverVehiclesController extends Controller
         return view('company.driver_vehicles.create',get_defined_vars());
     }
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'driver_id' => 'required',
-            'vehicle_id' => 'required',
+{
+    $data = $request->validate([
+        'driver_id' => 'required',
+        'vehicle_id' => 'required',
+    ]);
 
+    $checkVehicle = DriverVehicle::where('vehicle_id', $request->vehicle_id)->first();
+
+    if ($checkVehicle) {
+        $currentDriver = $checkVehicle->driver->name; // Assuming a relation `driver` exists in DriverVehicle
+        return response()->json([
+            'status' => 'already_assigned',
+            'message' => "This vehicle is already assigned to driver {$currentDriver}. Do you want to reassign it?",
+            'driver_vehicle_id' => $checkVehicle->id
         ]);
-        $checkVehicle = DriverVehicle::where('vehicle_id',$request->vehicle_id)->first();
-        if($checkVehicle){
-            return redirect()->back()->withError('This vehicle is already assigned. Please select another vehicle or remove this vehicle from the driver.');
-        }
-        $check = DriverVehicle::where('driver_id',$request->driver_id)->where('vehicle_id',$request->vehicle_id)->first();
-        if(!$check){
-            $vehicle = new DriverVehicle();
-            $vehicle->driver_id = $request->driver_id;
-            $vehicle->vehicle_id = $request->vehicle_id;
-            $vehicle->company_id = Auth::id();
-            $vehicle->save();
-              return redirect('driver/vehicles')->withSuccess('Vehicle assigned successfully');
-        }else{
-            return redirect()->back()->withError('Vehicle already assigned');
-        }
-
     }
+
+    // Assign the vehicle if not already assigned
+    $vehicle = new DriverVehicle();
+    $vehicle->driver_id = $request->driver_id;
+    $vehicle->vehicle_id = $request->vehicle_id;
+    $vehicle->company_id = Auth::id();
+    $vehicle->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Vehicle assigned successfully',
+    ]);
+}
+
+public function reassign(Request $request)
+{
+    $data = $request->validate([
+        'driver_vehicle_id' => 'required|exists:driver_vehicles,id',
+        'driver_id' => 'required',
+    ]);
+
+    $driverVehicle = DriverVehicle::find($data['driver_vehicle_id']);
+    $driverVehicle->driver_id = $data['driver_id'];
+    $driverVehicle->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Vehicle reassigned successfully',
+    ]);
+}
     public function edit($id)
     {
         $vehicle = DriverVehicle::find($id);
