@@ -98,7 +98,7 @@ public function checkVehicleAssignment(Request $request)
     $assignment = DriverVehicle::where('vehicle_id', $vehicleId)->first();
 
     if ($assignment) {
-        $driver = Driver::find($assignment->driver_id);
+        $driver = User::find($assignment->driver_id);
         return response()->json([
             'assigned' => true,
             'message' => "Vehicle is already assigned to Driver: {$driver->name}. Do you want to reassign?"
