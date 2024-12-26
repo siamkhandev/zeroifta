@@ -76,16 +76,32 @@ public function reassign(Request $request)
         ]);
     
 }
-public function checkAssignment(Request $request)
+public function checkDriverAssignment(Request $request)
 {
-    $vehicleId = $request->vehicle_id;
-    $currentAssignment = DriverVehicle::where('vehicle_id', $vehicleId)->first();
+    $driverId = $request->driver_id;
+    $assignment = DriverVehicle::where('driver_id', $driverId)->first();
 
-    if ($currentAssignment) {
-        $currentDriver = $currentAssignment->driver->name; // Assuming driver relation exists
+    if ($assignment) {
+        $vehicle = Vehicle::find($assignment->vehicle_id);
         return response()->json([
             'assigned' => true,
-            'current_driver' => $currentDriver,
+            'message' => "Driver already has a vehicle assigned: {$vehicle->license_plate_number}. Do you want to reassign?"
+        ]);
+    }
+
+    return response()->json(['assigned' => false]);
+}
+
+public function checkVehicleAssignment(Request $request)
+{
+    $vehicleId = $request->vehicle_id;
+    $assignment = DriverVehicle::where('vehicle_id', $vehicleId)->first();
+
+    if ($assignment) {
+        $driver = Driver::find($assignment->driver_id);
+        return response()->json([
+            'assigned' => true,
+            'message' => "Vehicle is already assigned to Driver: {$driver->name}. Do you want to reassign?"
         ]);
     }
 
