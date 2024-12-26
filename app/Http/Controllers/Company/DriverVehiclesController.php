@@ -65,7 +65,10 @@ public function reassign(Request $request)
     ]);
 
    
-        $driverVehicle = DriverVehicle::whereId($data['driver_vehicle_id'])->delete();
+        $driverVehicle = DriverVehicle::whereId($data['driver_vehicle_id'])->first();
+        if($driverVehicle){
+            $driverVehicle->delete();
+        }
         $newDVehicle = DriverVehicle::create([
             'driver_id' => $data['driver_id'],
             'vehicle_id' => $driverVehicle->vehicle_id,
