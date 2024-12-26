@@ -60,7 +60,7 @@
 <div class="modal fade" id="reassignModal" tabindex="-1" role="dialog" aria-labelledby="reassignModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="justify-content: left;">
                 <h5 class="modal-title" id="reassignModalLabel">Reassign Vehicle</h5>
                
             </div>
