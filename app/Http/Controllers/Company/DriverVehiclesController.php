@@ -60,17 +60,24 @@ public function reassign(Request $request)
 {
     $data = $request->validate([
         'driver_vehicle_id' => 'required|exists:driver_vehicles,id',
-        'driver_id' => 'required',
+        'driver_id' => 'required|exists:drivers,id',
     ]);
 
-    $driverVehicle = DriverVehicle::find($data['driver_vehicle_id']);
-    $driverVehicle->driver_id = $data['driver_id'];
-    $driverVehicle->save();
+    try {
+        $driverVehicle = DriverVehicle::findOrFail($data['driver_vehicle_id']);
+        $driverVehicle->driver_id = $data['driver_id'];
+        $driverVehicle->save();
 
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Vehicle reassigned successfully',
-    ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Vehicle reassigned successfully.',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'An error occurred: ' . $e->getMessage(),
+        ], 500);
+    }
 }
     public function edit($id)
     {
