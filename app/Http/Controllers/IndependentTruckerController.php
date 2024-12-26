@@ -77,13 +77,13 @@ class IndependentTruckerController extends Controller
             "license_number"=>'required|unique:vehicles,license_plate_number',
             'odometer_reading' => 'required',
             'mpg' => 'required',
-            'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
 
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
-        $vehicle->vehicle_number = $request->vehicle_number;
+        $vehicle->vehicle_number = $request->license_number;
         $vehicle->odometer_reading	 = $request->odometer_reading;
         $vehicle->company_id = $request->driver_id;
         $vehicle->mpg= $request->mpg;

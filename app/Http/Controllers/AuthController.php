@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPasswordMail;
+use App\Models\DriverVehicle;
+use App\Models\Payment;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +36,29 @@ class AuthController extends Controller
             $user = Auth::user();
             $user->token = $user->createToken('zeroifta')->accessToken;
             $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->driver_image;
+            $vehicle = Vehicle::select(
+                'id',
+                'vehicle_image',
+                'vehicle_number',
+                'mpg',
+                'odometer_reading',
+                'fuel_left',
+                'fuel_tank_capacity',
+                'model',
+                'make',
+                'make_year',
+                'license_plate_number'
+            )
+            ->whereHas('driverVehicle', function ($query) use ($request,$user) {
+                $query->where('driver_id', $user->id);
+            })
+            ->first();
+            if ($vehicle) {
+                $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+            }
+            $user->vehicle = $vehicle;
+            $checkSubscription = Payment::where('company_id',$user->id)->where('status','active')->first();
+            $user->subscription = $checkSubscription;
             return response()->json(['status'=>200,'message'=>'Logged in successfully','data' => $user], 200);
         } else {
             return response()->json(['status'=>401,'message'=>'Invalid Credentials','data' => (object)[]], 401);
@@ -51,6 +77,55 @@ class AuthController extends Controller
         $user = User::whereId($request->user_id)->first();
         $user->image = 'http://zeroifta.alnairtech.com/images/'.$user->image;
         return response()->json(['status'=>200,'message'=>'Profile Fetched successfully','data' => $user], 200);
+    }
+    public function getProfile(Request $request)
+    {
+        $user = User::find($request->user_id);
+        if($user){
+            $vehicle = Vehicle::select(
+                'id',
+                'vehicle_image',
+                'vehicle_number',
+                'mpg',
+                'odometer_reading',
+                'fuel_left',
+                'fuel_tank_capacity',
+                'model',
+                'make',
+                'make_year',
+                'license_plate_number'
+            )
+            ->whereHas('driverVehicle', function ($query) use ($request) {
+                $query->where('driver_id', $request->user_id);
+            })
+            ->first();
+            if ($vehicle) {
+                $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+            }
+            $user->vehicle = $vehicle;
+            $checkSubscription = Payment::where('company_id',$user->id)->where('status','active')->first();
+            $user->subscription = $checkSubscription;
+            return response()->json(['status'=>200,'message'=>'profile fetched successfully','data'=>$user]);
+        }else{
+            return response()->json(['status'=>404,'message'=>'No user found','data'=>(object)[]]);
+        }
+    }
+    public function selectVehicle(Request $request)
+    {
+        $driver_vehicle = DriverVehicle::where('driver_id',$request->user_id)->first();
+        if($driver_vehicle){
+            $driver_vehicle->delete();
+        }
+        DriverVehicle::create(
+            [
+                'driver_id'=>$request->user_id,
+                'vehicle_id'=>$request->vehicle_id,
+                'company_id'=>$request->user_id,
+            ]
+            );
+        $vehicle = Vehicle::select('id','vehicle_image','vehicle_number','mpg','odometer_reading','fuel_left','fuel_tank_capacity','model','make','make_year','license_plate_number')->whereId($request->vehicle_id)->first();
+        $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+        return response()->json(['status'=>200,'message'=>'vehicle selected successfully','data'=>$vehicle]);
     }
     public function changePassword(Request $request)
     {
