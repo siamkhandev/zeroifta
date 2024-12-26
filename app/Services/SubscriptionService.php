@@ -6,7 +6,7 @@ use App\Models\Plan;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Subscription;
-use App\Models\Subscription;
+use App\Models\Subscription as SubscriptionModel;
 use Exception;
 use Stripe\PaymentMethod;
 
