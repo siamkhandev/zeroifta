@@ -121,15 +121,25 @@ public function checkVehicleAssignment(Request $request)
     }
     public function update(Request $request,$id)
     {
-dd($request->all());
 
-        // $check = DriverVehicle::where('driver_id',$request->driver_id)->where('vehicle_id',$request->vehicle_id)->first();
-        // if(!$check){
-            $vehicle = DriverVehicle::find($id);
-            $vehicle->driver_id = $request->driver_id;
-            $vehicle->vehicle_id = $request->vehicle_id;
-            $vehicle->company_id = Auth::id();
-            $vehicle->save();
+        $checkVehicle = DriverVehicle::where('vehicle_id', $request->vehicle_id)->first();
+
+        if ($checkVehicle) {
+            $checkVehicle->delete();
+        }
+        $checkDriver = DriverVehicle::where('driver_id', $request->driver_id)->first();
+
+        if ($checkDriver) {
+            $checkDriver->delete();
+        }
+
+        $vehicle = DriverVehicle::create(
+            [
+                'driver_id'=>$request->driver_id,
+                'vehicle_id'=>$request->vehicle_id,
+                'company_id'=>Auth::id(),
+            ]
+            );
               return redirect('driver/vehicles')->withSuccess('Vehicle assigned successfully');
         // }else{
         //     return redirect()->back()->withError('Vehicle already assigned');
