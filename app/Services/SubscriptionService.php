@@ -14,7 +14,7 @@ class SubscriptionService
 {
     public function __construct()
     {
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
     }
 
     /**
@@ -40,53 +40,53 @@ class SubscriptionService
      * Create a subscription for the user.
      */
     public function createSubscription($user, $planId, $paymentMethodId, $hasTrial = false)
-{
-    try {
-        // Check if the user has a Stripe customer ID, create one if not
-        if (!$user->stripe_customer_id) {
-            $stripeCustomer = \Stripe\Customer::create([
-                'email' => $user->email, // Use the user's email to create the Stripe customer
-                'payment_method' => $paymentMethodId, // Attach the payment method during customer creation
-                'invoice_settings' => ['default_payment_method' => $paymentMethodId],
+    {
+        try {
+            // Check if the user has a Stripe customer ID, create one if not
+            if (!$user->stripe_customer_id) {
+                $stripeCustomer = \Stripe\Customer::create([
+                    'email' => $user->email, // Use the user's email to create the Stripe customer
+                    'payment_method' => $paymentMethodId, // Attach the payment method during customer creation
+                    'invoice_settings' => ['default_payment_method' => $paymentMethodId],
+                ]);
+
+                // Save the Stripe customer ID in the user record
+                $user->stripe_customer_id = $stripeCustomer->id;
+                $user->save();
+            }
+
+            // Retrieve and attach the payment method to the customer
+            $paymentMethod = \Stripe\PaymentMethod::retrieve($paymentMethodId);
+            $paymentMethod->attach(['customer' => $user->stripe_customer_id]);
+
+            // Set the payment method as the default for the customer
+            \Stripe\Customer::update(
+                $user->stripe_customer_id,
+                ['invoice_settings' => ['default_payment_method' => $paymentMethodId]]
+            );
+
+            // Create the subscription
+            $stripeSubscription = \Stripe\Subscription::create([
+                'customer' => $user->stripe_customer_id,
+                'items' => [['price' => $planId]], // Assuming you use a Stripe price ID here
+                'trial_period_days' => $hasTrial ? 180 : null,
+                'payment_behavior' => 'default_incomplete',
+                'expand' => ['latest_invoice.payment_intent'],
             ]);
 
-            // Save the Stripe customer ID in the user record
-            $user->stripe_customer_id = $stripeCustomer->id;
-            $user->save();
+            // Save the subscription and payment method to the database
+            $subscription = $user->subscriptions()->create([
+                'stripe_subscription_id' => $stripeSubscription->id,
+                'plan_id' => $planId,
+                'payment_method_id' => $paymentMethodId,
+                'status' => 'active',
+            ]);
+
+            return $subscription;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
-
-        // Retrieve and attach the payment method to the customer
-        $paymentMethod = \Stripe\PaymentMethod::retrieve($paymentMethodId);
-        $paymentMethod->attach(['customer' => $user->stripe_customer_id]);
-
-        // Set the payment method as the default for the customer
-        \Stripe\Customer::update(
-            $user->stripe_customer_id,
-            ['invoice_settings' => ['default_payment_method' => $paymentMethodId]]
-        );
-
-        // Create the subscription
-        $stripeSubscription = \Stripe\Subscription::create([
-            'customer' => $user->stripe_customer_id,
-            'items' => [['price' => $planId]], // Assuming you use a Stripe price ID here
-            'trial_period_days' => $hasTrial ? 180 : null,
-            'payment_behavior' => 'default_incomplete',
-            'expand' => ['latest_invoice.payment_intent'],
-        ]);
-
-        // Save the subscription and payment method to the database
-        $subscription = $user->subscriptions()->create([
-            'stripe_subscription_id' => $stripeSubscription->id,
-            'plan_id' => $planId,
-            'payment_method_id' => $paymentMethodId,
-            'status' => 'active',
-        ]);
-
-        return $subscription;
-    } catch (\Exception $e) {
-        throw new \Exception($e->getMessage());
     }
-}
 
 
 
