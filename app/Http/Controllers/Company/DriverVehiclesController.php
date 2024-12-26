@@ -65,11 +65,13 @@ public function reassign(Request $request)
     ]);
 
    
-        $driverVehicle = DriverVehicle::find($data['driver_vehicle_id']);
+        $driverVehicle = DriverVehicle::whereId($data['driver_vehicle_id'])->delete();
+        $newDVehicle = DriverVehicle::create([
+            'driver_id' => $data['driver_id'],
+            'vehicle_id' => $driverVehicle->vehicle_id,
+            'company_id' => Auth::id(),
+        ]);
         
-        $driverVehicle->driver_id = $data['driver_id'];
-        $driverVehicle->save();
-
         return response()->json([
             'status' => 'success',
             'message' => 'Vehicle reassigned successfully.',
