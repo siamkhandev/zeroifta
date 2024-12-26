@@ -29,7 +29,7 @@
                         <select name="vehicle_id" class="form-control login-input" required>
                         <option value="">Select</option>
                         @foreach($vehicles as $vehicle)
-                        <option value="{{$vehicle->id}}">{{$vehicle->license_plate_number}}</option>
+                        <option value="{{$vehicle->id}}">{{$vehicle->license_plate_number}} - {{$vehicle->make}} - {{$vehicle->model}} - {{$vehicle->make_year}}</option>
                         @endforeach
                       </select>
                     </div>
