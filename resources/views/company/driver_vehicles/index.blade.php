@@ -70,7 +70,7 @@
                     <img src="{{asset('drivers')}}/{{$vehicle->driver->driver_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
                     @else
 
-                    <img src="{{asset('assets/img/team-2.jpg')}}" class="avatar avatar-sm me-3" alt="user1">
+                    <img src="{{asset('assets/img/user-img.png')}}" class="avatar avatar-sm me-3" alt="user1">
                     @endif
                   </span>
                   <span> {{$vehicle->driver->name??'N/A'}} </span>
@@ -78,7 +78,7 @@
               </td>
               <td>
                 <div>
-                  <p>{{$vehicle->vehicle->vehicle_number ?? 'N/A'}}</p>
+                  <p>{{$vehicle->vehicle->license_plate_number ?? 'N/A'}}</p>
 
                 </div>
               </td>
