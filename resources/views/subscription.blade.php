@@ -22,7 +22,7 @@
 
 <body>
   <div class="subs-PlansMain">
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- Header Area -->
       <div class="header-main">
@@ -119,7 +119,7 @@
                 <div class="text-center inHead-span">
                   <h2 class="head-20Med">Subscription Plans</h2>
                 </div>
-                <div class="mt-3 mb-5">
+                <div class="plans-toggel">
                   <div class="sub-toggel text-center">
                     <div>
                       <p>Monthly</p>
@@ -143,7 +143,59 @@
                   <div id="monthly_plans" class="monthly_plans">
                     <div class="row">
                       <!-- Plan 1 -->
-                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
+                        <div class="price_plans sbsp-com weekly-plan">
+                          <div class="ph-area">
+                            <h3>Free Trial</h3>
+                            <p style="color:#B60F0F;"> Trial Plan (6 Month Only)</p>
+                          </div>
+                          <div class="sbp-section">
+                            <div>
+                              <p class="">
+                                <span class="usp-head">You are availing all the features of the</span>
+                                <span class="usp-ys"> <b>Premium Monthly Plan</b> </span>
+                                <span class="usp-head">for 6 months.</span>
+
+                              </p>
+                            </div>
+                            <div class="pt-4">
+                              <ul>
+                                <li class="sbp-list mb-3">
+                                  <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none">
+                                      <g clip-path="url(#clip0_2807_1039)">
+                                        <path d="M26.1395 2.69597C25.6332 2.49558 25.0584 2.62742 24.6893 3.02292L19.5107 9.64109L15.1338 1.14558C14.8965 0.7448 14.4693 0.496948 14 0.496948C13.5307 0.496948 13.0982 0.7448 12.8662 1.14558L8.48926 9.64109L3.31074 3.0282C2.9416 2.63269 2.3668 2.50085 1.86055 2.70125C1.35957 2.89636 1.02734 3.38152 1.02734 3.92468V21.4852C1.02734 23.3731 2.56719 24.913 4.45508 24.913H23.5449C25.4328 24.913 26.9727 23.3731 26.9727 21.4852V3.92468C26.9727 3.38152 26.6404 2.89636 26.1395 2.69597Z" fill="#FFBC13" />
+                                      </g>
+                                      <defs>
+                                        <clipPath id="clip0_2807_1039">
+                                          <rect width="27" height="27" fill="white" transform="translate(0.5 0.0487061)" />
+                                        </clipPath>
+                                      </defs>
+                                    </svg>
+                                  </span>
+                                  <div>
+                                    <p class="">
+                                      <span class="usp-yellow">
+                                        After the trial period, the subscription will automatically roll into the
+                                      </span>
+                                      <br>
+                                      <span class="usp-ys blink_me">
+                                        premium plan at $67 per month
+                                      </span>
+
+                                    </p>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+
+
+                          </div>
+
+                        </div>
+                      </div>
+                      <!-- Plan 2 -->
+                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                         <div class="price_plans sbsp-com weekly-plan">
                           <div class="ph-area">
                             <h3>Basic Plan</h3>
@@ -237,14 +289,14 @@
 
                         </div>
                       </div>
-                      <!-- Plan 2 -->
-                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                      <!-- Plan 3 -->
+                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                         <div class="price_pm sbsp-com montly-plan top-plan">
                           <div class="pop-div">
                             <span>Recommended</span>
                           </div>
                           <div class="ph-area">
-                            <h3>Premium Plan</h3>
+                            <h3 style="color:#ffbc13;">Premium Plan</h3>
                             <p> $67 - Monthly</p>
                           </div>
                           <div class="sbp-section">
@@ -400,8 +452,8 @@
                           </div>
                         </div>
                       </div>
-                      <!-- Plan 3 -->
-                      <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4">
+                      <!-- Plan 4 -->
+                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                         <div class="price_plans sbsp-com weekly-plan">
                           <div class="ph-area">
                             <h3>Premium+ Subscription </h3>
@@ -788,7 +840,7 @@
                         <div class="price_plans sbsp-com weekly-plan">
                           <div class="ph-area">
                             <h3>Premium+ Subscription </h3>
-                            <p> $9950 - Year</p>
+                            <p> $995 - Year</p>
                           </div>
                           <div class="sbp-section">
                             <div>
