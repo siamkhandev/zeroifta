@@ -202,10 +202,11 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                </div>
-                 @if($vehicle->vehicle_image)
-                                <img src="{{asset('vehicles')}}/{{$vehicle->vehicle_image}}" alt="ZeroIfta Image" style="height: 30px;border-radius:100%" />
+                        @if($vehicle->vehicle_image)
+                                <img src="{{asset('vehicles')}}/{{$vehicle->vehicle_image}}" alt="ZeroIfta Image" style="height: 300px;width:300px" />
                  @endif
+                </div>
+
 
             </div>
             <div class="buttons mt-5">
