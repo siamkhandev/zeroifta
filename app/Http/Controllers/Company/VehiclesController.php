@@ -75,19 +75,26 @@ class VehiclesController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
-            
+
             if (isset($data['Results'][0])) {
                 $result = $data['Results'][0];
-
+                if(isset($result['Make']) && isset($result['Model']) && isset($result['ModelYear'])){
+                    return response()->json([
+                        'success' => true,
+                        'data' => [
+                            'make' => $result['Make'] ?? 'N/A',
+                            'model' => $result['Model'] ?? 'N/A',
+                            'year' => $result['ModelYear'] ?? 'N/A',
+                        ],
+                    ]);
+                }else{
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid VIN or API error. Please try again.',
+                    ]);
+                }
                 // Extract useful data
-                return response()->json([
-                    'success' => true,
-                    'data' => [
-                        'make' => $result['Make'] ?? 'N/A',
-                        'model' => $result['Model'] ?? 'N/A',
-                        'year' => $result['ModelYear'] ?? 'N/A',
-                    ],
-                ]);
+
             }
         }
 
