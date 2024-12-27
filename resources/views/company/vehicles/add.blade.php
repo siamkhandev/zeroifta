@@ -30,7 +30,7 @@
                         @enderror
                         <button type="button" id="checkVinBtn" class="btn btn-primary">Check VIN</button>
                 </div>
-                
+
                 <div id="vehicleInfo" style="display: none;">
                     <h3>Vehicle Information</h3>
                     <p><strong>Make:</strong> <span id="make"></span></p>
@@ -46,7 +46,7 @@
                 <option value="{{ $year }}">{{ $year }}</option>
             @endfor
                         </select>
-                        
+
                     </div>
                     @error('year')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -54,7 +54,7 @@
                             </span>
                         @enderror
                 </div>
-                
+
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Make')}}</label>
@@ -157,7 +157,7 @@
                             <option value="TX">Texas</option>
                             <option value="UT">Utah</option>
                             <option value="VT">Vermont</option>
-                            <option value="VA">Virginia</option>    
+                            <option value="VA">Virginia</option>
                             <option value="WA">Washington</option>
                             <option value="WV">West Virginia</option>
                             <option value="WI">Wisconsin</option>
@@ -267,6 +267,7 @@ document.getElementById('checkVinBtn').addEventListener('click', function () {
     })
     .then(response => response.json())
     .then(data => {
+    console.log(data);
         if (data.success) {
             // Populate vehicle details
             document.getElementById('make').textContent = data.data.make;
