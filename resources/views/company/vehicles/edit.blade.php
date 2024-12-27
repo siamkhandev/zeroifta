@@ -3,7 +3,7 @@
 <div class="dashbord-inner">
     <!-- Section 1 -->
     <div class="profileForm-area mb-4">
-        {{dd($vehicle)}}
+
         <div class="sec1-style">
         <form method="post" action="{{route('vehicle.update',$vehicle->id)}}" enctype="multipart/form-data">
             @csrf
@@ -203,8 +203,8 @@
                             </span>
                         @enderror
                 </div>
-                 @if($vehicle->image)
-                                <img src="{{asset('images')}}/{{$vehicle->image}}" alt="ZeroIfta Image" style="height: 30px;border-radius:100%" />
+                 @if($vehicle->vehicle_image)
+                                <img src="{{asset('images')}}/{{$vehicle->vehicle_image}}" alt="ZeroIfta Image" style="height: 30px;border-radius:100%" />
                  @endif
 
             </div>
