@@ -270,10 +270,12 @@ document.getElementById('checkVinBtn').addEventListener('click', function () {
     console.log(data);
         if (data.success) {
             // Populate vehicle details
+            $("#vehicleInfo").style.display='block';
             document.getElementById('make').textContent = data.data.make;
             document.getElementById('model').textContent = data.data.model;
             document.getElementById('year').textContent = data.data.year;
         } else {
+            $("#vehicleInfo").style.display='none';
             alert(data.message);
         }
     })
