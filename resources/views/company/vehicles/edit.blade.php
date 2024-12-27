@@ -3,7 +3,7 @@
 <div class="dashbord-inner">
     <!-- Section 1 -->
     <div class="profileForm-area mb-4">
-        {{dd($vehicle)}}
+
         <div class="sec1-style">
         <form method="post" action="{{route('vehicle.update',$vehicle->id)}}" enctype="multipart/form-data">
             @csrf
@@ -124,7 +124,7 @@
                         <select name="license_state" id="license_state" class="form-control login-input">
                             <option value="">Select License State</option>
                             <?php foreach ($states as $abbr => $name): ?>
-                                <option value="<?= $abbr ?>" <?= $vehicle->license_state === $abbr ? 'selected' : '' ?>>
+                                <option value="<?= $abbr ?>" <?= $vehicle->license === $abbr ? 'selected' : '' ?>>
                                     <?= $name ?>
                                 </option>
                             <?php endforeach; ?>
@@ -139,7 +139,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Number')}}</label>
-                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Number" name="license_number" value="{{$vehicle->license_number}}" />
+                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Number" name="license_number" value="{{$vehicle->license_plate_number}}" />
                     </div>
                     @error('license_number')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -183,7 +183,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Secondary Fuel Tank Capacity')}}</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Secondary Fuel Tank Capacity" name="secondary_fuel_tank_capacity" value="{{$vehicle->secondary_fuel_tank_capacity}}" />
+                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Secondary Fuel Tank Capacity" name="secondary_fuel_tank_capacity" value="{{$vehicle->secondary_tank_capacity}}" />
                     </div>
                     @error('secondary_fuel_tank_capacity')
                             <span class="invalid-feedback" role="alert" style="display: block;">
