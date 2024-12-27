@@ -31,12 +31,12 @@
                         <button type="button" id="checkVinBtn" class="btn btn-primary">Check VIN</button>
                 </div>
 
-                <div id="vehicleInfo" style="display: none;">
+                <!-- <div id="vehicleInfo" style="display: none;">
                     <h3>Vehicle Information</h3>
                     <p><strong>Make:</strong> <span id="make"></span></p>
                     <p><strong>Model:</strong> <span id="model"></span></p>
                     <p><strong>Year:</strong> <span id="year"></span></p>
-                </div>
+                </div> -->
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
