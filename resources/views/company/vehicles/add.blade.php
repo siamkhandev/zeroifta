@@ -277,6 +277,9 @@ document.getElementById('checkVinBtn').addEventListener('click', function () {
         } else {
             $("#vehicleInfo").hide();
             alert(data.message);
+            document.getElementById('truck_make').value = ''; // Match make by value
+            document.getElementById('year').value =''; // Match year by value
+            document.getElementById('vehicle_model_type').value = ''; // Set model input
         }
     })
     .catch(error => console.error('Error:', error));
