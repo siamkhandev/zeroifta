@@ -7,6 +7,7 @@ use App\Imports\VehiclesImport;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 class VehiclesController extends Controller
@@ -62,6 +63,38 @@ class VehiclesController extends Controller
         }
         $vehicle->save();
         return redirect('vehicles/all')->withSuccess('Vehicle Added Successfully');
+    }
+    public function checkVin(Request $request)
+    {
+        $request->validate(['vin' => 'required|string|max:255']);
+        $vin = $request->vin;
+
+        // Call the external API
+        $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$vin}?format=json";
+        $response = Http::get($apiUrl);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            
+            if (isset($data['Results'][0])) {
+                $result = $data['Results'][0];
+
+                // Extract useful data
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'make' => $result['Make'] ?? 'N/A',
+                        'model' => $result['Model'] ?? 'N/A',
+                        'year' => $result['ModelYear'] ?? 'N/A',
+                    ],
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid VIN or API error. Please try again.',
+        ]);
     }
     public function edit($id)
     {
