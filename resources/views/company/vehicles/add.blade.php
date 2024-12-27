@@ -35,7 +35,7 @@
                     <h3>Vehicle Information</h3>
                     <p><strong>Make:</strong> <span id="make"></span></p>
                     <p><strong>Model:</strong> <span id="model"></span></p>
-                    <p><strong>VIN:</strong> <span id="vinResult"></span></p>
+                    <p><strong>Year:</strong> <span id="year"></span></p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
