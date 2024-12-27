@@ -204,7 +204,7 @@
                         @enderror
                 </div>
                  @if($vehicle->vehicle_image)
-                                <img src="{{asset('images')}}/{{$vehicle->vehicle_image}}" alt="ZeroIfta Image" style="height: 30px;border-radius:100%" />
+                                <img src="{{asset('vehicles')}}/{{$vehicle->vehicle_image}}" alt="ZeroIfta Image" style="height: 30px;border-radius:100%" />
                  @endif
 
             </div>
