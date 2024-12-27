@@ -43,8 +43,8 @@
                         <select name="year" id="year" class="form-control login-input">
                             <option value="">Select Year</option>
                             @for ($year = date('Y'); $year >= 1970; $year--)
-                <option value="{{ $year }}">{{ $year }}</option>
-            @endfor
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
                         </select>
 
                     </div>
@@ -83,7 +83,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Vehicle Model" name="vehicle_model" value="{{old('vehicle_model')}}" />
+                        <input type="text" required class="form-control login-input" id="vehicle_model_type" placeholder="Add Vehicle Model" name="vehicle_model" value="{{old('vehicle_model')}}" />
                     </div>
                     @error('vehicle_model')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -271,9 +271,9 @@ document.getElementById('checkVinBtn').addEventListener('click', function () {
         if (data.success) {
             // Populate vehicle details
             $("#vehicleInfo").show();
-            document.getElementById('make').textContent = data.data.make;
-            document.getElementById('model').textContent = data.data.model;
-            document.getElementById('year').textContent = data.data.year;
+            document.getElementById('truck_make').value = data.data.make.toLowerCase(); // Match make by value
+            document.getElementById('year').value = data.data.year; // Match year by value
+            document.getElementById('vehicle_model_type').value = data.data.model; // Set model input
         } else {
             $("#vehicleInfo").hide();
             alert(data.message);
