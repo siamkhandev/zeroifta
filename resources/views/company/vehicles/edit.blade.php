@@ -3,7 +3,7 @@
 <div class="dashbord-inner">
     <!-- Section 1 -->
     <div class="profileForm-area mb-4">
-        {{dd($vehicle)}}
+
         <div class="sec1-style">
         <form method="post" action="{{route('vehicle.update',$vehicle->id)}}" enctype="multipart/form-data">
             @csrf
@@ -39,7 +39,7 @@
                         <select name="year" id="year" class="form-control login-input">
                             <option value="">Select Year</option>
                             @for ($year = date('Y'); $year >= 1970; $year--)
-                                <option value="{{ $year }}" {{ $vehicle->year == $year ? 'selected' : ''}}>{{ $year }}</option>
+                                <option value="{{ $year }}" {{ $vehicle->make_year == $year ? 'selected' : ''}}>{{ $year }}</option>
                             @endfor
                         </select>
 
@@ -56,18 +56,18 @@
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Make')}}</label>
                         <select name="truck_make" id="truck_make" class="form-control login-input">
                             <option value="">Select Truck Make</option>
-                            <option value="ford" {{ $vehicle->truck_make == 'ford' ? 'selected' : ''}}>Ford</option>
-                            <option value="chevrolet" {{ $vehicle->truck_make == 'chevrolet' ? 'selected' : ''}}>Chevrolet</option>
-                            <option value="ram" {{ $vehicle->truck_make == 'ram' ? 'selected' : ''}}>Ram</option>
-                            <option value="gmc" {{ $vehicle->truck_make == 'gmc' ? 'selected' : ''}}>GMC</option>
-                            <option value="jeep" {{ $vehicle->truck_make == 'jeep' ? 'selected' : ''}}>Jeep</option>
-                            <option value="dodge" {{ $vehicle->truck_make == 'dodge' ? 'selected' : ''}}>Dodge</option>
-                            <option value="international" {{ $vehicle->truck_make == 'international' ? 'selected' : ''}}>International</option>
-                            <option value="peterbilt" {{ $vehicle->truck_make == 'peterbilt' ? 'selected' : ''}}>Peterbilt</option>
-                            <option value="kenworth" {{ $vehicle->truck_make == 'kenworth' ? 'selected' : ''}}>Kenworth</option>
-                            <option value="freightliner" {{ $vehicle->truck_make == 'freightliner' ? 'selected' : ''}}>Freightliner</option>
-                            <option value="mack" {{ $vehicle->truck_make == 'mack' ? 'selected' : ''}}>Mack</option>
-                            <option value="western-star" {{ $vehicle->truck_make == 'western-star' ? 'selected' : ''}}>Western Star</option>
+                            <option value="ford" {{ $vehicle->make == 'ford' ? 'selected' : ''}}>Ford</option>
+                            <option value="chevrolet" {{ $vehicle->make == 'chevrolet' ? 'selected' : ''}}>Chevrolet</option>
+                            <option value="ram" {{ $vehicle->make == 'ram' ? 'selected' : ''}}>Ram</option>
+                            <option value="gmc" {{ $vehicle->make == 'gmc' ? 'selected' : ''}}>GMC</option>
+                            <option value="jeep" {{ $vehicle->make == 'jeep' ? 'selected' : ''}}>Jeep</option>
+                            <option value="dodge" {{ $vehicle->make == 'dodge' ? 'selected' : ''}}>Dodge</option>
+                            <option value="international" {{ $vehicle->make == 'international' ? 'selected' : ''}}>International</option>
+                            <option value="peterbilt" {{ $vehicle->make == 'peterbilt' ? 'selected' : ''}}>Peterbilt</option>
+                            <option value="kenworth" {{ $vehicle->make == 'kenworth' ? 'selected' : ''}}>Kenworth</option>
+                            <option value="freightliner" {{ $vehicle->make == 'freightliner' ? 'selected' : ''}}>Freightliner</option>
+                            <option value="mack" {{ $vehicle->make == 'mack' ? 'selected' : ''}}>Mack</option>
+                            <option value="western-star" {{ $vehicle->make == 'western-star' ? 'selected' : ''}}>Western Star</option>
                         </select>
                     </div>
                     @error('truck_make')
@@ -79,7 +79,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
-                        <input type="text" required class="form-control login-input" id="vehicle_model_type" placeholder="Add Vehicle Model" name="vehicle_model" value="{{$vehicle->vehicle_model}}" />
+                        <input type="text" required class="form-control login-input" id="vehicle_model_type" placeholder="Add Vehicle Model" name="vehicle_model" value="{{$vehicle->model}}" />
                     </div>
                     @error('vehicle_model')
                             <span class="invalid-feedback" role="alert" style="display: block;">
