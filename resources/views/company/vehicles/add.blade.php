@@ -267,15 +267,15 @@ document.getElementById('checkVinBtn').addEventListener('click', function () {
     })
     .then(response => response.json())
     .then(data => {
-    console.log(data);
+
         if (data.success) {
             // Populate vehicle details
-            $("#vehicleInfo").show();
+
             document.getElementById('truck_make').value = data.data.make.toLowerCase(); // Match make by value
             document.getElementById('year').value = data.data.year; // Match year by value
             document.getElementById('vehicle_model_type').value = data.data.model; // Set model input
         } else {
-            $("#vehicleInfo").hide();
+
             alert(data.message);
             document.getElementById('truck_make').value = ''; // Match make by value
             document.getElementById('year').value =''; // Match year by value

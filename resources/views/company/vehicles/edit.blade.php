@@ -31,12 +31,7 @@
                         <button type="button" id="checkVinBtn" class="btn btn-primary">Check VIN</button>
                 </div>
 
-                <div id="vehicleInfo" style="display: none;">
-                    <h3>Vehicle Information</h3>
-                    <p><strong>Make:</strong> <span id="make"></span></p>
-                    <p><strong>Model:</strong> <span id="model"></span></p>
-                    <p><strong>VIN:</strong> <span id="vinResult"></span></p>
-                </div>
+
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
@@ -83,7 +78,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Vehicle Model" name="vehicle_model" value="{{$vehicle->vehicle_model}}" />
+                        <input type="text" required class="form-control login-input" id="vehicle_model_type" placeholder="Add Vehicle Model" name="vehicle_model" value="{{$vehicle->vehicle_model}}" />
                     </div>
                     @error('vehicle_model')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -224,38 +219,35 @@
 @endsection
 @section('scripts')
 <script>
-$(document).ready(function() {
-    $('#checkVinBtn').on('click', function() {
-        const vin = $('#vinInput').val().trim();
+document.getElementById('checkVinBtn').addEventListener('click', function () {
+    const vin = document.getElementById('vinInput').value;
 
-        if (vin.length !== 17) {
-            alert('Please enter a valid 17-character VIN.');
-            return;
+    fetch("{{ route('vehicle.checkVin') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ vin })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        if (data.success) {
+            // Populate vehicle details
+
+            document.getElementById('truck_make').value = data.data.make.toLowerCase(); // Match make by value
+            document.getElementById('year').value = data.data.year; // Match year by value
+            document.getElementById('vehicle_model_type').value = data.data.model; // Set model input
+        } else {
+
+            alert(data.message);
+            document.getElementById('truck_make').value = ''; // Match make by value
+            document.getElementById('year').value =''; // Match year by value
+            document.getElementById('vehicle_model_type').value = ''; // Set model input
         }
-
-        $.ajax({
-            url: `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/${vin}?format=json`,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                const vehicleData = data.Results[0];
-
-                if (vehicleData.Make && vehicleData.Model && vehicleData.VIN) {
-                    $('#make').text(vehicleData.Make);
-                    $('#model').text(vehicleData.Model);
-                    $('#vinResult').text(vehicleData.ModelYear);
-                    $('#vehicleInfo').show();
-                } else {
-                    alert('No vehicle information found for this VIN.');
-                    $('#vehicleInfo').hide();
-                }
-            },
-            error: function() {
-                alert('An error occurred while checking the VIN.');
-                $('#vehicleInfo').hide();
-            }
-        });
-    });
+    })
+    .catch(error => console.error('Error:', error));
 });
 </script>
 @endsection
