@@ -3,7 +3,7 @@
 <div class="dashbord-inner">
     <!-- Section 1 -->
     <div class="profileForm-area mb-4">
-
+        {{dd($vehicle)}}
         <div class="sec1-style">
         <form method="post" action="{{route('vehicle.update',$vehicle->id)}}" enctype="multipart/form-data">
             @csrf
