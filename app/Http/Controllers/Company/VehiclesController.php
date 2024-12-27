@@ -78,7 +78,7 @@ class VehiclesController extends Controller
 
             if (isset($data['Results'][0])) {
                 $result = $data['Results'][0];
-                if(isset($result['Make']) && isset($result['Model']) && isset($result['ModelYear'])){
+                if(isset($result['Make'])&& $result['Make']!='' && isset($result['Model'])&& $result['Model']!='' && isset($result['ModelYear']) && $result['ModelYear']!=''){
                     return response()->json([
                         'success' => true,
                         'data' => [
