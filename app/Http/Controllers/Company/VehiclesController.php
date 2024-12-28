@@ -76,7 +76,9 @@ class VehiclesController extends Controller
                 // Extract useful data
 
             }
+            return redirect()->back()->withError('Invalid VIN. Please try again.');
          }
+         return redirect()->back()->withError('Invalid VIN. Please try again.');
         
     }
     public function checkVin(Request $request)
