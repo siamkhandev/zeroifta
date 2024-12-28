@@ -2,6 +2,14 @@
 @section('content')
 <div class="dashbord-inner">
     <!-- Section 1 -->
+    @if(Session::has('error'))
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #dd4957;color:white">
+    {{Session::get('error')}}
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
     <div class="profileForm-area mb-4">
         <div class="sec1-style">
         <form method="post" action="{{route('vehicle.store')}}" enctype="multipart/form-data">
