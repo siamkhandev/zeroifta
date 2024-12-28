@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -56,6 +57,29 @@ class IndependentTruckerController extends Controller
         $companyDriver->driver_id =$driver->id;
         $companyDriver->company_id =$driver->id;
         $companyDriver->save();
+        $vehicle = Vehicle::select(
+            'id',
+            'vehicle_image',
+            'vehicle_number',
+            'mpg',
+            'odometer_reading',
+            'fuel_left',
+            'fuel_tank_capacity',
+            'model',
+            'make',
+            'make_year',
+            'license_plate_number'
+        )
+        ->whereHas('driverVehicle', function ($query) use ($request,$driver) {
+            $query->where('driver_id', $driver->id);
+        })
+        ->first();
+        if ($vehicle) {
+            $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+        }
+        $driver->vehicle = $vehicle;
+        $checkSubscription = Payment::where('company_id',$driver->id)->where('status','active')->first();
+        $driver->subscription = $checkSubscription;
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',
