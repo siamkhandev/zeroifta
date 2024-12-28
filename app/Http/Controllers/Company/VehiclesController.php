@@ -40,29 +40,44 @@ class VehiclesController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
-        $vehicle = new Vehicle();
-        $vehicle->vehicle_type = $request->vehicle_type;
-        $vehicle->vehicle_number = $request->vehicle_number;
-        $vehicle->odometer_reading	 = $request->odometer_reading;
-        $vehicle->company_id = Auth::id();
-        $vehicle->mpg= $request->mpg;
-        $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
-        $vehicle->vehicle_id = $request->vehicle_id;
-        $vehicle->vin = $request->vin;
-        $vehicle->model = $request->vehicle_model;
-        $vehicle->make = $request->truck_make;
-        $vehicle->make_year = $request->year;
-        $vehicle->fuel_type = $request->fuel_type;
-        $vehicle->license = $request->license_state;
-        $vehicle->license_plate_number = $request->license_number;
-        $vehicle->secondary_tank_capacity= $request->secondary_fuel_tank_capacity;
-        if($request->hasFile('image')){
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('vehicles'), $imageName);
-            $vehicle->vehicle_image= $imageName;
-        }
-        $vehicle->save();
-        return redirect('vehicles/all')->withSuccess('Vehicle Added Successfully');
+        $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$vin}?format=json";
+        $response = Http::get($apiUrl);
+
+        if ($response->successful()) {
+            if (isset($data['Results'][0])) {
+                $result = $data['Results'][0];
+                if(isset($result['Make'])&& $result['Make']!='' && isset($result['Model'])&& $result['Model']!='' && isset($result['ModelYear']) && $result['ModelYear']!=''){
+                    $vehicle = new Vehicle();
+                    $vehicle->vehicle_type = $request->vehicle_type;
+                    $vehicle->vehicle_number = $request->vehicle_number;
+                    $vehicle->odometer_reading	 = $request->odometer_reading;
+                    $vehicle->company_id = Auth::id();
+                    $vehicle->mpg= $request->mpg;
+                    $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
+                    $vehicle->vehicle_id = $request->vehicle_id;
+                    $vehicle->vin = $request->vin;
+                    $vehicle->model = $request->vehicle_model;
+                    $vehicle->make = $request->truck_make;
+                    $vehicle->make_year = $request->year;
+                    $vehicle->fuel_type = $request->fuel_type;
+                    $vehicle->license = $request->license_state;
+                    $vehicle->license_plate_number = $request->license_number;
+                    $vehicle->secondary_tank_capacity= $request->secondary_fuel_tank_capacity;
+                    if($request->hasFile('image')){
+                        $imageName = time().'.'.$request->image->extension();
+                        $request->image->move(public_path('vehicles'), $imageName);
+                        $vehicle->vehicle_image= $imageName;
+                    }
+                    $vehicle->save();
+                    return redirect('vehicles/all')->withSuccess('Vehicle Added Successfully');
+                }else{
+                   return redirect()->back()->withError('Invalid VIN. Please try again.');
+                }
+                // Extract useful data
+
+            }
+         }
+        
     }
     public function checkVin(Request $request)
     {
