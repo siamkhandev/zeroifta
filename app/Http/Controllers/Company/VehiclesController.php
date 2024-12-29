@@ -71,14 +71,14 @@ class VehiclesController extends Controller
                     $vehicle->save();
                     return redirect('vehicles/all')->withSuccess('Vehicle Added Successfully');
                 }else{
-                   return redirect()->back()->withError('Invalid VIN. Please try again.');
+                   return redirect()->back()->withError('Invalid VIN. Please try again.')->withInput();
                 }
                 // Extract useful data
 
             }
-            return redirect()->back()->withError('Invalid VIN. Please try again.');
+            return redirect()->back()->withError('Invalid VIN. Please try again.')->withInput();
          }
-         return redirect()->back()->withError('Invalid VIN. Please try again.');
+         return redirect()->back()->withError('Invalid VIN. Please try again.')->withInput();
         
     }
     public function checkVin(Request $request)

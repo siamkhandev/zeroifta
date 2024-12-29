@@ -68,18 +68,18 @@
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Make')}}</label>
                         <select name="truck_make" id="truck_make" class="form-control login-input">
                             <option value="">Select Truck Make</option>
-                            <option value="ford">Ford</option>
-                            <option value="chevrolet">Chevrolet</option>
-                            <option value="ram">Ram</option>
-                            <option value="gmc">GMC</option>
-                            <option value="jeep">Jeep</option>
-                            <option value="dodge">Dodge</option>
-                            <option value="international">International</option>
-                            <option value="peterbilt">Peterbilt</option>
-                            <option value="kenworth">Kenworth</option>
-                            <option value="freightliner">Freightliner</option>
-                            <option value="mack">Mack</option>
-                            <option value="western-star">Western Star</option>
+                            <option value="ford" {{ old('truck_make') == 'ford' ? 'selected' : '' }}>Ford</option>
+                            <option value="chevrolet" {{ old('truck_make') == 'chevrolet' ? 'selected' : '' }}>Chevrolet</option>
+                            <option value="ram" {{ old('truck_make') == 'ram' ? 'selected' : '' }}>Ram</option>
+                            <option value="gmc" {{ old('truck_make') == 'gmc' ? 'selected' : '' }}>GMC</option>
+                            <option value="jeep" {{ old('truck_make') == 'jeep' ? 'selected' : '' }}>Jeep</option>
+                            <option value="dodge" {{ old('truck_make') == 'dodge' ? 'selected' : '' }}>Dodge</option>
+                            <option value="international" {{ old('truck_make') == 'international' ? 'selected' : '' }}>International</option>
+                            <option value="peterbilt" {{ old('truck_make') == 'peterbilt' ? 'selected' : '' }}>Peterbilt</option>
+                            <option value="kenworth" {{ old('truck_make') == 'kenworth' ? 'selected' : '' }}>Kenworth</option>
+                            <option value="freightliner" {{ old('truck_make') == 'freightliner' ? 'selected' : '' }}>Freightliner</option>
+                            <option value="mack" {{ old('truck_make') == 'mack' ? 'selected' : '' }}>Mack</option>
+                            <option value="western-star" {{ old('truck_make') == 'western-star' ? 'selected' : '' }}>Western Star</option>
                         </select>
                     </div>
                     @error('truck_make')
