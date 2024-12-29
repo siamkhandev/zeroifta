@@ -31,7 +31,7 @@ class IndependentTruckerController extends Controller
                 'required',
                 'date',
                 'before_or_equal:today',
-                'date_format:Y-m-d', // Validate the format as yyyy-mm-dd
+                'date_format:m-d-Y', // Validate the format as yyyy-mm-dd
             ],
         ]);
         // $company = new User();
