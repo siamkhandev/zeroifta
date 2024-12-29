@@ -27,7 +27,12 @@ class IndependentTruckerController extends Controller
             //'driver_id' => 'required|string|max:255,unique:users,driver_id',
             'license_number' => 'required|string|max:255',
             'license_state' => 'required|string|max:255',
-           'license_start_date' => 'required|date|before_or_equal:today',
+           'license_start_date' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+                'date_format:Y-m-d', // Validate the format as yyyy-mm-dd
+            ],
         ]);
         // $company = new User();
         // $company->name=$request->first_name.' '.$request->last_name;;
