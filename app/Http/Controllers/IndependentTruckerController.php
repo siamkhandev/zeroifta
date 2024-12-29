@@ -10,6 +10,7 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 class IndependentTruckerController extends Controller
 {
@@ -57,6 +58,7 @@ class IndependentTruckerController extends Controller
         $companyDriver->driver_id =$driver->id;
         $companyDriver->company_id =$driver->id;
         $companyDriver->save();
+        $driverFind = User::whereId($driver->id)->first();
         $vehicle = Vehicle::select(
             'id',
             'vehicle_image',
@@ -77,13 +79,13 @@ class IndependentTruckerController extends Controller
         if ($vehicle) {
             $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
         }
-        $driver->vehicle = $vehicle;
+        $driverFind->vehicle = $vehicle;
         $checkSubscription = Payment::where('company_id',$driver->id)->where('status','active')->first();
-        $driver->subscription = $checkSubscription;
+        $driverFind->subscription = $checkSubscription;
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',
-            'data'=>$driver
+            'data'=>$driverFind
         ]);
     }
     public function addVehicle(Request $request)
