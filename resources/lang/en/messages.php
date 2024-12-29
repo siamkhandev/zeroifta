@@ -126,4 +126,5 @@ return [
     "Image"=>"Image",
     "Logout"=>"Logout",
     "change_password"=>"Change Password",
+    "DOT"=>"DOT",
 ];
