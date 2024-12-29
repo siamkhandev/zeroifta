@@ -49,7 +49,7 @@ class VehiclesController extends Controller
                 if(isset($result['Make'])&& $result['Make']!='' && isset($result['Model'])&& $result['Model']!='' && isset($result['ModelYear']) && $result['ModelYear']!=''){
                     $vehicle = new Vehicle();
                     $vehicle->vehicle_type = $request->vehicle_type;
-                    $vehicle->vehicle_number = $request->vehicle_number;
+                    $vehicle->vehicle_number = $request->license_number;
                     $vehicle->odometer_reading	 = $request->odometer_reading;
                     $vehicle->company_id = Auth::id();
                     $vehicle->mpg= $request->mpg;
