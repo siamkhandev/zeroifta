@@ -29,9 +29,17 @@ class IndependentTruckerController extends Controller
             'license_state' => 'required|string|max:255',
            'license_start_date' => [
                 'required',
-                'date',
-                'before_or_equal:today',
-                'date_format:m-d-Y', // Validate the format as yyyy-mm-dd
+                'date_format:m-d-Y',
+                function ($attribute, $value, $fail) {
+                    // Convert the input to a standard date format
+                    $date = \DateTime::createFromFormat('m-d-Y', $value);
+                    if (!$date || $date->format('m-d-Y') !== $value) {
+                        $fail('The ' . $attribute . ' is not a valid date.');
+                    }
+                    if ($date > now()) {
+                        $fail('The ' . $attribute . ' must be a date before or equal to today.');
+                    }
+                },
             ],
         ]);
         // $company = new User();

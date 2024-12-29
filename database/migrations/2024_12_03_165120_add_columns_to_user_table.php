@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('driver_id')->nullable();
             $table->string('license_state')->nullable();
             $table->string('license_number')->nullable();
-            $table->date('license_start_date')->nullable();
+            $table->string('license_start_date')->nullable();
             $table->string('username')->nullable();
         });
     }
