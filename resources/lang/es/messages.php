@@ -157,6 +157,6 @@ return [
     "Add Driver Vehicles"=>"Agregar vehículos con conductor",
     "Create Vehicles"=>"Crear vehículos",
 
-    
+    "Main Dashboard"=>"Panel principal",
 
 ];
