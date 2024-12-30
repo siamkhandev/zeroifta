@@ -10,78 +10,78 @@
     @endphp
 
     @if($currentSegment2 == '')
-        <span class="bc-text">Pages / Dashboard</span>
-        <h1 class="head-1">Main Dashboard</h1>
+        <span class="bc-text">{{__('messages.Pages / Dashboard')}}</span>
+        <h1 class="head-1">{{__('messages.Main Dashboard')}}</h1>
 
     @elseif($currentSegment2 == 'fleet')
-        <span class="bc-text">Pages / Fleet Management</span>
-        <h1 class="head-1">Fleet Management</h1>
+        <span class="bc-text">{{__('messages.Pages / Fleet Management')}}</span>
+        <h1 class="head-1">{{__('messages.Fleet Management')}}</h1>
 
     @elseif($currentSegment2 == 'profile')
-        <span class="bc-text">Pages / Profile Management</span>
-        <h1 class="head-1">Profile Management</h1>
+        <span class="bc-text">{{__('messages.Pages / Profile Management')}}</span>
+        <h1 class="head-1">{{__('messages.Profile Management')}}</h1>
 
     @elseif($currentSegment2 == 'vehicles')
-        <span class="bc-text">Pages / Vehicles</span>
-        <h1 class="head-1">Manage Vehicles</h1>
+        <span class="bc-text">{{__('messages.Pages / Vehicles')}}</span>
+        <h1 class="head-1">{{__('messages.Manage Vehicles')}}</h1>
 
     @elseif($currentSegment2 == 'vehicle' && $currentSegment3 == 'create')
-        <span class="bc-text">Pages / Vehicles</span>
-        <h1 class="head-1">Create Vehicles</h1>
+        <span class="bc-text">{{__('messages.Pages / Vehicles')}}</span>
+        <h1 class="head-1">{{__('messages.Create Vehicles')}}</h1>
 
     @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'all')
-        <span class="bc-text">Pages / Drivers</span>
-        <h1 class="head-1">Manage Drivers</h1>
+        <span class="bc-text">{{__('messages.Pages / Drivers')}}</span>
+        <h1 class="head-1">{{__('messages.Manage Drivers')}}</h1>
 
     @elseif($currentSegment2 == 'driver' && $currentSegment3 == 'vehicles')
-        <span class="bc-text">Pages / Driver Vehicles</span>
-        <h1 class="head-1">Manage Driver Vehicles</h1>
+        <span class="bc-text">{{__('messages.Pages / Driver Vehicles')}}</span>
+        <h1 class="head-1">{{__('messages.Manage Driver Vehicles')}}</h1>
 
     @elseif($currentSegment2 == 'driver' && $currentSegment3 == 'vehicles/add')
-        <span class="bc-text">Pages / Driver Vehicles</span>
-        <h1 class="head-1">Add Driver Vehicles</h1>
+        <span class="bc-text">{{__('messages.Pages / Driver Vehicles')}}</span>
+        <h1 class="head-1">{{__('messages.Add Driver Vehicles')}}</h1>
 
     @elseif($currentSegment2 == 'subscribe')
-        <span class="bc-text">Pages / Subscribe</span>
-        <h1 class="head-1">Subscriptions</h1>
+        <span class="bc-text">{{__('messages.Pages / Subscribe')}}</span>
+        <h1 class="head-1">{{__('messages.Subscriptions')}}</h1>
 
     @elseif($currentSegment2 == 'company.contactus')
-        <span class="bc-text">Pages / Contact Us</span>
-        <h1 class="head-1">Contact Us</h1>
+        <span class="bc-text">{{__('messages.Pages / Contact Us')}}</span>
+        <h1 class="head-1">{{__('messages.Contact Us')}}</h1>
 
     @elseif($currentSegment2 == 'allvehicles')
-        <span class="bc-text">Pages / All Vehicles</span>
-        <h1 class="head-1">All Vehicles</h1>
+        <span class="bc-text">{{__('messages.Pages / All Vehicles')}}</span>
+        <h1 class="head-1">{{__('messages.All Vehicles')}}</h1>
 
     @elseif(str_contains($currentSegment2, 'fuel_taxes'))
-        <span class="bc-text">Pages / Fuel Taxes</span>
-        <h1 class="head-1">Fuel Taxes</h1>
+        <span class="bc-text">{{__('messages.Pages / Fuel Taxes')}}</span>
+        <h1 class="head-1">{{__('messages.Fuel Taxes')}}</h1>
 
     @elseif(str_contains($currentSegment2, 'payments'))
-        <span class="bc-text">Pages / Payments</span>
-        <h1 class="head-1">Payments</h1>
+        <span class="bc-text">{{__('messages.Pages / Payments')}}</span>
+        <h1 class="head-1">{{__('messages.Payments')}}</h1>
 
     @elseif(str_contains($currentSegment2, 'companies'))
-        <span class="bc-text">Pages / Companies</span>
-        <h1 class="head-1">Companies</h1>
+        <span class="bc-text">{{__('messages.Pages / Companies')}}</span>
+        <h1 class="head-1">{{__('messages.Companies')}}</h1>
 
     @elseif(str_contains($currentSegment2, 'plans'))
-        <span class="bc-text">Pages / Subscriptions</span>
-        <h1 class="head-1">Subscriptions</h1>
+        <span class="bc-text">{{__('messages.Pages / Subscriptions')}}</span>
+        <h1 class="head-1">{{__('messages.Subscriptions')}}</h1>
 
     @elseif(str_contains($currentSegment2, 'contactus/all'))
-        <span class="bc-text">Pages / Contact Forms</span>
-        <h1 class="head-1">Contact Forms</h1>
+        <span class="bc-text">{{__('messages.Pages / Contact Forms')}}</span>
+        <h1 class="head-1">{{__('messages.Contact Forms')}}</h1>
 
     @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'create')
-        <span class="bc-text">Pages / Create Driver</span>
-        <h1 class="head-1">Create Driver</h1>
+        <span class="bc-text">{{__('messages.Pages / Create Driver')}}</span>
+        <h1 class="head-1">{{__('messages.Create Driver')}}</h1>
         @elseif($currentSegment2 == 'company' && $currentSegment3 == 'contactus/all')
-        <span class="bc-text">Pages / Create Driver</span>
-        <h1 class="head-1">Create Driver</h1>
+        <span class="bc-text">{{__('messages.Pages / Create Driver')}}</span>
+        <h1 class="head-1">{{__('messages.Create Driver')}}</h1>
         @elseif($currentSegment2 == 'subscribe')
-        <span class="bc-text">Pages / Subscriptions</span>
-        <h1 class="head-1">Subscriptions </h1>
+        <span class="bc-text">{{__('messages.Pages / Subscriptions')}}</span>
+        <h1 class="head-1">{{__('messages.Subscriptions')}} </h1>
     @else
         <!-- Default case -->
     @endif

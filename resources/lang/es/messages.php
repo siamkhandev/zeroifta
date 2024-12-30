@@ -132,6 +132,31 @@ return [
     "Vehicle With MIL On"=>"Vehículo con MIL encendido",
     "Clear Filter"=>"Borrar filtro",
     "No trip found"=>"No se encontró ningún viaje",
+    "Pages / Dashboard"=>"Páginas/Panel",
+    "Pages / Fleet Management"=>"Páginas / Gestión de flotas",
+    "Fleet Management"=>"Gestión de flotas",
+    "Pages / Profile Management"=>"Páginas / Gestión de perfiles",
+    "Pages / Vehicles"=>"Páginas / Vehículos",
+    "Pages / Drivers"=>"Páginas / Controladoras",
+    "Pages / Driver Vehicles"=>"Páginas / Vehículos Conductor",
+    "Pages / Subscribe"=>"Páginas / Suscríbete",
+    "Pages / Contact Us"=>"Páginas / Contáctenos",
+    "Pages / All Vehicles"=>"Páginas / Todos los vehículos",
+    "Pages / Fuel Taxes"=>"Páginas / Impuestos sobre el combustible",
+    "Pages / Payments"=>"Páginas / Pagos",
+    "Pages / Companies"=>"Páginas / Empresas",
+    "Pages / Subscriptions"=>"Pages / Subscriptions",
+    "Pages / Contact Forms"=>"Páginas / Formularios de contacto",
+    "Pages / Create Driver"=>"Páginas / Crear controlador",
+
+    "Create Driver"=>"Crear controlador",
+    "Companies"=>"Empresas",
+    "Fuel Taxes"=>"Impuestos sobre el combustible",
+    "All Vehicles"=>"Todos los vehículos",
+    "Contact Us"=>"Contáctenos",
+    "Add Driver Vehicles"=>"Agregar vehículos con conductor",
+    "Create Vehicles"=>"Crear vehículos",
+
     
 
 ];

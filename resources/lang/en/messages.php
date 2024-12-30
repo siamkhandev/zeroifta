@@ -142,6 +142,35 @@ return [
     "Vehicle With MIL On"=>"Vehicle With MIL On",
     "Clear Filter"=>"Clear Filter",
     "No trip found"=>"No trip found",
+    "Pages / Dashboard"=>"Pages / Dashboard",
+    "Pages / Fleet Management"=>"Pages / Fleet Management",
+    "Fleet Management"=>"Fleet Management",
+    "Pages / Profile Management"=>"Pages / Profile Management",
+    "Pages / Vehicles"=>"Pages / Vehicles",
+    "Pages / Drivers"=>"Pages / Drivers",
+    "Pages / Driver Vehicles"=>"Pages / Driver Vehicles",
+    "Pages / Subscribe"=>"Pages / Subscribe",
+    "Pages / Contact Us"=>"Pages / Contact Us",
+    "Pages / All Vehicles"=>"Pages / All Vehicles",
+    "Pages / Fuel Taxes"=>"Pages / Fuel Taxes",
+    "Pages / Payments"=>"Pages / Payments",
+    "Pages / Companies"=>"Pages / Companies",
+    "Pages / Subscriptions"=>"Pages / Subscriptions",
+    "Pages / Contact Forms"=>"Pages / Contact Forms",
+    "Pages / Create Driver"=>"Pages / Create Driver",
+    "Create Driver"=>"Create Driver",
+    "Companies"=>"Companies",
+    "Fuel Taxes"=>"Fuel Taxes",
+    "All Vehicles"=>"All Vehicles",
+    "Contact Us"=>"Contact Us",
+    "Add Driver Vehicles"=>"Add Driver Vehicles",
+    "Create Vehicles"=>"Create Vehicles",
     
+
+
+
+
+
+
 
 ];
