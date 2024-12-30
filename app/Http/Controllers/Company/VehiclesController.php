@@ -42,11 +42,12 @@ class VehiclesController extends Controller
         ]);
         $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$request->vin}?format=json";
         $response = Http::get($apiUrl);
-
+        dd($response);
         if ($response->successful()) {
             if (isset($data['Results'][0])) {
                 $result = $data['Results'][0];
-                dd($result);
+
+
                 if(isset($result['Make'])&& $result['Make']!='' && isset($result['Model'])&& $result['Model']!='' && isset($result['ModelYear']) && $result['ModelYear']!=''){
                     $vehicle = new Vehicle();
                     $vehicle->vehicle_type = $request->vehicle_type;
