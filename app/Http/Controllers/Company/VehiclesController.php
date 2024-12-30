@@ -42,8 +42,9 @@ class VehiclesController extends Controller
         ]);
         $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$request->vin}?format=json";
         $response = Http::get($apiUrl);
-        dd($response);
+
         if ($response->successful()) {
+            $data = $response->json();
             if (isset($data['Results'][0])) {
                 $result = $data['Results'][0];
 
