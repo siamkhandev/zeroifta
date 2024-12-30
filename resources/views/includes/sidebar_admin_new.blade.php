@@ -17,7 +17,7 @@
     <div class="sc-pad">
       <h4 class="head-14Med">{{ __('messages.Main Menu')}}</h4>
     </div>
-    {{ dd(Request::path()) }}
+    
     <div class="pt-2">
       <ul class="sidebar-list">
         <li>
@@ -41,7 +41,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('profile')}}" class="sidebar_li {{ Request::is('profile') ? 'menu_active' : '' }}">
+          <a href="{{route('profile')}}" class="sidebar_li {{ Request::is(app()->getLocale() . '/profile') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
