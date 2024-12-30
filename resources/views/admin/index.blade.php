@@ -13,7 +13,7 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('companies')}}">{{('messages.Total Companies')}}</a></h5>
+              <a href="{{route('companies')}}"><h5 class="head-16Med grayMain">{{__('messages.Total Companies')}}</h5></a>
                 <h6 class="head-24Med blue">{{\App\Models\User::whereRole('company')->count()??0}}</h6>
               </div>
               @else
