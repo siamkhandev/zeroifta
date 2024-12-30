@@ -47,7 +47,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Name')}}</label>
-                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Add Name" name="name" value="{{Auth::user()->name}}" />
+                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.Name')}}" name="name" value="{{Auth::user()->name}}" />
                 </div>
                 @error('name')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -58,7 +58,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Email Address')}}</label>
-                  <input type="email" class="form-control dis-input" id="exampleFormControlInput1" placeholder="test@email.com" name="email" value="{{Auth::user()->email}}" />
+                  <input type="email" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.Email Address')}}" name="email" value="{{Auth::user()->email}}" />
                 </div>
                 @error('email')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -70,7 +70,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Phone')}}</label>
-                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="+92345623947234" name="phone" value="{{Auth::user()->phone}}" />
+                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.Phone')}}" name="phone" value="{{Auth::user()->phone}}" />
                 </div>
                 @error('phone')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -81,7 +81,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.MC')}}</label>
-                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="9898" name="mc" value="{{Auth::user()->mc}}" />
+                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.MC')}}" name="mc" value="{{Auth::user()->mc}}" />
                 </div>
                 @error('mc')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -92,19 +92,19 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.City')}}</label>
-                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="London" name="city" value="{{Auth::user()->city}}" />
+                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.City')}}" name="city" value="{{Auth::user()->city}}" />
                 </div>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.State')}}</label>
-                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="London" name="state" value="{{Auth::user()->state}}" />
+                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.State')}}" name="state" value="{{Auth::user()->state}}" />
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
-                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="ssdgg5778534873" name="dot" value="{{Auth::user()->dot}}" />
+                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.DOT')}}" name="dot" value="{{Auth::user()->dot}}" />
                 </div>
                 @error('dot')
                 <span class="invalid-feedback" role="alert" style="display: block;">

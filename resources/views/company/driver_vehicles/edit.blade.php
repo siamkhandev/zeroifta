@@ -38,8 +38,8 @@
         </div>
     </div>
     <div class="buttons mt-5">
-        <a href="{{ route('driver_vehicles') }}" class="cancelBtn">Cancel</a>
-        <button type="button" id="submitEditForm" class="mainBtn">Submit</button>
+        <a href="{{ route('driver_vehicles') }}" class="cancelBtn">{{__('messages.Cancel')}}</a>
+        <button type="button" id="submitEditForm" class="mainBtn">{{__('messages.Submit')}}</button>
     </div>
 </form>
     </div>
@@ -48,15 +48,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="justify-content: left !important;">
-                <h5 class="modal-title">Reassign Vehicle</h5>
+                <h5 class="modal-title">{{__('messages.Reassign Vehicle')}}</h5>
                
             </div>
             <div class="modal-body">
                 <p id="modalMessage"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="confirmButton" class="btn btn-primary">Reassign</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('messages.Cancel')}}</button>
+                <button type="button" id="confirmButton" class="btn btn-primary">{{__('messages.Reassign')}}</button>
             </div>
         </div>
     </div>

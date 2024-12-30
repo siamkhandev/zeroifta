@@ -11,7 +11,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle ID')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Vehicle ID" name="vehicle_id" value="{{$vehicle->vehicle_id}}"/>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Vehicle ID')}}" name="vehicle_id" value="{{$vehicle->vehicle_id}}"/>
                     </div>
                     @error('vehicle_id')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -22,14 +22,14 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.VIN')}}</label>
-                        <input type="text" required class="form-control login-input" id="vinInput" placeholder="Vin" name="vin" value="{{$vehicle->vin}}"/>
+                        <input type="text" required class="form-control login-input" id="vinInput" placeholder="{{__('messages.VIN')}}" name="vin" value="{{$vehicle->vin}}"/>
                     </div>
                     @error('vin')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <button type="button" id="checkVinBtn" class="btn btn-primary">Check VIN</button>
+                        <button type="button" id="checkVinBtn" class="btn btn-primary">{{__('messages.Check VIN')}}</button>
                 </div>
 
 
@@ -79,7 +79,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
-                        <input type="text" required class="form-control login-input" id="vehicle_model_type" placeholder="Add Vehicle Model" name="vehicle_model" value="{{$vehicle->model}}" />
+                        <input type="text" required class="form-control login-input" id="vehicle_model_type" placeholder="{{__('messages.Vehicle Model')}}" name="vehicle_model" value="{{$vehicle->model}}" />
                     </div>
                     @error('vehicle_model')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -139,7 +139,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Number')}}</label>
-                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Number" name="license_number" value="{{$vehicle->license_plate_number}}" />
+                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.License Number')}}" name="license_number" value="{{$vehicle->license_plate_number}}" />
                     </div>
                     @error('license_number')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -150,7 +150,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Odometer Reading')}}</label>
-                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Odometer Reading" name="odometer_reading" value="{{$vehicle->odometer_reading}}" />
+                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Odometer Reading')}}" name="odometer_reading" value="{{$vehicle->odometer_reading}}" />
                     </div>
                     @error('odometer_reading')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -161,7 +161,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.MPG')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add MPG" name="mpg" value="{{$vehicle->mpg}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.MPG')}}" name="mpg" value="{{$vehicle->mpg}}" />
                     </div>
                     @error('mpg')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -172,7 +172,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Fuel Tank Capacity')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Fuel Tank Capacity" name="fuel_tank_capacity" value="{{$vehicle->fuel_tank_capacity}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Fuel Tank Capacity')}}" name="fuel_tank_capacity" value="{{$vehicle->fuel_tank_capacity}}" />
                     </div>
                     @error('fuel_tank_capacity')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -183,7 +183,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Secondary Fuel Tank Capacity')}}</label>
-                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Secondary Fuel Tank Capacity" name="secondary_fuel_tank_capacity" value="{{$vehicle->secondary_tank_capacity}}" />
+                        <input type="text" class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Secondary Fuel Tank Capacity')}}" name="secondary_fuel_tank_capacity" value="{{$vehicle->secondary_tank_capacity}}" />
                     </div>
                     @error('secondary_fuel_tank_capacity')
                             <span class="invalid-feedback" role="alert" style="display: block;">

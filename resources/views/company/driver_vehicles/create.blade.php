@@ -61,7 +61,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="justify-content: left !important;">
-                <h5 class="modal-title" id="reassignModalLabel">Reassign Vehicle</h5>
+                <h5 class="modal-title" id="reassignModalLabel">{{__('messages.Reassign Vehicle')}}</h5>
                
             </div>
             <div class="modal-body">
@@ -71,8 +71,8 @@
                 <input type="hidden" name="driver_vehicle_id" value="" id="driverVehicleId">
                 <input type="hidden" name="driver_id" value="">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Reassign</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('messages.Cancel')}}</button>
+                    <button type="submit" class="btn btn-primary">{{__('messages.Reassign')}}</button>
                 </div>
             </form>
         </div>

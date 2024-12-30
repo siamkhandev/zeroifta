@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="dashbord-inner">
-        <h3>Tracking {{ $userName }} Location</h3>
+        <h3>{{__('messages.Tracking')}} {{ $userName }} {{__('messages.Location')}}</h3>
         <div class="row">
             <!-- Left Card with User and Trip Info -->
             <div class="col-md-4">
@@ -14,19 +14,19 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <th class="text-primary">Driver Name</th>
+                            <th class="text-primary">{{__('messages.Driver Name')}}</th>
                             <td>{{ $userName }}</td>
                         </tr>
                         <tr>
-                            <th class="text-primary">Trip Start Date</th>
+                            <th class="text-primary">{{__('messages.Trip Start Date')}}</th>
                             <td>{{ $trip->created_at }}</td>
                         </tr>
                         <tr>
-                            <th class="text-primary">Trip Starting Point</th>
+                            <th class="text-primary">{{__('messages.Trip Starting Point')}}</th>
                             <td>{{ $startAddress }}</td>
                         </tr>
                         <tr>
-                            <th class="text-primary">Trip Ending Point</th>
+                            <th class="text-primary">{{__('messages.Trip Ending Point')}}</th>
                             <td>{{ $endAddress }}</td>
                         </tr>
                     </tbody>

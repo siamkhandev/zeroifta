@@ -127,4 +127,21 @@ return [
     "Logout"=>"Logout",
     "change_password"=>"Change Password",
     "DOT"=>"DOT",
+    "Reassign Vehicle"=>"Reassign Vehicle",
+    "Reassign"=>"Reassign",
+    "Tracking"=>"Tracking",
+    "Location"=>"Location",
+    "Trip Start Date"=>"Trip Start Date",
+    "Trip Starting Point"=>"Trip Starting Point",
+    "Trip Ending Point"=>"Trip Ending Point",
+    "Check VIN"=>"Check VIN",
+    "Information"=>"Information",
+    "Entity"=>"Entity",
+    "Duty Status"=>"Duty Status",
+    "Dispatch Status"=>"Dispatch Status",
+    "Vehicle With MIL On"=>"Vehicle With MIL On",
+    "Clear Filter"=>"Clear Filter",
+    "No trip found"=>"No trip found",
+    
+
 ];

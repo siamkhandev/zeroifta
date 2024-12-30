@@ -14,7 +14,7 @@
                                 <span class="d-sel">
                                     <select class="form-select" aria-label="Default select example">
                                         <option selected>
-                                            <span>Entity</span>
+                                            <span>{{__('messages.Entity')}}</span>
                                         </option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -27,7 +27,7 @@
                                 <span class="d-sel">
                                     <select class="form-select" aria-label="Default select example">
                                         <option selected>
-                                            <span>Duty Status</span>
+                                            <span>{{__('messages.Duty Status')}}</span>
                                         </option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -40,7 +40,7 @@
                                 <span class="d-sel">
                                     <select class="form-select" aria-label="Default select example">
                                         <option selected>
-                                            <span>Dispatch Status</span>
+                                            <span>{{__('messages.Dispatch Status')}}</span>
                                         </option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -53,7 +53,7 @@
                                 <span class="d-sel">
                                     <select class="form-select" aria-label="Default select example">
                                         <option selected>
-                                            <span>Vehicle With MIL On</span>
+                                            <span>{{__('messages.Vehicle With MIL On')}}</span>
                                         </option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -74,7 +74,7 @@
                                         />
                                     </svg>
                                 </span>
-                                <span>Clear Filter</span>
+                                <span>{{__('messages.Clear Filter')}}</span>
                             </a>
                             <a href="#" class="mainBtn status-btn">
                                 <span>
@@ -85,7 +85,7 @@
                                         />
                                     </svg>
                                 </span>
-                                <span>Status</span>
+                                <span>{{__('messages.Status')}}</span>
                             </a>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
                                     Track Location
                                 </a> -->
                             @else
-                                <p class="text-muted mt-2">No trip found</p>
+                                <p class="text-muted mt-2">{{__('messages.No trip found')}}</p>
                             @endif
                                             <span id="status-{{ $driver->driver->id }}"
                                       class="status-circle"

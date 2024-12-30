@@ -12,18 +12,18 @@
           <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
-                <p class="mb-0">Contact Form</p>
+                <p class="mb-0">{{__('messages.Contact Form')}}</p>
               </div>
             </div>
             <div class="card-body">
                 <form method="post" action="{{route('company.contactus.submit')}}" enctype="multipart/form-data">
                     @csrf
-                    <p class="text-uppercase text-sm">Information</p>
+                    <p class="text-uppercase text-sm">{{__('messages.Information')}}</p>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Subject</label>
-                                <input class="form-control" type="text" name="subject" placeholder="Subject">
+                                <label for="example-text-input" class="form-control-label">{{__('messages.Subject')}}</label>
+                                <input class="form-control" type="text" name="subject" placeholder="{{__('messages.Subject')}}">
                                 @error('subject')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -34,8 +34,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Phone</label>
-                                <input class="form-control" type="text" name="phone" placeholder="Phone">
+                                <label for="example-text-input" class="form-control-label">{{__('messages.Phone')}}</label>
+                                <input class="form-control" type="text" name="phone" placeholder="{{__('messages.Phone')}}">
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Message</label>
+                                <label for="example-text-input" class="form-control-label">{{__('messages.Message')}}</label>
                                 <textarea class="form-control" name="description"></textarea>
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
@@ -59,7 +59,7 @@
                         
                         
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm" >Submit</button>
+                    <button type="submit" class="btn btn-primary btn-sm" >{{__('messages.Submit')}}</button>
                 </form>
               
              

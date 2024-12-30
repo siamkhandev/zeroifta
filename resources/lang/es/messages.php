@@ -116,7 +116,22 @@ return [
     "Image"=>"Imagen",
     "Logout"=>"Cerrar sesion",
     "change_password"=>"Cambiar contraseña",
-    "DOT"=>"DOT"
-
+    "DOT"=>"DOT",
+    "Reassign Vehicle"=>"Reasignar vehículo",
+    "Reassign"=>"Reasignar",
+    "Tracking"=>"Seguimiento",
+    "Location"=>"Ubicación",
+    "Trip Start Date"=>"Fecha de inicio del viaje",
+    "Trip Starting Point"=>"Punto de inicio del viaje",
+    "Trip Ending Point"=>"Punto final del viaje",
+    "Check VIN"=>"Verifique VIN",
+    "Information"=>"Información",
+    "Entity"=>"Entidad",
+    "Duty Status"=>"Estado de servicio",
+    "Dispatch Status"=>"Estado de envío",
+    "Vehicle With MIL On"=>"Vehículo con MIL encendido",
+    "Clear Filter"=>"Borrar filtro",
+    "No trip found"=>"No se encontró ningún viaje",
+    
 
 ];

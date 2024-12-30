@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.First Name')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type First Name" name="first_name" value="{{old('first_name')}}"/>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.First Name')}}" name="first_name" value="{{old('first_name')}}"/>
                     </div>
                     @error('first_name')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -21,7 +21,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Last Name')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Last Name" name="last_name" value="{{old('last_name')}}"/>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Last Name')}}" name="last_name" value="{{old('last_name')}}"/>
                     </div>
                     @error('last_name')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -32,7 +32,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Driver ID')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Type Driver ID" name="driver_id" value="{{old('driver_id')}}"/>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Driver ID')}}" name="driver_id" value="{{old('driver_id')}}"/>
                     </div>
                     @error('driver_id')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -43,7 +43,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Phone')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Phone" name="phone" value="{{old('phone')}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Phone')}}" name="phone" value="{{old('phone')}}" />
                     </div>
                     @error('phone')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -117,7 +117,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Number')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add License Number" name="license_number" value="{{old('license_number')}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.License Number')}}" name="license_number" value="{{old('license_number')}}" />
                     </div>
                     @error('license_number')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -128,7 +128,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Start Date')}}</label>
-                        <input type="date" required class="form-control login-input" id="licenseStartDate" placeholder="Add License Start Date" name="license_start_date" value="{{old('license_start_date')}}" />
+                        <input type="date" required class="form-control login-input" id="licenseStartDate" placeholder="{{__('messages.License Start Date')}}" name="license_start_date" value="{{old('license_start_date')}}" />
                     </div>
                     @error('license_start_date')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -139,7 +139,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Email')}}</label>
-                        <input type="email" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Email" name="email" value="{{old('email')}}" />
+                        <input type="email" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Email')}}" name="email" value="{{old('email')}}" />
                     </div>
                     @error('email')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -150,7 +150,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Username')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Username" name="username" value="{{old('username')}}" />
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Username')}}" name="username" value="{{old('username')}}" />
                     </div>
                     @error('username')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -173,7 +173,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Password')}}</label>
-                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Password" name="password"  value="{{old('password')}}"/>
+                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Password')}}" name="password"  value="{{old('password')}}"/>
                     </div>
                     @error('password')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -184,7 +184,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Confirm Password')}}</label>
-                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="Add Confirm Password" name="password_confirmation"  value="{{old('password_confirmation')}}"/>
+                        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Confirm Password')}}" name="password_confirmation"  value="{{old('password_confirmation')}}"/>
                     </div>
 
                 </div>
