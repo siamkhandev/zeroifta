@@ -14,7 +14,7 @@
               <th scope="col">{{__('messages.Plan Name')}}</th>
               <th scope="col">{{__('messages.Payments')}}</th>
               <th scope="col">{{__('messages.Status')}}</th>
-              <th scope="col">{{__('messages.Purchased date')}}</th>
+              <th scope="col">{{__('messages.Purchased Date')}}</th>
           </tr>
         </thead>
         <tbody>
