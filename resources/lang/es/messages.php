@@ -145,7 +145,7 @@ return [
     "Pages / Fuel Taxes"=>"Páginas / Impuestos sobre el combustible",
     "Pages / Payments"=>"Páginas / Pagos",
     "Pages / Companies"=>"Páginas / Empresas",
-    "Pages / Subscriptions"=>"Pages / Subscriptions",
+    "Pages / Subscriptions"=>"Páginas / Suscripciones",
     "Pages / Contact Forms"=>"Páginas / Formularios de contacto",
     "Pages / Create Driver"=>"Páginas / Crear controlador",
 
@@ -158,5 +158,7 @@ return [
     "Create Vehicles"=>"Crear vehículos",
 
     "Main Dashboard"=>"Panel principal",
+    "Yes"=>"Sí",
+    "No"=>"No",
 
 ];

@@ -166,6 +166,9 @@ return [
     "Add Driver Vehicles"=>"Add Driver Vehicles",
     "Create Vehicles"=>"Create Vehicles",
     "Main Dashboard"=>"Main Dashboard",
+    "Yes"=>"Yes",
+    "No"=>"No",
+
 
 
 
