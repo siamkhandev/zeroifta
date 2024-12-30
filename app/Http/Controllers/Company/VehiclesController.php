@@ -46,6 +46,7 @@ class VehiclesController extends Controller
         if ($response->successful()) {
             if (isset($data['Results'][0])) {
                 $result = $data['Results'][0];
+                dd($result);
                 if(isset($result['Make'])&& $result['Make']!='' && isset($result['Model'])&& $result['Model']!='' && isset($result['ModelYear']) && $result['ModelYear']!=''){
                     $vehicle = new Vehicle();
                     $vehicle->vehicle_type = $request->vehicle_type;
@@ -79,7 +80,7 @@ class VehiclesController extends Controller
             return redirect()->back()->withError('Invalid VIN. Please try again.')->withInput();
          }
          return redirect()->back()->withError('Invalid VIN. Please try again.')->withInput();
-        
+
     }
     public function checkVin(Request $request)
     {
