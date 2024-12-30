@@ -22,7 +22,7 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
@@ -35,7 +35,12 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $user->token = $user->createToken('zeroifta')->accessToken;
-            $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->driver_image;
+            if($user->driver_image){
+                $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->driver_image;
+            }else{
+                $user->image = null;
+            }
+
             $vehicle = Vehicle::select(
                 'id',
                 'vehicle_image',
@@ -149,7 +154,7 @@ class AuthController extends Controller
     }
     public function profileUpdate(Request $request)
     {
-    
+
         $user = User::find($request->user_id);
         if($user){
             $user->name = $request->name;
@@ -168,16 +173,16 @@ class AuthController extends Controller
         }else{
             return response()->json(['status'=>404,'message' => 'User not found','data'=>(object)[]], 404);
         }
-        
+
 
     }
     public function sendResetLinkEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
-           
+
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
@@ -197,15 +202,15 @@ class AuthController extends Controller
         try {
             // You can customize the mail class ResetPasswordMail to structure the email
             Mail::to($email)->send(new ResetPasswordMail($token));
-    
+
             return response()->json(['status' => 200, 'message' => 'Reset password token sent to the given email', 'data' => (object)[]], 200);
         } catch (\Exception $e) {
             return response()->json(['status' => 500, 'message' => 'Failed to send email: ' . $e->getMessage(), 'data' => (object)[]], 500);
         }
-        
-        
 
-       
+
+
+
     }
     public function showResetForm($token)
     {
@@ -237,7 +242,7 @@ class AuthController extends Controller
     }
     public function resetPassword(Request $request)
     {
-   
+
     $validator = Validator::make($request->all(), [
         'email' => 'required|email|exists:users,email',
         'token' => 'required',
