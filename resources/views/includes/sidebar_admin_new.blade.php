@@ -21,7 +21,7 @@
     <div class="pt-2">
       <ul class="sidebar-list">
         <li>
-          <a href="/" class="sidebar_li {{ Request::is('/') ? 'menu_active' : '' }}">
+          <a href="/" class="sidebar_li {{ Request::is(app()->getLocale() .'/') ? 'menu_active' : '' }}">
             <span class="strok-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="26" height="24" viewBox="0 0 26 24" fill="none">
                 <g clip-path="url(#clip0_2273_6808)">
