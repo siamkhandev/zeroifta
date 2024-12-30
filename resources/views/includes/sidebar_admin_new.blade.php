@@ -65,7 +65,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('companies')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'companies*') ? 'menu_active' : '' }}">
+          <a href="{{route('companies')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/companies*') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
                 <path
@@ -77,7 +77,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('payments')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'payments*') ? 'menu_active' : '' }}">
+          <a href="{{route('payments')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/payments*') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -89,7 +89,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('fuel_taxes')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'fuel_taxes*') ? 'menu_active' : '' }}">
+          <a href="{{route('fuel_taxes')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/fuel_taxes*') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -120,7 +120,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('admin.contactus')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'contactus/all*') ? 'menu_active' : '' }}">
+          <a href="{{route('admin.contactus')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/contactus/all*') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
