@@ -13,12 +13,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Total Companies')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('companies')}}">{{('messages.Total Companies')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\User::whereRole('company')->count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Total Drivers')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('drivers.all')}}">{{__('messages.Total Drivers')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyDriver::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -34,12 +34,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Subscription')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}">{{__('messages.Subscription')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Total Vehicles')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('allvehicles')}}">{{__('messages.Total Vehicles')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Vehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -54,12 +54,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Payments')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}">{{__('messages.Payments')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Driver Vehicles')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('driver_vehicles')}}">{{__('messages.Driver Vehicles')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\DriverVehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -74,12 +74,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Contact Form')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('admin.contactus')}}">{{__('messages.Contact Form')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyContactUs::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain">{{__('messages.Contact Form')}}</h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('company.contactus')}}">{{__('messages.Contact Form')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Contactus::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
