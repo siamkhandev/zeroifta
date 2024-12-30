@@ -41,6 +41,7 @@ class DriversController extends Controller
             'license_number' => 'required|string|max:255',
             'license_state' => 'required|string|max:255',
            'license_start_date' => 'required|date|before_or_equal:today',
+           'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $driver = new User();
@@ -55,7 +56,11 @@ class DriversController extends Controller
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
         $driver->password= Hash::make($request->password);
-
+        if($request->hasFile('profile_picture')){
+            $imageName = time().'.'.$request->profile_picture->extension();
+            $request->profile_picture->move(public_path('drivers'), $imageName);
+            $driver->image= $imageName;
+        }
         $driver->role='driver';
 
 
@@ -97,7 +102,11 @@ class DriversController extends Controller
         $driver->name = $request->first_name.' '.$request->last_name;
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
-
+        if($request->hasFile('profile_picture')){
+            $imageName = time().'.'.$request->profile_picture->extension();
+            $request->profile_picture->move(public_path('drivers'), $imageName);
+            $driver->image= $imageName;
+        }
         $driver->update();
         return redirect('drivers/all')->withSuccess('Driver Updated Successfully');
     }
