@@ -108,7 +108,7 @@
                             <option value="WY">Wyoming</option>
                         </select>
                     </div>
-                    @error('phone')
+                    @error('license_state')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
