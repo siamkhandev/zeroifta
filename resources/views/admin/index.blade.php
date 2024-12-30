@@ -13,12 +13,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-              <a href="{{route('companies')}}"><h5 class="head-16Med grayMain">{{__('messages.Total Companies')}}</h5></a>
+              <a href="{{route('companies')}}" style="color: #092e75"><h5 class="head-16Med grayMain">{{__('messages.Total Companies')}}</h5></a>
                 <h6 class="head-24Med blue">{{\App\Models\User::whereRole('company')->count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('drivers.all')}}">{{__('messages.Total Drivers')}}</a></h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('drivers.all')}}" style="color: #092e75">{{__('messages.Total Drivers')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyDriver::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -34,12 +34,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}">{{__('messages.Subscription')}}</a></h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}" style="color: #092e75">{{__('messages.Subscription')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('allvehicles')}}">{{__('messages.Total Vehicles')}}</a></h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('allvehicles')}}" style="color: #092e75">{{__('messages.Total Vehicles')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Vehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -54,12 +54,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}">{{__('messages.Payments')}}</a></h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}" style="color: #092e75">{{__('messages.Payments')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('driver_vehicles')}}">{{__('messages.Driver Vehicles')}}</a></h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('driver_vehicles')}}" style="color: #092e75">{{__('messages.Driver Vehicles')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\DriverVehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -74,12 +74,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('admin.contactus')}}">{{__('messages.Contact Form')}}</a></h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('admin.contactus')}}" style="color: #092e75">{{__('messages.Contact Form')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyContactUs::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('company.contactus')}}">{{__('messages.Contact Form')}}</a></h5>
+                <h5 class="head-16Med grayMain"><a href="{{route('company.contactus')}}" style="color: #092e75">{{__('messages.Contact Form')}}</a></h5>
                 <h6 class="head-24Med blue">{{\App\Models\Contactus::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
