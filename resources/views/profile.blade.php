@@ -103,7 +103,7 @@
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Dot')}}</label>
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
                   <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="ssdgg5778534873" name="dot" value="{{Auth::user()->dot}}" />
                 </div>
                 @error('dot')
