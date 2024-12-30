@@ -105,7 +105,7 @@ class DriversController extends Controller
         if($request->hasFile('profile_picture')){
             $imageName = time().'.'.$request->profile_picture->extension();
             $request->profile_picture->move(public_path('drivers'), $imageName);
-            $driver->driver_imageimage= $imageName;
+            $driver->driver_image= $imageName;
         }
         $driver->update();
         return redirect('drivers/all')->withSuccess('Driver Updated Successfully');
