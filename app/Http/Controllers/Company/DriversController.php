@@ -55,6 +55,7 @@ class DriversController extends Controller
         $driver->license_start_date = $request->license_start_date;
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
+        $driver->company_id = Auth::id();
         $driver->password= Hash::make($request->password);
         if($request->hasFile('profile_picture')){
             $imageName = time().'.'.$request->profile_picture->extension();
