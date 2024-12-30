@@ -8,7 +8,7 @@
         $currentSegment2 = Request::segment(2); // Second segment
         $currentSegment3 = Request::segment(3); // Third segment
     @endphp
-
+{{dd($currentSegment2,$currentSegment3)}}
     @if($currentSegment2 == '')
         <span class="bc-text">{{__('messages.Pages / Dashboard')}}</span>
         <h1 class="head-1">{{__('messages.Main Dashboard')}}</h1>
@@ -82,6 +82,7 @@
         @elseif($currentSegment2 == 'subscribe')
         <span class="bc-text">{{__('messages.Pages / Subscriptions')}}</span>
         <h1 class="head-1">{{__('messages.Subscriptions')}} </h1>
+        
     @else
         <!-- Default case -->
     @endif
