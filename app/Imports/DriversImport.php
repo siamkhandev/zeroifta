@@ -34,10 +34,18 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
 
         try {
             // Validate the row
-            $validator = Validator::make($row, [
+            $validator = Validator::make([
+                'email' => $row['email'],
+                'driver_id' => $row['driver_id'],
+                'username' => $row['username'],
+                'license_number' => $row['license_number'],
+                'license_start_date' => $licenseStartDate,
+            ], [
                 'email' => 'required|email|unique:users,email',
                 'driver_id' => 'required|unique:users,driver_id',
                 'username' => 'required|string|unique:users,username',
+                'license_number' => 'required|string|unique:users,license_number',
+                'license_start_date' => 'required|date|before_or_equal:today',
             ]);
 
             if ($validator->fails()) {
