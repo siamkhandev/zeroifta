@@ -84,10 +84,10 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             ]);
             $cardToken = Token::create([
                 'card' => [
-                    'number' => $cardDetails['card_number'], // Replace with a test card number
-                    'exp_month' =>(int) $expMonth,
-                    'exp_year' =>(int) $expYear,
-                    'cvc' => $cardDetails['cvv'],
+                   'number' => '4242424242424242', // Replace with a test card number
+                    'exp_month' => 12,
+                    'exp_year' => 2026,
+                    'cvc' => '123',
                 ],
             ]);
             $stripeCustomer->sources->create([
