@@ -48,46 +48,62 @@ cf8B1OsNs6eYrx/8ebrnfrjjwpw2G64jaj62q1O7Qhh3GsjTOuuATvQum06k7EYG
 CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 -----END RSA PRIVATE KEY-----';
        
-        openssl_private_decrypt(base64_decode($validated['encrypted_card_details']), $decryptedData, $privateKey);
-        if (!$decryptedData) {
-            return response()->json(['status' =>400,'message'=> 'Failed to decrypt card details','data'=>(object)[]], 400);
-        }
-        $cardDetails = json_decode($decryptedData, true);
-        dd($cardDetails);
-        if (!$cardDetails || !isset($cardDetails['card_number'], $cardDetails['expiry_date'])) {
-            return response()->json(['status' =>400,'message'=>'Invalid card details','data'=>(object)[]], 400);
-        }
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+$decryptedData = '';
+openssl_private_decrypt(base64_decode($validated['encrypted_card_details']), $decryptedData, $privateKey);
 
-        try {
-            $stripePaymentMethod = StripePaymentMethod::create([
-                'type' => 'card',
-                'card' => [
-                    'number' => $cardDetails['card_number'],
-                    'exp_month' => substr($cardDetails['expiry_date'], 0, 2),
-                    'exp_year' => substr($cardDetails['expiry_date'], -4),
-                ],
-            ]);
+if (!$decryptedData) {
+    return response()->json(['status' => 400, 'message' => 'Failed to decrypt card details', 'data' => (object)[]], 400);
+}
 
-            // Store payment method in the database
-            $paymentMethod = PaymentMethod::create([
-                'user_id' => auth()->id(),
-                'method_name' => $validated['method_name'],
-                'card_number' => substr($cardDetails['card_number'], -4), // Store last 4 digits only
-                'expiry_date' => $cardDetails['expiry_date'], // Store expiry date
-                
-                'is_default' => false,
-            ]);
+// Parse decrypted data
+$cardDetails = json_decode($decryptedData, true);
 
-            return response()->json([
-                'status'=>200,
-                'message' => 'Payment method added successfully',
-                'data' => $paymentMethod,
-               
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['status'=>500,'message' => $e->getMessage(),'data'=>(object)[]], 500);
-        }
+if (!$cardDetails || !isset($cardDetails['card_number'], $cardDetails['expiry_date'], $cardDetails['cvv'])) {
+    return response()->json(['status' => 400, 'message' => 'Invalid card details', 'data' => (object)[]], 400);
+}
+
+// Validate expiry date format
+if (!preg_match('/^\d{2}\/\d{4}$/', $cardDetails['expiry_date'])) {
+    return response()->json(['status' => 400, 'message' => 'Invalid expiry date format', 'data' => (object)[]], 400);
+}
+
+// Extract expiry month and year
+[$expMonth, $expYear] = explode('/', $cardDetails['expiry_date']);
+
+Stripe::setApiKey(env('STRIPE_SECRET'));
+
+try {
+    // Create Stripe payment method
+    $stripePaymentMethod = StripePaymentMethod::create([
+        'type' => 'card',
+        'card' => [
+            'number' => $cardDetails['card_number'],
+            'exp_month' => (int) $expMonth,
+            'exp_year' => (int) $expYear,
+        ],
+    ]);
+
+    // Store payment method in the database
+    $paymentMethod = PaymentMethod::create([
+        'user_id' => auth()->id(),
+        'method_name' => $validated['method_name'],
+        'card_number' => substr($cardDetails['card_number'], -4), // Store last 4 digits only
+        'expiry_date' => $cardDetails['expiry_date'], // Store expiry date
+        'is_default' => false,
+    ]);
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Payment method added successfully',
+        'data' => $paymentMethod,
+    ]);
+    } catch (\Stripe\Exception\CardException $e) {
+        // Handle Stripe-specific errors
+        return response()->json(['status' => 400, 'message' => $e->getMessage(), 'data' => (object)[]], 400);
+    } catch (\Exception $e) {
+        // Handle other errors
+        return response()->json(['status' => 500, 'message' => $e->getMessage(), 'data' => (object)[]], 500);
+    }
     }
     public function getPaymentMethod($id)
     {
