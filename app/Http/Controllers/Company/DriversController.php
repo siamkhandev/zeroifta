@@ -156,26 +156,35 @@ class DriversController extends Controller
        return view('company.drivers.import');
     }
     public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv',
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
+
+    try {
+        // Import the file
+        $import = new DriversImport();
+        Excel::import($import, $request->file('file'));
+
+        // Collect results
+        $results = $import->getResults();
+        $successCount = $results['successCount'];
+        $errorCount = $results['errorCount'];
+        $errors = $results['errors'];
+
+        // Redirect with success and error counts
+        return redirect('drivers/all')->with([
+            'success' => "$successCount records created successfully.",
+            'warning' => "$errorCount records failed.",
+            'errors' => $errors, // Optionally pass the errors for display
         ]);
-        try {
-            $import = new DriversImport();
-            Excel::import($import, $request->file('file'));
-
-            // Collect results
-            $results = $import->getResults();
-            $successCount = $results['successCount'];
-            $errorCount = $results['errorCount'];
-            $errors = $results['errors'];
-
-            return redirect('drivers/all')->with('success', "$successCount records created successfully. $errorCount records failed.");
-        } catch (\Exception $e) {
-            return redirect('drivers/all')->with('error', $e->getMessage());
-        }
-
-
-
+    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+        // Handle Excel-specific validation errors
+        return redirect()->back()->with('error', 'The uploaded file contains invalid data.')->withInput();
+    } catch (\Exception $e) {
+        // Log unexpected errors for debugging
+        \Log::error('Driver Import Error: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'An unexpected error occurred: ' . $e->getMessage())->withInput();
     }
+}
 }

@@ -49,10 +49,10 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
             ]);
 
             if ($validator->fails()) {
-                // Record the error
+                // Record the validation errors
                 $this->errors[] = [
                     'row' => $row,
-                    'error' => $validator->errors()->first(),
+                    'errors' => $validator->errors()->all(), // Collect all validation errors for the row
                 ];
                 $this->errorCount++;
                 return null; // Skip this row
@@ -85,10 +85,10 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
 
             $this->successCount++;
         } catch (\Exception $e) {
-            // Record the error
+            // Record any unexpected errors
             $this->errors[] = [
                 'row' => $row,
-                'error' => $e->getMessage(),
+                'errors' => [$e->getMessage()], // Store the exception message
             ];
             $this->errorCount++;
         }
