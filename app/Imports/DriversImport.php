@@ -14,6 +14,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Validators\Failure;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Carbon\Carbon;
 class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
 {
     use SkipsFailures;
@@ -29,8 +31,8 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
     public function model(array $row)
     {
         $licenseStartDate = is_numeric($row['license_start_date'])
-            ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
-            : $row['license_start_date'];
+        ? Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
+        : $row['license_start_date'];
 
         try {
             // Validate the row
