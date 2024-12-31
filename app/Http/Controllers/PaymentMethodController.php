@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\PaymentMethod as StripePaymentMethod;
 
 class PaymentMethodController extends Controller
 {
@@ -15,23 +17,49 @@ class PaymentMethodController extends Controller
     public function addPaymentMethod(Request $request)
     {
         $validated = $request->validate([
+            'encrypted_card_details' => 'required|string', // Encrypted data from app
             'method_name' => 'required|string|max:255',
-            'card_number' => 'nullable|string|max:16',
-            'card_holder_name' => 'nullable|string|max:255',
-            'expiry_date' => 'nullable|date_format:m/y',
-            'cvv' => 'nullable|numeric|digits_between:3,4', // Add CVV validation
         ]);
+        $privateKey = file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key');
+        openssl_private_decrypt(base64_decode($validated['encrypted_card_details']), $decryptedData, $privateKey);
+        if (!$decryptedData) {
+            return response()->json(['status' =>400,'message'=> 'Failed to decrypt card details','data'=>(object)[]], 400);
+        }
+        $cardDetails = json_decode($decryptedData, true);
+        if (!$cardDetails || !isset($cardDetails['card_number'], $cardDetails['expiry_date'])) {
+            return response()->json(['status' =>400,'message'=>'Invalid card details','data'=>(object)[]], 400);
+        }
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $paymentMethod = PaymentMethod::create([
-            'user_id' => $request->user_id,
-            'method_name' => $validated['method_name'],
-            'card_number' => $validated['card_number'],
-            'card_holder_name' => $validated['card_holder_name'],
-            'expiry_date' => $validated['expiry_date'],
-            'cvv' => $validated['cvv'], // Include CVV in create statement
-        ]);
+        try {
+            $stripePaymentMethod = StripePaymentMethod::create([
+                'type' => 'card',
+                'card' => [
+                    'number' => $cardDetails['card_number'],
+                    'exp_month' => substr($cardDetails['expiry_date'], 0, 2),
+                    'exp_year' => substr($cardDetails['expiry_date'], -4),
+                ],
+            ]);
 
-        return response()->json(['status'=>200,'message' => 'Payment method added successfully', 'data' => $paymentMethod]);
+            // Store payment method in the database
+            $paymentMethod = PaymentMethod::create([
+                'user_id' => auth()->id(),
+                'method_name' => $validated['method_name'],
+                'card_number' => substr($cardDetails['card_number'], -4), // Store last 4 digits only
+                'expiry_date' => $cardDetails['expiry_date'], // Store expiry date
+                
+                'is_default' => false,
+            ]);
+
+            return response()->json([
+                'status'=>200,
+                'message' => 'Payment method added successfully',
+                'data' => $paymentMethod,
+               
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status'=>500,'message' => $e->getMessage(),'data'=>(object)[]], 500);
+        }
     }
     public function getPaymentMethod($id)
     {
@@ -42,14 +70,10 @@ class PaymentMethodController extends Controller
     {
         $validated = $request->validate([
             'method_name' => 'nullable|string|max:255',
-            'card_number' => 'nullable|string|max:16',
-            'card_holder_name' => 'nullable|string|max:255',
             'expiry_date' => 'nullable|date_format:m/y',
-            'cvv' => 'nullable|numeric|digits_between:3,4',
-
         ]);
 
-        $paymentMethod = PaymentMethod::where('id', $id)->firstOrFail();
+        $paymentMethod = PaymentMethod::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
 
         $paymentMethod->update($validated);
 
@@ -57,11 +81,26 @@ class PaymentMethodController extends Controller
     }
     public function deletePaymentMethod($id)
     {
-        $paymentMethod = PaymentMethod::where('id',$id)->firstOrFail();
+        $paymentMethod = PaymentMethod::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
 
-        $paymentMethod->delete();
+        // Initialize Stripe
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        return response()->json(['status'=>200,'message' => 'Payment method deleted successfully','data' => (object)[]]);
+        try {
+            // If you have stored Stripe's PaymentMethod ID, you can detach it from the customer
+            if (!empty($paymentMethod->stripe_payment_method_id)) {
+                StripePaymentMethod::retrieve($paymentMethod->stripe_payment_method_id)->detach();
+            }
+
+            // Delete the payment method from your database
+            $paymentMethod->delete();
+
+            return response()->json(['status'=>200,'message' => 'Payment method deleted successfully','data'=>(object)[]]);
+        } catch (\Exception $e) {
+            return response()->json(['status'=>500,'message' => $e->getMessage(),'data'=>(object)[]], 500);
+    }
     }
     public function makeDefault(Request $request,$id)
     {
