@@ -22,80 +22,78 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+    protected $successCount = 0;
+    protected $errorCount = 0;
+    protected $errors = [];
+
     public function model(array $row)
-{
-    $licenseStartDate = is_numeric($row['license_start_date'])
-        ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
-        : $row['license_start_date'];
+    {
+        $licenseStartDate = is_numeric($row['license_start_date'])
+            ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
+            : $row['license_start_date'];
 
-    // Initialize success and error counters
-    $successCount = 0;
-    $errorCount = 0;
-    $errors = [];
+        try {
+            // Validate the row
+            $validator = Validator::make($row, [
+                'email' => 'required|email|unique:users,email',
+                'driver_id' => 'required|unique:users,driver_id',
+                'username' => 'required|string|unique:users,username',
+            ]);
 
-    try {
-        // Validate the row
-        $validator = Validator::make($row, [
-            'email' => 'required|email|unique:users,email',
-            'driver_id' => 'required|unique:users,driver_id',
-            'username' => 'required|string|unique:users,username',
-        ]);
+            if ($validator->fails()) {
+                // Record the error
+                $this->errors[] = [
+                    'row' => $row,
+                    'error' => $validator->errors()->first(),
+                ];
+                $this->errorCount++;
+                return null; // Skip this row
+            }
 
-        if ($validator->fails()) {
+            // Create the User record
+            $drivers = new User([
+                'first_name' => $row['first_name'],
+                'last_name' => $row['last_name'],
+                'driver_id' => $row['driver_id'],
+                'name' => $row['first_name'] . ' ' . $row['last_name'],
+                'email' => $row['email'],
+                'phone' => $row['phone'],
+                'license_state' => $row['license_state'],
+                'license_number' => $row['license_number'],
+                'license_start_date' => $licenseStartDate,
+                'username' => $row['username'],
+                'password' => Hash::make('password'),
+                'role' => 'driver',
+                'company_id' => Auth::id(),
+            ]);
+
+            $drivers->save(); // Save the user to generate an ID
+
+            // Create the CompanyDriver record
+            CompanyDriver::create([
+                'company_id' => Auth::id(),
+                'driver_id' => $drivers->id,
+            ]);
+
+            $this->successCount++;
+        } catch (\Exception $e) {
             // Record the error
-            $errors[] = [
+            $this->errors[] = [
                 'row' => $row,
-                'error' => $validator->errors()->first(),
+                'error' => $e->getMessage(),
             ];
-            $errorCount++;
-            return; // Skip this row
+            $this->errorCount++;
         }
+    }
 
-        // Create the User record
-        $drivers = new User([
-            'first_name' => $row['first_name'],
-            'last_name' => $row['last_name'],
-            'driver_id' => $row['driver_id'],
-            'name' => $row['first_name'] . ' ' . $row['last_name'],
-            'email' => $row['email'],
-            'phone' => $row['phone'],
-            'license_state' => $row['license_state'],
-            'license_number' => $row['license_number'],
-            'license_start_date' => $licenseStartDate,
-            'username' => $row['username'],
-            'password' => Hash::make('password'),
-            'role' => 'driver',
-            'company_id' => Auth::id(),
-        ]);
-
-        $drivers->save(); // Save the user to generate an ID
-
-        // Create the CompanyDriver record
-        CompanyDriver::create([
-            'company_id' => Auth::id(),
-            'driver_id' => $drivers->id,
-        ]);
-
-        $successCount++;
-    } catch (\Exception $e) {
-        // Record the error
-        $errors[] = [
-            'row' => $row,
-            'error' => $e->getMessage(),
+    // Method to get results
+    public function getResults()
+    {
+        return [
+            'successCount' => $this->successCount,
+            'errorCount' => $this->errorCount,
+            'errors' => $this->errors,
         ];
-        $errorCount++;
     }
-
-    // Log errors (optional)
-    foreach ($errors as $error) {
-        Log::error('Import error', $error);
-    }
-
-    // Return success and error counts
-    return [
-        'successCount' => $successCount,
-        'errorCount' => $errorCount,
-        'errors' => $errors,
-    ];
 }
-}
+
