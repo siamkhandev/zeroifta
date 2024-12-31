@@ -56,7 +56,7 @@ class VehiclesImport implements ToModel, WithHeadingRow
                 'vehicle_id' => $row['vehicle_id'],
                 'vin' => $row['vin'],
                 'fuel_type' => $row['fuel_type'],
-                'license_state' => $row['license_state'],
+                'license' => $row['license_state'],
                 'license_plate_number' => $row['license_number'],
                 'odometer_reading' => $row['odometer_reading'] ?? null,
                 'mpg' => $row['mpg'] ?? null,
