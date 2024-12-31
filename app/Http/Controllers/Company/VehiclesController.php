@@ -181,13 +181,32 @@ class VehiclesController extends Controller
        return view('company.vehicles.import');
     }
     public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv',
-        ]);
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
 
-        Excel::import(new VehiclesImport, $request->file('file'));
+    // Initialize counters for successful and failed records
+    $createdCount = 0;
+    $failedCount = 0;
+    $failedRecords = [];
 
-        return redirect('vehicles/all')->with('success', 'Vehicles imported successfully.');
-    }
+    // Process the import and track failures
+    Excel::import(new VehiclesImport, $request->file('file'), null, \Maatwebsite\Excel\Excel::XLSX)->each(function ($row) use (&$createdCount, &$failedCount, &$failedRecords) {
+        if ($row) {
+            // Increment success count if row is valid and saved
+            $createdCount++;
+        } else {
+            // Increment failure count if row failed validation
+            $failedCount++;
+            $failedRecords[] = $row;
+        }
+    });
+
+    // Provide feedback with success/failure counts and failed records
+    return redirect('vehicles/all')
+        ->with('success', "{$createdCount} vehicles imported successfully.")
+        ->with('error', "{$failedCount} vehicles failed to import.")
+        ->with('failedRecords', $failedRecords);
+}
 }

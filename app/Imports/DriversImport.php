@@ -38,7 +38,7 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
                 'email' => 'required|email|unique:users,email',
                 'driver_id' => 'required|unique:users,driver_id',
                 'username' => 'required|string|unique:users,username',
-                //'license_number' => 'required|string|unique:users,license_number',
+                'license_number' => 'required|string|unique:users,license_number',
                 //'license_start_date' => 'required|date|before_or_equal:today',
             ]);
 
