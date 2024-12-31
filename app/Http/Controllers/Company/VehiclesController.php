@@ -181,24 +181,22 @@ class VehiclesController extends Controller
        return view('company.vehicles.import');
     }
     public function import(Request $request)
-    {
-        // Validate that the file is present and is an accepted format
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv',
-        ]);
+{
+    // Validate that the file is present and is an accepted format
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
 
-        // Initialize counters for successful and failed records
-        $createdCount = 0;
-        $failedCount = 0;
-        $failedRecords = [];
+    // Initialize counters for successful and failed records
+    $createdCount = 0;
+    $failedCount = 0;
+    $failedRecords = [];
 
-        // Import the data using the VehiclesImport class
-        Excel::import(new VehiclesImport($createdCount, $failedCount, $failedRecords), $request->file('file'));
-        // After the import, you can process success and failure messages
-        // Note: We are not using 'each()' here, as the import method will automatically handle the rows.
+    // Import the data using the VehiclesImport class
+    Excel::import(new VehiclesImport($createdCount, $failedCount, $failedRecords), $request->file('file'));
 
-        // Provide feedback with success/failure counts and failed records
-        return redirect('vehicles/all')
-            ->with('success', "{$createdCount} vehicles imported."."{$failedCount} vehicles failed to import.");
-    }
+    // After the import, you can process success and failure messages
+    return redirect('vehicles/all')
+        ->with('success', "{$createdCount} vehicles imported. {$failedCount} vehicles failed to import.");
+}
 }
