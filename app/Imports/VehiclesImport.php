@@ -20,6 +20,7 @@ class VehiclesImport implements ToModel, WithHeadingRow
         // Track success and failure
         $valid = true;
         $message = [];
+        $response = null; // Initialize response to null
 
         // Validate required fields
         if (empty($row['vehicle_id']) || empty($row['vin']) || empty($row['fuel_type']) || empty($row['license_state']) || empty($row['license_number'])) {
@@ -31,16 +32,16 @@ class VehiclesImport implements ToModel, WithHeadingRow
         if ($valid) {
             $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$row['vin']}?format=json";
             $response = Http::get($apiUrl);  // This defines the $response variable
+        }
 
-            // Check if the VIN is valid
-            if (!$response->successful() || !isset($response->json()['Results'][0])) {
-                $valid = false;
-                $message[] = 'Invalid VIN.';
-            }
+        // Check if the VIN is valid
+        if ($valid && (!$response || !$response->successful() || !isset($response->json()['Results'][0]))) {
+            $valid = false;
+            $message[] = 'Invalid VIN.';
         }
 
         // Extract vehicle data if VIN is valid
-        $vehicleData = $response->json()['Results'][0] ?? null;
+        $vehicleData = $valid ? $response->json()['Results'][0] ?? null : null;
 
         // Ensure valid vehicle information from API response
         if ($valid && ($vehicleData === null || empty($vehicleData['Make']) || empty($vehicleData['Model']) || empty($vehicleData['ModelYear']))) {
