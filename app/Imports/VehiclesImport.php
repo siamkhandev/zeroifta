@@ -30,12 +30,27 @@ class VehiclesImport implements ToModel, WithHeadingRow
         $valid = true;
         $message = [];
         $response = null; // Initialize response to null
-
-        // Validate required fields
-        if (empty($row['vehicle_id']) || empty($row['vin']) || empty($row['fuel_type']) || empty($row['license_state']) || empty($row['license_number'])) {
-            $valid = false;
-            $message[] = 'Missing required fields.';
+        $requiredFields = [
+            'vehicle_id', 'vin', 'year', 'truck_make', 'vehicle_model', 'fuel_type',
+            'license_state', 'license_number', 'odometer_reading', 'mpg'
+        ];
+        foreach ($requiredFields as $field) {
+            if (empty($row[$field])) {
+                $valid = false;
+                $message[] = "The {$field} field is required.";
+            }
         }
+        if ($valid) {
+            $existingVehicle = Vehicle::where('vehicle_id', $row['vehicle_id'])
+                                      ->orWhere('vin', $row['vin'])
+                                      ->orWhere('license_plate_number', $row['license_number'])
+                                      ->first();
+            if ($existingVehicle) {
+                $valid = false;
+                $message[] = 'Duplicate vehicle_id, VIN, or license plate number detected.';
+            }
+        }
+
 
         // VIN Validation API Request
         if ($valid) {
