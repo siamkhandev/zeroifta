@@ -38,24 +38,28 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
         $licenseStartDate = is_numeric($row['license_start_date'])
         ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
         : $row['license_start_date'];
-        $drivers =  new User([
+        $drivers = new User([
             'first_name' => $row['first_name'],
             'last_name' => $row['last_name'],
             'driver_id' => $row['driver_id'],
-            'name' =>  $row['first_name'].' '.$row['last_name'],
+            'name' => $row['first_name'] . ' ' . $row['last_name'],
             'email' => $row['email'],
             'phone' => $row['phone'],
             'license_state' => $row['license_state'],
             'license_number' => $row['license_number'],
-            'license_start_date' =>  $licenseStartDate,
+            'license_start_date' => $licenseStartDate,
             'username' => $row['username'],
             'password' => Hash::make('password'),
             'role' => 'driver',
             'company_id' => Auth::id(),
         ]);
+
+        $drivers->save(); // Save the user to generate an ID
+
+        // Now, create the CompanyDriver record using the generated ID
         CompanyDriver::create([
             'company_id' => Auth::id(),
-            'driver_id' => $drivers->id,
+            'driver_id' => $drivers->id, // This will now have a value
         ]);
         return $drivers;
     }
