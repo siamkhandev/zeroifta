@@ -24,7 +24,9 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
     {
         $validator = Validator::make($row, [
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed', // Laravel's 'confirmed' rule checks if 'password' and 'password_confirmation' match
+            'driver_id' => 'required|unique:users,driver_id',
+            'username' => 'required|string|unique:users,username',
+            //'password' => 'required|confirmed',
         ]);
 
         // Skip the row if validation fails
@@ -32,12 +34,17 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
             throw new \Exception($validator->errors()->first());
         }
         return new User([
-            'name' => $row['name'],
+            'first_name' => $row['first_name'],
+            'last_name' => $row['last_name'],
+            'driver_id' => $row['driver_id'],
+            'name' =>  $row['first_name'].' '.$row['last_name'],
             'email' => $row['email'],
             'phone' => $row['phone'],
-            'dot' => $row['dot'],
-            'mc' => $row['mc'],
-            'password' => Hash::make($row['password']),
+            'license_state' => $row['license_state'],
+            'license_number' => $row['license_number'],
+            'license_start_date' => $row['license_start_date'],
+            'username' => $row['username'],
+            'password' => Hash::make('password'),
             'role' => 'driver',
             'company_id' => Auth::id(),
         ]);
