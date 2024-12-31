@@ -39,6 +39,7 @@ class VehiclesImport implements ToModel, WithHeadingRow
             $valid = false;
             $message[] = 'Invalid VIN.';
         }
+        dd($response);
 
         // Extract vehicle data if VIN is valid
         $vehicleData = $valid ? $response->json()['Results'][0] ?? null : null;

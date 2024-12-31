@@ -200,8 +200,6 @@ class VehiclesController extends Controller
 
         // Provide feedback with success/failure counts and failed records
         return redirect('vehicles/all')
-            ->with('success', "{$createdCount} vehicles imported successfully.")
-            ->with('error', "{$failedCount} vehicles failed to import.")
-            ->with('failedRecords', $failedRecords);
+            ->with('success', "{$createdCount} vehicles imported."."{$failedCount} vehicles failed to import.");
     }
 }
