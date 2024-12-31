@@ -13,6 +13,15 @@ class VehiclesImport implements ToModel, WithHeadingRow
      * @param array $row
      * @return \Illuminate\Database\Eloquent\Model|null
      */
+    protected $createdCount;
+    protected $failedCount;
+    protected $failedRecords;
+    public function __construct(&$createdCount, &$failedCount, &$failedRecords)
+    {
+        $this->createdCount = &$createdCount;
+        $this->failedCount = &$failedCount;
+        $this->failedRecords = &$failedRecords;
+    }
     public function model(array $row)
     {
         $row = array_map('trim', $row);  // Clean up extra spaces if any
@@ -67,12 +76,15 @@ class VehiclesImport implements ToModel, WithHeadingRow
                 'model' => $vehicleData['Model'],
                 'make_year' => $vehicleData['ModelYear'],
             ]);
+            $this->createdCount++;
         } else {
             // Log failure message with row data for debugging
             \Log::warning('Vehicle import failed due to validation errors:', [
                 'row' => $row,
                 'messages' => $message
             ]);
+            $this->failedCount++;
+            $this->failedRecords[] = ['row' => $row, 'messages' => $message];
             return null;  // Skip the invalid row
         }
     }

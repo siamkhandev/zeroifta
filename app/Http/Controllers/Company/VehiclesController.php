@@ -193,8 +193,7 @@ class VehiclesController extends Controller
         $failedRecords = [];
 
         // Import the data using the VehiclesImport class
-        Excel::import(new VehiclesImport, $request->file('file'));
-
+        Excel::import(new VehiclesImport($createdCount, $failedCount, $failedRecords), $request->file('file'));
         // After the import, you can process success and failure messages
         // Note: We are not using 'each()' here, as the import method will automatically handle the rows.
 
