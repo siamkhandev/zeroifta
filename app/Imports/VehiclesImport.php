@@ -54,10 +54,10 @@ class VehiclesImport implements ToModel, WithHeadingRow
 
         // VIN Validation API Request
         if ($valid) {
-            $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{5N1AT2MT8KC122378}?format=json";
+            $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$row['vin']}?format=json";
             $response = Http::get($apiUrl);  // This defines the $response variable
         }
-        dd($response);
+
         // Check if the VIN is valid
         if ($valid && (!$response || !$response->successful() || !isset($response->json()['Results'][0]))) {
             $valid = false;
