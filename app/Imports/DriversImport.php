@@ -22,7 +22,7 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
     */
     public function model(array $row)
     {
-        dd($row);
+
         $validator = Validator::make($row, [
             'email' => 'required|email|unique:users,email',
             'driver_id' => 'required|unique:users,driver_id',
@@ -34,6 +34,9 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
         if ($validator->fails()) {
             throw new \Exception($validator->errors()->first());
         }
+        $licenseStartDate = is_numeric($row['license_start_date'])
+        ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
+        : $row['license_start_date'];
         return new User([
             'first_name' => $row['first_name'],
             'last_name' => $row['last_name'],
@@ -43,7 +46,7 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
             'phone' => $row['phone'],
             'license_state' => $row['license_state'],
             'license_number' => $row['license_number'],
-            'license_start_date' => $row['license_start_date'],
+            'license_start_date' =>  $licenseStartDate,
             'username' => $row['username'],
             'password' => Hash::make('password'),
             'role' => 'driver',
