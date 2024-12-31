@@ -181,33 +181,27 @@ class VehiclesController extends Controller
        return view('company.vehicles.import');
     }
     public function import(Request $request)
-{
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls,csv',
-    ]);
+    {
+        // Validate that the file is present and is an accepted format
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
 
-    // Initialize counters for successful and failed records
-    $createdCount = 0;
-    $failedCount = 0;
+        // Initialize counters for successful and failed records
+        $createdCount = 0;
+        $failedCount = 0;
+        $failedRecords = [];
 
-    // Process the import and track failures
-    $failedRecords = [];
+        // Import the data using the VehiclesImport class
+        Excel::import(new VehiclesImport, $request->file('file'));
 
-    Excel::import(new VehiclesImport, $request->file('file'))->each(function ($row) use (&$createdCount, &$failedCount, &$failedRecords) {
-        if ($row) {
-            // Increment success count if row is valid and saved
-            $createdCount++;
-        } else {
-            // Increment failure count if row failed validation
-            $failedCount++;
-            $failedRecords[] = $row;
-        }
-    });
+        // After the import, you can process success and failure messages
+        // Note: We are not using 'each()' here, as the import method will automatically handle the rows.
 
-    // Provide feedback with success/failure counts and failed records
-    return redirect('vehicles/all')
-        ->with('success', "{$createdCount} vehicles imported successfully.")
-        ->with('error', "{$failedCount} vehicles failed to import.")
-        ->with('failedRecords', $failedRecords);
-}
+        // Provide feedback with success/failure counts and failed records
+        return redirect('vehicles/all')
+            ->with('success', "{$createdCount} vehicles imported successfully.")
+            ->with('error', "{$failedCount} vehicles failed to import.")
+            ->with('failedRecords', $failedRecords);
+    }
 }
