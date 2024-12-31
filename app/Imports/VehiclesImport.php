@@ -31,7 +31,7 @@ class VehiclesImport implements ToModel, WithHeadingRow
         $message = [];
         $response = null; // Initialize response to null
         $requiredFields = [
-            'vehicle_id', 'vin', 'year', 'truck_make', 'vehicle_model', 'fuel_type',
+            'vehicle_id', 'vin',  'fuel_type',
             'license_state', 'license_number', 'odometer_reading', 'mpg'
         ];
         foreach ($requiredFields as $field) {
