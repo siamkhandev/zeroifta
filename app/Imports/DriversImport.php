@@ -23,7 +23,7 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
     */
     public function model(array $row)
     {
-        dd($row);
+
         $validator = Validator::make($row, [
             'email' => 'required|email|unique:users,email',
             'driver_id' => 'required|unique:users,driver_id',
@@ -55,7 +55,7 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
         ]);
         CompanyDriver::create([
             'company_id' => Auth::id(),
-            'driver_id' => $row['driver_id'],
+            'driver_id' => $drivers->id,
         ]);
         return $drivers;
     }
