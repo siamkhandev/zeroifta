@@ -2,22 +2,24 @@
 
 namespace App\Imports;
 
-use App\Models\Vehicle;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-class VehiclesImport implements ToModel, WithHeadingRow
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Vehicle;
+use Illuminate\Support\Facades\Log;
+class VehiclesImport implements ToModel, WithHeadingRow, OnEachRow
 {
     /**
     * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
+    public function onRow(\Maatwebsite\Excel\Concerns\Row $row)
     {
-        // Track success and failure
+        $row = $row->toArray(); // Convert row to array
+
         $valid = true;
         $message = [];
 
@@ -27,49 +29,46 @@ class VehiclesImport implements ToModel, WithHeadingRow
             $message[] = 'Missing required fields.';
         }
 
-        // VIN Validation API Request
-        $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$row['vin']}?format=json";
-        $response = Http::get($apiUrl);
-
-        // Check if the VIN is valid
-        if (!$response->successful() || !isset($response->json()['Results'][0])) {
-            $valid = false;
-            $message[] = 'Invalid VIN.';
-        }
-
-        $vehicleData = $response->json()['Results'][0];
-
-        // Ensure valid vehicle information from API response
-        if (empty($vehicleData['Make']) || empty($vehicleData['Model']) || empty($vehicleData['ModelYear'])) {
-            $valid = false;
-            $message[] = 'Incomplete vehicle details from VIN API.';
-        }
-
         if ($valid) {
-            // Create a new vehicle model if all validations pass
-            return new Vehicle([
-                'vehicle_id' => $row['vehicle_id'],
-                'vin' => $row['vin'],
-                'fuel_type' => $row['fuel_type'],
-                'license_state' => $row['license_state'],
-                'license_plate_number' => $row['license_number'],
-                'odometer_reading' => $row['odometer_reading'],
-                'mpg' => $row['mpg'],
-                'fuel_tank_capacity' => $row['fuel_tank_capacity'],
-                'secondary_tank_capacity' => $row['secondary_fuel_tank_capacity'] ?? null,
-                'company_id' => Auth::id(),
-                'make' => $vehicleData['Make'],
-                'model' => $vehicleData['Model'],
-                'make_year' => $vehicleData['ModelYear'],
-            ]);
-        } else {
-            // Log failure message with row data for debugging
-            Log::warning('Vehicle import failed due to validation errors:', [
-                'row' => $row,
-                'messages' => $message
-            ]);
+            // VIN Validation API Request
+            $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$row['vin']}?format=json";
+            $response = Http::get($apiUrl);
 
-            return null;  // Skip this row if validation failed
+            // Check if the VIN is valid and the API responds with the expected data
+            if ($response->successful() && isset($response->json()['Results'][0])) {
+                $vehicleData = $response->json()['Results'][0];
+
+                // Ensure valid vehicle information from API response
+                if (isset($vehicleData['Make'], $vehicleData['Model'], $vehicleData['ModelYear'])) {
+                    // Create a new vehicle model if all validations pass
+                    Vehicle::create([
+                        'vehicle_id' => $row['vehicle_id'],
+                        'vin' => $row['vin'],
+                        'fuel_type' => $row['fuel_type'],
+                        'license_state' => $row['license_state'],
+                        'license_plate_number' => $row['license_number'],
+                        'odometer_reading' => $row['odometer_reading'],
+                        'mpg' => $row['mpg'],
+                        'fuel_tank_capacity' => $row['fuel_tank_capacity'],
+                        'secondary_tank_capacity' => $row['secondary_fuel_tank_capacity'] ?? null,
+                        'company_id' => Auth::id(),
+                        'make' => $vehicleData['Make'],
+                        'model' => $vehicleData['Model'],
+                        'make_year' => $vehicleData['ModelYear'],
+                    ]);
+                    return true; // Record successfully created
+                } else {
+                    $message[] = 'Incomplete vehicle details from VIN API.';
+                    Log::warning('Invalid vehicle data from VIN API', ['row' => $row, 'messages' => $message]);
+                }
+            } else {
+                $message[] = 'Invalid or unreachable VIN API response.';
+                Log::warning('VIN API error', ['row' => $row, 'messages' => $message]);
+            }
+        } else {
+            Log::warning('Vehicle import failed due to validation errors:', ['row' => $row, 'messages' => $message]);
         }
+
+        return false; // Validation failed, skip the record
     }
 }
