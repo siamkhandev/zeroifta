@@ -40,7 +40,7 @@ class AuthController extends Controller
             }else{
                 $user->image = null;
             }
-            $rsaKey = asset('my_rsa_key.pub');
+            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $vehicle = Vehicle::select(
                 'id',
