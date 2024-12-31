@@ -14,8 +14,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Validators\Failure;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Carbon\Carbon;
 class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
 {
     use SkipsFailures;
@@ -31,22 +29,16 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
     public function model(array $row)
     {
         $licenseStartDate = is_numeric($row['license_start_date'])
-        ? Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
-        : $row['license_start_date'];
+            ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['license_start_date'])->format('Y-m-d')
+            : $row['license_start_date'];
 
         try {
             // Validate the row
-            $validator = Validator::make([
-                'email' => $row['email'],
-                'driver_id' => $row['driver_id'],
-                'username' => $row['username'],
-                'license_number' => $row['license_number'],
-                //'license_start_date' => $licenseStartDate,
-            ], [
+            $validator = Validator::make($row, [
                 'email' => 'required|email|unique:users,email',
                 'driver_id' => 'required|unique:users,driver_id',
                 'username' => 'required|string|unique:users,username',
-                'license_number' => 'required|string|unique:users,license_number',
+                //'license_number' => 'required|string|unique:users,license_number',
                 //'license_start_date' => 'required|date|before_or_equal:today',
             ]);
 
