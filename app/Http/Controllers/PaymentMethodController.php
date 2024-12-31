@@ -53,6 +53,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             return response()->json(['status' =>400,'message'=> 'Failed to decrypt card details','data'=>(object)[]], 400);
         }
         $cardDetails = json_decode($decryptedData, true);
+        dd($cardDetails);
         if (!$cardDetails || !isset($cardDetails['card_number'], $cardDetails['expiry_date'])) {
             return response()->json(['status' =>400,'message'=>'Invalid card details','data'=>(object)[]], 400);
         }
