@@ -2,20 +2,17 @@
 
 namespace App\Imports;
 
+use App\Models\Vehicle;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\OnEachRow;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Vehicle;
-use Illuminate\Support\Facades\Log;
+
 class VehiclesImport implements ToModel, WithHeadingRow
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         $row = array_map('trim', $row);  // Clean up extra spaces if any
@@ -33,7 +30,7 @@ class VehiclesImport implements ToModel, WithHeadingRow
         // VIN Validation API Request
         if ($valid) {
             $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$row['vin']}?format=json";
-            $response = Http::get($apiUrl);
+            $response = Http::get($apiUrl);  // This defines the $response variable
 
             // Check if the VIN is valid
             if (!$response->successful() || !isset($response->json()['Results'][0])) {
