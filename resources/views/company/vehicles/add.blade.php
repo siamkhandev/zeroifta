@@ -73,12 +73,14 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
+                        <div class="dropdown-wrapper">
                         <select name="year" id="year" class="input_field form-control login-input">
                             <option value="">Select Year</option>
                             @for ($year = date('Y'); $year >= 1970; $year--)
                                 <option value="{{ $year }}">{{ $year }}</option>
                             @endfor
                         </select>
+                        </div>
                         <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('year')
@@ -91,6 +93,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Make')}}</label>
+                        <div class="dropdown-wrapper">
                         <select name="truck_make" id="truck_make" class="input_field form-control login-input">
                             <option value="">Select Truck Make</option>
                             <option value="ford" {{ old('truck_make') == 'ford' ? 'selected' : '' }}>Ford</option>
@@ -106,6 +109,7 @@
                             <option value="mack" {{ old('truck_make') == 'mack' ? 'selected' : '' }}>Mack</option>
                             <option value="western-star" {{ old('truck_make') == 'western-star' ? 'selected' : '' }}>Western Star</option>
                         </select>
+                        </div>
                         <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('truck_make')
@@ -146,6 +150,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License State')}}</label>
+                        <div class="dropdown-wrapper">
                         <select name="license_state" id="license_state" class="input_field form-control login-input">
                             <option value="">Select License State</option>
                             <option value="AL">Alabama</option>
@@ -201,6 +206,7 @@
                             <option value="WY">Wyoming</option>
 
                         </select>
+                        </div>
                         <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('license_state')
