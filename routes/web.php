@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/drivers/import', [DriversController::class, 'import'])->name('drivers.import');
 
         Route::get('fleet', [CompanyController::class, 'fleet'])->name('fleet');
+        Route::get('subscribe', [CompanyController::class, 'showPlans'])->name('subscribe');
       });
       Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
     }
@@ -137,7 +138,7 @@ Route::middleware('auth')->group(function () {
   Route::get('password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
   Route::post('password/reset', [AuthController::class, 'reset'])->name('password.update');
   Route::get('purchase/{id}', [PaymentController::class, 'purchase'])->name('purchase');
-  Route::get('subscribe', [CompanyController::class, 'showPlans'])->name('subscribe');
+ 
   Route::post('pay', [PaymentController::class, 'subscribe'])->name('pay');
 
   Route::get('/cancel-subscription/{id}', [PaymentController::class, 'cancel'])->name('cancel.subscription');
