@@ -143,7 +143,7 @@
         <label class="input-lables pb-2" for="profilePicture">{{ __('messages.Profile Picture') }}</label>
         <div class="custom-file-input-wrapper">
             <label for="profilePicture" class="custom-file-label">
-                <span id="fileLabel">{{ __('messages.no_file_chosen') }}</span>
+                <span id="fileLabel">{{ __('messages.No File chosen') }}</span>
             </label>
             <input 
                 type="file" 
