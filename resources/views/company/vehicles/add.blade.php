@@ -79,7 +79,7 @@
                                 <option value="{{ $year }}">{{ $year }}</option>
                             @endfor
                         </select>
-
+                        <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('year')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -106,6 +106,7 @@
                             <option value="mack" {{ old('truck_make') == 'mack' ? 'selected' : '' }}>Mack</option>
                             <option value="western-star" {{ old('truck_make') == 'western-star' ? 'selected' : '' }}>Western Star</option>
                         </select>
+                        <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('truck_make')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -200,6 +201,7 @@
                             <option value="WY">Wyoming</option>
 
                         </select>
+                        <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('license_state')
                             <span class="invalid-feedback" role="alert" style="display: block;">
