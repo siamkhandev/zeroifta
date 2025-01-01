@@ -94,11 +94,11 @@ Route::middleware('auth')->group(function () {
       ////
       Route::group(['middleware' => ['check.subscription']], function () {
         Route::get('vehicles/all', [VehiclesController::class, 'index'])->name('allvehicles');
-        Route::get('vehicle/create', [VehiclesController::class, 'create'])->name('vehicles.create');
-        Route::post('vehicle/store', [VehiclesController::class, 'store'])->name('vehicle.store');
-        Route::get('vehicle/edit/{id}', [VehiclesController::class, 'edit'])->name('vehicle.edit');
-        Route::post('vehicle/update/{id}', [VehiclesController::class, 'update'])->name('vehicle.update');
-        Route::get('vehicle/delete/{id}', [VehiclesController::class, 'delete'])->name('vehicle.delete');
+        Route::get('vehicles/create', [VehiclesController::class, 'create'])->name('vehicles.create');
+        Route::post('vehicles/store', [VehiclesController::class, 'store'])->name('vehicle.store');
+        Route::get('vehicles/edit/{id}', [VehiclesController::class, 'edit'])->name('vehicle.edit');
+        Route::post('vehicles/update/{id}', [VehiclesController::class, 'update'])->name('vehicle.update');
+        Route::get('vehicles/delete/{id}', [VehiclesController::class, 'delete'])->name('vehicle.delete');
         Route::get('/vehicles/import', [VehiclesController::class, 'importForm'])->name('vehicles.importform');
         Route::post('/vehicles/import', [VehiclesController::class, 'import'])->name('vehicle.import');
         Route::post('/vehicles/check-vin', [VehiclesController::class, 'checkVin'])->name('vehicle.checkVin');
