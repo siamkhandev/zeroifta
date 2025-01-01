@@ -160,5 +160,6 @@ return [
     "Main Dashboard"=>"Panel principal",
     "Yes"=>"Sí",
     "No"=>"No",
+    "No File chosen"=>"Ningún archivo elegido",
 
 ];

@@ -1,6 +1,32 @@
 @extends('layouts.new_main')
 @section('content')
+<style>
+.custom-file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
 
+.custom-file-label {
+    display: block;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    text-align: left;
+}
+
+.custom-file-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+  </style>
 <div class="dashbord-inner">
   @if(Session::has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
@@ -113,11 +139,23 @@
                 @enderror
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                <div class="dash-input mb-3">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Profile Picture')}}</label>
-                  <input type="file" class="form-control dis-input" id="exampleFormControlInput1" name="image" accept="image/png, image/jpg, image/jpeg" />
-                </div>
-              </div>
+    <div class="dash-input mb-3">
+        <label class="input-lables pb-2" for="profilePicture">{{ __('messages.Profile Picture') }}</label>
+        <div class="custom-file-input-wrapper">
+            <label for="profilePicture" class="custom-file-label">
+                <span id="fileLabel">{{ __('messages.no_file_chosen') }}</span>
+            </label>
+            <input 
+                type="file" 
+                class="form-control dis-input custom-file-input" 
+                id="profilePicture" 
+                name="image" 
+                accept="image/png, image/jpg, image/jpeg" 
+                onchange="updateFileLabel(this)" />
+        </div>
+    </div>
+</div>
+
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <button type="submit" class="mainBtn">{{__('messages.Submit')}}</button>
@@ -130,4 +168,12 @@
     </div>
   </div>
 </div>
+@endsection
+@section('scripts')
+<script>
+function updateFileLabel(input) {
+    const fileName = input.files[0]?.name || '{{ __('messages.no_file_chosen') }}';
+    document.getElementById('fileLabel').textContent = fileName;
+}
+  </script>
 @endsection
