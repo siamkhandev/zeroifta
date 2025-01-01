@@ -1,30 +1,5 @@
 @extends('layouts.new_main')
 @section('content')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-<style>
-.dropdown-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-.input_field {
-    appearance: none; /* Remove default dropdown arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 2rem; /* Add space for the icon */
-    background-color: transparent;
-}
-
-.dropdown-icon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: #6c757d; /* Adjust color as needed */
-}
-    </style>
 <div class="dashbord-inner">
     <!-- Section 1 -->
     @if(Session::has('error'))
@@ -73,15 +48,13 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
-                        <div class="dropdown-wrapper">
-                        <select name="year" id="year" class="input_field form-control login-input">
+                        <select name="year" id="year" class="form-control login-input">
                             <option value="">Select Year</option>
                             @for ($year = date('Y'); $year >= 1970; $year--)
                                 <option value="{{ $year }}">{{ $year }}</option>
                             @endfor
                         </select>
-                        </div>
-                        <i class="fa fa-chevron-down dropdown-icon"></i>
+
                     </div>
                     @error('year')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -93,8 +66,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Make')}}</label>
-                        <div class="dropdown-wrapper">
-                        <select name="truck_make" id="truck_make" class="input_field form-control login-input">
+                        <select name="truck_make" id="truck_make" class="form-control login-input">
                             <option value="">Select Truck Make</option>
                             <option value="ford" {{ old('truck_make') == 'ford' ? 'selected' : '' }}>Ford</option>
                             <option value="chevrolet" {{ old('truck_make') == 'chevrolet' ? 'selected' : '' }}>Chevrolet</option>
@@ -109,8 +81,6 @@
                             <option value="mack" {{ old('truck_make') == 'mack' ? 'selected' : '' }}>Mack</option>
                             <option value="western-star" {{ old('truck_make') == 'western-star' ? 'selected' : '' }}>Western Star</option>
                         </select>
-                        </div>
-                        <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('truck_make')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -131,16 +101,14 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="fuel_type">{{ __('messages.Fuel Type') }}</label>
-                        <div class="dropdown-wrapper">
-                            <select name="fuel_type" id="fuel_type" class="input_field form-control login-input">
-                                <option value="">Select Fuel Type</option>
-                                <option value="gasoline">Gasoline</option>
-                                <option value="diesel">Diesel</option>
-                            </select>
-                            <i class="fa fa-chevron-down dropdown-icon"></i>
-                        </div>
-                </div>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Fuel Type')}}</label>
+                        <select name="fuel_type" id="fuel_type" class="form-control login-input">
+                            <option value="">Select Fuel Type</option>
+                            <option value="gasoline">Gasoline</option>
+                            <option value="diesel">Diesel</option>
+                        </select>
+                        <i class="fa fa-chevron-down dropdown-icon"></i>
+                    </div>
                     @error('fuel_type')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
@@ -150,8 +118,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License State')}}</label>
-                        <div class="dropdown-wrapper">
-                        <select name="license_state" id="license_state" class="input_field form-control login-input">
+                        <select name="license_state" id="license_state" class="form-control login-input">
                             <option value="">Select License State</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
@@ -206,8 +173,6 @@
                             <option value="WY">Wyoming</option>
 
                         </select>
-                        </div>
-                        <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('license_state')
                             <span class="invalid-feedback" role="alert" style="display: block;">
