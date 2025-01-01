@@ -107,6 +107,7 @@
                             <option value="gasoline">Gasoline</option>
                             <option value="diesel">Diesel</option>
                         </select>
+                        <i class="fa fa-chevron-down dropdown-icon"></i>
                     </div>
                     @error('fuel_type')
                             <span class="invalid-feedback" role="alert" style="display: block;">
