@@ -1,5 +1,29 @@
 @extends('layouts.new_main')
 @section('content')
+<style>
+.dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+#fuel_type {
+    appearance: none; /* Remove default dropdown arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2rem; /* Add space for the icon */
+    background-color: transparent;
+}
+
+.dropdown-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #6c757d; /* Adjust color as needed */
+}
+    </style>
 <div class="dashbord-inner">
     <!-- Section 1 -->
     @if(Session::has('error'))
