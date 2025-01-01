@@ -101,14 +101,16 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Fuel Type')}}</label>
-                        <select name="fuel_type" id="fuel_type" class="form-control login-input">
-                            <option value="">Select Fuel Type</option>
-                            <option value="gasoline">Gasoline</option>
-                            <option value="diesel">Diesel</option>
-                        </select>
-                        <i class="fa fa-chevron-down dropdown-icon"></i>
-                    </div>
+                        <label class="input-lables pb-2" for="fuel_type">{{ __('messages.Fuel Type') }}</label>
+                        <div class="dropdown-wrapper">
+                            <select name="fuel_type" id="fuel_type" class="form-control login-input">
+                                <option value="">Select Fuel Type</option>
+                                <option value="gasoline">Gasoline</option>
+                                <option value="diesel">Diesel</option>
+                            </select>
+                            <i class="fa fa-chevron-down dropdown-icon"></i>
+                        </div>
+                </div>
                     @error('fuel_type')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
