@@ -172,7 +172,7 @@
 @section('scripts')
 <script>
 function updateFileLabel(input) {
-    const fileName = input.files[0]?.name || '{{ __('messages.no_file_chosen') }}';
+    const fileName = input.files[0]?.name || '{{ __('messages.No File chosen') }}';
     document.getElementById('fileLabel').textContent = fileName;
 }
   </script>
