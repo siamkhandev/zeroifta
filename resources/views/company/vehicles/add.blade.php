@@ -8,7 +8,7 @@
     width: 100%;
 }
 
-#fuel_type {
+.input_field {
     appearance: none; /* Remove default dropdown arrow */
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -73,7 +73,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
-                        <select name="year" id="year" class="form-control login-input">
+                        <select name="year" id="year" class="input_field form-control login-input">
                             <option value="">Select Year</option>
                             @for ($year = date('Y'); $year >= 1970; $year--)
                                 <option value="{{ $year }}">{{ $year }}</option>
@@ -91,7 +91,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Make')}}</label>
-                        <select name="truck_make" id="truck_make" class="form-control login-input">
+                        <select name="truck_make" id="truck_make" class="input_field form-control login-input">
                             <option value="">Select Truck Make</option>
                             <option value="ford" {{ old('truck_make') == 'ford' ? 'selected' : '' }}>Ford</option>
                             <option value="chevrolet" {{ old('truck_make') == 'chevrolet' ? 'selected' : '' }}>Chevrolet</option>
@@ -129,7 +129,7 @@
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="fuel_type">{{ __('messages.Fuel Type') }}</label>
                         <div class="dropdown-wrapper">
-                            <select name="fuel_type" id="fuel_type" class="form-control login-input">
+                            <select name="fuel_type" id="fuel_type" class="input_field form-control login-input">
                                 <option value="">Select Fuel Type</option>
                                 <option value="gasoline">Gasoline</option>
                                 <option value="diesel">Diesel</option>
@@ -146,7 +146,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License State')}}</label>
-                        <select name="license_state" id="license_state" class="form-control login-input">
+                        <select name="license_state" id="license_state" class="input_field form-control login-input">
                             <option value="">Select License State</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
