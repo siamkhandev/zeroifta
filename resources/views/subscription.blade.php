@@ -126,7 +126,7 @@
                     </div>
                     <div>
                       <label class="switch">
-                        <input type="checkbox" id="themeCheckbox">
+                        <input type="checkbox" id="plansSwitchCheckbox">
                         <span class="slider round"></span>
                       </label>
                     </div>
@@ -980,6 +980,12 @@
   </div>
 </body>
 <script src="{{asset('assets/js/script.js')}}"></script>
+<script>
+
+    $("#plansSwitchCheckbox").on('change', function() {
+        alert("ok");
+    });
+</script>
 
 
 </html>
