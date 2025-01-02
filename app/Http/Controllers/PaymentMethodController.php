@@ -150,9 +150,7 @@ class PaymentMethodController extends Controller
     }
     public function deletePaymentMethod(Request $request)
     {
-        $paymentMethod = PaymentMethod::where('stripe_payment_method_id', $request->id)
-        
-        ->firstOrFail();
+        $paymentMethod = PaymentMethod::where('stripe_payment_method_id', $request->id)->first();
 
         // Initialize Stripe
         Stripe::setApiKey(env('STRIPE_SECRET'));
