@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 use Stripe\Customer;
+use Stripe\PaymentMethod as StripePaymentMethod;
 use Stripe\Stripe;
 use Stripe\Subscription;
 
@@ -120,6 +121,7 @@ class AdminController extends Controller
     }
     public function pay(Request $request)
     {
+        dd($request->all());
         $plan = Plan::find($request->plan_id);
         $paymentMethod = $request->payment_method;
         try {
@@ -127,6 +129,9 @@ class AdminController extends Controller
             $customer = Customer::create([
                 'email' => Auth::user()->email,
                 'name' => Auth::user()->name,
+            ]);
+            StripePaymentMethod::attach($paymentMethod, [
+                'customer' => $customer->id,
             ]);
             $subscription = Subscription::create([
                 'customer' => $customer->id,

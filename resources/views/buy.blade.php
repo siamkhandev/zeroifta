@@ -157,33 +157,33 @@
 
                   </div>
                   <div class="row justify-content-center mt-5">
-                    @if(Session::has('error'))
-                    <div class="alert alert-danger">{{Session::get('error')}}</div>
-                    @endif
-    <div class="col-md-6">
-        <div class="card shadow-lg card-profile-bottom">
-            <div class="card-body">
-                <h4 class="text-center mb-4">Buy Subscription</h4>
-                <form id="subscribe-form" action="{{ route('pay.demo') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="plan_id" value="{{ $plan->id }}">
-                    <div class="form-group">
-                        <label for="card-element" class="form-label">Credit or Debit Card</label>
-                        <div id="card-element" class="p-3 border rounded shadow-sm">
-                            <!-- Stripe Element will be inserted here -->
+                        @if(Session::has('error'))
+                        <div class="alert alert-danger">{{Session::get('error')}}</div>
+                        @endif
+                        <div class="col-md-6">
+                            <div class="card shadow-lg card-profile-bottom">
+                                <div class="card-body">
+                                    <h4 class="text-center mb-4">Buy Subscription</h4>
+                                    <form id="subscribe-form" action="{{ route('pay.demo') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="plan_id" value="{{ $plan->id }}">
+                                        <div class="form-group">
+                                            <label for="card-element" class="form-label">Credit or Debit Card</label>
+                                            <div id="card-element" class="p-3 border rounded shadow-sm">
+                                                <!-- Stripe Element will be inserted here -->
+                                            </div>
+                                            <div id="card-errors" class="text-danger mt-2" role="alert"></div>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="mainBtn">
+                                                <i class="fas fa-credit-card"></i> Subscribe
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div id="card-errors" class="text-danger mt-2" role="alert"></div>
                     </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="mainBtn">
-                            <i class="fas fa-credit-card"></i> Subscribe
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
                 </div>
               </div>
