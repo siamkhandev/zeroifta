@@ -33,8 +33,8 @@
                     <div class="dash-input mb-1">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Billing Period')}}</label>
                         <select class="form-control login-input" id="exampleFormControlInput1" name="billing_period">
-                                <option value="monthly" {{$plan->recurring=='monthly' ? 'selected':''}}>Monthly</option>
-                                <option value="yearly" {{$plan->recurring=='yearly' ? 'selected':''}}>Yearly</option>
+                                <option value="monthly" {{$plan->recurring=='monthly' ? 'selected':''}}>{{__('messages.Monthly')}}</option>
+                                <option value="yearly" {{$plan->recurring=='yearly' ? 'selected':''}}>{{__('messages.Yearly')}}</option>
                             </select>
                             @error('price_type')
                             <span class="invalid-feedback" role="alert">

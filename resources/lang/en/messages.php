@@ -170,6 +170,8 @@ return [
     "No"=>"No",
     "No File chosen"=>"No File chosen",
     "ZIP"=>"ZIP",
+    "Monthly"=>"Monthly",
+    "Yearly"=>"Yearly",
 
 
 

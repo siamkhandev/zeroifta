@@ -162,5 +162,7 @@ return [
     "No"=>"No",
     "No File chosen"=>"Ningún archivo elegido",
     "ZIP"=>"ZIP",
+    "Monthly"=>"Mensual",
+    "Yearly"=>"Anual",
 
 ];
