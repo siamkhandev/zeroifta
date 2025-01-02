@@ -27,7 +27,7 @@ class PaymentMethodController extends Controller
     
         try {
             // Set Stripe secret key
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         
             // Retrieve or create a Stripe customer for the authenticated user
             $user = User::find($request->user_id);
