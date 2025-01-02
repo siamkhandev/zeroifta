@@ -47,8 +47,8 @@
                     <div class="dash-input mb-1">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Is Recurring?')}}</label>
                         <select class="form-control login-input" id="recurring" name="recurring" required>
-                                  <option value="1" {{$plan->recurring==1 ? 'selected':''}}>Yes</option>
-                                  <option value="0" {{$plan->recurring==0 ? 'selected':''}}>No</option>
+                                  <option value="1" {{$plan->recurring==1 ? 'selected':''}}>{{__('messages.Yes')}}</option>
+                                  <option value="0" {{$plan->recurring==0 ? 'selected':''}}>{{__('messages.No')}}</option>
                               </select>
                               @error('recurring')
                             <span class="invalid-feedback" role="alert">
