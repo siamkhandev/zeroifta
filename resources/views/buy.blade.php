@@ -119,7 +119,7 @@
                 @endif
                 <!-- <img src="user_image_url.jpg" onclick="toggleDropdown()" class="dropbtn" alt="User"> -->
                 <div id="myDropdown" class="dropdown-content">
-                  
+
                   <div class="hdd-inn">
                     <div>
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
@@ -154,7 +154,7 @@
               <div class="sec1-style">
                 <div class="subs_plan">
                   <div class="inHead-span">
-                   
+
                   </div>
                   <div class="row justify-content-center mt-5">
     <div class="col-md-6">
@@ -163,6 +163,7 @@
                 <h4 class="text-center mb-4">Buy Subscription</h4>
                 <form id="subscribe-form" action="{{ route('pay.demo') }}" method="POST">
                     @csrf
+                    <input type="hidden" name="plan_id" value="{{ $plan->id }}">
                     <div class="form-group">
                         <label for="card-element" class="form-label">Credit or Debit Card</label>
                         <div id="card-element" class="p-3 border rounded shadow-sm">

@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
+use Stripe\Customer;
+use Stripe\Stripe;
+use Stripe\Subscription;
 
 class AdminController extends Controller
 {
@@ -110,12 +113,37 @@ class AdminController extends Controller
     }
     public function buy($plan)
     {
-        $plan = Plan::where('name',$plan)->first();
-        return view('buy');
+
+        $plan = Plan::where('slug',$plan)->first();
+
+        return view('buy',get_defined_vars());
     }
-    public function pay()
+    public function pay(Request $request)
     {
-        User::whereId(Auth::id())->update(['is_subscribed'=>1]);
-        return redirect('/');
+        $plan = Plan::find($request->plan_id);
+        $paymentMethod = $request->payment_method;
+        try {
+            Stripe::setApiKey(config('services.stripe.secret'));
+            $customer = Customer::create([
+                'email' => Auth::user()->email,
+                'name' => Auth::user()->name,
+            ]);
+            $subscription = Subscription::create([
+                'customer' => $customer->id,
+                'items' => [[
+                    'plan' => $plan->stripe_plan_id, // The Stripe plan ID
+                ]],
+            ]);
+            $request->user()->subscriptions()->create([
+                'stripe_customer_id' => $customer->id,
+                'stripe_subscription_id' => $subscription->id,
+                'plan_id' => $plan->id,
+                'status' => 'active',
+            ]);
+            User::whereId(Auth::id())->update(['is_subscribed'=>1]);
+            return redirect('/');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to subscribe. Please try again later.');
+        }
     }
 }
