@@ -157,6 +157,9 @@
 
                   </div>
                   <div class="row justify-content-center mt-5">
+                    @if(Session::has('error'))
+                    <div class="alert alert-danger">{{Session::get('error')}}</div>
+                    @endif
     <div class="col-md-6">
         <div class="card shadow-lg card-profile-bottom">
             <div class="card-body">
