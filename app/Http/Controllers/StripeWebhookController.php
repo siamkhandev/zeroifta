@@ -12,6 +12,7 @@ class StripeWebhookController extends Controller
 {
     public function handleWebhook(Request $request)
     {
+        Log::info('Webhook received', ['request' => $request->all()]);
         // Set your Stripe secret key
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
