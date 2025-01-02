@@ -26,7 +26,7 @@ class PaymentMethodController extends Controller
                 return response()->json([
                     'status' => 404,
                     'message' => 'No Stripe customer found for the user',
-                    'data'=>(object)[]
+                    'data' => (object)[],
                 ], 404);
             }
 
@@ -36,7 +36,11 @@ class PaymentMethodController extends Controller
                 'type' => 'card', // Fetch only card payment methods
             ]);
 
-            $filteredMethods = array_map(function ($method) {
+            // Retrieve the default payment method from Stripe
+            $stripeCustomer = \Stripe\Customer::retrieve($user->stripe_customer_id);
+            $defaultPaymentMethodId = $stripeCustomer->invoice_settings->default_payment_method;
+
+            $filteredMethods = array_map(function ($method) use ($defaultPaymentMethodId) {
                 return [
                     'id' => $method['id'],
                     'name' => $method['billing_details']['name'],
@@ -44,9 +48,10 @@ class PaymentMethodController extends Controller
                     'expiry_month' => $method['card']['exp_month'],
                     'expiry_year' => $method['card']['exp_year'],
                     'last4' => $method['card']['last4'],
+                    'is_default' => $method['id'] === $defaultPaymentMethodId, // Check if this is the default method
                 ];
             }, $paymentMethods->data);
-    
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Payment methods retrieved successfully',
@@ -59,8 +64,8 @@ class PaymentMethodController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-    
     }
+
     public function addPaymentMethod(Request $request)
     {
         
