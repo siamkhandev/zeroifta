@@ -110,7 +110,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
        
         // Parse decrypted data
         $token = json_decode($decryptedData, true);
-        dd($token['token']);
+       
         try {
             // Set Stripe secret key
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -135,7 +135,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             $paymentMethod = \Stripe\PaymentMethod::create([
                 'type' => 'card',
                 'card' => [
-                    'token' =>  $token, // Use the `tok_` received from the Android app
+                    'token' =>  $token['token'], // Use the `tok_` received from the Android app
                 ],
             ]);
         
