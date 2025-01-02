@@ -62,7 +62,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('contactus/all',[DriverContactUsController::class,'getContactUs']);
     Route::post('chat/get',[DriverContactUsController::class,'getChat']);
     Route::post('chat/send',[DriverContactUsController::class,'send']);
-    Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+
     Route::post('/trip/start', [IFTAController::class, 'getDecodedPolyline']);
     Route::post('/get-active-trip', [TripController::class, 'getActiveTrip']);
     Route::post('/trip/update', [IFTAController::class, 'updateTrip']);
@@ -82,6 +82,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
 
     /////
+    Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
     // Cancel subscription
     Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
 
