@@ -573,7 +573,7 @@
                     </div>
                   </div>
                   <!-- Yearly Plan -->
-                  <div id="yearly_plans" class="yearly_plans">
+                  <div id="yearly_plans" class="yearly_plans" style="display: none;">
                     <div class="text-center mb-5 mt-3">
                       <p>
                         Invest in the Premium + Yearly Subscription today and experience the complete power of ZeroIFTA!
@@ -984,7 +984,13 @@
 <script>
 
     $("#plansSwitchCheckbox").on('change', function() {
-        alert($(this).prop('checked'));
+        if($(this).prop('checked')){
+            $("#yearly_plans").show();
+            $("#monthly_plans").hide();
+        }else{
+            $("#yearly_plans").hide();
+            $("#monthly_plans").show();
+        }
     });
 </script>
 
