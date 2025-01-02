@@ -52,7 +52,7 @@ za6RAoGBAMcX2CEqe4NZCDRsN41BsnV95UU/2iQbItBmI6/mqoqGymZDPUXmR41l
 cf8B1OsNs6eYrx/8ebrnfrjjwpw2G64jaj62q1O7Qhh3GsjTOuuATvQum06k7EYG
 CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 -----END RSA PRIVATE KEY-----';
-            
+
         $decryptedData = '';
         openssl_private_decrypt(base64_decode($validated['encrypted_card_details']), $decryptedData, $privateKey);
 
@@ -82,16 +82,24 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'name' => $user->name,
                 'email' => $user->email,
             ]);
-            $cardToken = Token::create([
+            // $cardToken = Token::create([
+            //     'card' => [
+            //        'number' => '4242424242424242', // Replace with a test card number
+            //         'exp_month' => 12,
+            //         'exp_year' => 2026,
+            //         'cvc' => '123',
+            //     ],
+            // ]);
+            $token = Token::create([
                 'card' => [
-                   'number' => '4242424242424242', // Replace with a test card number
-                    'exp_month' => 12,
-                    'exp_year' => 2026,
-                    'cvc' => '123',
+                    'number' => $cardDetails['cardNumber'],
+                    'exp_month' => $cardDetails['expiryMonth'],
+                    'exp_year' => $cardDetails['expiryYear'],
+                    'cvc' => $cardDetails['cvc'],
                 ],
             ]);
             $stripeCustomer->sources->create([
-                'source' => $cardToken->id,
+                'source' => $token->id,
             ]);
 
             // Store payment method in the database
