@@ -70,10 +70,7 @@
         <span class="bc-text">{{__('messages.Pages / Subscriptions')}}</span>
         <h1 class="head-1">{{__('messages.Subscriptions')}}</h1>
 
-    @elseif(str_contains($currentSegment2, 'contactus/all'))
-        <span class="bc-text">{{__('messages.Pages / Contact Forms')}}</span>
-        <h1 class="head-1">{{__('messages.Contact Forms')}}</h1>
-
+   
     @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'create')
         <span class="bc-text">{{__('messages.Pages / Create Driver')}}</span>
         <h1 class="head-1">{{__('messages.Create Driver')}}</h1>
