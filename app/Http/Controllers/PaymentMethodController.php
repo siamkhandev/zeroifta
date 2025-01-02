@@ -92,6 +92,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             // ]);
             $stripe = new \Stripe\StripeClient('sk_test_51FYXgWJOfbRIs4ne6dmGfFbmR1pKgX5V1CQVQHSSlzjCom2KemJylbslX2ylQ2dpbrvmSBGUQSWt6kXETr1ByRR500fTaO7v7k');
             $toekn = $stripe->paymentMethods->create([
+                'type' => 'card',
                 'card' => [
                     'number' => $cardDetails['cardNumber'],
                     'exp_month' => $cardDetails['expiryMonth'],
