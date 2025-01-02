@@ -9,6 +9,7 @@ use Stripe\Customer;
 use Stripe\Stripe;
 use Stripe\PaymentMethod as StripePaymentMethod;
 use Stripe\Token;
+use Stripe\Customer as StripeCustomer;
 
 class PaymentMethodController extends Controller
 {
