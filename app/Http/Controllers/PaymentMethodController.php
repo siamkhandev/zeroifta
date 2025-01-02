@@ -35,11 +35,21 @@ class PaymentMethodController extends Controller
                 'type' => 'card', // Fetch only card payment methods
             ]);
 
-            // Return payment methods as JSON response
+            $filteredMethods = array_map(function ($method) {
+                return [
+                    'id' => $method['id'],
+                    'name' => $method['billing_details']['name'],
+                    'brand' => $method['card']['brand'],
+                    'expiry_month' => $method['card']['exp_month'],
+                    'expiry_year' => $method['card']['exp_year'],
+                    'last4' => $method['card']['last4'],
+                ];
+            }, $paymentMethods->data);
+    
             return response()->json([
                 'status' => 200,
                 'message' => 'Payment methods retrieved successfully',
-                'data' => $paymentMethods->data,
+                'data' => $filteredMethods,
             ]);
         } catch (\Exception $e) {
             return response()->json([
