@@ -141,6 +141,7 @@ class AdminController extends Controller
                 'items' => [['price' => $plan->stripe_plan_id]],
                 'default_payment_method' => $paymentMethod,
             ]);
+            dd($subscription);
             $request->user()->subscriptions()->create([
                 'stripe_customer_id' => $customer->id,
                 'stripe_subscription_id' => $subscription->id,
