@@ -138,9 +138,8 @@ class AdminController extends Controller
 
             $subscription = Subscription::create([
                 'customer' => $customer->id,
-                'items' => [[
-                    'plan' => $plan->stripe_plan_id, // The Stripe plan ID
-                ]],
+                'items' => [['price' => $plan->stripe_plan_id]],
+                'default_payment_method' => $paymentMethod,
             ]);
             $request->user()->subscriptions()->create([
                 'stripe_customer_id' => $customer->id,
