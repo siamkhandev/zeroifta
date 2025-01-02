@@ -161,5 +161,6 @@ return [
     "Yes"=>"Sí",
     "No"=>"No",
     "No File chosen"=>"Ningún archivo elegido",
+    "ZIP"=>"ZIP",
 
 ];

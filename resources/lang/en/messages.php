@@ -169,6 +169,7 @@ return [
     "Yes"=>"Yes",
     "No"=>"No",
     "No File chosen"=>"No File chosen",
+    "ZIP"=>"ZIP",
 
 
 
