@@ -148,9 +148,9 @@ class PaymentMethodController extends Controller
 
         return response()->json(['status'=>200,'message' => 'Payment method updated successfully', 'data' => $paymentMethod]);
     }
-    public function deletePaymentMethod($id)
+    public function deletePaymentMethod(Request $request)
     {
-        $paymentMethod = PaymentMethod::where('stripe_payment_method_id', $id)
+        $paymentMethod = PaymentMethod::where('stripe_payment_method_id', $request->id)
         
         ->firstOrFail();
 
