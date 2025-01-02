@@ -150,8 +150,8 @@ class PaymentMethodController extends Controller
     }
     public function deletePaymentMethod($id)
     {
-        $paymentMethod = PaymentMethod::where('id', $id)
-        ->where('user_id', auth()->id())
+        $paymentMethod = PaymentMethod::where('stripe_payment_method_id', $id)
+        
         ->firstOrFail();
 
         // Initialize Stripe

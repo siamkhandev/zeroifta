@@ -81,7 +81,7 @@ Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMeth
 Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
 Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
 Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
-Route::delete('/payment-methods/{id}', [PaymentMethodController::class, 'deletePaymentMethod']);
+Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
 Route::post('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
 
 /////
