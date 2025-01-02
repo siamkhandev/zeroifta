@@ -62,36 +62,40 @@ Route::middleware('auth:api')->group( function () {
     Route::post('contactus/all',[DriverContactUsController::class,'getContactUs']);
     Route::post('chat/get',[DriverContactUsController::class,'getChat']);
     Route::post('chat/send',[DriverContactUsController::class,'send']);
+    Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+    Route::post('/trip/start', [IFTAController::class, 'getDecodedPolyline']);
+    Route::post('/get-active-trip', [TripController::class, 'getActiveTrip']);
+    Route::post('/trip/update', [IFTAController::class, 'updateTrip']);
+    Route::post('/trip/delete', [TripController::class, 'deleteTrip']);
+    Route::post('/trip/complete', [TripController::class, 'completeTrip']);
+    Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
+    Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
+    Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
+    Route::post('stops/add',[TripController::class,'storeStop']);
+    Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
+    ///
+    Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
+    Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
+    Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
+    Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
+    Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
+    Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
+
+    /////
+    // Cancel subscription
+    Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
+
+    // Get subscription details
+    Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
 });
 //Route::post('/trip/start', [TripController::class, 'store']);
-Route::post('/trip/start', [IFTAController::class, 'getDecodedPolyline']);
-Route::post('/get-active-trip', [TripController::class, 'getActiveTrip']);
-Route::post('/trip/update', [IFTAController::class, 'updateTrip']);
-Route::post('/trip/delete', [TripController::class, 'deleteTrip']);
-Route::post('/trip/complete', [TripController::class, 'completeTrip']);
-Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
-Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
-Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
-Route::post('stops/add',[TripController::class,'storeStop']);
+
 ///
 Route::post('register',[IndependentTruckerController::class,'store']);
-Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
-///
-Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
-Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
-Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
-Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
-Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
-Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
 
-/////
-Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+
 
 // Get available subscription plans
 Route::get('/subscription/plans', [SubscriptionController::class, 'getPlans']);
 
-// Cancel subscription
-Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
 
-// Get subscription details
-Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);

@@ -106,23 +106,67 @@ class SubscriptionController extends Controller
      * Cancel the user's subscription.
      */
     public function cancelSubscription(Request $request)
-    {
-        $request->validate([
-            'subscription_id' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+    ]);
 
-        $subscription = Subscription::where('stripe_subscription_id', $request->subscription_id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+    try {
+        // Set Stripe secret key
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $this->subscriptionService->cancelSubscription($subscription);
+        // Get the user from the database
+        $user = User::find($request->user_id);
+
+        // Check if the user has a Stripe customer ID
+        if (!$user->stripe_customer_id) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Stripe customer not found for this user.',
+                'data' => (object)[],
+            ], 404);
+        }
+
+        // Find the active subscription for the user
+        $subscription = Subscription::where('user_id', $request->user_id)
+            ->where('status', 'active')  // Only consider active subscriptions
+            ->first();
+
+        if (!$subscription) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No active subscription found for this user.',
+                'data' => (object)[],
+            ], 404);
+        }
+
+        // Retrieve the subscription from Stripe
+        $stripeSubscription = \Stripe\Subscription::retrieve($subscription->stripe_subscription_id);
+
+        // Cancel the subscription on Stripe
+        $cancelledSubscription = $stripeSubscription->cancel();
+
+        // Update the subscription status in the database
+        $subscription->status = 'cancelled';
+        $subscription->save();
+
+        // Update the user's subscription status
+        $user->is_subscribed = false;
+        $user->save();
 
         return response()->json([
             'status' => 200,
             'message' => 'Subscription cancelled successfully',
-            'data' => (object) [],
+            'data' => $cancelledSubscription,
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to cancel subscription',
+            'error' => $e->getMessage(),
+        ], 500);
     }
+}
 
     /**
      * Get the authenticated user's subscription details.
