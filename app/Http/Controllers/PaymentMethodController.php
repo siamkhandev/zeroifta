@@ -75,7 +75,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         // Extract expiry month and year
         //[$expMonth, $expYear] = explode('/', $cardDetails['expiry_date']);
 
-     Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
             $stripeCustomer = Customer::create([
@@ -90,9 +90,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             //         'cvc' => '123',
             //     ],
             // ]);
-            $stripe = new \Stripe\StripeClient('sk_test_51FYXgWJOfbRIs4ne6dmGfFbmR1pKgX5V1CQVQHSSlzjCom2KemJylbslX2ylQ2dpbrvmSBGUQSWt6kXETr1ByRR500fTaO7v7k');
-            $toekn = $stripe->paymentMethods->create([
-                'type' => 'card',
+            $token = Token::create([
                 'card' => [
                     'number' => $cardDetails['cardNumber'],
                     'exp_month' => $cardDetails['expiryMonth'],
@@ -100,8 +98,9 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                     'cvc' => $cardDetails['cvc'],
                 ],
             ]);
+            dd($token);
             $stripeCustomer->sources->create([
-                'source' => $toekn->id,
+                'source' => $token->id,
             ]);
 
             // Store payment method in the database
