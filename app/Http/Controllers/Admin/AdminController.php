@@ -135,13 +135,12 @@ class AdminController extends Controller
                     'default_payment_method' => $paymentMethod,
                 ],
             ]);
-
             $subscription = Subscription::create([
                 'customer' => $customer->id,
-                'items' => [['price' => $plan->stripe_plan_id]],
-                'default_payment_method' => $paymentMethod,
+                'items' => [[
+                    'plan' => $plan->stripe_plan_id, // The Stripe plan ID
+                ]],
             ]);
-            dd($subscription);
             $request->user()->subscriptions()->create([
                 'stripe_customer_id' => $customer->id,
                 'stripe_subscription_id' => $subscription->id,
