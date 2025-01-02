@@ -27,8 +27,8 @@ class PaymentMethodController extends Controller
     
         try {
             // Set Stripe secret key
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-    
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        
             // Retrieve or create a Stripe customer for the authenticated user
             $user = User::find($request->user_id);
             if (!$user->stripe_customer_id) {
@@ -37,23 +37,30 @@ class PaymentMethodController extends Controller
                     'email' => $user->email,
                     'name' => $user->name,
                 ]);
-    
+        
                 // Save the customer ID to the user
                 $user->update(['stripe_customer_id' => $customer->id]);
             } else {
                 // Retrieve existing Stripe customer
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
-    
+        
+            // Create a PaymentMethod from the token
+            $paymentMethod = \Stripe\PaymentMethod::create([
+                'type' => 'card',
+                'card' => [
+                    'token' => $validated['token'], // Use the `tok_` received from the Android app
+                ],
+            ]);
+        
             // Attach the payment method to the Stripe customer
-            $paymentMethod = \Stripe\PaymentMethod::retrieve($validated['token']);
             $paymentMethod->attach(['customer' => $customer->id]);
-    
+        
             // Update default payment method for the customer
             \Stripe\Customer::update($customer->id, [
                 'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
             ]);
-    
+        
             // Store payment method details in the database
             $storedPaymentMethod = PaymentMethod::create([
                 'user_id' => $user->id,
@@ -63,7 +70,7 @@ class PaymentMethodController extends Controller
                 'stripe_payment_method_id' => $paymentMethod->id, // Stripe payment method ID
                 'is_default' => true, // Mark as default
             ]);
-    
+        
             return response()->json([
                 'status' => 200,
                 'message' => 'Payment method added successfully',
@@ -77,6 +84,7 @@ class PaymentMethodController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+        
     }
     
     public function getPaymentMethod($id)
