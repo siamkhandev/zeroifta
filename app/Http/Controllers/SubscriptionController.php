@@ -49,13 +49,13 @@ class SubscriptionController extends Controller
         }
 
         // Ensure you are passing a valid price_id, not a direct price
-        $priceId = $request->plan_id; // Plan ID should be a valid Stripe Price ID (not the price amount)
+        $priceId = Plan::find($request->plan_id); // Plan ID should be a valid Stripe Price ID (not the price amount)
 
         // Create the subscription
         $subscription = \Stripe\Subscription::create([
             'customer' => $user->stripe_customer_id,
             'items' => [
-                ['price' => $priceId], // Pass the Stripe Price ID here
+                ['price' => $priceId->stripe_plan_id], // Pass the Stripe Price ID here
             ],
             'expand' => ['latest_invoice.payment_intent'], // Expand payment intent details
         ]);
