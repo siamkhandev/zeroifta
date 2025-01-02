@@ -110,6 +110,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 
         // Parse decrypted data
         $token = json_decode($decryptedData, true);
+        dd($token);
         try {
             // Set Stripe secret key
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
