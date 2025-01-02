@@ -107,9 +107,9 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         if (!$decryptedData) {
             return response()->json(['status' => 400, 'message' => 'Failed to decrypt token', 'data' => (object)[]], 400);
         }
-        dd($decryptedData);
+        
         // Parse decrypted data
-        $token = json_decode($decryptedData, true);
+        $token = $decryptedData;
         
         try {
             // Set Stripe secret key
