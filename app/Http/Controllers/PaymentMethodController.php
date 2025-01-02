@@ -14,8 +14,41 @@ class PaymentMethodController extends Controller
 {
     public function allPaymentMethod(Request $request)
     {
-        $paymentMethods = PaymentMethod::where('user_id', $request->user_id)->get();
-        return response()->json(['status'=>200,'message' => 'Payment methods fetched successfully', 'data' => $paymentMethods]);
+        try {
+            // Set Stripe secret key
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            // Get the authenticated user
+            $user = User::find($request->user_id);
+
+            if (!$user->stripe_customer_id) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No Stripe customer found for the user',
+                    'data'=>(object)[]
+                ], 404);
+            }
+
+            // Retrieve all payment methods for the Stripe customer
+            $paymentMethods = \Stripe\PaymentMethod::all([
+                'customer' => $user->stripe_customer_id,
+                'type' => 'card', // Fetch only card payment methods
+            ]);
+
+            // Return payment methods as JSON response
+            return response()->json([
+                'status' => 200,
+                'message' => 'Payment methods retrieved successfully',
+                'data' => $paymentMethods->data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve payment methods',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    
     }
     public function addPaymentMethod(Request $request)
     {
