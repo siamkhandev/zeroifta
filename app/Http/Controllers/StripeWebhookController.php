@@ -34,7 +34,9 @@ class StripeWebhookController extends Controller
             case 'invoice.payment_succeeded':
                 $this->handlePaymentSucceeded($event->data->object);
                 break;
-
+            case 'customer.subscription.created':
+                $this->handleSubscriptionSucceeded($event->data->object);
+                break;
             case 'invoice.payment_failed':
                 $this->handlePaymentFailed($event->data->object);
                 break;
@@ -59,6 +61,12 @@ class StripeWebhookController extends Controller
         Log::info('Payment succeeded', ['invoice' => $invoice]);
         // Update subscription status in your database
     }
+    protected function handleSubscriptionSucceeded($invoice)
+    {
+        Log::info('Subscription Created succeeded', ['invoice' => $invoice]);
+        // Update subscription status in your database
+    }
+
 
     protected function handlePaymentFailed($invoice)
     {
