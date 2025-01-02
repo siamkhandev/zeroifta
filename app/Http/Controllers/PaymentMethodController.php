@@ -169,16 +169,52 @@ class PaymentMethodController extends Controller
             return response()->json(['status'=>500,'message' => $e->getMessage(),'data'=>(object)[]], 500);
     }
     }
-    public function makeDefault(Request $request,$id)
+    public function makeDefault(Request $request)
     {
-        $paymentMethod = PaymentMethod::where('id', $id)->firstOrFail();
+        try {
+            // Retrieve the payment method and ensure it belongs to the authenticated user
+            $paymentMethod = PaymentMethod::where('stripe_payment_method_id', $request->id)
+                ->firstOrFail();
 
-        // Reset all default flags for the user
-        PaymentMethod::where('id', $id)->update(['is_default' => false]);
+            // Initialize Stripe
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $user = User::find($request->user_id);
+            // Retrieve the Stripe customer ID from your database (assumes you store it)
+            $stripeCustomerId = $user->stripe_customer_id;
 
-        // Set this method as default
-        $paymentMethod->update(['is_default' => true]);
+            if (!$stripeCustomerId) {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Stripe customer not found for the user.',
+                    'data' => (object) [],
+                ], 400);
+            }
 
-        return response()->json(['status'=>200,'message' => 'Payment method set as default', 'data' => $paymentMethod]);
+            // Update the default payment method on Stripe
+            $stripeCustomer = StripeCustomer::update($stripeCustomerId, [
+                'invoice_settings' => [
+                    'default_payment_method' => $paymentMethod->stripe_payment_method_id,
+                ],
+            ]);
+
+            // Reset the `is_default` flag for all payment methods of the user
+            PaymentMethod::where('user_id', $user->id)
+                ->update(['is_default' => false]);
+
+            // Set the selected payment method as default
+            $paymentMethod->update(['is_default' => true]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Payment method set as default',
+                'data' => $paymentMethod,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to set default payment method: ' . $e->getMessage(),
+                'data' => (object) [],
+            ], 500);
+        }
     }
 }

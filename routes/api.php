@@ -82,7 +82,7 @@ Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPayme
 Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
 Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
 Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
-Route::post('/payment-methods/{id}/default', [PaymentMethodController::class, 'makeDefault']);
+Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
 
 /////
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
