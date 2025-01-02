@@ -63,14 +63,14 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
 
-        if (!$cardDetails || !isset($cardDetails['card_number'], $cardDetails['expiry_date'], $cardDetails['cvv'])) {
-            return response()->json(['status' => 400, 'message' => 'Invalid card details', 'data' => (object)[]], 400);
-        }
+        // if (!$cardDetails || !isset($cardDetails['card_number'], $cardDetails['expiry_date'], $cardDetails['cvv'])) {
+        //     return response()->json(['status' => 400, 'message' => 'Invalid card details', 'data' => (object)[]], 400);
+        // }
 
         // Validate expiry date format
-        if (!preg_match('/^\d{2}\/\d{4}$/', $cardDetails['expiry_date'])) {
-            return response()->json(['status' => 400, 'message' => 'Invalid expiry date format', 'data' => (object)[]], 400);
-        }
+        // if (!preg_match('/^\d{2}\/\d{4}$/', $cardDetails['expiry_date'])) {
+        //     return response()->json(['status' => 400, 'message' => 'Invalid expiry date format', 'data' => (object)[]], 400);
+        // }
 
         // Extract expiry month and year
         [$expMonth, $expYear] = explode('/', $cardDetails['expiry_date']);
