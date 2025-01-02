@@ -126,6 +126,8 @@ Route::middleware('auth')->group(function () {
         Route::get('subscribe', [CompanyController::class, 'showPlans'])->name('subscribe');
       });
       Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
+      Route::get('company/contactus/all', [CompanyController::class, 'contactUsForms'])->name('company.contactus');
+  Route::get('company/contactform/read/{id}', [CompanyController::class, 'readForm'])->name('company.contactform.detail');
     }
   );
   Route::get('contactus', [CompanyController::class, 'contactus'])->name('contactus');
@@ -147,7 +149,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/messages/{contact_id}', [ContactUsController::class, 'fetchMessages'])->name('messages.fetch');
   //Route::post('/messages/read/{id}', [ContactUsController::class, 'markAsRead'])->name('messages.markAsRead');
 
-  Route::get('company/contactus/all', [CompanyController::class, 'contactUsForms'])->name('company.contactus');
-  Route::get('company/contactform/read/{id}', [CompanyController::class, 'readForm'])->name('company.contactform.detail');
+  
   Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 });
