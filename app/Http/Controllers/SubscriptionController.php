@@ -23,29 +23,45 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request)
     {
         $request->validate([
-            'plan_id' => 'required|string',
-            'payment_method_id' => 'required|string',
-
+            'user_id' => 'required|exists:users,id',
+            'plan_id' => 'required|string', // Stripe plan ID
         ]);
-
-        $user =User::find($request->user_id);
-        $plan = Plan::findOrFail($request->plan_id);
-
-        // Determine if the plan has a trial
-        $hasTrial = $plan->price == 0 ?? false;
-        // Create the subscription
-        $subscription = $this->subscriptionService->createSubscription(
-            $user,
-            $request->plan_id,
-            $request->payment_method_id,
-            $hasTrial
-        );
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Subscription created successfully',
-            'data' => $subscription,
-        ]);
+    
+        try {
+            // Set Stripe secret key
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+            $user = User::find($request->user_id);
+    
+            if (!$user->stripe_customer_id) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No Stripe customer found for the user',
+                    'data' => (object)[],
+                ], 404);
+            }
+    
+            // Create a subscription
+            $subscription = \Stripe\Subscription::create([
+                'customer' => $user->stripe_customer_id,
+                'items' => [
+                    ['price' => $request->plan_id],
+                ],
+                'expand' => ['latest_invoice.payment_intent'], // For payment intent details
+            ]);
+    
+            return response()->json([
+                'status' => 200,
+                'message' => 'Subscription created successfully',
+                'data' => $subscription,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to create subscription',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
