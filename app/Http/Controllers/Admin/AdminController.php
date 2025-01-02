@@ -143,7 +143,7 @@ class AdminController extends Controller
             User::whereId(Auth::id())->update(['is_subscribed'=>1]);
             return redirect('/');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to subscribe. Please try again later.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }
