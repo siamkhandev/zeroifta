@@ -41,7 +41,9 @@
     @elseif($currentSegment2 == 'driver' && $currentSegment3 == 'vehicles/add')
         <span class="bc-text">{{__('messages.Pages / Driver Vehicles')}}</span>
         <h1 class="head-1">{{__('messages.Add Driver Vehicles')}}</h1>
-
+        @elseif($currentSegment2 == 'company' && $currentSegment3 == 'contactus')
+        <span class="bc-text">{{__('messages.Pages / Contact Forms')}}</span>
+        <h1 class="head-1">{{__('messages.Contact Forms')}}</h1>
     @elseif($currentSegment2 == 'subscribe')
         <span class="bc-text">{{__('messages.Pages / Subscribe')}}</span>
         <h1 class="head-1">{{__('messages.Subscriptions')}}</h1>
