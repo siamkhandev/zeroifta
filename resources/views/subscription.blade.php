@@ -984,7 +984,7 @@
 <script>
 
     $("#plansSwitchCheckbox").on('change', function() {
-        alert("ok");
+        alert($(this).prop('checked'));
     });
 </script>
 
