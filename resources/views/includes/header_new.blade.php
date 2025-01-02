@@ -32,7 +32,9 @@
     @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'all')
         <span class="bc-text">{{__('messages.Pages / Drivers')}}</span>
         <h1 class="head-1">{{__('messages.Manage Drivers')}}</h1>
-
+        @elseif($currentSegment2 == 'contactus' && $currentSegment3 == 'all')
+        <span class="bc-text">{{__('messages.Pages / Contact Forms')}}</span>
+        <h1 class="head-1">{{__('messages.Contact Forms')}}</h1>
     @elseif($currentSegment2 == 'driver' && $currentSegment3 == 'vehicles')
         <span class="bc-text">{{__('messages.Pages / Driver Vehicles')}}</span>
         <h1 class="head-1">{{__('messages.Manage Driver Vehicles')}}</h1>
