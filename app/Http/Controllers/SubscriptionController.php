@@ -65,7 +65,7 @@ class SubscriptionController extends Controller
         $subscriptionModel->user_id = $user->id;  // Associate with the user
         $subscriptionModel->stripe_customer_id = $user->stripe_customer_id;
         $subscriptionModel->stripe_subscription_id = $subscription->id;
-        $subscriptionModel->plan_id = $priceId;  // Store the Price ID in your database
+        $subscriptionModel->plan_id = $request->plan_id;  // Store the Price ID in your database
         $subscriptionModel->status = 'active';  // You can set the status based on the subscription details
         $subscriptionModel->save();
 
