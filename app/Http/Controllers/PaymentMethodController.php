@@ -73,7 +73,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         // }
 
         // Extract expiry month and year
-        [$expMonth, $expYear] = explode('/', $cardDetails['expiry_date']);
+        //[$expMonth, $expYear] = explode('/', $cardDetails['expiry_date']);
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
