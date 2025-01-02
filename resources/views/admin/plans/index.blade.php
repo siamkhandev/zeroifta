@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="filter-btn">
-            <a class="blueLine_btn" href="{{route('plans.create')}}">{{__('messages.Add Plan')}} +</a>
+            <!-- <a class="blueLine_btn" href="{{route('plans.create')}}">{{__('messages.Add Plan')}} +</a> -->
           </div>
         </div>
       </div>
