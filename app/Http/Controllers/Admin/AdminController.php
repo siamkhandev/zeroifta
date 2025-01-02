@@ -135,7 +135,7 @@ class AdminController extends Controller
                     'default_payment_method' => $paymentMethod,
                 ],
             ]);
-            dd($customer);
+
             $subscription = Subscription::create([
                 'customer' => $customer->id,
                 'items' => [[
