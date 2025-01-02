@@ -7,8 +7,9 @@
     @php
         $currentSegment2 = Request::segment(2); // Second segment
         $currentSegment3 = Request::segment(3); // Third segment
+        $currentSegment4 = Request::segment(4); // Third segment
     @endphp
-
+{{dd($currentSegment2,$currentSegment3,$currentSegment4)}}
     @if($currentSegment2 == '')
         <span class="bc-text">{{__('messages.Pages / Dashboard')}}</span>
         <h1 class="head-1">{{__('messages.Main Dashboard')}}</h1>
