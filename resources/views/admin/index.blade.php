@@ -34,8 +34,8 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}" style="color: #092e75">{{__('messages.Subscription')}}</a></h5>
-                <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
+                <h5 class="head-16Med grayMain"><a href="{{route('plans')}}" style="color: #092e75">{{__('messages.Subscription')}}</a></h5>
+                <h6 class="head-24Med blue">{{\App\Models\Plan::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
