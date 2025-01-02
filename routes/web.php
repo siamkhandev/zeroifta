@@ -44,7 +44,7 @@ Route::get('terms-and-conditions', function () {
 });
 Route::get('/read-dat-file', [UsersController::class, 'readDatFile'])->name('read.dat.file');
 Route::get('/subscription', [AdminController::class, 'subscription']);
-Route::get('/buy', [AdminController::class, 'buy'])->name('buy');
+Route::get('/buy/{plan}', [AdminController::class, 'buy'])->name('buy');
 Route::post('/paynow', [AdminController::class, 'pay'])->name('pay.demo');
 Route::get('login', function () {
   return view('login');
@@ -138,7 +138,7 @@ Route::middleware('auth')->group(function () {
   Route::get('password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
   Route::post('password/reset', [AuthController::class, 'reset'])->name('password.update');
   Route::get('purchase/{id}', [PaymentController::class, 'purchase'])->name('purchase');
- 
+
   Route::post('pay', [PaymentController::class, 'subscribe'])->name('pay');
 
   Route::get('/cancel-subscription/{id}', [PaymentController::class, 'cancel'])->name('cancel.subscription');

@@ -285,7 +285,7 @@
                             </div>
                             <!-- Button -->
                             <div class="palns-btn mt-5">
-                              <a href="{{route('buy')}}" class="mainBtn">
+                              <a href="{{route('buy','basic_monthly')}}" class="mainBtn">
                                 Buy Plan
                               </a>
                             </div>
@@ -449,7 +449,7 @@
 
                             <!-- Button -->
                             <div class="palns-btn mt-5">
-                              <a href="{{route('buy')}}" class="mainBtn">
+                              <a href="{{route('buy','premium_monthly')}}" class="mainBtn">
                                 Buy Plan
                               </a>
                             </div>
@@ -562,7 +562,7 @@
                             </div>
                             <!-- Button -->
                             <div class="palns-btn mt-5">
-                              <a href="{{route('buy')}}" class="mainBtn">
+                              <a href="{{route('buy','premium_plus_monthly')}}" class="mainBtn">
                                 Buy Plan
                               </a>
                             </div>
@@ -667,7 +667,7 @@
                             </div>
                             <!-- Button -->
                             <div class="palns-btn mt-5">
-                              <a href="{{route('buy')}}" class="mainBtn">
+                              <a href="{{route('buy','basic_yearly')}}" class="mainBtn">
                                 Buy Plan
                               </a>
                             </div>
@@ -832,7 +832,7 @@
 
                             <!-- Button -->
                             <div class="palns-btn mt-5">
-                              <a href="{{route('buy')}}" class="mainBtn">
+                              <a href="{{route('buy','premium_yearly')}}" class="mainBtn">
                                 Buy Plan
                               </a>
                             </div>
@@ -958,7 +958,7 @@
                             </div>
                             <!-- Button -->
                             <div class="palns-btn mt-5">
-                              <a href="{{route('buy')}}" class="mainBtn">
+                              <a href="{{route('buy','premium_plus_yearly')}}" class="mainBtn">
                                 Buy Plan
                               </a>
                             </div>

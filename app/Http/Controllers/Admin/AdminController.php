@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CompanyContactUs;
 use App\Models\CompanyDriver;
 use App\Models\Message;
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,8 +108,9 @@ class AdminController extends Controller
     {
         return view('subscription');
     }
-    public function buy()
+    public function buy($plan)
     {
+        $plan = Plan::where('name',$plan)->first();
         return view('buy');
     }
     public function pay()
