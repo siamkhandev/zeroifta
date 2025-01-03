@@ -74,7 +74,7 @@ class PlansController extends Controller
     public function update(Request $request, $id)
     {
         $plan = Plan::find($id);
-        dd($plan);
+
 
         // Update price on Stripe
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -85,7 +85,7 @@ class PlansController extends Controller
                 'unit_amount' => $request->price * 100, // Stripe uses the smallest currency unit
                 'currency' => 'usd', // Adjust as needed
                 'recurring' => $request->recurring ? ['interval' => $request->billing_period] : null,
-                'product' => $plan->stripe_product_id,
+                'product' => $plan->stripe_plan_id,
             ]);
 
             // Update the plan in the database with the new Stripe price ID
