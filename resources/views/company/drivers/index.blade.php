@@ -54,6 +54,7 @@
 
               <th scope="col">{{__('messages.License Number')}}</th>
               <th scope="col">{{__('messages.License Start Date')}}</th>
+              <th scope="col">{{__('messages.Vehicle Assignment Status')}}</th>
               <th scope="col">{{__('messages.Action')}}</th>
             </tr>
           </thead>
@@ -86,7 +87,13 @@
               </td>
               <td>{{$driver->driver->license_number}}</td>
               <td>{{$driver->driver->license_start_date}}</td>
-
+              <td>
+                @if($driver->vehicle_assigned == 'Vehicle Assigned')
+                <span style="color: green;">{{ $driver->vehicle_assigned }}</span>
+                @else
+                <span style="color: red;">{{ $driver->vehicle_assigned }}</span>
+                @endif
+            </td>
               <td>
                 <div class="tabAction-list">
 

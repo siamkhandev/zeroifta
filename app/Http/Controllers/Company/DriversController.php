@@ -19,7 +19,11 @@ class DriversController extends Controller
 {
     public function index()
     {
-        $drivers= CompanyDriver::with('driver','company')->where('company_id',Auth::id())->latest()->get();
+        $drivers= CompanyDriver::with('driver','company')->where('company_id',Auth::id())->latest()->get()->map(function ($companyDriver) {
+            $isAssigned = DriverVehicle::where('driver_id', $companyDriver->driver_id)->exists();
+            $companyDriver->vehicle_assigned = $isAssigned ? 'Vehicle Assigned' : 'Vehicle Not Assigned';
+            return $companyDriver;
+        });
         return view('company.drivers.index',get_defined_vars());
     }
     public function create()
