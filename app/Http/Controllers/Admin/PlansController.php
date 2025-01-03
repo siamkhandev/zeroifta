@@ -74,6 +74,7 @@ class PlansController extends Controller
     public function update(Request $request, $id)
     {
         $plan = Plan::find($id);
+        dd($plan);
 
         // Update price on Stripe
         Stripe::setApiKey(env('STRIPE_SECRET'));
