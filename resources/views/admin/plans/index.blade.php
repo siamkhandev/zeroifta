@@ -83,7 +83,7 @@
                       </svg>
                     </a>
                   </span>
-                  <span class="tabDel-icon">
+                  <!-- <span class="tabDel-icon">
                     <a class="hover" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal-{{$plan->id}}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                         <path
@@ -91,7 +91,7 @@
                           fill="#B60F0F"></path>
                       </svg>
                     </a>
-                  </span>
+                  </span> -->
                 </div>
               </td>
             </tr>
