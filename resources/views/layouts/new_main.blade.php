@@ -28,7 +28,7 @@
     <div class="dash-main">
       @if(Auth::user()->role=='admin')
       @include('includes.sidebar_admin_new')
-      @elseif(Auth::user()->role=='company')
+      @elseif(Auth::user()->role=='company' || Auth::user()->role=='trucker')
       @include('includes.sidebar_company_new')
       @else
       @endif
@@ -53,7 +53,7 @@
     crossorigin="anonymous"></script> -->
   <script src="{{asset('assets/chartjs.min.js')}}"></script>
   <script src="{{asset('assets/js/script.js')}}"></script>
- 
+
   <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
