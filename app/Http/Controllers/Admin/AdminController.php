@@ -125,7 +125,7 @@ class AdminController extends Controller
         $plan = Plan::find($request->plan_id);
         $paymentMethod = $request->payment_method;
         $user = Auth::user();
-        dd($plan->stripe_plan_id);
+
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $customer = Customer::create([
