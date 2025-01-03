@@ -43,6 +43,7 @@ class DriversImport implements ToModel, WithHeadingRow,SkipsOnFailure
             ]);
 
             if ($validator->fails()) {
+                dd("here");
                 // Record the error
                 $this->errors[] = [
                     'row' => $row,
