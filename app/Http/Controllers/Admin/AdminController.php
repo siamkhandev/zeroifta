@@ -121,12 +121,12 @@ class AdminController extends Controller
     }
     public function pay(Request $request)
     {
-dd($request->all());
+
         $plan = Plan::find($request->plan_id);
         $paymentMethod = $request->payment_method;
         $user = Auth::user();
         try {
-            Stripe::setApiKey('sk_test_51FYXgWJOfbRIs4ne6dmGfFbmR1pKgX5V1CQVQHSSlzjCom2KemJylbslX2ylQ2dpbrvmSBGUQSWt6kXETr1ByRR500fTaO7v7k');
+            Stripe::setApiKey(env('STRIPE_SECRET'));
             $customer = Customer::create([
                 'email' => $user->email,
                 'name' => $user->name,
