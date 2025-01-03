@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Imports\VehiclesImport;
+use App\Models\DriverVehicle;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,12 @@ class VehiclesController extends Controller
 {
     public function index()
     {
-        $vehicles= Vehicle::where('company_id',Auth::id())->orderBy('id','desc')->get();
+        $vehicles= Vehicle::where('company_id',Auth::id())->orderBy('id','desc')->get()->map(function ($vehicle) {
+            $isAssigned = DriverVehicle::where('vehicle_id', $vehicle->id)->exists();
+            $vehicle->vehicle_assigned = $isAssigned ? 'Vehicle Assigned' : 'Vehicle Not Assigned';
+
+            return $vehicle;
+        });
         return view('company.vehicles.index',get_defined_vars());
     }
     public function create()

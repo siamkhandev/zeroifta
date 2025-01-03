@@ -54,6 +54,7 @@
               <th scope="col">{{__('messages.Odometer Reading')}}</th>
               <th scope="col">{{__('messages.MPG')}}</th>
               <th scope="col">{{__('messages.Fuel Tank Capacity')}}</th>
+              <th scope="col">{{__('messages.Vehicle Assignment Status')}}</th>
               <th scope="col">{{__('messages.Action')}}</th>
             </tr>
           </thead>
@@ -88,6 +89,13 @@
               <td>{{$vehicle->odometer_reading}}</td>
               <td>{{$vehicle->mpg}}</td>
               <td>{{$vehicle->fuel_tank_capacity}}</td>
+              <td>
+                @if($driver->vehicle_assigned == 'Vehicle Assigned')
+                <span style="color: green;">{{__('messages.Vehicle Assigned')}}</span>
+                @else
+                <span style="color: red;">{{__('messages.Vehicle Not Assigned')}}</span>
+                @endif
+            </td>
               <td>
                 <div class="tabAction-list">
 
