@@ -71,21 +71,34 @@ class PlansController extends Controller
         $plan = Plan::find($id);
         return view('admin.plans.edit',get_defined_vars());
     }
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'price' => 'required|numeric',
-        //     'billing_period' => 'nullable|string|in:month,year',
-        //     'recurring' => 'required|boolean',
-        // ]);
         $plan = Plan::find($id);
+
+        // Update price on Stripe
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        if ($request->price != $plan->price) {
+            // Create a new price on Stripe
+            $stripePrice = Price::create([
+                'unit_amount' => $request->price * 100, // Stripe uses the smallest currency unit
+                'currency' => 'usd', // Adjust as needed
+                'recurring' => $request->recurring ? ['interval' => $request->billing_period] : null,
+                'product' => $plan->stripe_product_id,
+            ]);
+
+            // Update the plan in the database with the new Stripe price ID
+            $plan->stripe_price_id = $stripePrice->id;
+        }
+
+        // Update the plan in the database
         $plan->name = $request->name;
         $plan->price = $request->price;
         $plan->billing_period = $request->recurring ? $request->billing_period : null;
-        $plan->recurring =$request->recurring ? $request->billing_period :1;
+        $plan->recurring = $request->recurring ? $request->billing_period : 1;
         $plan->description = $request->description;
         $plan->update();
+
         return redirect('plans')->withSuccess('Plan Updated Successfully');
     }
     public function delete($id)
