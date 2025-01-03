@@ -25,31 +25,31 @@ class PlansController extends Controller
     public function store(Request $request)
 
     {
-        
+
         $data = $request->validate([
             'name' => 'required',
             'price' => 'required',
            'billing_period' => 'nullable|string|in:month,year',
             'recurring' => 'required|boolean',
-            
-           
+
+
         ]);
         try{
             Stripe::setApiKey(config('services.stripe.secret'));
             $product = Product::create([
                 'name' => $request->name,
             ]);
-    
+
             $stripePriceData = [
                 'product' => $product->id,
                 'unit_amount' => $request->price * 100,
                 'currency' => 'usd',
             ];
-    
+
             if ($request->recurring) {
                 $stripePriceData['recurring'] = ['interval' => $request->billing_period];
             }
-    
+
             $price = Price::create($stripePriceData);
             $plan = new Plan();
             $plan->name = $request->name;
@@ -64,7 +64,7 @@ class PlansController extends Controller
         {
             dd($e->getMessage());
         }
-        
+
     }
     public function edit($id)
     {
@@ -83,7 +83,7 @@ class PlansController extends Controller
         $plan->name = $request->name;
         $plan->price = $request->price;
         $plan->billing_period = $request->recurring ? $request->billing_period : null;
-        $plan->recurring =$request->recurring;
+        $plan->recurring =$request->recurring ? $request->billing_period :1;
         $plan->description = $request->description;
         $plan->update();
         return redirect('plans')->withSuccess('Plan Updated Successfully');
