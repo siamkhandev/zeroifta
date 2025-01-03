@@ -90,7 +90,7 @@
               <td>{{$vehicle->mpg}}</td>
               <td>{{$vehicle->fuel_tank_capacity}}</td>
               <td>
-                @if($driver->vehicle_assigned == 'Vehicle Assigned')
+                @if($vehicle->vehicle_assigned == 'Vehicle Assigned')
                 <span style="color: green;">{{__('messages.Vehicle Assigned')}}</span>
                 @else
                 <span style="color: red;">{{__('messages.Vehicle Not Assigned')}}</span>
