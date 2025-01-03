@@ -125,6 +125,7 @@ class AdminController extends Controller
         $plan = Plan::find($request->plan_id);
         $paymentMethod = $request->payment_method;
         $user = Auth::user();
+        dd($plan->stripe_plan_id);
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $customer = Customer::create([
@@ -138,7 +139,7 @@ class AdminController extends Controller
             $subscription = Subscription::create([
                 'customer' => $customer->id,
                 'items' => [[
-                    'price' => $plan->stripe_plan_id, // Use price_id instead of plan
+                    'plan' => $plan->stripe_plan_id, // The Stripe plan ID
                 ]],
             ]);
             $request->user()->subscriptions()->create([
