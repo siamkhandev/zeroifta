@@ -29,7 +29,7 @@
                             </span>
                         @enderror
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-1">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Billing Period')}}</label>
                         <select class="form-control login-input" id="exampleFormControlInput1" name="billing_period">
@@ -42,8 +42,8 @@
                             </span>
                         @enderror
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                </div> -->
+                <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-1">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Is Recurring?')}}</label>
                         <select class="form-control login-input" id="recurring" name="recurring" required>
@@ -56,7 +56,7 @@
                             </span>
                         @enderror
                     </div>
-                </div>
+                </div> -->
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
