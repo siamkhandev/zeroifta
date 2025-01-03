@@ -82,7 +82,13 @@
 
                 </div>
               </td>
-              <td><img src="{{asset('vehicles')}}/{{$vehicle->vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;"></td>
+              <td>
+                @if($vehicle->vehicle->vehicle_image)
+                <img src="{{asset('vehicles')}}/{{$vehicle->vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
+                @else
+                <img src="{{asset('vehicles/blank.png')}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
+                @endif
+            </td>
 
 
               <td>
