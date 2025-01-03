@@ -7,6 +7,7 @@ use App\Models\CompanyContactUs;
 use App\Models\CompanyDriver;
 use App\Models\Payment;
 use App\Models\Plan;
+use App\Models\Subscription;
 use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -67,7 +68,7 @@ class CompanyController extends Controller
     public function showPlans()
     {
         $plans = Plan::get();
-        $userPlan = Payment::where('company_id',Auth::id())->where('status','active')->first();
+        $userPlan = Subscription::where('user_id',Auth::id())->where('status','active')->first();
         return view('company.plans',get_defined_vars());
     }
     public function contactUsForms()
