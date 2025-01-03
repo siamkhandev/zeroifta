@@ -164,5 +164,8 @@ return [
     "ZIP"=>"ZIP",
     "Monthly"=>"Mensual",
     "Yearly"=>"Anual",
+    "Vehicle Assignment Status"=>"Estado de asignación de vehículos",
+    "Vehicle Assigned"=>"Vehículo asignado",
+    "Vehicle Not Assigned"=>"Vehículo no asignado",
 
 ];

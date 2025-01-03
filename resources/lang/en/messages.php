@@ -172,6 +172,9 @@ return [
     "ZIP"=>"ZIP",
     "Monthly"=>"Monthly",
     "Yearly"=>"Yearly",
+    "Vehicle Assignment Status"=>"Vehicle Assignment Status",
+    "Vehicle Assigned"=>"Vehicle Assigned",
+    "Vehicle Not Assigned"=>"Vehicle Not Assigned",
 
 
 
