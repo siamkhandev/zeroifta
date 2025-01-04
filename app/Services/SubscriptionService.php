@@ -95,8 +95,26 @@ class SubscriptionService
      */
     public function getPlans()
     {
-       $plans = Plan::all();
-       return $plans;
+        $plans = Plan::orderByRaw("CASE 
+            WHEN type = 'free' THEN 1
+            WHEN billing_cycle = 'monthly' THEN 2
+            WHEN billing_cycle = 'yearly' THEN 3
+            ELSE 4
+            END")->get();
+        $customizedPlans = $plans->map(function ($plan) {
+            // Customize the description
+            if ($plan->type == 'free') {
+                $plan->description = "This is the free plan: " . $plan->description;
+            } elseif ($plan->billing_cycle == 'monthly') {
+                $plan->description = "Monthly Plan: " . $plan->description;
+            } elseif ($plan->billing_cycle == 'yearly') {
+                $plan->description = "Yearly Plan: " . $plan->description;
+            }
+    
+            // Return the modified plan
+            return $plan;
+        });
+       return $customizedPlans;
     }
 
     /**
