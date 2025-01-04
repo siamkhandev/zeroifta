@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ResetPasswordMail;
 use App\Models\DriverVehicle;
 use App\Models\Payment;
+use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -63,7 +64,7 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $checkSubscription = Payment::where('company_id',$user->id)->where('status','active')->first();
+            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             $user->subscription = $checkSubscription;
             return response()->json(['status'=>200,'message'=>'Logged in successfully','data' => $user], 200);
         } else {
