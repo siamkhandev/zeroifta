@@ -100,7 +100,7 @@ class SubscriptionService
             WHEN billing_period = 'monthly' THEN 2
             WHEN billing_period = 'yearly' THEN 3
             ELSE 4
-            END")->get();
+            END")->orderBy('price', 'asc')->get();
         $customizedPlans = $plans->map(function ($plan) {
             // Customize the description
             if ($plan->type == 'free') {
