@@ -97,8 +97,8 @@ class SubscriptionService
     {
         $plans = Plan::orderByRaw("CASE 
             WHEN slug = 'free' THEN 1
-            WHEN billing_cycle = 'monthly' THEN 2
-            WHEN billing_cycle = 'yearly' THEN 3
+            WHEN billing_period = 'monthly' THEN 2
+            WHEN billing_period = 'yearly' THEN 3
             ELSE 4
             END")->get();
         $customizedPlans = $plans->map(function ($plan) {
