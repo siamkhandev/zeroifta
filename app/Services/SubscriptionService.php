@@ -104,11 +104,19 @@ class SubscriptionService
         $customizedPlans = $plans->map(function ($plan) {
             // Customize the description
             if ($plan->type == 'free') {
-                $plan->description = "This is the free plan: " . $plan->description;
-            } elseif ($plan->billing_cycle == 'monthly') {
-                $plan->description = "Monthly Plan: " . $plan->description;
-            } elseif ($plan->billing_cycle == 'yearly') {
-                $plan->description = "Yearly Plan: " . $plan->description;
+                $plan->description = "You are availing all the features of the Premium Monthly Plan for 6 months. ";
+            } elseif ($plan->slug == 'basic_monthly') {
+                $plan->description = "Fuel Station Recommendations.Get the best fuel stops based on the unburdened fuel price to maximize savings. ";
+            }elseif ($plan->slug == 'premium_monthly') {
+                $plan->description = "All Features of the Basic Plan.";
+            }elseif ($plan->slug == 'premium_plus_monthly') {
+                $plan->description = "Our Premium+ Subscription offers the most comprehensive set of features designed to elevate your fleet management experience. This plan includes everything from our Basic and Premium plans, plus advanced integrations to maximize efficiency and streamline operations.";
+            } elseif ($plan->slug == 'basic_yearly') {
+                $plan->description = "Fuel Station Recommendations.Get the best fuel stops based on the unburdened fuel price to maximize savings.";
+            }elseif ($plan->slug == 'premium_yearly') {
+                $plan->description = "All Features of the Basic Plan.";
+            }elseif ($plan->slug == 'premium_plus_yearly') {
+                $plan->description = "The Premium+ Yearly Subscription gives you full access to all of ZeroIFTA's most powerful features at a discounted rate, offering the ultimate solution for fleet management and fuel optimization.";
             }
     
             // Return the modified plan
