@@ -104,19 +104,85 @@ class SubscriptionService
         $customizedPlans = $plans->map(function ($plan) {
             // Customize the description
             if ($plan->slug == 'free') {
-                $plan->description = "You are availing all the features of the Premium Monthly Plan for 6 months. ";
+                $plan->description = [
+                    "You are availing all the features of the Premium Monthly Plan for 6 months.",
+                    ];
+                    $plan->is_recommended=0;
             } elseif ($plan->slug == 'basic_monthly') {
-                $plan->description = "Fuel Station Recommendations.Get the best fuel stops based on the unburdened fuel price to maximize savings. ";
+                $plan->description = [
+                    "Fuel Station Recommendations: Get the best fuel stops based on the unburdened fuel price to maximize savings.",
+                    "Monthly Savings and IFTA Reports: Review your savings each month to track how much you've kept in your pocket.",
+                    "Customize odometer reading and truck MPG's",
+                    "No live vehicle tracking or alerts: Get the best fuel stops based on the unburdened fuel price to maximize savings.",
+                    "No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount.",
+                    "Can't customize fuel tank capacity"
+                ];
+                $plan->is_recommended=0;
             }elseif ($plan->slug == 'premium_monthly') {
-                $plan->description = "All Features of the Basic Plan.";
+                $plan->description = [
+                    "All Features of the Basic Plan.",
+                    "Automatic IFTA Reporting: Simplify compliance with automated tax reporting.",
+                    "Fully Customizable App and Features",
+                    "Adjust settings like minimum gallons to fuel",
+                    "Add unlimited stops to trips.",
+                    "Change the default reserve fuel amount.",
+                    "Customize odometer reading and truck MPG's",
+                    "Customizable alerts (choose at wish preferred distances to get notified of your upcoming stop)",
+                    "Live Vehicle Tracking: Monitor your fleet in real-time and track your trucks' positions.",
+                    "Alerts and Notifications: Receive alerts if drivers miss suggested fuel stops or deviate from planned routes.",
+                    "Advanced Trip Planning and Analytics: Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data.",
+                ];
+                $plan->is_recommended=1;
             }elseif ($plan->slug == 'premium_plus_monthly') {
-                $plan->description = "Our Premium+ Subscription offers the most comprehensive set of features designed to elevate your fleet management experience. This plan includes everything from our Basic and Premium plans, plus advanced integrations to maximize efficiency and streamline operations.";
+                $plan->description =[
+                    "Our Premium+ Subscription offers the most comprehensive set of features designed to elevate your fleet management experience. This plan includes everything from our Basic and Premium plans, plus advanced integrations to maximize efficiency and streamline operations.",
+                    "Fuel Station Recommendations: Based on unburdened fuel prices for smarter fueling decisions.",
+                    "Monthly Savings Reports: Track your savings and optimize your costs.",
+                    "Automatic IFTA Reporting: Eliminate audits and simplify tax compliance with automated reporting.",
+                    "Live Vehicle Tracking and Alerts: Real-time tracking of all trucks, with alerts for missed fuel stops and deviations from optimized routes.",
+                    "Fully Customizable App: Set your minimum fueling amounts, add stops, and personalize features to fit your unique needs.",
+                    "Admin Panel API Integration: Sync your existing fleet software with ZeroIFTA. All truck, driver, and essential fleet information is automatically shared and updated without manual input, ensuring a streamlined workflow between systems.",
+                    "Real-Time Data Sync: Maintain accurate fleet information with automatic updates, helping you keep track of crucial data effortlessly.",
+                ];
+                $plan->is_recommended=0;
             } elseif ($plan->slug == 'basic_yearly') {
-                $plan->description = "Fuel Station Recommendations.Get the best fuel stops based on the unburdened fuel price to maximize savings.";
+                $plan->description = [
+                    "Fuel Station Recommendations: Get the best fuel stops based on the unburdened fuel price to maximize savings.",
+                    "Monthly Savings and IFTA Reports: Review your savings each month to track how much you've kept in your pocket.",
+                    "Customize odometer reading and truck MPG's",
+                    "No live vehicle tracking or alerts.",
+                    "No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount.",
+                    "Can't customize fuel tank capacity"
+                ];
+                $plan->is_recommended=0;
             }elseif ($plan->slug == 'premium_yearly') {
-                $plan->description = "All Features of the Basic Plan.";
+                $plan->description =[
+                    "All Features of the Basic Plan.",
+                    "Automatic IFTA Reporting: Simplify compliance with automated tax reporting.",
+                    "Fully Customizable App and Features",
+                    "Adjust settings like minimum gallons to fuel,",
+                    "Add unlimited stops to trips,",
+                    "Change the default reserve fuel amount,",
+                    "Customize odometer reading and truck MPG's,",
+                    "Customizable alerts (choose at wish preferred distances to get notified of your upcoming stop)",
+                    "Live Vehicle Tracking: Monitor your fleet in real-time and track your trucks' positions.",
+                    "Alerts and Notifications: Receive alerts if drivers miss suggested fuel stops or deviate from planned routes.",
+                    "Advanced Trip Planning and Analytics: Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data."
+                ];
+                $plan->is_recommended=1;
             }elseif ($plan->slug == 'premium_plus_yearly') {
-                $plan->description = "The Premium+ Yearly Subscription gives you full access to all of ZeroIFTA's most powerful features at a discounted rate, offering the ultimate solution for fleet management and fuel optimization.";
+                $plan->description = [
+                    "The Premium+ Yearly Subscription gives you full access to all of ZeroIFTA's most powerful features at a discounted rate, offering the ultimate solution for fleet management and fuel optimization.",
+                    "Fuel Station Recommendations: Based on unburdened fuel prices for smarter fueling decisions.",
+                    "Monthly Savings Reports: Track your savings and optimize your costs.",
+                    "Automatic IFTA Reporting: Eliminate audits and simplify tax compliance with automated reporting.",
+                    "Live Vehicle Tracking and Alerts: Monitor your fleet in real-time and receive alerts for missed stops or route changes.",
+                    "Fully Customizable App: Adjust settings like minimum gallons to fuel, add stops, and tailor the app to fit your needs.",
+                    "Advanced Trip Planning and Analytics: Utilize predictive fuel pricing, weather data, and vehicle performance insights for efficient route planning.",
+                    "API Integration with Admin Panel: Seamlessly connect your software with ZeroIFTA, ensuring all truck, driver, and crucial fleet information is automatically shared and synced without manual input.",
+                    "Special Yearly Rate: $995: Secure the full suite of Premium+ features for a whole year and save over 15% compared to the monthly plan. Enjoy seamless integration, powerful analytics, and advanced tools designed to maximize your fleet's efficiency and keep your business running smoothly."
+                ];
+                $plan->is_recommended=0;
             }
     
             // Return the modified plan
