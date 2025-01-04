@@ -96,7 +96,7 @@ class SubscriptionService
     public function getPlans()
     {
         $plans = Plan::orderByRaw("CASE 
-            WHEN type = 'free' THEN 1
+            WHEN slug = 'free' THEN 1
             WHEN billing_cycle = 'monthly' THEN 2
             WHEN billing_cycle = 'yearly' THEN 3
             ELSE 4
