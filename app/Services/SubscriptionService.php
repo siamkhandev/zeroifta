@@ -103,7 +103,7 @@ class SubscriptionService
             END")->orderBy('price', 'asc')->get();
         $customizedPlans = $plans->map(function ($plan) {
             // Customize the description
-            if ($plan->type == 'free') {
+            if ($plan->slug == 'free') {
                 $plan->description = "You are availing all the features of the Premium Monthly Plan for 6 months. ";
             } elseif ($plan->slug == 'basic_monthly') {
                 $plan->description = "Fuel Station Recommendations.Get the best fuel stops based on the unburdened fuel price to maximize savings. ";
