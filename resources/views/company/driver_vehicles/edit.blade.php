@@ -77,6 +77,7 @@ $(document).ready(function () {
             checkVehicleAssignment(newVehicle);
         // Check if the driver or vehicle has changed
         }else if (newVehicle == originalVehicle){
+            alert('Please select a new vehicle');
             checkVehicleAlreadyAssigned(newVehicle);
         }else if (newDriver !== originalDriver) {
             // Check if the selected driver already has a vehicle
