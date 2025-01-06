@@ -76,11 +76,12 @@ $(document).ready(function () {
             // Check if the selected vehicle is already assigned
             checkVehicleAssignment(newVehicle);
         // Check if the driver or vehicle has changed
+        }else if (newVehicle == originalVehicle){
+            checkVehicleAlreadyAssigned(newVehicle);
         }else if (newDriver !== originalDriver) {
             // Check if the selected driver already has a vehicle
             checkDriverAssignment(newDriver);
-        }else if (newVehicle == originalVehicle){
-            checkVehicleAlreadyAssigned(newVehicle);
+
         } else {
             // No changes, submit the form
             $('#editVehicleForm').submit();
