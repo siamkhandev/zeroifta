@@ -110,7 +110,7 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $checkSubscription = Payment::where('company_id',$user->id)->where('status','active')->first();
+            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             $user->subscription = $checkSubscription;
             return response()->json(['status'=>200,'message'=>'profile fetched successfully','data'=>$user]);
         }else{

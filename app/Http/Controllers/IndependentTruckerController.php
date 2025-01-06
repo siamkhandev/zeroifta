@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\Payment;
+use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -93,10 +94,11 @@ class IndependentTruckerController extends Controller
             $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
         }
         $driverFind->vehicle = $vehicle;
-        $checkSubscription = Payment::where('company_id',$driver->id)->where('status','active')->first();
+        $checkSubscription = Subscription::where('user_id',$driver->id)->where('status','active')->first();
         $driverFind->subscription = $checkSubscription;
         $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
         $driverFind->rsa_key = $rsaKey;
+        $driverFind->token = null;
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',

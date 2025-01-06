@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\Trip;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -31,9 +32,15 @@ class DriverVehiclesController extends Controller
         'driver_id' => 'required',
         'vehicle_id' => 'required',
     ]);
-
+    $checkTrip = Trip::where('vehicle_id', $request->vehicle_id)->first();
     $checkVehicle = DriverVehicle::where('vehicle_id', $request->vehicle_id)->first();
-
+    if ($checkTrip) {
+        return response()->json([
+            'status' => 'already_assigned',
+            'message' => "This vehicle is already assigned to another trip. Do you want to reassign it?",
+            'driver_vehicle_id' => $checkVehicle->id
+        ]);
+    }
     if ($checkVehicle) {
         $currentDriver = $checkVehicle->driver->name; // Assuming a relation `driver` exists in DriverVehicle
         return response()->json([
@@ -42,6 +49,8 @@ class DriverVehiclesController extends Controller
             'driver_vehicle_id' => $checkVehicle->id
         ]);
     }
+
+
     $checkDriver = DriverVehicle::where('driver_id', $request->driver_id)->first();
 
     if ($checkDriver) {
@@ -63,13 +72,13 @@ class DriverVehiclesController extends Controller
 
 public function reassign(Request $request)
 {
-   
+
     $data = $request->validate([
         'driver_vehicle_id' => 'required|exists:driver_vehicles,id',
         'driver_id' => 'required|exists:users,id',
     ]);
 
-   
+
         $driverVehicle = DriverVehicle::whereId($data['driver_vehicle_id'])->first();
         if($driverVehicle){
             $driverVehicle->delete();
@@ -79,12 +88,12 @@ public function reassign(Request $request)
             'vehicle_id' => $driverVehicle->vehicle_id,
             'company_id' => Auth::id(),
         ]);
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'Vehicle reassigned successfully.',
         ]);
-    
+
 }
 public function checkDriverAssignment(Request $request)
 {
@@ -104,6 +113,7 @@ public function checkDriverAssignment(Request $request)
 
 public function checkVehicleAssignment(Request $request)
 {
+    dd($request->all());
     $vehicleId = $request->vehicle_id;
     $assignment = DriverVehicle::where('vehicle_id', $vehicleId)->first();
 
