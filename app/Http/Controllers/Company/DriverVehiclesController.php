@@ -127,6 +127,22 @@ public function checkVehicleAssignment(Request $request)
 
     return response()->json(['assigned' => false]);
 }
+public function checkVehicleAlreadyAssignment(Request $request)
+{
+
+    $vehicleId = $request->vehicle_id;
+    $assignment = DriverVehicle::where('vehicle_id', $vehicleId)->first();
+
+    if ($assignment) {
+        $driver = User::find($assignment->driver_id);
+        return response()->json([
+            'assigned' => true,
+            'message' => "Vehicle is already assigned to Driver: {$driver->name}. Do you want to reassign?"
+        ]);
+    }
+
+    return response()->json(['assigned' => false]);
+}
     public function edit($id)
     {
         $vehicle = DriverVehicle::find($id);

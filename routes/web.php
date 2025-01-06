@@ -112,6 +112,8 @@ Route::middleware('auth')->group(function () {
         Route::get('driver/vehicles/delete/{id}', [DriverVehiclesController::class, 'destroy'])->name('driver_vehicles.delete');
         Route::post('/driver-vehicles/check-driver-assignment', [DriverVehiclesController::class, 'checkDriverAssignment'])->name('driver_vehicles.check_driver_assignment');
         Route::post('/driver-vehicles/check-vehicle-assignment', [DriverVehiclesController::class, 'checkVehicleAssignment'])->name('driver_vehicles.check_vehicle_assignment');
+        Route::post('/driver-vehicles/check-vehicle-already-assignment', [DriverVehiclesController::class, 'checkVehicleAlreadyAssignment'])->name('driver_vehicles.check_vehicle_already_assignment');
+
         Route::get('drivers/all', [DriversController::class, 'index'])->name('drivers.all');
         Route::get('drivers/create', [DriversController::class, 'create'])->name('drivers.create');
         Route::post('drivers/store', [DriversController::class, 'store'])->name('driver.store');
@@ -149,6 +151,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/messages/{contact_id}', [ContactUsController::class, 'fetchMessages'])->name('messages.fetch');
   //Route::post('/messages/read/{id}', [ContactUsController::class, 'markAsRead'])->name('messages.markAsRead');
 
-  
+
   Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 });

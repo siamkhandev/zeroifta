@@ -79,6 +79,8 @@ $(document).ready(function () {
         }else if (newDriver !== originalDriver) {
             // Check if the selected driver already has a vehicle
             checkDriverAssignment(newDriver);
+        }else if (newVehicle == originalVehicle){
+            checkVehicleAlreadyAssigned(newVehicle);
         } else {
             // No changes, submit the form
             $('#editVehicleForm').submit();
@@ -104,7 +106,25 @@ $(document).ready(function () {
             }
         });
     }
-
+    function checkVehicleAlreadyAssigned(vehicleId) {
+        $.ajax({
+            url: '{{ route("driver_vehicles.check_vehicle_already_assignment") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                vehicle_id: vehicleId
+            },
+            success: function (response) {
+                if (response.assigned) {
+                    showModal(response.message, function () {
+                        $('#editVehicleForm').submit(); // Proceed with form submission
+                    });
+                } else {
+                    $('#editVehicleForm').submit();
+                }
+            }
+        });
+    }
     function checkVehicleAssignment(vehicleId) {
         $.ajax({
             url: '{{ route("driver_vehicles.check_vehicle_assignment") }}',
