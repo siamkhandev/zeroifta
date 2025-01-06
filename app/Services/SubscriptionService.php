@@ -225,30 +225,30 @@ class SubscriptionService
                 $plan->description = [
                     [
                         "heading" => "Fuel Station Recommendations",
-                        "description" => "Get the best fuel stops based on the unburdened fuel price to maximize savings."
+                        "description" => ["Get the best fuel stops based on the unburdened fuel price to maximize savings."]
                     ],
                     [
                         "heading" => "Monthly Savings and IFTA Reports",
-                        "description" => "Review your savings each month to track how much you've kept in your pocket."
+                        "description" => ["Review your savings each month to track how much you've kept in your pocket."]
                     ],
                     [
                         "heading" => "Customize odometer reading and truck MPG's",
-                        "description" => ""
+                        "description" => []
                     ],
                     
                 ];
                 $plan->not_included=[
                     [
                         "heading" => "No Live Vehicle Tracking or Alerts",
-                        "description" => ""
+                        "description" => []
                     ],
                     [
                         "heading" => "",
-                        "description" => "No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount."
+                        "description" => ["No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount."]
                     ],
                     [
                         "heading" => "",
-                        "description" => "Can't customize fuel tank capacity"
+                        "description" => ["Can't customize fuel tank capacity"]
                     ]
                 ];
                 $plan->price='$'.$plan->price.' - Year';
@@ -257,11 +257,11 @@ class SubscriptionService
                 $plan->description = [
                     [
                         "heading" => "All Features of the Basic Plan.",
-                        "description" => ""
+                        "description" => []
                     ],
                     [
                         "heading" => "Automatic IFTA Reporting:",
-                        "description" => "Simplify compliance with automated tax reporting."
+                        "description" => ["Simplify compliance with automated tax reporting."]
                     ],
                     [
                         "heading" => "Fully Customizable App and Features:",
@@ -276,15 +276,15 @@ class SubscriptionService
                     ],
                     [
                         "heading" => "Live Vehicle Tracking",
-                        "description" => "Monitor your fleet in real-time and track your trucks' positions."
+                        "description" => ["Monitor your fleet in real-time and track your trucks' positions."]
                     ],
                     [
                         "heading" => "Alerts and Notifications",
-                        "description" => "Receive alerts if drivers miss suggested fuel stops or deviate from planned routes."
+                        "description" => ["Receive alerts if drivers miss suggested fuel stops or deviate from planned routes."]
                     ],
                     [
                         "heading" => "Advanced Trip Planning and Analytics",
-                        "description" => "Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data."
+                        "description" => ["Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data."]
                     ],
                     
                 ];
@@ -295,39 +295,39 @@ class SubscriptionService
                 $plan->description = [
                     [
                         "heading" => "Fuel Station Recommendations",
-                        "description" => "Based on unburdened fuel prices for smarter fueling decisions."
+                        "description" => ["Based on unburdened fuel prices for smarter fueling decisions."]
                     ],
                     [
                         "heading" => "Monthly Savings Reports",
-                        "description" => "Track your savings and optimize your costs."
+                        "description" => ["Track your savings and optimize your costs."]
                     ],
                     [
                         "heading" => "Automatic IFTA Reporting",
-                        "description" => "Eliminate audits and simplify tax compliance with automated reporting."
+                        "description" => ["Eliminate audits and simplify tax compliance with automated reporting."]
                     ],
                     [
                         "heading" => "Live Vehicle Tracking and Alerts",
-                        "description" => "Monitor your fleet in real-time and receive alerts for missed stops or route changes."
+                        "description" => ["Monitor your fleet in real-time and receive alerts for missed stops or route changes."]
                     ],
                     [
                         "heading" => "Fully Customizable App",
-                        "description" => "Adjust settings like minimum gallons to fuel, add stops, and tailor the app to fit your needs."
+                        "description" => ["Adjust settings like minimum gallons to fuel, add stops, and tailor the app to fit your needs."]
                     ],
                     [
                         "heading" => "Fully Customizable App",
-                        "description" => "Adjust settings like minimum gallons to fuel, add stops, and tailor the app to fit your needs."
+                        "description" => ["Adjust settings like minimum gallons to fuel, add stops, and tailor the app to fit your needs."]
                     ],
                     [
                         "heading" => "Advanced Trip Planning and Analytics",
-                        "description" => "Utilize predictive fuel pricing, weather data, and vehicle performance insights for efficient route planning."
+                        "description" => ["Utilize predictive fuel pricing, weather data, and vehicle performance insights for efficient route planning."]
                     ],
                     [
                         "heading" => "API Integration with Admin Panel",
-                        "description" => "Seamlessly connect your software with ZeroIFTA, ensuring all truck, driver, and crucial fleet information is automatically shared and synced without manual input."
+                        "description" => ["Seamlessly connect your software with ZeroIFTA, ensuring all truck, driver, and crucial fleet information is automatically shared and synced without manual input."]
                     ],
                     [
                         "heading" => "Special Yearly Rate: $995",
-                        "description" => "Secure the full suite of Premium+ features for a whole year and save over 15% compared to the monthly plan. Enjoy seamless integration, powerful analytics, and advanced tools designed to maximize your fleet's efficiency and keep your business running smoothly."
+                        "description" => ["Secure the full suite of Premium+ features for a whole year and save over 15% compared to the monthly plan. Enjoy seamless integration, powerful analytics, and advanced tools designed to maximize your fleet's efficiency and keep your business running smoothly."]
                     ]
                 ];
                 $plan->not_included =[];
