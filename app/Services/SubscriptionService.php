@@ -107,7 +107,7 @@ class SubscriptionService
                 $plan->description = [
                     [
                         "heading"=>"You are availing all the features of the Premium Monthly Plan for 6 months.",
-                        "description"=>"",
+                        "description"=>[],
                     ]
                     
                     ];
@@ -118,30 +118,30 @@ class SubscriptionService
                 $plan->description = [
                     [
                         "heading" => "Fuel Station Recommendations",
-                        "description" => "Get the best fuel stops based on the unburdened fuel price to maximize savings."
+                        "description" => ["Get the best fuel stops based on the unburdened fuel price to maximize savings."]
                     ],
                     [
                         "heading" => "Monthly Savings and IFTA Reports",
-                        "description" => "Review your savings each month to track how much you've kept in your pocket."
+                        "description" => ["Review your savings each month to track how much you've kept in your pocket."]
                     ],
                     [
                         "heading" => "Customize odometer reading and truck MPG's",
-                        "description" => ""
+                        "description" => []
                     ],
                     
                 ];
                 $plan->not_included = [
                     [
                         "heading" => "No live vehicle tracking or alerts.",
-                        "description" =>"Get the best fuel stops based on the unburdened fuel price to maximize savings."
+                        "description" =>["Get the best fuel stops based on the unburdened fuel price to maximize savings."]
                     ],
                     [
                         "heading" => "",
-                        "description" => "No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount."
+                        "description" => ["No customization of app features, such as setting a minimum number of gallons to fuel, adding stops to trips, or change the default reserve fuel amount."]
                     ],
                     [
                         "heading" => "",
-                        "description" => "Can't customize fuel tank capacity"
+                        "description" => ["Can't customize fuel tank capacity"]
                     ],
                     
                 ];
@@ -152,11 +152,11 @@ class SubscriptionService
                 $plan->description = [
                     [
                         "heading" => "All Features of the Basic Plan.",
-                        "description" => ""
+                        "description" => []
                     ],
                     [
                         "heading" => "Automatic IFTA Reporting",
-                        "description" => "Simplify compliance with automated tax reporting."
+                        "description" => ["Simplify compliance with automated tax reporting."]
                     ],
                     [
                         "heading" => "Fully Customizable App and Features",
@@ -171,15 +171,15 @@ class SubscriptionService
                     ],
                     [
                         "heading" => "Live Vehicle Tracking",
-                        "description" => "Monitor your fleet in real-time and track your trucks' positions."
+                        "description" => ["Monitor your fleet in real-time and track your trucks' positions."]
                     ],
                     [
                         "heading" => "Alerts and Notifications",
-                        "description" => "Receive alerts if drivers miss suggested fuel stops or deviate from planned routes."
+                        "description" => ["Receive alerts if drivers miss suggested fuel stops or deviate from planned routes."]
                     ],
                     [
                         "heading" => "Advanced Trip Planning and Analytics",
-                        "description" => "Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data."
+                        "description" => ["Optimize routes with predictive fuel pricing, weather, traffic behavior and vehicle performance data."]
                     ],
                     
                 ];
@@ -190,31 +190,31 @@ class SubscriptionService
                 $plan->description = [
                     [
                         "heading" => "Fuel Station Recommendations",
-                        "description" => "Based on unburdened fuel prices for smarter fueling decisions."
+                        "description" => ["Based on unburdened fuel prices for smarter fueling decisions."]
                     ],
                     [
                         "heading" => "Monthly Savings Reports",
-                        "description" => "Track your savings and optimize your costs."
+                        "description" => ["Track your savings and optimize your costs."]
                     ],
                     [
                         "heading" => "Automatic IFTA Reporting",
-                        "description" => "Eliminate audits and simplify tax compliance with automated reporting."
+                        "description" => ["Eliminate audits and simplify tax compliance with automated reporting."]
                     ],
                     [
                         "heading" => "Live Vehicle Tracking and Alerts",
-                        "description" => "Real-time tracking of all trucks, with alerts for missed fuel stops and deviations from optimized routes."
+                        "description" => ["Real-time tracking of all trucks, with alerts for missed fuel stops and deviations from optimized routes."]
                     ],
                     [
                         "heading" => "Fully Customizable App",
-                        "description" => "Set your minimum fueling amounts, add stops, and personalize features to fit your unique needs."
+                        "description" => ["Set your minimum fueling amounts, add stops, and personalize features to fit your unique needs."]
                     ],
                     [
                         "heading" => "Admin Panel API Integration",
-                        "description" => "Sync your existing fleet software with ZeroIFTA. All truck, driver, and essential fleet information is automatically shared and updated without manual input, ensuring a streamlined workflow between systems."
+                        "description" => ["Sync your existing fleet software with ZeroIFTA. All truck, driver, and essential fleet information is automatically shared and updated without manual input, ensuring a streamlined workflow between systems."]
                     ],
                     [
                         "heading" => "Real-Time Data Sync",
-                        "description" => "Maintain accurate fleet information with automatic updates, helping you keep track of crucial data effortlessly."
+                        "description" => ["Maintain accurate fleet information with automatic updates, helping you keep track of crucial data effortlessly."]
                     ],
                    
                 ];
