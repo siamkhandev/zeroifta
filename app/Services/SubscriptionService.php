@@ -105,9 +105,15 @@ class SubscriptionService
             // Customize the description
             if ($plan->slug == 'free') {
                 $plan->description = [
-                    "You are availing all the features of the Premium Monthly Plan for 6 months.",
+                    [
+                        "heading"=>"You are availing all the features of the Premium Monthly Plan for 6 months.",
+                        "description"=>"",
+                    ]
+                    
                     ];
-                    $plan->is_recommended=0;
+                    $plan->not_included =[];
+                $plan->price = "$0.00";
+                $plan->is_recommended=0;
             } elseif ($plan->slug == 'basic_monthly') {
                 $plan->description = [
                     [
@@ -141,7 +147,7 @@ class SubscriptionService
                 ];
                 
                 $plan->is_recommended=0;
-                $plan->price='$'.$plan->price.' Monthly';
+                $plan->price='$'.$plan->price.' - Monthly';
             }elseif ($plan->slug == 'premium_monthly') {
                 $plan->description = [
                     [
@@ -179,7 +185,7 @@ class SubscriptionService
                 ];
                 $plan->not_included =[];
                 $plan->is_recommended=1;
-                $plan->price='$'.$plan->price.' Monthly';
+                $plan->price='$'.$plan->price.' - Monthly';
             }elseif ($plan->slug == 'premium_plus_monthly') {
                 $plan->description = [
                     [
@@ -213,7 +219,7 @@ class SubscriptionService
                    
                 ];
                 $plan->not_included =[];
-                $plan->price='$'.$plan->price.' Monthly';
+                $plan->price='$'.$plan->price.' - Monthly';
                 $plan->is_recommended=0;
             } elseif ($plan->slug == 'basic_yearly') {
                 $plan->description = [
@@ -245,7 +251,7 @@ class SubscriptionService
                         "description" => "Can't customize fuel tank capacity"
                     ]
                 ];
-                $plan->price='$'.$plan->price.' Year';
+                $plan->price='$'.$plan->price.' - Year';
                 $plan->is_recommended=0;
             }elseif ($plan->slug == 'premium_yearly') {
                 $plan->description = [
@@ -283,7 +289,7 @@ class SubscriptionService
                     
                 ];
                 $plan->not_included =[];
-                $plan->price='$'.$plan->price.' Year';
+                $plan->price='$'.$plan->price.' - Year';
                 $plan->is_recommended=1;
             }elseif ($plan->slug == 'premium_plus_yearly') {
                 $plan->description = [
@@ -325,7 +331,7 @@ class SubscriptionService
                     ]
                 ];
                 $plan->not_included =[];
-                $plan->price='$'.$plan->price.' Year';
+                $plan->price='$'.$plan->price.' - Year';
                 $plan->is_recommended=0;
             }
     
