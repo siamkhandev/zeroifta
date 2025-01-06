@@ -90,6 +90,7 @@ class IndependentTruckerController extends Controller
             $query->where('driver_id', $driver->id);
         })
         ->first();
+        $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;
         if ($vehicle) {
             $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
         }
