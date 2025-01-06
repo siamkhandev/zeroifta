@@ -113,7 +113,7 @@ public function checkDriverAssignment(Request $request)
 
 public function checkVehicleAssignment(Request $request)
 {
-    dd($request->all());
+
     $vehicleId = $request->vehicle_id;
     $assignment = DriverVehicle::where('vehicle_id', $vehicleId)->first();
 

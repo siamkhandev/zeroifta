@@ -14,7 +14,7 @@
                 <select id="driver_id" name="driver_id" class="form-control login-input">
                     <option value="">Select</option>
                     @foreach($drivers as $driver)
-                        <option value="{{ $driver->driver->id }}" 
+                        <option value="{{ $driver->driver->id }}"
                             {{ $vehicle->driver_id == $driver->driver->id ? 'selected' : '' }}>
                             {{ $driver->driver->name }}
                         </option>
@@ -28,7 +28,7 @@
                 <select id="vehicle_id" name="vehicle_id" class="form-control login-input">
                     <option value="">Select</option>
                     @foreach($vehicles as $vehicle1)
-                        <option value="{{ $vehicle1->id }}" 
+                        <option value="{{ $vehicle1->id }}"
                             {{ $vehicle->vehicle_id == $vehicle1->id ? 'selected' : '' }}>
                             {{ $vehicle1->license_plate_number }} - {{ $vehicle1->make }}
                         </option>
@@ -49,7 +49,7 @@
         <div class="modal-content">
             <div class="modal-header" style="justify-content: left !important;">
                 <h5 class="modal-title">{{__('messages.Reassign Vehicle')}}</h5>
-               
+
             </div>
             <div class="modal-body">
                 <p id="modalMessage"></p>
@@ -72,14 +72,13 @@ $(document).ready(function () {
         e.preventDefault();
         let newDriver = $('#driver_id').val();
         let newVehicle = $('#vehicle_id').val();
-
-        // Check if the driver or vehicle has changed
-        if (newDriver !== originalDriver) {
-            // Check if the selected driver already has a vehicle
-            checkDriverAssignment(newDriver);
-        } else if (newVehicle !== originalVehicle) {
+        if (newVehicle !== originalVehicle) {
             // Check if the selected vehicle is already assigned
             checkVehicleAssignment(newVehicle);
+        // Check if the driver or vehicle has changed
+        }else if (newDriver !== originalDriver) {
+            // Check if the selected driver already has a vehicle
+            checkDriverAssignment(newDriver);
         } else {
             // No changes, submit the form
             $('#editVehicleForm').submit();
