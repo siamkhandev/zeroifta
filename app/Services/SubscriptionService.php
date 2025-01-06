@@ -136,6 +136,7 @@ class SubscriptionService
                     ]
                 ];
                 $plan->is_recommended=0;
+                $plan->price='$'.$plan->price.' Monthly';
             }elseif ($plan->slug == 'premium_monthly') {
                 $plan->description = [
                     [
@@ -173,6 +174,7 @@ class SubscriptionService
                 ];
                 
                 $plan->is_recommended=1;
+                $plan->price='$'.$plan->price.' Monthly';
             }elseif ($plan->slug == 'premium_plus_monthly') {
                 $plan->description = [
                     [
@@ -208,7 +210,7 @@ class SubscriptionService
                         "description" => "Maintain accurate fleet information with automatic updates, helping you keep track of crucial data effortlessly."
                     ]
                 ];
-                
+                $plan->price='$'.$plan->price.' Monthly';
                 $plan->is_recommended=0;
             } elseif ($plan->slug == 'basic_yearly') {
                 $plan->description = [
@@ -237,6 +239,7 @@ class SubscriptionService
                         "description" => "Fuel tank capacity customization is not supported in this plan."
                     ]
                 ];
+                $plan->price='$'.$plan->price.' Year';
                 $plan->is_recommended=0;
             }elseif ($plan->slug == 'premium_yearly') {
                 $plan->description = [
@@ -273,7 +276,7 @@ class SubscriptionService
                         "description" => "Optimize routes with predictive fuel pricing, weather, traffic behavior, and vehicle performance data."
                     ]
                 ];
-                
+                $plan->price='$'.$plan->price.' Year';
                 $plan->is_recommended=1;
             }elseif ($plan->slug == 'premium_plus_yearly') {
                 $plan->description = [
@@ -314,6 +317,7 @@ class SubscriptionService
                         "description" => "Secure the full suite of Premium+ features for a whole year and save over 15% compared to the monthly plan. Enjoy seamless integration, powerful analytics, and advanced tools designed to maximize your fleet's efficiency and keep your business running smoothly."
                     ]
                 ];
+                $plan->price='$'.$plan->price.' Year';
                 $plan->is_recommended=0;
             }
     
