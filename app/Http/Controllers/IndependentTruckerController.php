@@ -95,6 +95,8 @@ class IndependentTruckerController extends Controller
         $driverFind->vehicle = $vehicle;
         $checkSubscription = Payment::where('company_id',$driver->id)->where('status','active')->first();
         $driverFind->subscription = $checkSubscription;
+        $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+        $driverFind->rsa_key = $rsaKey;
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',
