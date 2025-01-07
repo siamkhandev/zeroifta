@@ -21,71 +21,125 @@ class SubscriptionController extends Controller
      * Subscribe to a plan.
      */
     public function subscribe(Request $request)
-{
-    $request->validate([
-        'user_id' => 'required|exists:users,id',
-        'plan_id' => 'required|string', // Price ID (not the plan amount)
-    ]);
-
-    try {
-        // Set Stripe secret key
-        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        // Get the user from the database
-        $user = User::find($request->user_id);
-
-        // Check if the user has a Stripe customer ID
-        if (!$user->stripe_customer_id) {
-            // If no Stripe customer exists, create a new customer in Stripe
-            $stripeCustomer = \Stripe\Customer::create([
-                'email' => $user->email,
-                'name' => $user->name,
-                // Optionally add more customer details like address, phone, etc.
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'plan_id' => 'required|string', // Price ID (not the plan amount)
+            'payment_method_id' => 'nullable|string', // Optional payment method ID
+        ]);
+    
+        try {
+            // Set Stripe secret key
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+            // Get the user from the database
+            $user = User::find($request->user_id);
+    
+            // Check if the user has a Stripe customer ID
+            if (!$user->stripe_customer_id) {
+                // Create a new customer in Stripe if none exists
+                $stripeCustomer = \Stripe\Customer::create([
+                    'email' => $user->email,
+                    'name' => $user->name,
+                ]);
+    
+                $user->stripe_customer_id = $stripeCustomer->id;
+                $user->save();
+            }
+    
+            // Get the Stripe Price ID from the Plan model
+            $priceId = Plan::find($request->plan_id)->stripe_plan_id;
+    
+            // Check if the user already has an active subscription
+            $currentSubscription = \Stripe\Subscription::all([
+                'customer' => $user->stripe_customer_id,
+                'status' => 'active',
             ]);
-
-            // Save the Stripe customer ID in your database
-            $user->stripe_customer_id = $stripeCustomer->id;
-            $user->save();
+    
+            if ($currentSubscription->data) {
+                // User has an active subscription, update it
+                $subscriptionId = $currentSubscription->data[0]->id;
+    
+                if ($request->has('payment_method_id')) {
+                    // Attach the new payment method to the customer
+                    \Stripe\PaymentMethod::attach(
+                        $request->payment_method_id,
+                        ['customer' => $user->stripe_customer_id]
+                    );
+    
+                    // Set the new payment method as default
+                    \Stripe\Customer::update(
+                        $user->stripe_customer_id,
+                        ['invoice_settings' => ['default_payment_method' => $request->payment_method_id]]
+                    );
+                }
+    
+                // Update the subscription
+                $updatedSubscription = \Stripe\Subscription::update($subscriptionId, [
+                    'items' => [
+                        ['id' => $currentSubscription->data[0]->items->data[0]->id, 'price' => $priceId],
+                    ],
+                ]);
+    
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Subscription updated successfully',
+                    'data' => $updatedSubscription,
+                ]);
+            } else {
+                // No active subscription, create a new one
+                $subscriptionData = [
+                    'customer' => $user->stripe_customer_id,
+                    'items' => [
+                        ['price' => $priceId],
+                    ],
+                    'expand' => ['latest_invoice.payment_intent'],
+                ];
+    
+                if ($request->has('payment_method_id')) {
+                    // Attach the new payment method to the customer
+                    \Stripe\PaymentMethod::attach(
+                        $request->payment_method_id,
+                        ['customer' => $user->stripe_customer_id]
+                    );
+    
+                    // Set the new payment method as default
+                    \Stripe\Customer::update(
+                        $user->stripe_customer_id,
+                        ['invoice_settings' => ['default_payment_method' => $request->payment_method_id]]
+                    );
+                }
+    
+                // Create the subscription
+                $newSubscription = \Stripe\Subscription::create($subscriptionData);
+    
+                // Save subscription in the database
+                $subscriptionModel = new Subscription();
+                $subscriptionModel->user_id = $user->id;
+                $subscriptionModel->stripe_customer_id = $user->stripe_customer_id;
+                $subscriptionModel->stripe_subscription_id = $newSubscription->id;
+                $subscriptionModel->plan_id = $request->plan_id;
+                $subscriptionModel->status = 'active';
+                $subscriptionModel->save();
+    
+                $user->is_subscribed = true;
+                $user->save();
+    
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Subscription created successfully',
+                    'data' => $newSubscription,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage(),
+                'data' => (object)[],
+            ], 500);
         }
-
-        // Ensure you are passing a valid price_id, not a direct price
-        $priceId = Plan::find($request->plan_id); // Plan ID should be a valid Stripe Price ID (not the price amount)
-
-        // Create the subscription
-        $subscription = \Stripe\Subscription::create([
-            'customer' => $user->stripe_customer_id,
-            'items' => [
-                ['price' => $priceId->stripe_plan_id], // Pass the Stripe Price ID here
-            ],
-            'expand' => ['latest_invoice.payment_intent'], // Expand payment intent details
-        ]);
-
-        // Assuming you have a Subscription model to store the subscription info in your database
-        $subscriptionModel = new Subscription();  // Replace with your actual Subscription model
-        $subscriptionModel->user_id = $user->id;  // Associate with the user
-        $subscriptionModel->stripe_customer_id = $user->stripe_customer_id;
-        $subscriptionModel->stripe_subscription_id = $subscription->id;
-        $subscriptionModel->plan_id = $request->plan_id;  // Store the Price ID in your database
-        $subscriptionModel->status = 'active';  // You can set the status based on the subscription details
-        $subscriptionModel->save();
-
-        // Update the user's subscription status
-        $user->is_subscribed = true;
-        $user->save();
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Subscription created successfully',
-            'data' => $subscription,
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 500,
-            'message' =>$e->getMessage(),
-            'data' =>(object)[] 
-        ], 500);
     }
-}
+    
 
 
     /**
