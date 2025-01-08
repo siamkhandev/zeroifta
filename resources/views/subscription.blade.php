@@ -81,7 +81,6 @@
                     @else
                     <img src="{{asset('assets/img/user-img.png')}}" alt="ZeroIfta Image" onclick="toggleDropdown()" />
                     @endif
-                    <!-- <img src="user_image_url.jpg" onclick="toggleDropdown()" class="dropbtn" alt="User"> -->
                     <div id="myDropdown" class="dropdown-content">
 
                       <div class="hdd-inn">
@@ -143,7 +142,7 @@
                   <div id="monthly_plans" class="monthly_plans">
                     <div class="row">
                       <!-- Plan 1 -->
-                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
+                      <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12 mb-4">
                         <div class="price_plans sbsp-com weekly-plan">
                           <div class="ph-area">
                             <h3>Free Trial</h3>
@@ -199,7 +198,7 @@
                         </div>
                       </div>
                       <!-- Plan 2 -->
-                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
+                      <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12 mb-4">
                         <div class="price_plans sbsp-com weekly-plan">
                           <div class="ph-area">
                             <h3>Basic Plan</h3>
@@ -294,7 +293,7 @@
                         </div>
                       </div>
                       <!-- Plan 3 -->
-                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
+                      <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12 mb-4">
                         <div class="price_pm sbsp-com montly-plan top-plan">
                           <div class="pop-div">
                             <span>Recommended</span>
@@ -457,7 +456,7 @@
                         </div>
                       </div>
                       <!-- Plan 4 -->
-                      <div class="col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
+                      <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12 mb-4">
                         <div class="price_plans sbsp-com weekly-plan">
                           <div class="ph-area">
                             <h3>Premium+ Subscription </h3>
@@ -586,7 +585,7 @@
                           <div class="ph-area">
                             <h3>Basic Plan</h3>
                             <p> $595 - Year</p>
-                            <span class="pt-1 usp-para">Equivalent to $51.25 per month (10% discount)</span>
+                            <span class="pt-1 usp-para">Equivalent to $49.58 per month (9.85% discount)</span>
                           </div>
                           <div class="sbp-section">
                             <div>
@@ -684,7 +683,7 @@
                           <div class="ph-area">
                             <h3>Premium Plan</h3>
                             <p> $730 - Year</p>
-                            <span class="pt-1 usp-para">Equivalent to $60.83 per month (around 9% discount)</span>
+                            <span class="pt-1 usp-para">Equivalent to $60.83 per month (9.21% discount)</span>
                           </div>
                           <div class="sbp-section">
                             <!-- Sec 1 -->
@@ -845,6 +844,7 @@
                           <div class="ph-area">
                             <h3>Premium+ Subscription </h3>
                             <p> $995 - Year</p>
+                            <span class="pt-1 usp-para">Equivalent to $82.91 per month (14.53% discount)</span>
                           </div>
                           <div class="sbp-section">
                             <div>
@@ -982,16 +982,15 @@
 <script src="{{asset('assets/js/script.js')}}"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
-
-    $("#plansSwitchCheckbox").on('change', function() {
-        if($(this).prop('checked')){
-            $("#yearly_plans").show();
-            $("#monthly_plans").hide();
-        }else{
-            $("#yearly_plans").hide();
-            $("#monthly_plans").show();
-        }
-    });
+  $("#plansSwitchCheckbox").on('change', function() {
+    if ($(this).prop('checked')) {
+      $("#yearly_plans").show();
+      $("#monthly_plans").hide();
+    } else {
+      $("#yearly_plans").hide();
+      $("#monthly_plans").show();
+    }
+  });
 </script>
 
 
