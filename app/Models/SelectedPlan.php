@@ -11,14 +11,14 @@ class SelectedPlan extends Model
     protected $guarded =[];
     public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
     public function plan()
     {
-        return $this->hasMany(Plan::class);
+        return $this->belongsTo(Plan::class);
     }
     public function paymentMethod()
     {
-        return $this->hasMany(PaymentMethod::class);
+        return $this->belongsTo(PaymentMethod::class);
     }
 }
