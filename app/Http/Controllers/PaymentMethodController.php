@@ -111,7 +111,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
        
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
-        dd( $cardDetails);
+        
         try {
             // Set Stripe secret key
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -131,12 +131,19 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 // Retrieve existing Stripe customer
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
-        
+            $token = Token::create([
+                'card' => [
+                    'number'    => $cardDetails['number'],
+                    'exp_month' => $cardDetails['exp_month'],
+                    'exp_year'  => $cardDetails['exp_year'],
+                    'cvc'       =>$cardDetails['cvc'],
+                ],
+            ]);
             // Create a PaymentMethod from the token
             $paymentMethod = \Stripe\PaymentMethod::create([
                 'type' => 'card',
                 'card' => [
-                    'token' =>  $token['token'], // Use the `tok_` received from the Android app
+                    'token' =>  $token->id, // Use the `tok_` received from the Android app
                 ],
             ]);
         
