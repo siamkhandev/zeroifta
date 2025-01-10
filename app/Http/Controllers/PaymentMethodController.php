@@ -141,6 +141,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'exp_month' =>(int)$getMonth[0],
                 'exp_year' => (int)$getMonth[1],
                 'cvc' =>$cardDetails['cvc'],
+                'name' => $cardDetails['cardHolderName'],
               ],
             ]);
            //dd($token->id);
