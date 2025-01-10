@@ -7,6 +7,8 @@ use App\Models\Subscription;
 use App\Models\User;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\Token;
 
 class SubscriptionController extends Controller
 {
@@ -225,5 +227,47 @@ class SubscriptionController extends Controller
             'message' => 'Subscription details retrieved successfully',
             'data' => $subscription,
         ]);
+    }
+    public function generateToken(Request $request)
+    {
+        // Validate the card details
+        $request->validate([
+            'number'    => 'required|digits_between:13,19',
+            'exp_month' => 'required|integer|between:1,12',
+            'exp_year'  => 'required|integer|min:' . date('Y'),
+            'cvc'       => 'required|digits_between:3,4',
+        ]);
+
+        try {
+            // Set Stripe API key
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            // Create a token
+            $token = Token::create([
+                'card' => [
+                    'number'    => $request->number,
+                    'exp_month' => $request->exp_month,
+                    'exp_year'  => $request->exp_year,
+                    'cvc'       => $request->cvc,
+                ],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'token'   => $token->id,
+            ], 200);
+        } catch (\Stripe\Exception\CardException $e) {
+            // Handle specific card errors
+            return response()->json([
+                'success' => false,
+                'message' => $e->getError()->message,
+            ], 400);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

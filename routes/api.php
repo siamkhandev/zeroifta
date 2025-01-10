@@ -93,6 +93,7 @@ Route::middleware('auth:api')->group( function () {
 
 ///
 Route::post('register',[IndependentTruckerController::class,'store']);
+Route::post('generatetoken',SubscriptionController::class,'generateToken');
 
 
 
