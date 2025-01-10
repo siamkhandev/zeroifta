@@ -241,7 +241,7 @@ class SubscriptionController extends Controller
 
         try {
             // Set Stripe API key
-            Stripe::setApiKey('pk_test_AvPEuYEvHgZr9uN2f8KxzfGn00wLRXCSAb');
+            Stripe::setApiKey(env('STRIPE_SECRET'));
 
             // Create a token
             $token = Token::create([

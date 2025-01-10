@@ -67,14 +67,14 @@ class PaymentMethodController extends Controller
     }
 
     public function addPaymentMethod(Request $request)
-{
-    $validated = $request->validate([
-        'encrypted_details' => 'required|string', // Encrypted card details
-        'method_name' => 'required|string', // Name for the payment method
-        'user_id' => 'required|exists:users,id', // Ensure user exists
-    ]);
-   
-    $privateKey = '-----BEGIN RSA PRIVATE KEY-----
+    {
+        
+        $validated = $request->validate([
+            'encrypted_details' => 'required|string', // Stripe payment method token
+            'method_name' => 'required|string', // Name for the payment method
+            'user_id'=>'required'
+        ]);
+        $privateKey = '-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEApJsv/AC05XsMNA0kt4P2C+pKV6FVqk6INlPKBEdyq9AO1/ku
 zkVq+EcbCM2m2vmOn68iFTmsrebkP5aUV9gd2Pvj9nzegvN3sN0qaBQxkCyP52Kl
 875tB5eT8KRnUZ/2ZVjHdSqoFr6O53F8bcDVzHoB5SPA9fv53d9y3OMm4uCLv1Xe
@@ -102,68 +102,77 @@ cf8B1OsNs6eYrx/8ebrnfrjjwpw2G64jaj62q1O7Qhh3GsjTOuuATvQum06k7EYG
 CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 -----END RSA PRIVATE KEY-----';
 
-    $decryptedData = '';
-    openssl_private_decrypt(base64_decode($validated['encrypted_details']), $decryptedData, $privateKey);
+        $decryptedData = '';
+        openssl_private_decrypt(base64_decode($validated['encrypted_details']), $decryptedData, $privateKey);
 
-    if (!$decryptedData) {
-        return response()->json(['status' => 400, 'message' => 'Failed to decrypt card details', 'data' => (object)[]], 400);
-    }
-
-    $cardDetails = json_decode($decryptedData, true);
-   
-    try {
-        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        $user = User::find($validated['user_id']);
-        if (!$user->stripe_customer_id) {
-            $customer = \Stripe\Customer::create([
-                'email' => $user->email,
-                'name' => $user->name,
-            ]);
-            $user->update(['stripe_customer_id' => $customer->id]);
-        } else {
-            $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
+        if (!$decryptedData) {
+            return response()->json(['status' => 400, 'message' => 'Failed to decrypt token', 'data' => (object)[]], 400);
         }
-
-        $paymentMethod = \Stripe\PaymentMethod::create([
-            'type' => 'card',
-            'card' => [
-                'number' => $cardDetails['number'],
-                'exp_month' => $cardDetails['exp_month'],
-                'exp_year' => $cardDetails['exp_year'],
-                'cvc' => $cardDetails['cvc'],
-            ],
-        ]);
-
-        $paymentMethod->attach(['customer' => $customer->id]);
-
-        \Stripe\Customer::update($customer->id, [
-            'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
-        ]);
-
-        $storedPaymentMethod = PaymentMethod::create([
-            'user_id' => $user->id,
-            'method_name' => $validated['method_name'],
-            'card_number' => substr($paymentMethod->card->last4, -4),
-            'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year,
-            'stripe_payment_method_id' => $paymentMethod->id,
-            'is_default' => true,
-        ]);
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Payment method added successfully',
-            'data' => $storedPaymentMethod,
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 500,
-            'message' => 'Failed to add payment method',
-            'error' => $e->getMessage(),
-        ], 500);
+       
+        // Parse decrypted data
+        $cardDetails = json_decode($decryptedData, true);
+        dd( $cardDetails);
+        try {
+            // Set Stripe secret key
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        
+            // Retrieve or create a Stripe customer for the authenticated user
+            $user = User::find($request->user_id);
+            if (!$user->stripe_customer_id) {
+                // Create a new customer on Stripe
+                $customer = \Stripe\Customer::create([
+                    'email' => $user->email,
+                    'name' => $user->name,
+                ]);
+        
+                // Save the customer ID to the user
+                $user->update(['stripe_customer_id' => $customer->id]);
+            } else {
+                // Retrieve existing Stripe customer
+                $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
+            }
+        
+            // Create a PaymentMethod from the token
+            $paymentMethod = \Stripe\PaymentMethod::create([
+                'type' => 'card',
+                'card' => [
+                    'token' =>  $token['token'], // Use the `tok_` received from the Android app
+                ],
+            ]);
+        
+            // Attach the payment method to the Stripe customer
+            $paymentMethod->attach(['customer' => $customer->id]);
+        
+            // Update default payment method for the customer
+            \Stripe\Customer::update($customer->id, [
+                'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
+            ]);
+        
+            // Store payment method details in the database
+            $storedPaymentMethod = PaymentMethod::create([
+                'user_id' => $user->id,
+                'method_name' => $validated['method_name'],
+                'card_number' => substr($paymentMethod->card->last4, -4), // Store last 4 digits
+                'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year, // Expiry date
+                'stripe_payment_method_id' => $paymentMethod->id, // Stripe payment method ID
+                'is_default' => true, // Mark as default
+            ]);
+        
+            return response()->json([
+                'status' => 200,
+                'message' => 'Payment method added successfully',
+                'data' => $storedPaymentMethod,
+            ]);
+        } catch (\Exception $e) {
+            // Handle errors
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to add payment method',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+        
     }
-}
-
     
     public function getPaymentMethod($id)
     {
