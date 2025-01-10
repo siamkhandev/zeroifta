@@ -103,6 +103,7 @@ class IndependentTruckerController extends Controller
         $driverFind->token = null;
         $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
         $driver->defaultCard = $findCard;
+        
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',
