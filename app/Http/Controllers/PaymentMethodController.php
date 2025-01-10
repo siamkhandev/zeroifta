@@ -115,7 +115,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         
         //try {
             // Set Stripe secret key
-            //Stripe::setApiKey(env('STRIPE_SECRET'));
+            Stripe::setApiKey(env('STRIPE_SECRET'));
         
             // Retrieve or create a Stripe customer for the authenticated user
             $user = User::find($request->user_id);
