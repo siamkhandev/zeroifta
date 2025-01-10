@@ -141,7 +141,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'cvc' =>$cardDetails['cvc'],
               ],
             ]);
-           
+           dd($token->id);
             // Create a PaymentMethod from the token
             $paymentMethod = \Stripe\PaymentMethod::create([
                 'type' => 'card',
