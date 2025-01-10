@@ -113,7 +113,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         $cardDetails = json_decode($decryptedData, true);
         
         
-        //try {
+        try {
             // Set Stripe secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
         
@@ -133,11 +133,12 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
             $stripe = new \Stripe\StripeClient('pk_test_AvPEuYEvHgZr9uN2f8KxzfGn00wLRXCSAb');
+            $getMonth = explode($cardDetails['expiry'],'/');
            $token =  $stripe->tokens->create([
               'card' => [
-                'number' => $cardDetails['number'],
-                'exp_month' =>(int)$cardDetails['exp_month'],
-                'exp_year' => (int)$cardDetails['exp_year'],
+                'number' => $cardDetails['cardNumber'],
+                'exp_month' =>(int)$getMonth[0],
+                'exp_year' => (int)$getMonth[1],
                 'cvc' =>$cardDetails['cvc'],
               ],
             ]);
@@ -173,14 +174,14 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'message' => 'Payment method added successfully',
                 'data' => $storedPaymentMethod,
             ]);
-        // } catch (\Exception $e) {
-        //     // Handle errors
-        //     return response()->json([
-        //         'status' => 500,
-        //         'message' => 'Failed to add payment method',
-        //         'error' => $e->getMessage(),
-        //     ], 500);
-        // }
+        } catch (\Exception $e) {
+            // Handle errors
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage(),
+                'data' => (object)[],
+            ], 500);
+        }
         
     }
     
