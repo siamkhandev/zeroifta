@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ResetPasswordMail;
 use App\Models\DriverVehicle;
 use App\Models\Payment;
+use App\Models\PaymentMethod;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -66,6 +67,8 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             $user->subscription = $checkSubscription;
+            $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
+            $user->defaultCard = $findCard;
             return response()->json(['status'=>200,'message'=>'Logged in successfully','data' => $user], 200);
         } else {
             return response()->json(['status'=>401,'message'=>'Invalid Credentials','data' => (object)[]], 401);
@@ -112,6 +115,8 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             $user->subscription = $checkSubscription;
+            $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
+            $user->defaultCard = $findCard;
             return response()->json(['status'=>200,'message'=>'profile fetched successfully','data'=>$user]);
         }else{
             return response()->json(['status'=>404,'message'=>'No user found','data'=>(object)[]]);

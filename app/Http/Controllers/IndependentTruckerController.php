@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\Payment;
+use App\Models\PaymentMethod;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -100,6 +101,8 @@ class IndependentTruckerController extends Controller
         $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
         $driverFind->rsa_key = $rsaKey;
         $driverFind->token = null;
+        $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
+        $driver->defaultCard = $findCard;
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',
