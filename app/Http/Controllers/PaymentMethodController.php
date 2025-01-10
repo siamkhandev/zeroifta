@@ -114,8 +114,8 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         $token = Token::create([
             'card' => [
                 'number'    => $cardDetails['number'],
-                'exp_month' => $cardDetails['exp_month'],
-                'exp_year'  => $cardDetails['exp_year'],
+                'exp_month' => (int)$cardDetails['exp_month'],
+                'exp_year'  => (int)$cardDetails['exp_year'],
                 'cvc'       =>$cardDetails['cvc'],
             ],
         ]);

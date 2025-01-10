@@ -238,7 +238,7 @@ class SubscriptionController extends Controller
             'exp_year'  => 'required|integer|min:' . date('Y'),
             'cvc'       => 'required|digits_between:3,4',
         ]);
-
+dd($request->all());
         try {
             // Set Stripe API key
             Stripe::setApiKey(env('STRIPE_SECRET'));
