@@ -112,7 +112,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
         
-        dd($cardDetails);
+      
         try {
             // Set Stripe secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -134,6 +134,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             }
             $stripe = new \Stripe\StripeClient('pk_test_AvPEuYEvHgZr9uN2f8KxzfGn00wLRXCSAb');
             $getMonth = explode($cardDetails['expiry'],'/');
+            dd($getMonth);
            $token =  $stripe->tokens->create([
               'card' => [
                 'number' => $cardDetails['cardNumber'],
