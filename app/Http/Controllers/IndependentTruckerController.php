@@ -102,8 +102,8 @@ class IndependentTruckerController extends Controller
         $driverFind->rsa_key = $rsaKey;
         $driverFind->token = null;
         $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
-        $driver->defaultCard = $findCard;
-        
+        $driverFind->defaultCard = $findCard;
+
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',
