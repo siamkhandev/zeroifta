@@ -111,6 +111,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
        
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
+        Stripe::setApiKey(env('STRIPE_SECRET'));
         $token = Token::create([
             'card' => [
                 'number'    => $cardDetails['number'],
