@@ -98,6 +98,6 @@ Route::post('generatetoken',[SubscriptionController::class,'generateToken']);
 
 
 // Get available subscription plans
-Route::get('/subscription/plans', [SubscriptionController::class, 'getPlans']);
+Route::post('/subscription/plans', [SubscriptionController::class, 'getPlans']);
 
 

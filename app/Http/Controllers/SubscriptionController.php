@@ -130,9 +130,9 @@ class SubscriptionController extends Controller
     /**
      * Get available subscription plans.
      */
-    public function getPlans()
+    public function getPlans(Request $request)
     {
-        $plans = $this->subscriptionService->getPlans();
+        $plans = $this->subscriptionService->getPlans($request->all());
 
         return response()->json([
             'status' => 200,

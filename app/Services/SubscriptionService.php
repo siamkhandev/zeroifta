@@ -93,9 +93,9 @@ class SubscriptionService
     /**
      * Get available subscription plans.
      */
-    public function getPlans()
+    public function getPlans($data)
     {
-        $plans = Plan::orderByRaw("CASE 
+        $plans = Plan::where('billing_period',$data->period)->orderByRaw("CASE 
             WHEN slug = 'free' THEN 1
             WHEN billing_period = 'monthly' THEN 2
             WHEN billing_period = 'yearly' THEN 3
