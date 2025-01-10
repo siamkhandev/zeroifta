@@ -165,6 +165,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             $storedPaymentMethod = PaymentMethod::create([
                 'user_id' => $user->id,
                 'method_name' => $validated['method_name'],
+                'card_holder_name'=>$cardDetails['cardHolderName'],
                 'card_number' => substr($paymentMethod->card->last4, -4), // Store last 4 digits
                 'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year, // Expiry date
                 'stripe_payment_method_id' => $paymentMethod->id, // Stripe payment method ID
