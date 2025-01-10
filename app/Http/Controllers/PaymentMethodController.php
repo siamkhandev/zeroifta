@@ -108,11 +108,11 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         if (!$decryptedData) {
             return response()->json(['status' => 400, 'message' => 'Failed to decrypt token', 'data' => (object)[]], 400);
         }
-       
+        dd($decryptedData);
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
         
-        dd($cardDetails);
+       
         try {
             // Set Stripe secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
