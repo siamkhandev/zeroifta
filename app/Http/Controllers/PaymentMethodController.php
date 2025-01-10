@@ -110,7 +110,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
     }
 
     $cardDetails = json_decode($decryptedData, true);
-    dd($cardDetails);
+   
     try {
         \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
 
