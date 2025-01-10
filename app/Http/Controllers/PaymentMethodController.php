@@ -132,13 +132,14 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 // Retrieve existing Stripe customer
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
-            $token = Token::create([
-                'card' => [
-                    'number'    => '4242424242424242',
-                    'exp_month' => 12,
-                    'exp_year'  => 2025,
-                    'cvc'       =>'123',
-                ],
+            $stripe = new \Stripe\StripeClient('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+           $token =  $stripe->tokens->create([
+              'card' => [
+                'number' => $cardDetails['number'],
+                'exp_month' =>$cardDetails['exp_month'],
+                'exp_year' => $cardDetails['exp_year'],
+                'cvc' =>$cardDetails['cvc'],
+              ],
             ]);
             dd($token);
             // Create a PaymentMethod from the token
