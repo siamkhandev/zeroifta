@@ -230,7 +230,7 @@ class SubscriptionController extends Controller
     }
     public function generateToken(Request $request)
     {
-        dd($request->all());
+     
         // Validate the card details
         $request->validate([
             'number'    => 'required|digits_between:13,19',
@@ -252,7 +252,7 @@ class SubscriptionController extends Controller
                     'cvc'       => $request->cvc,
                 ],
             ]);
-
+            dd($token);
             return response()->json([
                 'success' => true,
                 'token'   => $token->id,
