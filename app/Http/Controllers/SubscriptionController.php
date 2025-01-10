@@ -278,13 +278,14 @@ class SubscriptionController extends Controller
     {
         $checkCard = PaymentMethod::where('user_id',$request->user_id)->where('is_default',1)->first();
         $findCard = PaymentMethod::where('stripe_payment_method_id',$request->payment_method_id)->first();
-        SelectedPlan::create([
+       $plan =  SelectedPlan::create([
             'user_id'=>$request->user_id,
             'plan_id'=>$request->plan_id,
             'payment_method_id'=>$request->payment_method_id ? $findCard->id : $checkCard->id,
         ]);
         $user = User::find($request->user_id);
         $user->update(['is_confirmation_available'=>1]);
+        return response()->json(['status'=>200,'message'=>'selected plan stored successfully','data'=>$plan]);
     }
     public function getSelectedPlan(Request $request)
     {
