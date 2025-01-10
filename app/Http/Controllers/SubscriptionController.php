@@ -252,7 +252,7 @@ class SubscriptionController extends Controller
                     'cvc'       => $request->cvc,
                 ],
             ]);
-            dd($token);
+           
             return response()->json([
                 'success' => true,
                 'token'   => $token->id,
