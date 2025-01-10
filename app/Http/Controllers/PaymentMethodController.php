@@ -112,7 +112,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
     $cardDetails = json_decode($decryptedData, true);
    
     try {
-        \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $user = User::find($validated['user_id']);
         if (!$user->stripe_customer_id) {
