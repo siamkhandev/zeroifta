@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentMethod;
 use App\Models\Plan;
+use App\Models\SelectedPlan;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Services\SubscriptionService;
@@ -107,8 +109,9 @@ class SubscriptionController extends Controller
             $subscriptionModel->save();
 
             $user->is_subscribed = true;
+            $user->is_confirmation_available = 0;
             $user->save();
-
+            SelectedPlan::where('user_id',$user->id)->delete();
             return response()->json([
                 'status' => 200,
                 'message' => 'Subscription created successfully',
@@ -254,7 +257,7 @@ class SubscriptionController extends Controller
             ]);
            
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'token'   => $token->id,
             ], 200);
         } catch (\Stripe\Exception\CardException $e) {
@@ -269,6 +272,27 @@ class SubscriptionController extends Controller
                 'success' => false,
                 'message' => $e->getMessage(),
             ], 500);
+        }
+    }
+    public function storeSelectedPlan(Request $request)
+    {
+        $checkCard = PaymentMethod::where('user_id',$request->user_id)->where('is_default',1)->first();
+        $findCard = PaymentMethod::where('stripe_payment_method_id',$request->payment_method_id)->first();
+        SelectedPlan::create([
+            'user_id'=>$request->user_id,
+            'plan_id'=>$request->plan_id,
+            'payment_method_id'=>$request->payment_method_id ? $findCard->id : $checkCard->id,
+        ]);
+        $user = User::find($request->user_id);
+        $user->update(['is_confirmation_available'=>1]);
+    }
+    public function getSelectedPlan(Request $request)
+    {
+        $selectedPlan = SelectedPlan::with(['user','plan','paymentMethod'])->where('user_id',$request->user_id)->first();
+        if($selectedPlan){
+            return response()->json(['status'=>200,'message'=>'selected plan fetched','data'=>$selectedPlan]);
+        }else{
+            return response()->json(['status'=>404,'message'=>'no selected plan available','data'=>(object)[]]);
         }
     }
 }

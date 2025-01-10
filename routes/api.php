@@ -82,6 +82,8 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
 
     /////
+    Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
+    Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
     Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
     // Cancel subscription
     Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
