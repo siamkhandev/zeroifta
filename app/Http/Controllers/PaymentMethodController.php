@@ -134,10 +134,10 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             }
             $token = Token::create([
                 'card' => [
-                    'number'    => $cardDetails['number'],
-                    'exp_month' => (int)$cardDetails['exp_month'],
-                    'exp_year'  => (int)$cardDetails['exp_year'],
-                    'cvc'       =>$cardDetails['cvc'],
+                    'number'    => '4242424242424242',
+                    'exp_month' => 12,
+                    'exp_year'  => 2025,
+                    'cvc'       =>'123',
                 ],
             ]);
             dd($token);
