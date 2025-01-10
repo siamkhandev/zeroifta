@@ -73,7 +73,7 @@ class PaymentMethodController extends Controller
         'method_name' => 'required|string', // Name for the payment method
         'user_id' => 'required|exists:users,id', // Ensure user exists
     ]);
-    dd($validated);
+   
     $privateKey = '-----BEGIN RSA PRIVATE KEY-----
     MIIEowIBAAKCAQEApJsv/AC05XsMNA0kt4P2C+pKV6FVqk6INlPKBEdyq9AO1/ku
     zkVq+EcbCM2m2vmOn68iFTmsrebkP5aUV9gd2Pvj9nzegvN3sN0qaBQxkCyP52Kl
@@ -110,7 +110,7 @@ class PaymentMethodController extends Controller
     }
 
     $cardDetails = json_decode($decryptedData, true);
-
+    dd($cardDetails);
     try {
         \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
 
