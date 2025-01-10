@@ -110,7 +110,7 @@ class PaymentMethodController extends Controller
     }
 
     $cardDetails = json_decode($decryptedData, true);
-
+dd($cardDetails);
     try {
         \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
 
