@@ -95,12 +95,18 @@ class SubscriptionService
      */
     public function getPlans($data)
     {
-        $plans = Plan::where('billing_period',$data['period'])->orderByRaw("CASE 
+        $plans = Plan::where(function ($query) use ($data) {
+            $query->where('billing_period', $data['period'])
+                  ->orWhere('slug', 'free');
+        })
+        ->orderByRaw("CASE 
             WHEN slug = 'free' THEN 1
             WHEN billing_period = 'monthly' THEN 2
             WHEN billing_period = 'yearly' THEN 3
             ELSE 4
-            END")->orderBy('price', 'asc')->get();
+        END")
+        ->orderBy('price', 'asc')
+        ->get();
         $customizedPlans = $plans->map(function ($plan) {
             // Customize the description
             if ($plan->slug == 'free') {
