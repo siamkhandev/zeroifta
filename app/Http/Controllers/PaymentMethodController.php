@@ -111,19 +111,11 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
        
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        $token = Token::create([
-            'card' => [
-                'number'    => $cardDetails['number'],
-                'exp_month' => (int)$cardDetails['exp_month'],
-                'exp_year'  => (int)$cardDetails['exp_year'],
-                'cvc'       =>$cardDetails['cvc'],
-            ],
-        ]);
-        dd($token);
+        
+        
         try {
             // Set Stripe secret key
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+            Stripe::setApiKey(env('STRIPE_SECRET'));
         
             // Retrieve or create a Stripe customer for the authenticated user
             $user = User::find($request->user_id);
@@ -140,7 +132,15 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 // Retrieve existing Stripe customer
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
-           
+            $token = Token::create([
+                'card' => [
+                    'number'    => $cardDetails['number'],
+                    'exp_month' => (int)$cardDetails['exp_month'],
+                    'exp_year'  => (int)$cardDetails['exp_year'],
+                    'cvc'       =>$cardDetails['cvc'],
+                ],
+            ]);
+            dd($token);
             // Create a PaymentMethod from the token
             $paymentMethod = \Stripe\PaymentMethod::create([
                 'type' => 'card',
