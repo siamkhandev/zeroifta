@@ -132,7 +132,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 // Retrieve existing Stripe customer
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
-            $stripe = new \Stripe\StripeClient('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+            $stripe = new \Stripe\StripeClient('sk_test_51FYXgWJOfbRIs4ne6dmGfFbmR1pKgX5V1CQVQHSSlzjCom2KemJylbslX2ylQ2dpbrvmSBGUQSWt6kXETr1ByRR500fTaO7v7k');
            $token =  $stripe->tokens->create([
               'card' => [
                 'number' => $cardDetails['number'],
