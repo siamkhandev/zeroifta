@@ -169,6 +169,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'card_number' => substr($paymentMethod->card->last4, -4), // Store last 4 digits
                 'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year, // Expiry date
                 'stripe_payment_method_id' => $paymentMethod->id, // Stripe payment method ID
+                'card_type' => $paymentMethod->card->brand ?? null,
                 'is_default' => true, // Mark as default
             ]);
         
