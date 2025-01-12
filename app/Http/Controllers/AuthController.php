@@ -113,6 +113,7 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
+            $user->token=null;
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             $user->subscription = $checkSubscription;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
