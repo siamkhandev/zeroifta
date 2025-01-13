@@ -11,6 +11,7 @@ use App\Models\Trip;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Stripe\Customer;
@@ -116,7 +117,7 @@ class DriverDashboardController extends Controller
                 'plan_name' => $planName,
                 'amount' => $amount,
                 'currency' => $currency,
-                'next_billing_date' => $nextBillingDate
+                'next_billing_date' =>Carbon::createFromTimestamp($nextBillingDate)->toDateTimeString(),
             ];
            }else{
             $subscriptionDetail = [];
