@@ -101,7 +101,7 @@ class DriverDashboardController extends Controller
 
             
 
-           if(!empty($subscriptions)){
+           if(!empty($subscriptions->data)){
                 $subscription = $subscriptions->data[0];
 
             // Extract next billing details
