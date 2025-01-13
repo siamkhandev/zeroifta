@@ -101,7 +101,7 @@ class DriverDashboardController extends Controller
 
             
 
-            // Get the first active subscription
+           if($subscriptions){
             $subscription = $subscriptions->data[0];
 
             // Extract next billing details
@@ -115,6 +115,10 @@ class DriverDashboardController extends Controller
                 'currency' => $currency,
                 'next_billing_date' => $nextBillingDate
             ];
+           }else{
+            $subscriptionDetail = [];
+           }
+           
 
              $dashboardData['subscription'] = $subscriptionDetail;
              $dashboardData['recentTrips'] = $tripData;
