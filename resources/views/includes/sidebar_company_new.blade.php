@@ -51,6 +51,11 @@
             <span class="head-14Nor">{{__('messages.Profile Management')}}</span>
           </a>
         </li>
+        @php 
+          $checkSubcription = \DB::table('subscription')->where('user_id', Auth::id)->first();
+          $checkPlan = \DB::table('plan')->where('id', $checkSubcription->plan_id)->first();
+        @endphp
+        @if($checkPlan->slug !=='basic_monthly' || $checkPlan->slug !=='basic_yearly')
         <li>
           <a href="{{route('fleet')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/fleet') ? 'menu_active' : '' }}">
             <span class="fill-svg">
@@ -63,6 +68,7 @@
             <span class="head-14Nor">{{__('messages.Fleet View')}}</span>
           </a>
         </li>
+        @endif
         <li>
           <a href="{{route('drivers.all')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/drivers*') ? 'menu_active' : '' }}">
             <span class="fill-svg">
