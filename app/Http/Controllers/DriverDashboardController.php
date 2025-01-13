@@ -6,6 +6,7 @@ use App\Models\CompanyContactUs;
 use App\Models\CompanyDriver;
 use App\Models\Contactus;
 use App\Models\DriverVehicle;
+use App\Models\Plan;
 use App\Models\Trip;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -102,11 +103,12 @@ class DriverDashboardController extends Controller
             
 
            if(!empty($subscriptions->data)){
+            $findPlan = Plan::where('id',$subscriptions->data[0]->items->data[0]->plan->id)->first();
                 $subscription = $subscriptions->data[0];
-                dd($subscription->items->data[0]->plan);
+              
             // Extract next billing details
             $nextBillingDate = $subscription->current_period_end;
-            $planName = $subscription->items->data[0]->plan->nickname;
+            $planName = $findPlan->name;
             $amount = $subscription->items->data[0]->plan->amount / 100; // Convert to dollars (if in cents)
             $currency = strtoupper($subscription->items->data[0]->plan->currency);
             $subscriptionDetail = [
