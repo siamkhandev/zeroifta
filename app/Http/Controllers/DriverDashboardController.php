@@ -98,11 +98,11 @@ class DriverDashboardController extends Controller
                 'status' => 'active',
                 'limit' => 1,
             ]);
-
+dd($subscriptions);
             
 
            if($subscriptions){
-            $subscription = $subscriptions->data[0];
+                $subscription = $subscriptions->data[0];
 
             // Extract next billing details
             $nextBillingDate = $subscription->current_period_end;
