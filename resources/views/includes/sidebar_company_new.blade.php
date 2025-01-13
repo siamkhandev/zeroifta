@@ -54,6 +54,7 @@
         @php 
           $checkSubcription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
           $checkPlan = \DB::table('plans')->where('id', $checkSubcription->plan_id)->first();
+          dd($checkPlan);
         @endphp
         @if($checkPlan->slug !=='basic_monthly' || $checkPlan->slug !=='basic_yearly')
         <li>
