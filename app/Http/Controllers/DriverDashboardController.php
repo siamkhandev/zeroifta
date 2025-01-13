@@ -108,7 +108,7 @@ class DriverDashboardController extends Controller
               
             // Extract next billing details
             $nextBillingDate = $subscription->current_period_end;
-            $planName = $findPlan->name;
+            $planName = $findPlan->plan_name;
             $amount = $subscription->items->data[0]->plan->amount / 100; // Convert to dollars (if in cents)
             $currency = strtoupper($subscription->items->data[0]->plan->currency);
             $subscriptionDetail = [
