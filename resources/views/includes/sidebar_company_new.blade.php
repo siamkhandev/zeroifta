@@ -56,7 +56,7 @@
           $checkPlan = \DB::table('plans')->where('id', $checkSubcription->plan_id)->first();
          
         @endphp
-        @if($checkPlan->slug !=='basic_monthly' || $checkPlan->slug !=='basic_yearly')
+        @if($checkPlan && !in_array($checkPlan->slug, ['basic_monthly', 'basic_yearly']))
         <li>
           <a href="{{route('fleet')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/fleet') ? 'menu_active' : '' }}">
             <span class="fill-svg">
