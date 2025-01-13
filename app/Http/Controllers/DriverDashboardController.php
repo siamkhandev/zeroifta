@@ -98,10 +98,10 @@ class DriverDashboardController extends Controller
                 'status' => 'active',
                 'limit' => 1,
             ]);
-dd($subscriptions);
+
             
 
-           if($subscriptions){
+           if($subscriptions->isNotEmpty()){
                 $subscription = $subscriptions->data[0];
 
             // Extract next billing details
