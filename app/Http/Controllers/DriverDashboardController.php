@@ -13,12 +13,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Stripe\Customer;
+use Stripe\Stripe;
 use Stripe\Subscription;
 
 class DriverDashboardController extends Controller
 {
     public function index(Request $request)
     {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
         $start = microtime(true); // Measure execution time
 
         // Initialize dashboard data
