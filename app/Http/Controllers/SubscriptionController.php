@@ -77,7 +77,7 @@ class SubscriptionController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Subscription updated successfully',
-                'data' => $updatedSubscription,
+                'data' => (object)[],
             ]);
         } else {
             $subscriptionData = [

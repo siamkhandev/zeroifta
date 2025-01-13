@@ -7,10 +7,13 @@ use App\Models\CompanyDriver;
 use App\Models\Contactus;
 use App\Models\DriverVehicle;
 use App\Models\Trip;
+use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Stripe\Customer;
+use Stripe\Subscription;
 
 class DriverDashboardController extends Controller
 {
@@ -84,8 +87,35 @@ class DriverDashboardController extends Controller
                 'created_at' => $trip->created_at->format('d M'),
             ];
         });
+        $customerId = User::find($request->driver_id);
+        $customer = Customer::retrieve($customerId->stripe_customer_id);
 
-        $dashboardData['recentTrips'] = $tripData;
+            // Check if customer has active subscriptions
+            $subscriptions = Subscription::all([
+                'customer' => $customer->id,
+                'status' => 'active',
+                'limit' => 1,
+            ]);
+
+            
+
+            // Get the first active subscription
+            $subscription = $subscriptions->data[0];
+
+            // Extract next billing details
+            $nextBillingDate = $subscription->current_period_end;
+            $planName = $subscription->items->data[0]->plan->nickname;
+            $amount = $subscription->items->data[0]->plan->amount / 100; // Convert to dollars (if in cents)
+            $currency = strtoupper($subscription->items->data[0]->plan->currency);
+            $subscriptionDetail = [
+                'plan_name' => $planName,
+                'amount' => $amount,
+                'currency' => $currency,
+                'next_billing_date' => $nextBillingDate
+            ];
+
+             $dashboardData['subscription'] = $subscriptionDetail;
+             $dashboardData['recentTrips'] = $tripData;
 
         // Return the response
         return response()->json([
