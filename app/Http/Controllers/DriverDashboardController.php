@@ -103,12 +103,13 @@ class DriverDashboardController extends Controller
             
 
            if(!empty($subscriptions->data)){
-            $findPlan = Plan::where('id',$subscriptions->data[0]->items->data[0]->plan->id)->first();
-                $subscription = $subscriptions->data[0];
+            $findPlan = Plan::where('stripe_plan_id',$subscriptions->data[0]->items->data[0]->plan->id)->first();
+                
+            $subscription = $subscriptions->data[0];
               
             // Extract next billing details
             $nextBillingDate = $subscription->current_period_end;
-            $planName = $findPlan->plan_name;
+            $planName = $findPlan->name;
             $amount = $subscription->items->data[0]->plan->amount / 100; // Convert to dollars (if in cents)
             $currency = strtoupper($subscription->items->data[0]->plan->currency);
             $subscriptionDetail = [
