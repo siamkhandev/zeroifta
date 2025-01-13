@@ -103,7 +103,7 @@ class DriverDashboardController extends Controller
 
            if(!empty($subscriptions->data)){
                 $subscription = $subscriptions->data[0];
-
+                dd($subscription->items->data[0]->plan);
             // Extract next billing details
             $nextBillingDate = $subscription->current_period_end;
             $planName = $subscription->items->data[0]->plan->nickname;
