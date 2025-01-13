@@ -92,14 +92,18 @@ class DriverDashboardController extends Controller
             ];
         });
         $customerId = User::find($request->driver_id);
-        $customer = Customer::retrieve($customerId->stripe_customer_id);
-
-            // Check if customer has active subscriptions
+        if(!empty($customerId->stripe_customer_id)){
+            $customer = Customer::retrieve($customerId->stripe_customer_id);
             $subscriptions = Subscription::all([
                 'customer' => $customer->id,
                 'status' => 'active',
                 'limit' => 1,
             ]);
+        }
+        
+
+            // Check if customer has active subscriptions
+           
 
             
 
