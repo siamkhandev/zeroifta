@@ -124,7 +124,7 @@ class DriverDashboardController extends Controller
                 'next_billing_date' =>Carbon::createFromTimestamp($nextBillingDate)->format('d M Y'),
             ];
            }else{
-            $subscriptionDetail = [];
+            $subscriptionDetail = null;
            }
            
 
