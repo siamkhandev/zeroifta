@@ -6,6 +6,7 @@ use App\Mail\ResetPasswordMail;
 use App\Models\DriverVehicle;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
+use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -65,10 +66,24 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
+            $features = [];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            if($checkSubscription){
+                $planName = Plan::where('id',$checkSubscription->plan_id)->first();
+                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
+                    $features = [
+                        'Can not customize minimum number of gallons to fuel',
+                        'can not add a stop to trip',
+                        'can not change the default reserve fuel amount',
+                        'can not customize fuel tank capacity',
+                    ];
+                }
+            }
             $user->subscription = $checkSubscription;
+            $user->features = $features;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
             $user->defaultCard = $findCard;
+
             return response()->json(['status'=>200,'message'=>'Logged in successfully','data' => $user], 200);
         } else {
             return response()->json(['status'=>401,'message'=>'Invalid Credentials','data' => (object)[]], 401);
