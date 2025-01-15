@@ -158,6 +158,7 @@ class IndependentTruckerController extends Controller
         $driver_vehicle->vehicle_id = $vehicle->id;
         $driver_vehicle->company_id = $request->driver_id;
         $driver_vehicle->save();
+        $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
         return response()->json(['status'=>200,'message'=>'Vehicle add successfully','data'=>$vehicle]);
 
     }
