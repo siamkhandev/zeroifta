@@ -299,16 +299,25 @@ class SubscriptionController extends Controller
             ], 400);
         }
 
-        // Create or update the selected plan
-        $plan = SelectedPlan::updateOrCreate(
-            [
+       // Ensure only one SelectedPlan exists for the user
+        $existingPlan = SelectedPlan::where('user_id', $request->user_id)->first();
+
+        if ($existingPlan) {
+            // Update the existing plan
+            $existingPlan->update([
+                'plan_id' => $request->plan_id,
+                'payment_method_id' => $paymentMethodId,
+            ]);
+           
+        } else {
+            // Create a new plan
+            $existingPlan = SelectedPlan::create([
                 'user_id' => $request->user_id,
                 'plan_id' => $request->plan_id,
-            ],
-            [
                 'payment_method_id' => $paymentMethodId,
-            ]
-        );
+            ]);
+            
+        }
 
         // Update user confirmation availability
         $user = User::find($request->user_id);
@@ -317,7 +326,7 @@ class SubscriptionController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Selected plan stored successfully',
-            'data' => $plan,
+            'data' => $existingPlan,
         ]);
     }
 
