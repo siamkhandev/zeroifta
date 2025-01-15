@@ -276,17 +276,51 @@ class SubscriptionController extends Controller
     }
     public function storeSelectedPlan(Request $request)
     {
-        $checkCard = PaymentMethod::where('user_id',$request->user_id)->where('is_default',1)->first();
-        $findCard = PaymentMethod::where('stripe_payment_method_id',$request->payment_method_id)->first();
-       $plan =  SelectedPlan::create([
-            'user_id'=>$request->user_id,
-            'plan_id'=>$request->plan_id,
-            'payment_method_id'=>$request->payment_method_id ? $findCard->id : $checkCard->id,
+        // Validate the incoming request
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'plan_id' => 'required|exists:plans,id',
+            'payment_method_id' => 'nullable|exists:payment_methods,stripe_payment_method_id',
         ]);
+
+        // Find the default payment method or the one provided in the request
+        $checkCard = PaymentMethod::where('user_id', $request->user_id)
+                                ->where('is_default', 1)
+                                ->first();
+
+        $findCard = PaymentMethod::where('stripe_payment_method_id', $request->payment_method_id)->first();
+
+        $paymentMethodId = $findCard ? $findCard->id : ($checkCard ? $checkCard->id : null);
+
+        if (!$paymentMethodId) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'No valid payment method found for the user.',
+            ], 400);
+        }
+
+        // Create or update the selected plan
+        $plan = SelectedPlan::updateOrCreate(
+            [
+                'user_id' => $request->user_id,
+                'plan_id' => $request->plan_id,
+            ],
+            [
+                'payment_method_id' => $paymentMethodId,
+            ]
+        );
+
+        // Update user confirmation availability
         $user = User::find($request->user_id);
-        $user->update(['is_confirmation_available'=>1]);
-        return response()->json(['status'=>200,'message'=>'selected plan stored successfully','data'=>$plan]);
+        $user->update(['is_confirmation_available' => 1]);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Selected plan stored successfully',
+            'data' => $plan,
+        ]);
     }
+
     public function getSelectedPlan(Request $request)
     {
         $selectedPlan = SelectedPlan::with(['user','plan','paymentMethod'])->where('user_id',$request->user_id)->first();
