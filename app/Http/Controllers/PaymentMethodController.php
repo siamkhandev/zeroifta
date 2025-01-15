@@ -157,9 +157,9 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             $paymentMethod->attach(['customer' => $customer->id]);
         
             // Update default payment method for the customer
-            \Stripe\Customer::update($customer->id, [
-                'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
-            ]);
+            // \Stripe\Customer::update($customer->id, [
+            //     'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
+            // ]);
         
             // Store payment method details in the database
             $storedPaymentMethod = PaymentMethod::create([
