@@ -156,21 +156,27 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             // Attach the payment method to the Stripe customer
             $paymentMethod->attach(['customer' => $customer->id]);
         
-            // Update default payment method for the customer
-            // \Stripe\Customer::update($customer->id, [
-            //     'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
-            // ]);
-        
+            $existingDefault = PaymentMethod::where('user_id', $user->id)
+                                    ->where('is_default', true)
+                                    ->exists();
+
+            if (!$existingDefault) {
+                // Update default payment method on Stripe only for the first card
+                \Stripe\Customer::update($customer->id, [
+                    'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
+                ]);
+            }
+
             // Store payment method details in the database
             $storedPaymentMethod = PaymentMethod::create([
                 'user_id' => $user->id,
                 'method_name' => $validated['method_name'],
-                'card_holder_name'=>$cardDetails['cardHolderName'],
+                'card_holder_name' => $cardDetails['cardHolderName'],
                 'card_number' => substr($paymentMethod->card->last4, -4), // Store last 4 digits
                 'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year, // Expiry date
                 'stripe_payment_method_id' => $paymentMethod->id, // Stripe payment method ID
                 'card_type' => $paymentMethod->card->brand ?? null,
-                'is_default' => true, // Mark as default
+                'is_default' => !$existingDefault, // Set as default only if no default exists
             ]);
         
             return response()->json([
