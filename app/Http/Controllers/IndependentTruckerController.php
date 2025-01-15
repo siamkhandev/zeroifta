@@ -104,7 +104,7 @@ class IndependentTruckerController extends Controller
         $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;;
         $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
         $driverFind->defaultCard = $findCard;
-
+        $driverFind->features = [];
         return response()->json([
             'status'=>200,
             'message'=>'Independent trucker added',
