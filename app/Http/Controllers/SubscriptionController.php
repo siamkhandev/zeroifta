@@ -333,7 +333,7 @@ class SubscriptionController extends Controller
     public function getSelectedPlan(Request $request)
     {
         $selectedPlan = SelectedPlan::with(['user','plan','paymentMethod'])->where('user_id',$request->user_id)->first();
-        $selectedPlan->price = '$'.$selectedPlan->plan->price;
+        $selectedPlan->plan->price = '$'.$selectedPlan->plan->price;
         if($selectedPlan){
             return response()->json(['status'=>200,'message'=>'selected plan fetched','data'=>$selectedPlan]);
         }else{
