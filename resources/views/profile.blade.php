@@ -115,6 +115,17 @@
                 </span>
                 @enderror
               </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                <div class="dash-input mb-3">
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
+                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.DOT')}}" name="dot" value="{{Auth::user()->dot}}" />
+                </div>
+                @error('dot')
+                <span class="invalid-feedback" role="alert" style="display: block;">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.City')}}</label>
@@ -127,17 +138,7 @@
                   <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.State')}}" name="state" value="{{Auth::user()->state}}" />
                 </div>
               </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                <div class="dash-input mb-3">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
-                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.DOT')}}" name="dot" value="{{Auth::user()->dot}}" />
-                </div>
-                @error('dot')
-                <span class="invalid-feedback" role="alert" style="display: block;">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
+
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
     <div class="dash-input mb-3">
         <label class="input-lables pb-2" for="profilePicture">{{ __('messages.Profile Picture') }}</label>
@@ -145,12 +146,12 @@
             <label for="profilePicture" class="custom-file-label">
                 <span id="fileLabel">{{ __('messages.No File chosen') }}</span>
             </label>
-            <input 
-                type="file" 
-                class="form-control dis-input custom-file-input" 
-                id="profilePicture" 
-                name="image" 
-                accept="image/png, image/jpg, image/jpeg" 
+            <input
+                type="file"
+                class="form-control dis-input custom-file-input"
+                id="profilePicture"
+                name="image"
+                accept="image/png, image/jpg, image/jpeg"
                 onchange="updateFileLabel(this)" />
         </div>
     </div>
