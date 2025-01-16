@@ -35,6 +35,11 @@
         </div>
 
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
+        @if(Auth::user()->role=="admin")
+        <a href="{{route('plans')}}">
+        @else
+        <a href="{{route('allvehicles')}}" >
+            @endif
           <div class="t-subs comm-counts">
             <div class="dc_inn">
               <div>
@@ -42,19 +47,25 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('plans')}}" style="color: #092e75">{{__('messages.Subscription')}}</a></h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Subscription')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Plan::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('allvehicles')}}" style="color: #092e75">{{__('messages.Total Vehicles')}}</a></h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Total Vehicles')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Vehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
             </div>
           </div>
+          </a>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
+        @if(Auth::user()->role=="admin")
+        <a href="{{route('payments')}}">
+        @else
+        <a href="{{route('driver_vehicles')}}" >
+            @endif
           <div class="t-paym comm-counts">
             <div class="dc_inn">
               <div>
@@ -62,19 +73,25 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('payments')}}" style="color: #092e75">{{__('messages.Payments')}}</a></h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Payments')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Payment::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('driver_vehicles')}}" style="color: #092e75">{{__('messages.Driver Vehicles')}}</a></h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Driver Vehicles')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\DriverVehicle::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
             </div>
           </div>
+          </a>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
+        @if(Auth::user()->role=="admin")
+        <a href="{{route('admin.contactus')}}">
+        @else
+        <a href="{{route('company.contactus')}}" >
+            @endif
           <div class="t-form comm-counts">
             <div class="dc_inn">
               <div>
@@ -82,17 +99,18 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('admin.contactus')}}" style="color: #092e75">{{__('messages.Contact Form')}}</a></h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Contact Form')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyContactUs::count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('company.contactus')}}" style="color: #092e75">{{__('messages.Contact Form')}}</a></h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Contact Form')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\Contactus::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
             </div>
           </div>
+          </a>
         </div>
       </div>
     </div>
