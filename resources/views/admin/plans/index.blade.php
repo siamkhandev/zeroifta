@@ -64,7 +64,7 @@
                 </span>
               </td>
               <td>
-                <span>{{$plan->name}}</span>
+                <span><a href="{{route('plans.edit',$plan->id)}}" style="color:var(--gray1)">{{$plan->name}}</a></span>
               </td>
               <td>
                 <p>${{$plan->price}}</p>
