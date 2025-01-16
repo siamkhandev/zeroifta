@@ -299,4 +299,25 @@ class AuthController extends Controller
     DB::table('password_reset_tokens')->where('email', $request->email)->delete();
     return response()->json(['status' =>200,'message' => 'Password reset successfully.','data'=>(object)[]], 200);
 }
+    public function updateUser(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'email' => 'required|email|unique:users,email,'.$request->user_id,
+            'phone' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
+        }
+        $user = User::find($request->user_id);
+        if($user){
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->update();
+            return response()->json(['status'=>200,'message' => 'User Updated successfully.','data'=>$user], 200);
+        }else{
+            return response()->json(['status'=>404,'message' => 'User not found','data'=>(object)[]], 404);
+        }
+
+    }
 }

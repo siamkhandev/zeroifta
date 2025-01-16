@@ -39,6 +39,7 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
     Route::post('get-profile',[AuthController::class,'getProfile']);
+    Route::post('updateUser',[AuthController::class,'updateUser']);
     Route::post('select-vehicle',[AuthController::class,'selectVehicle']);
     Route::post('password/change',[AuthController::class,'changePassword']);
     Route::post('profile/update',[AuthController::class,'profileUpdate']);
