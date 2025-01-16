@@ -28,7 +28,7 @@
               <td>
                 <span>{{$payment->planName->name ?? ''}}</span>
               </td>
-              <td><span>${{$payment->amount}}</span></td>
+              <td><span>${{$payment->price}}</span></td>
               <td><span>{{$payment->status}}</span></td>
               <td>
                 <span>{{$payment->created_at->format('Y-m-d')}}</span>
