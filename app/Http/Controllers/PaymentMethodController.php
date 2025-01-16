@@ -302,12 +302,12 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
              return $paymentIntent->payment_method === $paymentMethodId;
          });
 
-         return $filteredTransactions->values(); // Return the filtered transactions
+         //return $filteredTransactions->values(); // Return the filtered transactions
 
         return response()->json([
             'status' => 200,
             'message' => 'Transactions fetched successfully',
-            'data' => $transactions->data
+            'data' => $filteredTransactions->values()
         ]);
     }
 }
