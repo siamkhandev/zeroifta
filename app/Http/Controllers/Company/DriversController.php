@@ -45,7 +45,12 @@ class DriversController extends Controller
             'license_number' => 'required|string|max:255',
             'license_state' => 'required|string|max:255',
            'license_start_date' => 'required|date|before_or_equal:today',
-           'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+           'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,jpeg|max:2048', // 2MB
+           function ($attribute, $value, $fail) {
+               if ($value->getSize() > 2048 * 1024) {
+                   $fail('The ' . $attribute . ' must not exceed 2MB.');
+               }
+           },
         ]);
 
         $driver = new User();
