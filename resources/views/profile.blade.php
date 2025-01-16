@@ -115,7 +115,7 @@
                 </span>
                 @enderror
               </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
                   <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.DOT')}}" name="dot" value="{{Auth::user()->dot}}" />
@@ -127,19 +127,6 @@
                 @enderror
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                <div class="dash-input mb-3">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.City')}}</label>
-                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.City')}}" name="city" value="{{Auth::user()->city}}" />
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                <div class="dash-input mb-3">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.State')}}</label>
-                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.State')}}" name="state" value="{{Auth::user()->state}}" />
-                </div>
-              </div>
-
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
     <div class="dash-input mb-3">
         <label class="input-lables pb-2" for="profilePicture">{{ __('messages.Profile Picture') }}</label>
         <div class="custom-file-input-wrapper">
@@ -156,6 +143,20 @@
         </div>
     </div>
 </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="dash-input mb-3">
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.City')}}</label>
+                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.City')}}" name="city" value="{{Auth::user()->city}}" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="dash-input mb-3">
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.State')}}</label>
+                  <input type="text" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.State')}}" name="state" value="{{Auth::user()->state}}" />
+                </div>
+              </div>
+
+
 
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
