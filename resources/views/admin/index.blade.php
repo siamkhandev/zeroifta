@@ -5,12 +5,13 @@
     <!-- Dashboards Count -->
     <div class="dash-countInn res-pad">
       <div class="row">
-      @if(Auth::user()->role=="admin")
+
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
+        @if(Auth::user()->role=="admin")
       <a href="{{route('companies')}}" >
       @else
       <a href="{{route('drivers.all')}}" >
       @endif
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
           <div class="t-comp comm-counts">
             <div class="dc_inn">
               <div>
@@ -30,8 +31,9 @@
 
             </div>
           </div>
+          </a>
         </div>
-        </a>
+
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
           <div class="t-subs comm-counts">
             <div class="dc_inn">
