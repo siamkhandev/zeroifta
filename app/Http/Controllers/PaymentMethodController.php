@@ -294,10 +294,15 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         $paymentMethod = StripePaymentMethod::retrieve($paymentMethodId);
 
 
-            $transactions = PaymentIntent::all([
-                'payment_method' => $paymentMethodId,
-                'limit' => 10,
-            ]);
+         // Fetch all PaymentIntents
+         $paymentIntents = PaymentIntent::all(['limit' => 10]);
+
+         // Filter the PaymentIntents based on the payment method ID
+         $filteredTransactions = collect($paymentIntents->data)->filter(function ($paymentIntent) use ($paymentMethodId) {
+             return $paymentIntent->payment_method === $paymentMethodId;
+         });
+
+         return $filteredTransactions->values(); // Return the filtered transactions
 
         return response()->json([
             'status' => 200,
