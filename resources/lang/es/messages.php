@@ -68,7 +68,7 @@ return [
     "Purchased Date"=>"Fecha de compra",
     "Alpha Code"=>"Codigo alfa",
     "Add Fuel Tax"=>"Agregar impuesto al combustible",
-    "IFTA Tax%"=>"Impuesto IFTA %",
+    "IFTA Tax"=>"Impuesto IFTA",
     "State Name"=>"Nombre del estado",
     "State Code"=>"Codigo del estado",
     "Tax"=>"Impuesto",

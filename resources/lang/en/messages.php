@@ -72,7 +72,7 @@ return [
     "Purchased Date"=>"Purchased Date",
     "Alpha Code"=>"Alpha Code",
     "Add Fuel Tax"=>"Add Fuel Tax",
-    "IFTA Tax%"=>"IFTA Tax%",
+    "IFTA Tax"=>"IFTA Tax",
     "State Name"=>"State Name",
     "State Code"=>"State Code",
     "Tax"=>"Tax",
