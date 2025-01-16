@@ -299,15 +299,27 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 
          // Filter the PaymentIntents based on the payment method ID
          $filteredTransactions = collect($paymentIntents->data)->filter(function ($paymentIntent) use ($paymentMethodId) {
-             return $paymentIntent->payment_method === $paymentMethodId;
-         });
+            return $paymentIntent->payment_method === $paymentMethodId;
+        });
+
+        // Map to return only selective data
+        $selectiveTransactions = $filteredTransactions->map(function ($paymentIntent) {
+            return [
+                'id' => $paymentIntent->id,                          // Transaction ID
+                'amount' => $paymentIntent->amount,                    // Amount (in cents)
+                'currency' => $paymentIntent->currency,                // Currency (e.g., 'usd')
+                'status' => $paymentIntent->status,                    // Status of the transaction
+                'payment_method' => $paymentIntent->payment_method,    // Payment method ID
+                'created_at' => date('Y-m-d H:i:s', $paymentIntent->created),  // Created timestamp formatted
+            ];
+        });
 
          //return $filteredTransactions->values(); // Return the filtered transactions
 
         return response()->json([
             'status' => 200,
             'message' => 'Transactions fetched successfully',
-            'data' => $filteredTransactions->values()
+            'data' => $selectiveTransactions->values()
         ]);
     }
 }
