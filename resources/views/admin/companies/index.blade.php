@@ -53,7 +53,7 @@
                   <img src="{{asset('images/com.png')}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
                   @endif
                 </span>
-                <span> {{$company->name}} </span>
+                <span><a href="{{route('companies.edit',$company->id)}}"> {{$company->name}} </a></span>
               </div>
             </td>
             <td>
