@@ -291,7 +291,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 
         $paymentMethodId = $request->input('payment_method_id');
 
-        $paymentMethod = PaymentMethod::retrieve($paymentMethodId);
+        $paymentMethod = StripePaymentMethod::retrieve($paymentMethodId);
 
 
             $transactions = PaymentIntent::all([
