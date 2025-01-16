@@ -77,7 +77,7 @@
                     <img src="{{asset('vehicles/blank.png')}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
                     @endif
                   </span>
-                  <span> {{$vehicle->make}} {{$vehicle->model}} {{$vehicle->make_year}}</span>
+                  <span><a href="{{route('vehicle.edit',$vehicle->id)}}" style="color:var(--gray1)"> {{$vehicle->make}} {{$vehicle->model}} {{$vehicle->make_year}}</a></span>
                 </div>
               </td>
               <td>

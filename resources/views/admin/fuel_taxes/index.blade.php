@@ -65,7 +65,7 @@
               </td>
               <td>
                 <div class="table-conTab">
-                  <span> {{$tax->name}} </span>
+                  <span> <a href="{{route('fuel_taxes.edit',$tax->id)}}" style="color:var(--gray1)"> {{$tax->name}} </a></span>
                 </div>
               </td>
               <td>

@@ -76,7 +76,7 @@
                     <img src="{{asset('images/com.png')}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
                     @endif
                   </span>
-                  <span> {{$driver->driver->name ?? 'N/A'}} </span>
+                  <span>   <a href="{{route('driver.edit',$driver->driver->id)}}" style="color:var(--gray1)">{{$driver->driver->name ?? 'N/A'}}</a></span>
                 </div>
               </td>
               <td>

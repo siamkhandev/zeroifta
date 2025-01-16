@@ -73,7 +73,7 @@
                     <img src="{{asset('assets/img/user-img.png')}}" class="avatar avatar-sm me-3" alt="user1">
                     @endif
                   </span>
-                  <span> {{$vehicle->driver->name??'N/A'}} </span>
+                  <span><a href="{{route('driver_vehicles.edit',$vehicle->id)}}" style="color:var(--gray1)"> {{$vehicle->driver->name??'N/A'}} </a></span>
                 </div>
               </td>
               <td>
