@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverDashboardController;
 use App\Http\Controllers\FuelStationController;
 use App\Http\Controllers\IFTAController;
 use App\Http\Controllers\IndependentTruckerController;
+use App\Http\Controllers\OtpController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\StopController;
@@ -81,7 +82,7 @@ Route::middleware('auth:api')->group( function () {
     Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
     Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
     Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
-
+    Route::post('/payment-methods/getDetails', [PaymentMethodController::class, 'getTransactionsByPaymentMethod']);
     /////
     Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
     Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
@@ -91,6 +92,8 @@ Route::middleware('auth:api')->group( function () {
 
     // Get subscription details
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
+    Route::post('/send-otp', [OtpController::class, 'sendOtp']);
+    Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 });
 //Route::post('/trip/start', [TripController::class, 'store']);
 

@@ -9,6 +9,7 @@ use App\Models\PaymentMethod;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Services\TwilioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,7 @@ use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 class IndependentTruckerController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, TwilioService $twilioService)
     {
 
         $data = $request->validate([
@@ -69,6 +70,9 @@ class IndependentTruckerController extends Controller
 
 
         $driver->save();
+        $otp = rand(100000, 999999);
+        $twilioService->sendSmsOtp($request->phone, $otp);
+        $twilioService->sendEmailOtp($request->email, $otp);
         $companyDriver = new CompanyDriver();
         $companyDriver->driver_id =$driver->id;
         $companyDriver->company_id =$driver->id;
@@ -107,7 +111,7 @@ class IndependentTruckerController extends Controller
         $driverFind->features = [];
         return response()->json([
             'status'=>200,
-            'message'=>'Independent trucker added',
+            'message'=>'Independent trucker added. OTP sent for verification.',
             'data'=>$driverFind
         ]);
     }

@@ -10,6 +10,7 @@ use Stripe\Stripe;
 use Stripe\PaymentMethod as StripePaymentMethod;
 use Stripe\Token;
 use Stripe\Customer as StripeCustomer;
+use Stripe\PaymentIntent;
 
 class PaymentMethodController extends Controller
 {
@@ -68,7 +69,7 @@ class PaymentMethodController extends Controller
 
     public function addPaymentMethod(Request $request)
     {
-        
+
         $validated = $request->validate([
             'encrypted_details' => 'required|string', // Stripe payment method token
             'method_name' => 'required|string', // Name for the payment method
@@ -108,15 +109,15 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         if (!$decryptedData) {
             return response()->json(['status' => 400, 'message' => 'Failed to decrypt token', 'data' => (object)[]], 400);
         }
-       
+
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
-        
-      
+
+
         try {
             // Set Stripe secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
-        
+
             // Retrieve or create a Stripe customer for the authenticated user
             $user = User::find($request->user_id);
             if (!$user->stripe_customer_id) {
@@ -125,7 +126,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                     'email' => $user->email,
                     'name' => $user->name,
                 ]);
-        
+
                 // Save the customer ID to the user
                 $user->update(['stripe_customer_id' => $customer->id]);
             } else {
@@ -134,7 +135,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             }
             $stripe = new \Stripe\StripeClient('pk_test_AvPEuYEvHgZr9uN2f8KxzfGn00wLRXCSAb');
             $getMonth = explode('/',$cardDetails['expiry']);
-          
+
            $token =  $stripe->tokens->create([
               'card' => [
                 'name' => $cardDetails['cardHolderName'],
@@ -152,10 +153,10 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                     'token' =>  $token->id, // Use the `tok_` received from the Android app
                 ],
             ]);
-        
+
             // Attach the payment method to the Stripe customer
             $paymentMethod->attach(['customer' => $customer->id]);
-        
+
             $existingDefault = PaymentMethod::where('user_id', $user->id)
                                     ->where('is_default', true)
                                     ->exists();
@@ -178,7 +179,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'card_type' => $paymentMethod->card->brand ?? null,
                 'is_default' => !$existingDefault, // Set as default only if no default exists
             ]);
-        
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Payment method added successfully',
@@ -192,9 +193,9 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'data' => (object)[],
             ], 500);
         }
-        
+
     }
-    
+
     public function getPaymentMethod($id)
     {
         $paymentMethod = PaymentMethod::where('id', $id)->firstOrFail();
@@ -281,5 +282,27 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'data' => (object) [],
             ], 500);
         }
+    }
+    public function getTransactionsByPaymentMethod(Request $request)
+    {
+        $request->validate([
+            'payment_method_id' => 'required|string',
+        ]);
+
+        $paymentMethodId = $request->input('payment_method_id');
+
+        $paymentMethod = PaymentMethod::retrieve($paymentMethodId);
+
+
+            $transactions = PaymentIntent::all([
+                'payment_method' => $paymentMethodId,
+                'limit' => 10,
+            ]);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Transactions fetched successfully',
+            'data' => $transactions->data
+        ]);
     }
 }
