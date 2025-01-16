@@ -127,7 +127,7 @@ class SubscriptionController extends Controller
     }
 }
 
-    
+
 
 
     /**
@@ -233,7 +233,7 @@ class SubscriptionController extends Controller
     }
     public function generateToken(Request $request)
     {
-     
+
         // Validate the card details
         $request->validate([
             'number'    => 'required|digits_between:13,19',
@@ -255,7 +255,7 @@ class SubscriptionController extends Controller
                     'cvc'       => $request->cvc,
                 ],
             ]);
-           
+
             return response()->json([
                 'status' => true,
                 'token'   => $token->id,
@@ -308,7 +308,7 @@ class SubscriptionController extends Controller
                 'plan_id' => $request->plan_id,
                 'payment_method_id' => $paymentMethodId,
             ]);
-           
+
         } else {
             // Create a new plan
             $existingPlan = SelectedPlan::create([
@@ -316,7 +316,7 @@ class SubscriptionController extends Controller
                 'plan_id' => $request->plan_id,
                 'payment_method_id' => $paymentMethodId,
             ]);
-            
+
         }
 
         // Update user confirmation availability
@@ -333,6 +333,7 @@ class SubscriptionController extends Controller
     public function getSelectedPlan(Request $request)
     {
         $selectedPlan = SelectedPlan::with(['user','plan','paymentMethod'])->where('user_id',$request->user_id)->first();
+        $selectedPlan->price = '$'.$selectedPlan->plan->price;
         if($selectedPlan){
             return response()->json(['status'=>200,'message'=>'selected plan fetched','data'=>$selectedPlan]);
         }else{
