@@ -51,7 +51,7 @@
               </th>
               <th scope="col">{{__('messages.State')}}</th>
               <th scope="col">{{__('messages.Alpha Code')}}</th>
-              <th scope="col">{{__('messages.IFTA Tax%')}}</th>
+              <th scope="col">{{__('messages.IFTA Tax')}}</th>
               <th scope="col">{{__('messages.Action')}}</th>
             </tr>
           </thead>
