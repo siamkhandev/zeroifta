@@ -288,7 +288,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         $request->validate([
             'payment_method_id' => 'required|string',
         ]);
-
+        Stripe::setApiKey(env('STRIPE_SECRET'));
         $paymentMethodId = $request->input('payment_method_id');
 
         $paymentMethod = StripePaymentMethod::retrieve($paymentMethodId);
