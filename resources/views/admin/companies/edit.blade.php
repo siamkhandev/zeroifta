@@ -31,7 +31,7 @@
                 </div>
 
 
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Phone')}}</label>
                         <input type="text" class="form-control login-input" id="exampleFormControlInput1" name="phone" placeholder="{{__('messages.Phone')}}" value="{{$company->phone}}" />
