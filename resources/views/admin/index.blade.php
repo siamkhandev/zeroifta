@@ -162,7 +162,7 @@
                     <tbody>
                       @foreach($data as $record)
                       <tr>
-                        <td>{{$record->name}}</td>
+                        <td><a href="{{route('companies.edit',$record->id)}}">{{$record->name}}</a></td>
                         <td>{{$record->email}}</td>
                         <td>{{$record->phone}}</td>
                       </tr>
