@@ -37,7 +37,13 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            $user->token = $user->createToken('zeroifta')->accessToken;
+            $user->tokens()->delete();
+            $token = $user->createToken('zeroifta')->accessToken;
+
+            // Store new token in DB
+            $user->current_access_token = $token;
+            $user->save();
+            $user->token = $token;
             if($user->driver_image){
                 $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->driver_image;
             }else{
