@@ -9,6 +9,7 @@ use Stripe\Subscription;
 use Stripe\Charge;
 use App\Models\Payment;
 use App\Models\Plan;
+use App\Models\Subscription as ModelsSubscription;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -116,8 +117,8 @@ class PaymentController extends Controller
     }
     public function allPayments()
     {
-        $payments = Payment::with('user','planName')->get();
-      
-        return view('admin.payments.index',get_defined_vars());    
+        $payments = ModelsSubscription::with('user','planName')->get();
+
+        return view('admin.payments.index',get_defined_vars());
     }
 }
