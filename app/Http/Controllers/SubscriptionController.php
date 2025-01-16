@@ -92,7 +92,7 @@ class SubscriptionController extends Controller
                     'subscription_id' => $updatedSubscription->id,
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
-                    'created_at' => now()->toDateTimeString(), // Or use $newSubscription->created (if available)
+
                     'features' => $features ?? [],
                 ],
             ]);
