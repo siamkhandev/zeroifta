@@ -73,11 +73,28 @@ class SubscriptionController extends Controller
                     ['id' => $currentSubscription->data[0]->items->data[0]->id, 'price' => $priceId],
                 ],
             ]);
-
+            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            if($checkSubscription){
+                $planName = Plan::where('id',$checkSubscription->plan_id)->first();
+                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
+                    $features = [
+                        'Can not customize minimum number of gallons to fuel',
+                        'can not add a stop to trip',
+                        'can not change the default reserve fuel amount',
+                        'can not customize fuel tank capacity',
+                    ];
+                }
+            }
             return response()->json([
                 'status' => 200,
                 'message' => 'Subscription updated successfully',
-                'data' => (object)[],
+                'data' => [
+                    'subscription_id' => $updatedSubscription->id,
+                    'plan_name' => $planName->name ?? null,
+                    'price' => $priceId, // Assuming $priceId holds the correct price
+                    'created_at' => now()->toDateTimeString(), // Or use $newSubscription->created (if available)
+                    'features' => $features ?? [],
+                ],
             ]);
         } else {
             $subscriptionData = [
