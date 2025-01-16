@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverDashboardController;
 use App\Http\Controllers\FuelStationController;
 use App\Http\Controllers\IFTAController;
 use App\Http\Controllers\IndependentTruckerController;
+use App\Http\Controllers\LoginSessionsController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReceiptController;
@@ -94,9 +95,11 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
     Route::post('/send-otp', [OtpController::class, 'sendOtp']);
     Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
+    ///
+
 });
 //Route::post('/trip/start', [TripController::class, 'store']);
-
+Route::post('store-login-session', [LoginSessionsController::class, 'storeLoginSession']);
 ///
 Route::post('register',[IndependentTruckerController::class,'store']);
 Route::post('generatetoken',[SubscriptionController::class,'generateToken']);
