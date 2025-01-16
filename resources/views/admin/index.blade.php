@@ -5,6 +5,11 @@
     <!-- Dashboards Count -->
     <div class="dash-countInn res-pad">
       <div class="row">
+      @if(Auth::user()->role=="admin")
+      <a href="{{route('companies')}}" >
+      @else
+      <a href="{{route('drivers.all')}}" >
+      @endif
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
           <div class="t-comp comm-counts">
             <div class="dc_inn">
@@ -13,12 +18,12 @@
               </div>
               @if(Auth::user()->role=="admin")
               <div class="count-content">
-              <a href="{{route('companies')}}" style="color: #092e75"><h5 class="head-16Med grayMain">{{__('messages.Total Companies')}}</h5></a>
+              <h5 class="head-16Med grayMain">{{__('messages.Total Companies')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\User::whereRole('company')->count()??0}}</h6>
               </div>
               @else
               <div class="count-content">
-                <h5 class="head-16Med grayMain"><a href="{{route('drivers.all')}}" style="color: #092e75">{{__('messages.Total Drivers')}}</a></h5>
+                <h5 class="head-16Med grayMain">{{__('messages.Total Drivers')}}</h5>
                 <h6 class="head-24Med blue">{{\App\Models\CompanyDriver::where('company_id',Auth::id())->count()??0}}</h6>
               </div>
               @endif
@@ -26,6 +31,7 @@
             </div>
           </div>
         </div>
+        </a>
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4">
           <div class="t-subs comm-counts">
             <div class="dc_inn">
