@@ -53,6 +53,17 @@
                                 </span>
                             @enderror
                 </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
+                        <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="dot" placeholder="{{__('messages.DOT')}}" value="{{$company->dot}}" required/>
+                    </div>
+                    @error('dot')
+                                <span class="invalid-feedback" role="alert" style="display: block;">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.City')}}</label>
@@ -152,18 +163,8 @@
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="zip" placeholder="{{__('messages.ZIP')}}" value="{{$company->zip}}"/>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-                    <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
-                        <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="dot" placeholder="{{__('messages.DOT')}}" value="{{$company->dot}}" required/>
-                    </div>
-                    @error('dot')
-                                <span class="invalid-feedback" role="alert" style="display: block;">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Contact Person Name')}}</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_name" placeholder="{{__('messages.Contact Person Name')}}" value="{{$company->contact_person_name}}"/>
@@ -174,7 +175,7 @@
                                 </span>
                             @enderror
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Contact Person Email')}}</label>
                         <input type="text" class="form-control login-input dis-input" id="exampleFormControlInput1" name="contact_person_email" placeholder="{{__('messages.Contact Person Email')}}" value="{{$company->contact_person_email}}"/>
