@@ -129,7 +129,13 @@ class SubscriptionController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Subscription created successfully',
-                'data' => $newSubscription,
+              'data' => [
+                    'subscription_id' => $newSubscription->id,
+                    'plan_name' => $planName->name ?? null,
+                    'price' => $priceId, // Assuming $priceId holds the correct price
+                    'status' => $newSubscription->status,
+                    'features' => $features ?? [],
+                ],
             ]);
         }
     } catch (\Exception $e) {
