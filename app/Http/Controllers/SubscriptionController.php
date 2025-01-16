@@ -111,6 +111,20 @@ class SubscriptionController extends Controller
             $user->is_subscribed = true;
             $user->is_confirmation_available = 0;
             $user->save();
+            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            if($checkSubscription){
+                $planName = Plan::where('id',$checkSubscription->plan_id)->first();
+                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
+                    $features = [
+                        'Can not customize minimum number of gallons to fuel',
+                        'can not add a stop to trip',
+                        'can not change the default reserve fuel amount',
+                        'can not customize fuel tank capacity',
+                    ];
+                }
+            }
+            //$newSubscription->subscription = $checkSubscription;
+            $newSubscription->features = $features;
             SelectedPlan::where('user_id',$user->id)->delete();
             return response()->json([
                 'status' => 200,
