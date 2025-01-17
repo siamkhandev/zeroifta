@@ -72,6 +72,7 @@
             <span class="head-14Nor">{{__('messages.Fleet View')}}</span>
           </a>
         </li>
+        @else
         @endif
         <li>
           <a href="{{route('drivers.all')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/drivers*') ? 'menu_active' : '' }}">
