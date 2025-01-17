@@ -52,28 +52,29 @@
           </a>
         </li>
         @php
-          $checkSubcription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
-          if($checkSubcription){
-            $checkPlan = \DB::table('plans')->where('id', $checkSubcription->plan_id)->first();
-          }
+    $checkSubscription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
+    $checkPlan = null; // Initialize to avoid undefined variable errors
 
+    if ($checkSubscription) {
+        $checkPlan = \DB::table('plans')->where('id', $checkSubscription->plan_id)->first();
+    }
+@endphp
 
-        @endphp
-        @if($checkPlan && !in_array($checkPlan->slug, ['basic_monthly', 'basic_yearly']))
-        <li>
-          <a href="{{route('fleet')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/fleet') ? 'menu_active' : '' }}">
+@if($checkPlan && !in_array($checkPlan->slug, ['basic_monthly', 'basic_yearly']))
+    <li>
+        <a href="{{ route('fleet') }}" class="sidebar_li {{ Request::is(app()->getLocale() .'/fleet') ? 'menu_active' : '' }}">
             <span class="fill-svg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
-                <path
-                  d="M1.90698 21V4.75L6.67442 1L11.4419 4.75V7H20.9767V21H1.90698ZM3.81396 19H5.72094V17H3.81396V19ZM3.81396 15H5.72094V13H3.81396V15ZM3.81396 11H5.72094V9H3.81396V11ZM3.81396 7H5.72094V5H3.81396V7ZM7.62791 7H9.53489V5H7.62791V7ZM7.62791 19H19.0698V9H7.62791V19ZM13.3488 13V11H17.1628V13H13.3488ZM13.3488 17V15H17.1628V17H13.3488ZM9.53489 13V11H11.4419V13H9.53489ZM9.53489 17V15H11.4419V17H9.53489Z"
-                  fill="" />
-              </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24" fill="none">
+                    <path
+                        d="M1.90698 21V4.75L6.67442 1L11.4419 4.75V7H20.9767V21H1.90698ZM3.81396 19H5.72094V17H3.81396V19ZM3.81396 15H5.72094V13H3.81396V15ZM3.81396 11H5.72094V9H3.81396V11ZM3.81396 7H5.72094V5H3.81396V7ZM7.62791 7H9.53489V5H7.62791V7ZM7.62791 19H19.0698V9H7.62791V19ZM13.3488 13V11H17.1628V13H13.3488ZM13.3488 17V15H17.1628V17H13.3488ZM9.53489 13V11H11.4419V13H9.53489ZM9.53489 17V15H11.4419V17H9.53489Z"
+                        fill="" />
+                </svg>
             </span>
-            <span class="head-14Nor">{{__('messages.Fleet View')}}</span>
-          </a>
-        </li>
-        @else
-        @endif
+            <span class="head-14Nor">{{ __('messages.Fleet View') }}</span>
+        </a>
+    </li>
+@endif
+
         <li>
           <a href="{{route('drivers.all')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/drivers*') ? 'menu_active' : '' }}">
             <span class="fill-svg">
