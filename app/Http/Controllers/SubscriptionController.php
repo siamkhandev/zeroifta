@@ -34,7 +34,7 @@ class SubscriptionController extends Controller
 
     try {
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
+        $features =[];
         $user = User::find($request->user_id);
 
         if (!$user->stripe_customer_id) {
@@ -73,6 +73,7 @@ class SubscriptionController extends Controller
                     ['id' => $currentSubscription->data[0]->items->data[0]->id, 'price' => $priceId],
                 ],
             ]);
+            
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
