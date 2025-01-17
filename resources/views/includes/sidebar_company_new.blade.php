@@ -53,9 +53,11 @@
         </li>
         @php
           $checkSubcription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
-          @if($checkSubcription)
-          $checkPlan = \DB::table('plans')->where('id', $checkSubcription->plan_id)->first();
-         @endif
+          if($checkSubcription){
+            $checkPlan = \DB::table('plans')->where('id', $checkSubcription->plan_id)->first();
+          }
+
+
         @endphp
         @if($checkPlan && !in_array($checkPlan->slug, ['basic_monthly', 'basic_yearly']))
         <li>
