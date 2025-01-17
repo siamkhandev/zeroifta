@@ -179,6 +179,10 @@ class VehiclesController extends Controller
     public function delete($id)
     {
         $vehicle = Vehicle::find($id);
+        $checkVehicle = DriverVehicle::where('vehicle_id',$id)->first();
+        if($checkVehicle){
+            return redirect()->back()->withError('Vehicle is assigned to a driver.Can not delete this vehicle.');
+        }
         $vehicle->delete();
         return redirect('vehicles/all')->withError('vehicle Deleted Successfully');
     }
