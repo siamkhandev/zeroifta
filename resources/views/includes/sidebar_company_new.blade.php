@@ -51,10 +51,11 @@
             <span class="head-14Nor">{{__('messages.Profile Management')}}</span>
           </a>
         </li>
-        @php 
+        @php
           $checkSubcription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
+          @if($checkSubcription)
           $checkPlan = \DB::table('plans')->where('id', $checkSubcription->plan_id)->first();
-         
+         @endif
         @endphp
         @if($checkPlan && !in_array($checkPlan->slug, ['basic_monthly', 'basic_yearly']))
         <li>
