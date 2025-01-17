@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Vehicle;
 use App\Services\TwilioService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
@@ -62,7 +63,7 @@ class IndependentTruckerController extends Controller
         //$driver->driver_id = $request->driver_id;
         $driver->license_number = $request->license_number;
         $driver->license_state = $request->license_state;
-        $driver->license_start_date = $request->license_start_date;
+        $driver->license_start_date =Carbon::createFromFormat('m-d-y',$request->license_start_date)->format('Y-m-d');
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
         $driver->password= Hash::make($request->password);
