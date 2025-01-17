@@ -54,7 +54,12 @@ class IndependentTruckerController extends Controller
         // $company->register_type = 'trucker';
         // $company->phone=$request->phone;
         // $company->save();
+        $inputDate = $request->input('license_start_date'); // e.g., '12-30-2019'
 
+        $inputDate = trim($inputDate);
+
+        // Ensure the input strictly matches the `m-d-Y` format
+        $convertedDate = Carbon::createFromFormat('m-d-Y', $inputDate)->format('Y-m-d');
         $driver = new User();
         $driver->first_name = $request->first_name;
         $driver->last_name = $request->last_name;
@@ -63,7 +68,7 @@ class IndependentTruckerController extends Controller
         //$driver->driver_id = $request->driver_id;
         $driver->license_number = $request->license_number;
         $driver->license_state = $request->license_state;
-        $driver->license_start_date =Carbon::createFromFormat('m-d-y',$request->license_start_date)->format('Y-m-d');
+        $driver->license_start_date =$convertedDate;
         $driver->email = $request->email;
         $driver->phone	 = $request->phone;
         $driver->password= Hash::make($request->password);
