@@ -29,8 +29,8 @@ class PlansController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'price' => 'required',
-           'billing_period' => 'nullable|string|in:month,year',
-            'recurring' => 'required|boolean',
+        //    'billing_period' => 'nullable|string|in:month,year',
+        //     'recurring' => 'required|boolean',
 
 
         ]);
@@ -55,7 +55,8 @@ class PlansController extends Controller
             $plan->name = $request->name;
             $plan->price = $request->price;
             $plan->billing_period = $request->recurring ? $request->billing_period : null;
-            $plan->recurring = $request->recurring;
+            $plan->slug =str_replace('-', '_', \Str::slug($request->name));
+            $plan->recurring = $request->recurring ?? null;
             $plan->stripe_plan_id = $price->id;
             $plan->description = $request->description;
             $plan->save();
