@@ -17,7 +17,7 @@ use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 class IndependentTruckerController extends Controller
 {
-    public function store(Request $request, TwilioService $twilioService)
+    public function store(Request $request)
     {
 
         $data = $request->validate([
