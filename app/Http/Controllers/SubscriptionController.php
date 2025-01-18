@@ -144,7 +144,11 @@ class SubscriptionController extends Controller
                         'can not change the default reserve fuel amount',
                         'can not customize fuel tank capacity',
                     ];
+                }else{
+                    $features=[];
                 }
+            }else{
+                $features=[];
             }
             //$newSubscription->subscription = $checkSubscription;
             $newSubscription->features = $features;
