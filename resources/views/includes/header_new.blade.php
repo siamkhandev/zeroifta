@@ -9,7 +9,7 @@
         $currentSegment3 = Request::segment(3); // Third segment
         $currentSegment4 = Request::segment(4); // Third segment
     @endphp
-
+{{dd($currentSegment2)}}
     @if($currentSegment2 == '')
         <span class="bc-text">{{__('messages.Pages / Dashboard')}}</span>
         <h1 class="head-1">{{__('messages.Main Dashboard')}}</h1>
@@ -44,6 +44,7 @@
         @elseif($currentSegment2 == 'company' && $currentSegment3 == 'contactus' && $currentSegment4 == 'all')
         <span class="bc-text">{{__('messages.Pages / Contact Forms')}}</span>
         <h1 class="head-1">{{__('messages.Contact Forms')}}</h1>
+        
     @elseif($currentSegment2 == 'subscribe')
         <span class="bc-text">{{__('messages.Pages / Subscribe')}}</span>
         <h1 class="head-1">{{__('messages.Subscriptions')}}</h1>
