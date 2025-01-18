@@ -182,7 +182,7 @@ return [
     "Last4"=>"Last4",
     "Is Default"=>"Is Default",
     "Default"=>"Default",
-    "Set As Default"=>"Set As Default",
+    "Set as Default"=>"Set As Default",
     "Add Payment Method"=>"Add Payment Method",
     "Method Name"=>"Method Name",
     "Card Details"=>"Card Details",
