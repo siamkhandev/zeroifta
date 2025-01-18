@@ -49,7 +49,11 @@ class PaymentMethodsController extends Controller
             
         
     }
-    public function addPaymentMethod(Request $request)
+    public function addPaymentMethod()
+    {
+        return view('company.payment_methods.add');
+    }
+    public function storePaymentMethod(Request $request)
     {
        
         $validated = $request->validate([
