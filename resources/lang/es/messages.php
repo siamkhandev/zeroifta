@@ -177,6 +177,6 @@ return [
     "Add Payment Method"=>"Agregar método de pago",
     "Method Name"=>"Nombre del método",
     "Card Details"=>"Detalles de la tarjeta",
-    
+    "Payment Methods"=>"Métodos de pago",
 
 ];
