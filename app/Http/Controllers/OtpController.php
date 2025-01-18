@@ -60,51 +60,41 @@ class OtpController extends Controller
                 'data' => (object)[]
             ], 400);
         }
-
-        $isSmsOtpCorrect = $user->otp_code === $request->sms_otp;
-        $isEmailOtpCorrect = $user->email_otp === $request->email_otp;
-
-        // Track response messages for incorrect OTPs
-        $errors = [];
-
-        // Update if SMS OTP is correct
-        if ($isSmsOtpCorrect) {
-            $user->otp_code = null; // Clear SMS OTP
-            $user->is_phone_verified = true;
-        } else {
-            $errors[] = 'SMS OTP is incorrect.';
-        }
-
-        // Update if Email OTP is correct
-        if ($isEmailOtpCorrect) {
-            $user->email_otp = null; // Clear Email OTP
-            $user->is_email_verified = true;
-        } else {
-            $errors[] = 'Email OTP is incorrect.';
-        }
-
-        // Save the user if there are changes
-        if ($isSmsOtpCorrect || $isEmailOtpCorrect) {
-            $user->save();
-        }
-
-        // Return error message if any OTP was incorrect
-        if (!empty($errors)) {
+        if($user->otp_code !== $request->sms_otp)
+        {
             return response()->json([
                 'status' => 400,
-                'message' => implode(' ', $errors),
+                'message' => 'Invalid SMS OTP',
                 'data' => (object)[]
             ], 400);
         }
+        if($user->email_otp !== $request->email_otp)
+        {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Invalid Email OTP',
+                'data' => (object)[]
+            ], 400);
+        }
+        if ($user->otp_code == $request->sms_otp) {
+            $user->otp_code = null;
+            $user->is_phone_verified = true;
+            
+        }
+        if($user->email_otp == $request->email_otp){
+            $user->email_otp = null;
+            $user->is_email_verified = true;
+        }
+           
 
-        // Return success message if both OTPs are correct
+        $user->save();
+
         return response()->json([
             'status' => 200,
-            'message' => 'Both OTPs verified successfully.',
+            'message' => 'OTP verified successfully.',
             'data' => (object)[]
         ]);
     }
-
 
        
     
