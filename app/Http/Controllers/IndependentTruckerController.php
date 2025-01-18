@@ -19,7 +19,7 @@ use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 class IndependentTruckerController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, TwilioService $twilioService)
     {
 
         $data = $request->validate([
@@ -78,10 +78,13 @@ class IndependentTruckerController extends Controller
     
     
             //$driver->save();
-            $otp = rand(100000, 999999);
-            // $twilioService->sendSmsOtp($request->phone, $otp);
-            // $twilioService->sendEmailOtp($request->email, $otp);
-            $driver->otp_code = $otp;
+            $otp_sms = rand(100000, 999999);
+            $otp_email = rand(100000, 999999);
+            $twilioService->sendSmsOtp($request->phone, $otp_sms);
+            $twilioService->sendEmailOtp($request->email, $otp_email);
+            $driver->otp_code = $otp_sms;
+            $driver->email_otp = $otp_email;
+
             $driver->save();
             $companyDriver = new CompanyDriver();
             $companyDriver->driver_id =$driver->id;
