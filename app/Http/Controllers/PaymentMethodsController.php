@@ -6,6 +6,7 @@ use App\Models\PaymentMethod;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
 class PaymentMethodsController extends Controller
@@ -67,7 +68,7 @@ class PaymentMethodsController extends Controller
             // Retrieve the logged-in user
             $user = auth()->user();
     
-            // Retrieve the payment method from Stripe
+            // Retrieve the payment method from Stripe using the PaymentMethod ID
             $paymentMethod = PaymentMethod::retrieve($request->paymentMethodId);
     
             // Check if the user has a Stripe customer ID
@@ -96,8 +97,10 @@ class PaymentMethodsController extends Controller
             ]);
     
             return response()->json(['status' => 200, 'message' => 'Payment method added successfully!', 'data' => $storedPaymentMethod]);
+        } catch (ApiErrorException $e) {
+            return response()->json(['status' => 500, 'message' => 'Stripe API Error: ' . $e->getMessage()]);
         } catch (\Exception $e) {
-            return response()->json(['status' => 500, 'message' => $e->getMessage()]);
+            return response()->json(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
         }
     }
 
