@@ -33,18 +33,20 @@
 </div>
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/jsencrypt@3.0.0/bin/jsencrypt.min.js"></script>
 <script>
-    document.getElementById('payment-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const methodName = document.getElementById('methodName').value;
-        const cardHolderName = document.getElementById('cardHolderName').value;
-        const cardNumber = document.getElementById('cardNumber').value;
-        const expiryDate = document.getElementById('expiryDate').value;
-        const cvc = document.getElementById('cvc').value;
+    $(document).ready(function () {
+        $('#payment-form').on('submit', function (e) {
+            e.preventDefault();
 
-        // RSA Public Key (Replace with your actual public key)
-        const publicKey = `-----BEGIN PUBLIC KEY-----
+            // Collect form data
+            const methodName = $('#methodName').val();
+            const cardHolderName = $('#cardHolderName').val();
+            const cardNumber = $('#cardNumber').val();
+            const expiryDate = $('#expiryDate').val();
+            const cvc = $('#cvc').val();
+
+            // RSA Public Key (Replace with your actual public key)
+            const publicKey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApJsv/AC05XsMNA0kt4P2
 C+pKV6FVqk6INlPKBEdyq9AO1/kuzkVq+EcbCM2m2vmOn68iFTmsrebkP5aUV9gd
 2Pvj9nzegvN3sN0qaBQxkCyP52Kl875tB5eT8KRnUZ/2ZVjHdSqoFr6O53F8bcDV
@@ -54,39 +56,44 @@ YORpta0ZWgqaU2UiBkmXGv/tnDDBWcp+RQGa6wA3JP098rj7XOTsiLcSKO2xNHS/
 VwIDAQAB
 -----END PUBLIC KEY-----`;
 
-        // Encrypt using jsencrypt
-        const encrypt = new JSEncrypt();
-        encrypt.setPublicKey(publicKey);
+            // Encrypt using JSEncrypt
+            const encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publicKey);
 
-        const encryptedData = encrypt.encrypt(JSON.stringify({
-            methodName,
-            cardHolderName,
-            cardNumber,
-            expiryDate,
-            cvc
-        }));
+            const encryptedData = encrypt.encrypt(JSON.stringify({
+                methodName,
+                cardHolderName,
+                cardNumber,
+                expiryDate,
+                cvc
+            }));
 
-        if (!encryptedData) {
-            alert('Encryption failed. Please try again.');
-            return;
-        }
+            if (!encryptedData) {
+                alert('Encryption failed. Please try again.');
+                return;
+            }
 
-        // Send encrypted data to the backend
-        const response = await fetch('/store-payment-method', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "_token": "{{ csrf_token() }}",
-            },
-            body: JSON.stringify({ encryptedData })
+            // Send encrypted data to the backend via jQuery AJAX
+            $.ajax({
+                url: '/store-payment-method',
+                type: 'POST',
+                data: {
+                    encryptedData: encryptedData,
+                    _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Payment method added successfully!');
+                    } else {
+                        alert('Failed to add payment method: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            });
         });
-
-        const result = await response.json();
-        if (result.success) {
-            alert('Payment method added successfully!');
-        } else {
-            alert('Failed to add payment method.');
-        }
     });
 </script>
 @endsection
