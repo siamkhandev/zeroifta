@@ -95,6 +95,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
     Route::post('/send-otp', [OtpController::class, 'sendOtp']);
     Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
+    Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
     ///
 
 });

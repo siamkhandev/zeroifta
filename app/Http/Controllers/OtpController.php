@@ -41,6 +41,33 @@ class OtpController extends Controller
             'data' => (object)[]
         ]);
     }
+    public function resendOtp(Request $request)
+    {
+        if($request->type == "phone")
+        {
+            $user = User::find($request->user_id);
+            $smsOTP = rand(100000, 999999);
+            $this->twilioService->sendSmsOtp($user->phone, $smsOTP);
+            $user->otp_code = $smsOTP;
+            $user->update();
+            return response()->json([
+                'status' => 200,
+                'message' => 'OTP sent successfully',
+                'data' => (object)[]
+            ]);
+        }else{
+            $user = User::find($request->user_id);
+            $emailOTP = rand(100000, 999999);
+            $this->twilioService->sendEmailOtp($user->email, $emailOTP);
+            $user->email_otp= $emailOTP;
+            $user->update();
+            return response()->json([
+                'status' => 200,
+                'message' => 'OTP sent successfully',
+                'data' => (object)[]
+            ]);
+        }
+    }
 
     // Verify OTP
     public function verifyOtp(Request $request)
