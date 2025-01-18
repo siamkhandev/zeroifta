@@ -30,7 +30,7 @@ class TwilioService
         Mail::raw("Your OTP code is: $otp", function ($message) use ($email) {
             $message->to($email)
                 ->subject('Your OTP Code')
-                ->from(env('TWILIO_EMAIL_FROM'));
+                ->from('no-reply@zeroifta.com');
         });
     }
 }
