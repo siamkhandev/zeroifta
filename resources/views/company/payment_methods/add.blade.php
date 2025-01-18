@@ -33,6 +33,7 @@
 </div>
 @endsection
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#payment-form').on('submit', function (e) {
