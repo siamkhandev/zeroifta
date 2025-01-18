@@ -103,5 +103,47 @@ class PaymentMethodsController extends Controller
             return response()->json(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
         }
     }
-
+    public function setDefaultPaymentMethod(Request $request)
+    {
+        $request->validate([
+            'paymentMethodId' => 'required|string',
+        ]);
+    
+        // Retrieve the logged-in user
+        $user = auth()->user();
+    
+        // Find the selected payment method from the database
+        $paymentMethod = PaymentMethod::where('user_id', $user->id)
+            ->where('stripe_payment_method_id', $request->paymentMethodId)
+            ->first();
+    
+        if (!$paymentMethod) {
+            return response()->json(['status' => 404, 'message' => 'Payment method not found.']);
+        }
+    
+        try {
+            // Set the Stripe API secret key
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+            // Check if the user has a Stripe customer ID
+            if ($user->stripe_customer_id) {
+                // Update the default payment method on Stripe
+                $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
+                $customer->invoice_settings->default_payment_method = $paymentMethod->stripe_payment_method_id;
+                $customer->save();
+            }
+    
+            // Update the database to set the selected payment method as default
+            // Set all other payment methods to non-default
+            PaymentMethod::where('user_id', $user->id)->update(['is_default' => false]);
+    
+            // Set the selected payment method as default
+            $paymentMethod->update(['is_default' => true]);
+    
+            return response()->json(['status' => 200, 'message' => 'Payment method set as default successfully.']);
+        } catch (ApiErrorException $e) {
+            return response()->json(['status' => 500, 'message' => 'Stripe API Error: ' . $e->getMessage()]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
+        }
 }

@@ -87,7 +87,7 @@
                 @if($method['is_default'] == true)
                 <span class="label label-success">{{__('messages.Default')}}</span>
                 @else
-                <a href="#" class="btn btn-primary">Make Default</a>
+                <button class="set-default-btn btn btn-primary">Set as Default</button>
                  @endif
 
                  
@@ -103,4 +103,35 @@
     </div>
   </div>
 </div>
+@endsection
+@section('script')
+<script>
+$(document).ready(function () {
+    // Handle click event for setting a payment method as default
+    $('.set-default-btn').on('click', function () {
+        var paymentMethodId = $(this).closest('tr').data('payment-method-id');
+
+        $.ajax({
+            url: '/set-default-payment-method',
+            type: 'POST',
+            data: {
+                paymentMethodId: paymentMethodId,
+               "_token": "{{ csrf_token() }}",
+            },
+            success: function (response) {
+                if (response.status === 200) {
+                    alert('Payment method set as default.');
+                    location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Failed to set as default: ' + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+});
+</script>
 @endsection

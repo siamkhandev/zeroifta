@@ -134,6 +134,7 @@ Route::middleware('auth')->group(function () {
       Route::get('payment-methods', [PaymentMethodsController::class, 'index'])->name('payment-methods.all');
       Route::get('/add-payment-method', [PaymentMethodsController::class, 'addPaymentMethod'])->name('payment_method.add');
       Route::post('/store-payment-method', [PaymentMethodsController::class, 'storePaymentMethod'])->name('store-payment-method');
+      Route::post('/set-default-payment-method', [PaymentMethodsController::class, 'setDefaultPaymentMethod']);
       Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
       Route::get('company/contactus/all', [CompanyController::class, 'contactUsForms'])->name('company.contactus');
       Route::get('company/contactform/read/{id}', [CompanyController::class, 'readForm'])->name('company.contactform.detail');
