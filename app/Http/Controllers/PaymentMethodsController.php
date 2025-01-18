@@ -57,9 +57,7 @@ class PaymentMethodsController extends Controller
     {
        
         $validated = $request->validate([
-            'encrypted_details' => 'required|string', // Stripe payment method token
-            'method_name' => 'required|string', // Name for the payment method
-            'user_id'=>'required'
+            'encryptedData' => 'required|string', // Stripe payment method token
         ]);
         $privateKey = '-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEApJsv/AC05XsMNA0kt4P2C+pKV6FVqk6INlPKBEdyq9AO1/ku
@@ -93,12 +91,12 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         openssl_private_decrypt(base64_decode($validated['encrypted_details']), $decryptedData, $privateKey);
 
         if (!$decryptedData) {
-            return response()->json(['status' => 400, 'message' => 'Failed to decrypt token', 'data' => (object)[]], 400);
+            return response()->json(['status' => 400, 'message' => 'Failed to decrypt', 'data' => (object)[]], 400);
         }
 
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
-
+        dd($cardDetails);
 
         try {
             // Set Stripe secret key
