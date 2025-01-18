@@ -88,7 +88,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 -----END RSA PRIVATE KEY-----';
 
         $decryptedData = '';
-        openssl_private_decrypt(base64_decode($validated['encrypted_details']), $decryptedData, $privateKey);
+        openssl_private_decrypt(base64_decode($validated['encryptedData']), $decryptedData, $privateKey);
 
         if (!$decryptedData) {
             return response()->json(['status' => 400, 'message' => 'Failed to decrypt', 'data' => (object)[]], 400);
