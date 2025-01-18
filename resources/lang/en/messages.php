@@ -187,6 +187,7 @@ return [
     "Method Name"=>"Method Name",
     "Card Details"=>"Card Details",
     "Payment Methods"=>"Payment Methods",
+    "Pages / Payment Methods"=>"Pages / Payment Methods",
 
 
 

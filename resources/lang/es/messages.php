@@ -178,5 +178,6 @@ return [
     "Method Name"=>"Nombre del método",
     "Card Details"=>"Detalles de la tarjeta",
     "Payment Methods"=>"Métodos de pago",
+    "Pages / Payment Methods"=>"Páginas / Metodos de pago",
 
 ];
