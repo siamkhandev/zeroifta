@@ -139,6 +139,7 @@ class IndependentTruckerController extends Controller
             'odometer_reading' => 'required',
             'mpg' => 'required',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:1024',
+            
 
         ]);
 
