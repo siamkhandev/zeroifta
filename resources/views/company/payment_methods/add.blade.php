@@ -83,7 +83,7 @@ VwIDAQAB
                     _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token
                 },
                 success: function (response) {
-                    if (response.success) {
+                    if (response.status==200) {
                         alert('Payment method added successfully!');
                     } else {
                         alert('Failed to add payment method: ' + response.message);
