@@ -146,4 +146,5 @@ class PaymentMethodsController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
         }
+    }
 }
