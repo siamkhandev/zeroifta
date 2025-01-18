@@ -45,7 +45,7 @@ class AuthController extends Controller
             $user->save();
             $user->token = $token;
             if($user->driver_image){
-                $user->image = 'http://zeroifta.alnairtech.com/drivers/'.$user->driver_image;
+                $user->image =url('drivers/').$user->driver_image;
             }else{
                 $user->image = null;
             }
@@ -106,7 +106,7 @@ class AuthController extends Controller
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
         $user = User::whereId($request->user_id)->first();
-        $user->image = 'http://zeroifta.alnairtech.com/images/'.$user->image;
+        $user->image = url('images/').$user->image;
         return response()->json(['status'=>200,'message'=>'Profile Fetched successfully','data' => $user], 200);
     }
     public function getProfile(Request $request)
@@ -213,7 +213,7 @@ class AuthController extends Controller
                 $user->image= $imageName;
             }
             $user->update();
-            $user->image = 'http://zeroifta.alnairtech.com/images/'.$user->image;
+            $user->image = url('images/'.$user->image);
             return response()->json(['status'=>200,'message' => 'Profile Updated successfully.','data'=>$user], 200);
         }else{
             return response()->json(['status'=>404,'message' => 'User not found','data'=>(object)[]], 404);
