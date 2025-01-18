@@ -84,8 +84,11 @@
             </td>
               <td>
                 <div class="tabAction-list">
+                @if($method['is_default'] == true)
+                <label class="sucess">{{__('messages.Default')}}</label>
+                @else
                 <a href="#" class="btn btn-primary">Make Default</a>
-                 
+                 @endif
 
                  
                 </div>
