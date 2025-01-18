@@ -26,7 +26,7 @@
 <script>
     $(document).ready(function () {
         // Initialize Stripe
-        const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your Stripe publishable key
+        const stripe = Stripe('pk_test_AvPEuYEvHgZr9uN2f8KxzfGn00wLRXCSAb'); // Replace with your Stripe publishable key
         const elements = stripe.elements();
 
         // Create an instance of the card Element
