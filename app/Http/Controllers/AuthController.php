@@ -45,7 +45,7 @@ class AuthController extends Controller
             $user->save();
             $user->token = $token;
             if($user->driver_image){
-                $user->image =url('drivers/').$user->driver_image;
+                $user->image =url('/drivers/').$user->driver_image;
             }else{
                 $user->image = null;
             }
@@ -69,7 +69,7 @@ class AuthController extends Controller
             })
             ->first();
             if ($vehicle) {
-                $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+                $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
             $features = [];
@@ -106,7 +106,7 @@ class AuthController extends Controller
             return response()->json(['status'=>422,'message' => $validator->errors()->first(),'data'=>(object)[]], 422);
         }
         $user = User::whereId($request->user_id)->first();
-        $user->image = url('images/').$user->image;
+        $user->image = url('/images/').$user->image;
         return response()->json(['status'=>200,'message'=>'Profile Fetched successfully','data' => $user], 200);
     }
     public function getProfile(Request $request)
@@ -131,10 +131,10 @@ class AuthController extends Controller
             })
             ->first();
             if ($vehicle) {
-                $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+                $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $user->image = url('images/').$user->image;
+            $user->image = url('/images/').$user->image;
             $user->token=null;
             $features = [];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
@@ -174,7 +174,7 @@ class AuthController extends Controller
             ]
             );
         $vehicle = Vehicle::select('id','vehicle_image','vehicle_number','mpg','odometer_reading','fuel_left','fuel_tank_capacity','model','make','make_year','license_plate_number')->whereId($request->vehicle_id)->first();
-        $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+        $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
         return response()->json(['status'=>200,'message'=>'vehicle selected successfully','data'=>$vehicle]);
     }
     public function changePassword(Request $request)
@@ -213,7 +213,7 @@ class AuthController extends Controller
                 $user->image= $imageName;
             }
             $user->update();
-            $user->image = url('images/'.$user->image);
+            $user->image = url('/images/'.$user->image);
             return response()->json(['status'=>200,'message' => 'Profile Updated successfully.','data'=>$user], 200);
         }else{
             return response()->json(['status'=>404,'message' => 'User not found','data'=>(object)[]], 404);
