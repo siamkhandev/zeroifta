@@ -10,6 +10,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Services\TwilioService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -54,74 +55,83 @@ class IndependentTruckerController extends Controller
         // $company->register_type = 'trucker';
         // $company->phone=$request->phone;
         // $company->save();
-        $inputDate = $request->input('license_start_date'); // e.g., '12-30-2019'
+        try{
+            $inputDate = $request->input('license_start_date'); // e.g., '12-30-2019'
 
-        $inputDate = trim($inputDate);
-
-        // Ensure the input strictly matches the `m-d-Y` format
-        $convertedDate = Carbon::createFromFormat('m-d-Y', $inputDate)->format('Y-m-d');
-        $driver = new User();
-        $driver->first_name = $request->first_name;
-        $driver->last_name = $request->last_name;
-        $driver->name = $request->first_name.' '.$request->last_name;
-        $driver->username = $request->username;
-        //$driver->driver_id = $request->driver_id;
-        $driver->license_number = $request->license_number;
-        $driver->license_state = $request->license_state;
-        $driver->license_start_date =$convertedDate;
-        $driver->email = $request->email;
-        $driver->phone	 = $request->phone;
-        $driver->password= Hash::make($request->password);
-        $driver->role='trucker';
-
-
-        $driver->save();
-        $otp = rand(100000, 999999);
-        $twilioService->sendSmsOtp($request->phone, $otp);
-        $twilioService->sendEmailOtp($request->email, $otp);
-        $driver->otp_code = $otp;
-        $driver->save();
-        $companyDriver = new CompanyDriver();
-        $companyDriver->driver_id =$driver->id;
-        $companyDriver->company_id =$driver->id;
-        $companyDriver->save();
-        $driverFind = User::whereId($driver->id)->first();
-        $vehicle = Vehicle::select(
-            'id',
-            'vehicle_image',
-            'vehicle_number',
-            'mpg',
-            'odometer_reading',
-            'fuel_left',
-            'fuel_tank_capacity',
-            'model',
-            'make',
-            'make_year',
-            'license_plate_number'
-        )
-        ->whereHas('driverVehicle', function ($query) use ($request,$driver) {
-            $query->where('driver_id', $driver->id);
-        })
-        ->first();
-        $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;
-        if ($vehicle) {
-            $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+            $inputDate = trim($inputDate);
+    
+            // Ensure the input strictly matches the `m-d-Y` format
+            $convertedDate = Carbon::createFromFormat('m-d-Y', $inputDate)->format('Y-m-d');
+            $driver = new User();
+            $driver->first_name = $request->first_name;
+            $driver->last_name = $request->last_name;
+            $driver->name = $request->first_name.' '.$request->last_name;
+            $driver->username = $request->username;
+            //$driver->driver_id = $request->driver_id;
+            $driver->license_number = $request->license_number;
+            $driver->license_state = $request->license_state;
+            $driver->license_start_date =$convertedDate;
+            $driver->email = $request->email;
+            $driver->phone	 = $request->phone;
+            $driver->password= Hash::make($request->password);
+            $driver->role='trucker';
+    
+    
+            $driver->save();
+            $otp = rand(100000, 999999);
+            $twilioService->sendSmsOtp($request->phone, $otp);
+            $twilioService->sendEmailOtp($request->email, $otp);
+            $driver->otp_code = $otp;
+            $driver->save();
+            $companyDriver = new CompanyDriver();
+            $companyDriver->driver_id =$driver->id;
+            $companyDriver->company_id =$driver->id;
+            $companyDriver->save();
+            $driverFind = User::whereId($driver->id)->first();
+            $vehicle = Vehicle::select(
+                'id',
+                'vehicle_image',
+                'vehicle_number',
+                'mpg',
+                'odometer_reading',
+                'fuel_left',
+                'fuel_tank_capacity',
+                'model',
+                'make',
+                'make_year',
+                'license_plate_number'
+            )
+            ->whereHas('driverVehicle', function ($query) use ($request,$driver) {
+                $query->where('driver_id', $driver->id);
+            })
+            ->first();
+            $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;
+            if ($vehicle) {
+                $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+            }
+            $driverFind->vehicle = $vehicle;
+            $checkSubscription = Subscription::where('user_id',$driver->id)->where('status','active')->first();
+            $driverFind->subscription = $checkSubscription;
+            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $driverFind->rsa_key = $rsaKey;
+    
+            $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;;
+            $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
+            $driverFind->defaultCard = $findCard;
+            $driverFind->features = [];
+            return response()->json([
+                'status'=>200,
+                'message'=>'Independent trucker added. OTP sent for verification.',
+                'data'=>$driverFind
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'status'=>400,
+                'message'=>$e->getMessage(),
+                'data'=>(object)[]
+            ]);
         }
-        $driverFind->vehicle = $vehicle;
-        $checkSubscription = Subscription::where('user_id',$driver->id)->where('status','active')->first();
-        $driverFind->subscription = $checkSubscription;
-        $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
-        $driverFind->rsa_key = $rsaKey;
-
-        $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;;
-        $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
-        $driverFind->defaultCard = $findCard;
-        $driverFind->features = [];
-        return response()->json([
-            'status'=>200,
-            'message'=>'Independent trucker added. OTP sent for verification.',
-            'data'=>$driverFind
-        ]);
+        
     }
     public function addVehicle(Request $request)
 
