@@ -132,7 +132,7 @@ Route::middleware('auth')->group(function () {
         
       });
       Route::get('payment-methods', [PaymentMethodsController::class, 'index'])->name('payment-methods.all');
-      Route::post('/add-payment-method', [PaymentMethodsController::class, 'addPaymentMethod']);
+      Route::post('/add-payment-method', [PaymentMethodsController::class, 'addPaymentMethod'])->name('add-payment-method');
       Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
       Route::get('company/contactus/all', [CompanyController::class, 'contactUsForms'])->name('company.contactus');
       Route::get('company/contactform/read/{id}', [CompanyController::class, 'readForm'])->name('company.contactform.detail');
