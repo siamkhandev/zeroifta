@@ -393,7 +393,7 @@ class TripController extends Controller
         if($driverVehicle && $driverVehicle->vehicle_id != null){
             $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
             if($vehicle && $vehicle->vehicle_image != null){
-                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
         }else{
             $vehicle = null;
@@ -477,7 +477,7 @@ class TripController extends Controller
             $trip->dropoffState = $dropoffState;
             $trip->vehicle = $vehicle;
             if($trip->vehicle && $trip->vehicle->vehicle_image){
-                $trip->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                $trip->vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $startLat = $trip->start_lat;
             $startLng = $trip->start_lng;
@@ -677,7 +677,7 @@ class TripController extends Controller
         if($vehiclefind){
             $vehicle = Vehicle::where('id', $vehiclefind)->first();
             if($vehicle && $vehicle->vehicle_image != null){
-                $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
         }else{
             $vehicle =null;

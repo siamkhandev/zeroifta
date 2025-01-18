@@ -292,7 +292,7 @@ class IFTAController extends Controller
                             'fuel_left'=> $currentFuel,
                         ]);
                         if($vehicle && $vehicle->vehicle_image != null){
-                            $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                            $vehicle->vehicle_image = url('/vehicles/'.$vehicle->vehicle_image);
                         }
                     }else{
 
@@ -433,7 +433,7 @@ class IFTAController extends Controller
                 if($vehicleFind){
                     $vehicle = Vehicle::where('id', $vehicleFind)->first();
                     if($vehicle && $vehicle->vehicle_image != null){
-                        $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                        $vehicle->vehicle_image =url('/vehicles/'.$vehicle->vehicle_image);
                     }
                 }else{
                     $vehicle = null;

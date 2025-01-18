@@ -20,7 +20,7 @@ class ReceiptController extends Controller
         // Prepend the base URL to receipt_image using array_map for better performance
         $receipts->transform(function ($receipt) {
             if (isset($receipt->receipt_image)) {
-                $receipt->receipt_image = 'http://zeroifta.alnairtech.com/storage/' . $receipt->receipt_image;
+                $receipt->receipt_image = url('/receipts/' . $receipt->receipt_image);
             }
             return $receipt;
         });

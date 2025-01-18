@@ -17,7 +17,7 @@ class VehicleController extends Controller
     {
         $vehicle = DriverVehicle::with('vehicle')->where('driver_vehicles.driver_id',$request->driver_id)->first();
         if($vehicle){
-            $vehicle->vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' .$vehicle->vehicle->vehicle_image;
+            $vehicle->vehicle->vehicle_image = url('/vehicles/' .$vehicle->vehicle->vehicle_image);
             return response()->json(['status'=>200,'message'=>'vehicle found','data'=> $vehicle],200);
         }else{
             return response()->json(['status'=>404,'message'=>'vehicle not found','data'=> (object)[]],404);
@@ -70,7 +70,7 @@ class VehicleController extends Controller
         if(count($vehicles) >0){
             foreach ($vehicles as $vehicle) {
                 if (isset($vehicle->vehicle_image)) {
-                    $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                    $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
                 }
             }
             return response()->json(['status'=>200,'message'=>'vehicles found','data'=>$vehicles],200);
@@ -103,8 +103,8 @@ class VehicleController extends Controller
 
             if ($vehicle && isset($vehicle->vehicle_image)) {
                 // Ensure the image URL is not repeatedly prefixed
-                if (!str_starts_with($vehicle->vehicle_image, 'http://')) {
-                    $vehicle->vehicle_image = 'http://zeroifta.alnairtech.com/vehicles/' . $vehicle->vehicle_image;
+                if (!str_starts_with($vehicle->vehicle_image, 'https://')) {
+                    $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
                 }
             }
 
