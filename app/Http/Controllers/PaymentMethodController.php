@@ -288,17 +288,18 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         $request->validate([
             'payment_method_id' => 'required|string',
         ]);
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $paymentMethodId = $request->input('payment_method_id');
 
+        // Retrieve the payment method to validate
         $paymentMethod = StripePaymentMethod::retrieve($paymentMethodId);
 
+        // Fetch all PaymentIntents
+        $paymentIntents = PaymentIntent::all(['limit' => 10]);
 
-         // Fetch all PaymentIntents
-         $paymentIntents = PaymentIntent::all(['limit' => 10]);
-
-         // Filter the PaymentIntents based on the payment method ID
-         $filteredTransactions = collect($paymentIntents->data)->filter(function ($paymentIntent) use ($paymentMethodId) {
+        // Filter the PaymentIntents based on the payment method ID
+        $filteredTransactions = collect($paymentIntents->data)->filter(function ($paymentIntent) use ($paymentMethodId) {
             return $paymentIntent->payment_method === $paymentMethodId;
         });
 
@@ -306,15 +307,13 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         $selectiveTransactions = $filteredTransactions->map(function ($paymentIntent) {
             return [
                 'id' => $paymentIntent->id,                          // Transaction ID
-                'amount' => $paymentIntent->amount,                    // Amount (in cents)
-                'currency' => $paymentIntent->currency,                // Currency (e.g., 'usd')
-                'status' => $paymentIntent->status,                    // Status of the transaction
-                'payment_method' => $paymentIntent->payment_method,    // Payment method ID
+                'amount' => $paymentIntent->amount / 100,            // Convert cents to dollars
+                'currency' => strtoupper($paymentIntent->currency),  // Currency (e.g., 'USD')
+                'status' => ucfirst($paymentIntent->status),         // Capitalize status
+                'payment_method' => $paymentIntent->payment_method,  // Payment method ID
                 'created_at' => date('Y-m-d H:i:s', $paymentIntent->created),  // Created timestamp formatted
             ];
         });
-
-         //return $filteredTransactions->values(); // Return the filtered transactions
 
         return response()->json([
             'status' => 200,
@@ -322,4 +321,5 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             'data' => $selectiveTransactions->values()
         ]);
     }
+
 }
