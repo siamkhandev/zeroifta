@@ -112,7 +112,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('payment-methods')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/payment-methods') ? 'menu_active' : '' }}">
+          <a href="{{route('payment-methods.all')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/payment-methods') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
                 <g clip-path="url(#clip0_2033_1598)">
