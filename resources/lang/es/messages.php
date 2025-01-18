@@ -173,9 +173,10 @@ return [
     "Last4"=>"últimos 4",
     "Is Default"=>"Es predeterminado",
     "Default"=>"Por defecto",
-    "Set As Default"=>"Establecer como predeterminado",
+    "Set as Default"=>"Establecer como predeterminado",
     "Add Payment Method"=>"Agregar método de pago",
     "Method Name"=>"Nombre del método",
     "Card Details"=>"Detalles de la tarjeta",
+    
 
 ];
