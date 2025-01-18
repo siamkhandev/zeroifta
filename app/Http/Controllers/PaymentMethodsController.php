@@ -12,7 +12,7 @@ class PaymentMethodsController extends Controller
 {
     public function index()
     {
-        try {
+        
             // Set Stripe secret key
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -47,10 +47,7 @@ class PaymentMethodsController extends Controller
             }, $paymentMethods->data);
             return view('company.payment_methods.index',get_defined_vars());
             
-        } catch (\Exception $e) {
-            return redirect()->back()->WithError('Failed to retrieve payment methods');
-            
-        }
+        
     }
     public function addPaymentMethod(Request $request)
     {
