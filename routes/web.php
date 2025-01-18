@@ -15,6 +15,7 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\NewPasswordController;
 use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentMethodsController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\ThemeController;
 use App\Models\CompanyContactUs;
@@ -126,6 +127,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('fleet', [CompanyController::class, 'fleet'])->name('fleet');
         Route::get('subscribe', [CompanyController::class, 'showPlans'])->name('subscribe');
+
+        ////
+        Route::get('payment-methods', [PaymentMethodsController::class, 'index'])->name('payment-methods');
+        Route::post('/add-payment-method', [PaymentMethodsController::class, 'addPaymentMethod']);
       });
       Route::get('payments', [PaymentController::class, 'allPayments'])->name('payments');
       Route::get('company/contactus/all', [CompanyController::class, 'contactUsForms'])->name('company.contactus');

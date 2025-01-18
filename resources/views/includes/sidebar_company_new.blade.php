@@ -112,6 +112,25 @@
           </a>
         </li>
         <li>
+          <a href="{{route('payment-methods')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/payment-methods') ? 'menu_active' : '' }}">
+            <span class="fill-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <g clip-path="url(#clip0_2033_1598)">
+                  <path
+                    d="M7.46671 10.7333H7.70004C8.59837 10.7333 9.33337 11.4683 9.33337 12.3666V20.5333C9.33337 21.4316 8.59837 22.1666 7.70004 22.1666H7.46671C6.56837 22.1666 5.83337 21.4316 5.83337 20.5333V12.3666C5.83337 11.4683 6.56837 10.7333 7.46671 10.7333ZM14 5.83325C14.8984 5.83325 15.6334 6.56825 15.6334 7.46659V20.5333C15.6334 21.4316 14.8984 22.1666 14 22.1666C13.1017 22.1666 12.3667 21.4316 12.3667 20.5333V7.46659C12.3667 6.56825 13.1017 5.83325 14 5.83325ZM20.5334 15.1666C21.4317 15.1666 22.1667 15.9016 22.1667 16.7999V20.5333C22.1667 21.4316 21.4317 22.1666 20.5334 22.1666C19.635 22.1666 18.9 21.4316 18.9 20.5333V16.7999C18.9 15.9016 19.635 15.1666 20.5334 15.1666Z"
+                    fill="" />
+                </g>
+                <defs>
+                  <clipPath id="clip0_2033_1598">
+                    <rect width="28" height="28" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+            </span>
+            <span class="head-14Nor">{{__('messages.Payment Methods')}}</span>
+          </a>
+        </li>
+        <li>
           <a href="{{route('subscribe')}}" class="sidebar_li {{ Request::is(app()->getLocale() .'/subscribe') ? 'menu_active' : '' }}">
             <span class="fill-svg">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
