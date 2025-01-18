@@ -59,7 +59,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($$filteredMethods as $method)
+            @foreach($filteredMethods as $method)
             <tr>
               
 
