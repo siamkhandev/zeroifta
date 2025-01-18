@@ -69,7 +69,7 @@ class PaymentMethodsController extends Controller
             $user = auth()->user();
     
             // Retrieve the payment method from Stripe using the PaymentMethod ID
-            $paymentMethod = PaymentMethod::retrieve($request->paymentMethodId);
+            $paymentMethod = \Stripe\PaymentMethod::retrieve($request->paymentMethodId);
     
             // Check if the user has a Stripe customer ID
             if ($user->stripe_customer_id) {
