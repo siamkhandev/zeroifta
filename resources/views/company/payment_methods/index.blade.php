@@ -44,11 +44,7 @@
         <table id="example" class="table table-comm">
           <thead>
             <tr>
-              <th scope="col">
-                <span>
-                  <input id="remember-me" name="remember-me" type="checkbox" />
-                </span>
-              </th>
+             
               <th scope="col">{{__('messages.Name')}}</th>
               <th scope="col">{{__('messages.Brand')}}</th>
               <th scope="col">{{__('messages.Expiry Month')}}</th>
