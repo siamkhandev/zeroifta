@@ -79,6 +79,8 @@ class IndependentTruckerController extends Controller
         $otp = rand(100000, 999999);
         $twilioService->sendSmsOtp($request->phone, $otp);
         $twilioService->sendEmailOtp($request->email, $otp);
+        $driver->otp_code = $otp;
+        $driver->save();
         $companyDriver = new CompanyDriver();
         $companyDriver->driver_id =$driver->id;
         $companyDriver->company_id =$driver->id;
