@@ -56,7 +56,7 @@
           </thead>
           <tbody>
             @foreach($filteredMethods as $method)
-            <tr data-payment-method-id="{{ $method['stripe_payment_method_id'] }}">
+            <tr data-payment-method-id="{{ $method['id'] }}">
               
 
               <td>
