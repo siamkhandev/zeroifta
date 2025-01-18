@@ -34,7 +34,7 @@ class SubscriptionController extends Controller
 
     try {
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        $features =[];
+        
         $user = User::find($request->user_id);
 
         if (!$user->stripe_customer_id) {
@@ -85,6 +85,11 @@ class SubscriptionController extends Controller
                         'can not customize fuel tank capacity',
                     ];
                 }
+                else{
+                    $features =[];
+                }
+            }else{
+                $features =[];
             }
             return response()->json([
                 'status' => 200,
