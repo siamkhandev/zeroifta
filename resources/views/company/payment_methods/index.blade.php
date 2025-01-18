@@ -66,21 +66,21 @@
               <td>
                 <div class="table-conTab">
                   
-                  <span> {{$method->name}}</span>
+                  <span> {{$method['name']}}</span>
                 </div>
               </td>
               <td>
                 <div>
-                  <p>{{$method->brand}}</p>
+                  <p>{{$method['brand']}}</p>
 
                 </div>
               </td>
-              <td>{{$method->expiry_month}}</td>
-              <td>{{$method->expiry_year}}</td>
-              <td>{{$method->last4}}</td>
+              <td>{{$method['expiry_month']}}</td>
+              <td>{{$method['expiry_year']}}</td>
+              <td>{{$method['last4']}}</td>
               
               <td>
-                @if($method->is_default == true)
+                @if($method['is_default'] == true)
                 <span style="color: green;">{{__('messages.Yes')}}</span>
                 @else
                 <span style="color: red;">{{__('messages.No')}}</span>
