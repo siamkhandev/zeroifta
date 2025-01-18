@@ -76,7 +76,7 @@ VwIDAQAB
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if necessary
+                "_token": "{{ csrf_token() }}",
             },
             body: JSON.stringify({ encryptedData })
         });
