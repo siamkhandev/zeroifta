@@ -109,6 +109,7 @@
 $(document).ready(function () {
     // Handle click event for setting a payment method as default
     $('.set-default-btn').on('click', function () {
+        alert("{Sss");
         var paymentMethodId = $(this).closest('tr').data('payment-method-id');
 
         $.ajax({
