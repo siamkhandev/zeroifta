@@ -93,8 +93,10 @@
                 success: function (response) {
                     if (response.status === 200) {
                         alert('Payment method added successfully!');
+                        window.location.reload();
                     } else {
                         alert('Failed to add payment method: ' + response.message);
+                        window.location.reload();
                     }
                 },
                 error: function (xhr, status, error) {
