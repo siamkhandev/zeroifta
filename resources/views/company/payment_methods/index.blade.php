@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="filter-btn">
-            <a class="blueLine_btn" href="{{route('add-payment-method')}}">{{__('messages.Add Payment Method')}}+</a>
+            <a class="blueLine_btn" href="{{route('payment_method.add')}}">{{__('messages.Add Payment Method')}}+</a>
             
           </div>
         </div>
