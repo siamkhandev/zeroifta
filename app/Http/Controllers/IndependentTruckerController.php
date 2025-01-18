@@ -19,7 +19,7 @@ use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 class IndependentTruckerController extends Controller
 {
-    public function store(Request $request, TwilioService $twilioService)
+    public function store(Request $request)
     {
 
         $data = $request->validate([
@@ -79,8 +79,8 @@ class IndependentTruckerController extends Controller
     
             //$driver->save();
             $otp = rand(100000, 999999);
-            $twilioService->sendSmsOtp($request->phone, $otp);
-            $twilioService->sendEmailOtp($request->email, $otp);
+            // $twilioService->sendSmsOtp($request->phone, $otp);
+            // $twilioService->sendEmailOtp($request->email, $otp);
             $driver->otp_code = $otp;
             $driver->save();
             $companyDriver = new CompanyDriver();
@@ -121,7 +121,7 @@ class IndependentTruckerController extends Controller
             $driverFind->features = [];
             return response()->json([
                 'status'=>200,
-                'message'=>'Independent trucker added. OTP sent for verification.',
+                'message'=>'Registration successful',
                 'data'=>$driverFind
             ]);
         }catch(Exception $e){
