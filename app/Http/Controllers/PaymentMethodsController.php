@@ -103,22 +103,20 @@ class PaymentMethodsController extends Controller
             return response()->json(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
         }
     }
-    public function setDefaultPaymentMethod(Request $request)
+    public function setDefaultPaymentMethod($id)
     {
-        $request->validate([
-            'paymentMethodId' => 'required|string',
-        ]);
+        
     
         // Retrieve the logged-in user
         $user = auth()->user();
     
         // Find the selected payment method from the database
         $paymentMethod = PaymentMethod::where('user_id', $user->id)
-            ->where('stripe_payment_method_id', $request->paymentMethodId)
+            ->where('stripe_payment_method_id', $id)
             ->first();
     
         if (!$paymentMethod) {
-            return response()->json(['status' => 404, 'message' => 'Payment method not found.']);
+            return redirect()->back()->withError('No payment Method Exist against this id');
         }
     
         try {
@@ -139,12 +137,14 @@ class PaymentMethodsController extends Controller
     
             // Set the selected payment method as default
             $paymentMethod->update(['is_default' => true]);
-    
-            return response()->json(['status' => 200, 'message' => 'Payment method set as default successfully.']);
+            return redirect()->back()->withSuccess('Payment method set as default successfully.');
+           
         } catch (ApiErrorException $e) {
-            return response()->json(['status' => 500, 'message' => 'Stripe API Error: ' . $e->getMessage()]);
+            return redirect()->back()->withError('Stripe API Error: ' . $e->getMessage());
+            
         } catch (\Exception $e) {
-            return response()->json(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
+            return redirect()->back()->withError('Error: ' . $e->getMessage());
+           
         }
     }
 }
