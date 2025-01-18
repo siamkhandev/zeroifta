@@ -46,14 +46,12 @@ class OtpController extends Controller
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            'email' => 'required_without:phone|email',
-            'phone' => 'required_without:email|numeric',
-            'otp' => 'required|digits:6',
+            'user_id' => 'required|exists:users,id',
+            'sms_otp' => 'required|numeric',
+            'email_otp' => 'required|numeric',
         ]);
 
-        $user = User::where('email', $request->email)
-            ->orWhere('phone', $request->phone)
-            ->first();
+        $user = User::find($request->user_id);
 
         if (!$user) {
             return response()->json([
@@ -63,30 +61,51 @@ class OtpController extends Controller
             ], 400);
         }
 
-        if ($user->otp_code == $request->otp) {
-            $user->otp_code = null;
+        $isSmsOtpCorrect = $user->otp_code === $request->sms_otp;
+        $isEmailOtpCorrect = $user->email_otp === $request->email_otp;
 
-            if ($request->email) {
-                $user->is_email_verified = true;
-            }
+        // Track response messages for incorrect OTPs
+        $errors = [];
 
-            if ($request->phone) {
-                $user->is_phone_verified = true;
-            }
-
-            $user->save();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'OTP verified successfully.',
-                'data' => (object)[]
-            ]);
+        // Update if SMS OTP is correct
+        if ($isSmsOtpCorrect) {
+            $user->otp_code = null; // Clear SMS OTP
+            $user->is_phone_verified = true;
+        } else {
+            $errors[] = 'SMS OTP is incorrect.';
         }
 
+        // Update if Email OTP is correct
+        if ($isEmailOtpCorrect) {
+            $user->email_otp = null; // Clear Email OTP
+            $user->is_email_verified = true;
+        } else {
+            $errors[] = 'Email OTP is incorrect.';
+        }
+
+        // Save the user if there are changes
+        if ($isSmsOtpCorrect || $isEmailOtpCorrect) {
+            $user->save();
+        }
+
+        // Return error message if any OTP was incorrect
+        if (!empty($errors)) {
+            return response()->json([
+                'status' => 400,
+                'message' => implode(' ', $errors),
+                'data' => (object)[]
+            ], 400);
+        }
+
+        // Return success message if both OTPs are correct
         return response()->json([
-            'status' => 400,
-            'message' => 'Invalid OTP.',
+            'status' => 200,
+            'message' => 'Both OTPs verified successfully.',
             'data' => (object)[]
-        ], 400);
+        ]);
     }
+
+
+       
+    
 }
