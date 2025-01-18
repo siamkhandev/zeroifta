@@ -19,10 +19,10 @@ class PaymentMethodsController extends Controller
             // Get the authenticated user
             $user = Auth::user();
 
-            if (!$user->stripe_customer_id) {
-                return redirect()->back()->withError('No Stripe customer found for the user');
+            // if (!$user->stripe_customer_id) {
+            //     return redirect()->back()->withError('No Stripe customer found for the user');
                 
-            }
+            // }
 
             // Retrieve all payment methods for the Stripe customer
             $paymentMethods = \Stripe\PaymentMethod::all([
