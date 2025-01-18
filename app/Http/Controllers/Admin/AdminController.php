@@ -121,7 +121,7 @@ class AdminController extends Controller
     }
     public function pay(Request $request)
     {
-
+        dd($request->all());
         $plan = Plan::find($request->plan_id);
         $paymentMethod = $request->payment_method;
         $user = Auth::user();
