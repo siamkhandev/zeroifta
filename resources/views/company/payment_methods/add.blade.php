@@ -5,85 +5,93 @@
     <div class="profileForm-area mb-4">
         <div class="sec1-style">
         <form id="payment-form">
-        <div class="mb-3">
-            <label for="cardHolderName" class="form-label">Method Name</label>
-            <input type="text" class="form-control" id="methodName" placeholder="Method Name" required>
-        </div>
-        <div class="mb-3">
-            <label for="cardHolderName" class="form-label">Card Holder Name</label>
-            <input type="text" class="form-control" id="cardHolderName" placeholder="Enter Card Holder Name" required>
-        </div>
-        <div class="mb-3">
-            <label for="cardNumber" class="form-label">Card Number</label>
-            <input type="text" class="form-control" id="cardNumber" placeholder="Enter Card Number" maxlength="16" required>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label for="expiryDate" class="form-label">Expiry Date (MM/YY)</label>
-                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
-            </div>
-            <div class="col-md-6">
-                <label for="cvc" class="form-label">CVC</label>
-                <input type="text" class="form-control" id="cvc" placeholder="CVC" maxlength="4" required>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">Add Payment Method</button>
-    </form>
+    <div class="mb-3">
+        <label for="methodName" class="form-label">Method Name</label>
+        <input type="text" class="form-control" id="methodName" placeholder="Method Name" required>
+    </div>
+    <div class="mb-3">
+        <label for="card-element" class="form-label">Card Details</label>
+        <!-- Stripe Elements Card Element will be inserted here -->
+        <div id="card-element" class="form-control"></div>
+        <div id="card-errors" role="alert" style="color: red; margin-top: 5px;"></div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Add Payment Method</button>
+</form>
     </div>
 </div>
 @endsection
 @section('scripts')
+<script src="https://js.stripe.com/v3/"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#payment-form').on('submit', function (e) {
+        // Initialize Stripe
+        const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your Stripe publishable key
+        const elements = stripe.elements();
+
+        // Create an instance of the card Element
+        const card = elements.create('card', {
+            style: {
+                base: {
+                    color: '#32325d',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+            }
+        });
+
+        // Mount the card Element into the #card-element div
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element
+        card.on('change', function (event) {
+            const errorElement = $('#card-errors');
+            if (event.error) {
+                errorElement.text(event.error.message);
+            } else {
+                errorElement.text('');
+            }
+        });
+
+        // Handle form submission
+        $('#payment-form').on('submit', async function (e) {
             e.preventDefault();
 
-            // Collect form data
-            const methodName = $('#methodName').val();
-            const cardHolderName = $('#cardHolderName').val();
-            const cardNumber = $('#cardNumber').val();
-            const expiryDate = $('#expiryDate').val();
-            const cvc = $('#cvc').val();
+            const methodName = $('#methodName').val(); // Get method name
 
-            // RSA Public Key (Replace with your actual public key)
-            const publicKey = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApJsv/AC05XsMNA0kt4P2
-C+pKV6FVqk6INlPKBEdyq9AO1/kuzkVq+EcbCM2m2vmOn68iFTmsrebkP5aUV9gd
-2Pvj9nzegvN3sN0qaBQxkCyP52Kl875tB5eT8KRnUZ/2ZVjHdSqoFr6O53F8bcDV
-zHoB5SPA9fv53d9y3OMm4uCLv1XeClayEmevPD6T1julsvo4kmV7hlABIGZ4JiEK
-CKb/E1jVCbVgR44Y6yxm0PhcTHWr/Pcos+PS2OaOnfjLJN2kjcxnd+jMRwtJJ8Mb
-YORpta0ZWgqaU2UiBkmXGv/tnDDBWcp+RQGa6wA3JP098rj7XOTsiLcSKO2xNHS/
-VwIDAQAB
------END PUBLIC KEY-----`;
+            const { paymentMethod, error } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: card,
+                billing_details: {
+                    name: methodName
+                }
+            });
 
-            // Encrypt using JSEncrypt
-            const encrypt = new JSEncrypt();
-            encrypt.setPublicKey(publicKey);
-
-            const encryptedData = encrypt.encrypt(JSON.stringify({
-                methodName,
-                cardHolderName,
-                cardNumber,
-                expiryDate,
-                cvc
-            }));
-
-            if (!encryptedData) {
-                alert('Encryption failed. Please try again.');
+            if (error) {
+                // Show error in the form
+                $('#card-errors').text(error.message);
                 return;
             }
 
-            // Send encrypted data to the backend via jQuery AJAX
+            // Send the paymentMethod.id to your server
             $.ajax({
                 url: '/store-payment-method',
                 type: 'POST',
                 data: {
-                    encryptedData: encryptedData,
-                    _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token
+                    paymentMethodId: paymentMethod.id,
+                    methodName: methodName,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function (response) {
-                    if (response.status==200) {
+                    if (response.status === 200) {
                         alert('Payment method added successfully!');
                     } else {
                         alert('Failed to add payment method: ' + response.message);
