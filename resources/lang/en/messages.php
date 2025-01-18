@@ -175,6 +175,18 @@ return [
     "Vehicle Assignment Status"=>"Vehicle Assignment Status",
     "Vehicle Assigned"=>"Vehicle Assigned",
     "Vehicle Not Assigned"=>"Vehicle Not Assigned",
+    "Brand"=>"Brand",
+    "Expiry Month"=>"Expiry Month",
+    "Expiry Year"=>"Expiry Year",
+
+    "Last4"=>"Last4",
+    "Is Default"=>"Is Default",
+    "Default"=>"Default",
+    "Set As Default"=>"Set As Default",
+    "Add Payment Method"=>"Add Payment Method",
+    "Method Name"=>"Method Name",
+    "Card Details"=>"Card Details",
+
 
 
 

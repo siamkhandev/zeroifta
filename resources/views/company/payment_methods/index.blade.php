@@ -87,7 +87,7 @@
                 @if($method['is_default'] == true)
                 <span class="label label-success">{{__('messages.Default')}}</span>
                 @else
-                <a href="{{route('make_default',$method['id'])}}" class="set-default-btn btn btn-primary">Set as Default</a>
+                <a href="{{route('make_default',$method['id'])}}" class="set-default-btn btn btn-primary">{{__('messages.Set as Default')}}</a>
                  @endif
 
                  

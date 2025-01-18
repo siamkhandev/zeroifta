@@ -167,5 +167,15 @@ return [
     "Vehicle Assignment Status"=>"Estado de asignación de vehículos",
     "Vehicle Assigned"=>"Vehículo asignado",
     "Vehicle Not Assigned"=>"Vehículo no asignado",
+    "Brand"=>"Marca",
+    "Expiry Month"=>"Mes de vencimiento",
+    "Expiry Year"=>"Año de vencimiento",
+    "Last4"=>"últimos 4",
+    "Is Default"=>"Es predeterminado",
+    "Default"=>"Por defecto",
+    "Set As Default"=>"Establecer como predeterminado",
+    "Add Payment Method"=>"Agregar método de pago",
+    "Method Name"=>"Nombre del método",
+    "Card Details"=>"Detalles de la tarjeta",
 
 ];
