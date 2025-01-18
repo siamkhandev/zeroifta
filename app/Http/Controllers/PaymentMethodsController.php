@@ -96,14 +96,14 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 
         // Parse decrypted data
         $cardDetails = json_decode($decryptedData, true);
-        dd($cardDetails);
+        
 
         try {
             // Set Stripe secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
 
             // Retrieve or create a Stripe customer for the authenticated user
-            $user = User::find($request->user_id);
+            $user = Auth::user();
             if (!$user->stripe_customer_id) {
                 // Create a new customer on Stripe
                 $customer = \Stripe\Customer::create([
@@ -118,7 +118,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
             $stripe = new \Stripe\StripeClient('pk_test_AvPEuYEvHgZr9uN2f8KxzfGn00wLRXCSAb');
-            $getMonth = explode('/',$cardDetails['expiry']);
+            $getMonth = explode('/',$cardDetails['expiryDate']);
 
            $token =  $stripe->tokens->create([
               'card' => [
@@ -155,7 +155,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             // Store payment method details in the database
             $storedPaymentMethod = PaymentMethod::create([
                 'user_id' => $user->id,
-                'method_name' => $validated['method_name'],
+                'method_name' => $cardDetails['methodName'],
                 'card_holder_name' => $cardDetails['cardHolderName'],
                 'card_number' => substr($paymentMethod->card->last4, -4), // Store last 4 digits
                 'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year, // Expiry date
