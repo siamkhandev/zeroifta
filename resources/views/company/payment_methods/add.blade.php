@@ -72,7 +72,7 @@ VwIDAQAB
         }
 
         // Send encrypted data to the backend
-        const response = await fetch('/add-payment-method', {
+        const response = await fetch('/store-payment-method', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
