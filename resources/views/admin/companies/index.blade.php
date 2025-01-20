@@ -155,11 +155,10 @@
                           <div class="text-center">
                            <form method="post" action="{{route('companies.changePassword',$company->id)}}">
                            <div class="dash-input mb-3">
-                           <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Password')}}</label>
+
                             <input type="password" name="password" placeholder="Password" class="form-control">
                            </div>
                            <div class="dash-input mb-3">
-                           <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Confirm Password')}}</label>
                             <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control">
                            </div>
                            </form>
