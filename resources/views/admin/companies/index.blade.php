@@ -187,7 +187,7 @@
 
 </div>
 @endsection
-@section('script')
+@section('scripts')
 <script>
 $(document).ready(function() {
     $('#submitBtn').click(function() {
