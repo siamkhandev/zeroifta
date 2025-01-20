@@ -202,11 +202,11 @@ class AuthController extends Controller
 
         $user = User::find($request->user_id);
         if($user){
-            $user->name = $request->name;
-            $user->phone = $request->phone;
-            $user->email = $request->email;
-            $user->mc = $request->mc;
-            $user->dot = $request->dot;
+            $user->name = $request->name ?? $user->name;
+            $user->phone = $request->phone ??   $user->phone;
+            $user->email = $request->email ??   $user->email;
+            $user->mc = $request->mc ??   $user->mc;
+            $user->dot = $request->dot ??   $user->dot;
             if($request->hasFile('image')){
                 $imageName = time().'.'.$request->image->extension();
                 $request->image->move(public_path('images'), $imageName);
