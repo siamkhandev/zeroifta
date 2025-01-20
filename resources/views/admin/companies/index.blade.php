@@ -153,19 +153,19 @@
                         </div>
                         <div class="modal-body">
                           <div class="text-center">
-                           <form method="post" action="{{route('companies.changePassword',$company->id)}}">
+                           <form method="post" action="{{route('companies.changePassword',$company->id)}}" id="changePasswordForm">
                            <div class="dash-input mb-3">
 
-                            <input type="password" name="password" placeholder="Password" class="form-control">
+                            <input type="password" name="password" placeholder="Password" class="form-control" id="password">
                            </div>
                            <div class="dash-input mb-3">
-                            <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control">
+                            <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control" id="password_confirmation">
                            </div>
                            </form>
 
                             <div class="buttons pt-3">
                               <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
-                              <button type="submit" class="mainBtn">{{__('messages.Submit')}}</button>
+                              <button type="submit" id="submitBtn" class="mainBtn">{{__('messages.Submit')}}</button>
                             </div>
                           </div>
                         </div>
@@ -186,4 +186,61 @@
   </div>
 
 </div>
+@endsection
+@section('script')
+<script>
+$(document).ready(function() {
+    $('#submitBtn').click(function() {
+        // Get values
+        var password = $('#password').val();
+        var password_confirmation = $('#password_confirmation').val();
+
+        // Validate password and confirm password
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long.');
+            return;
+        }
+
+        if (password !== password_confirmation) {
+            alert('Password and Confirm Password must be the same.');
+            return;
+        }
+
+        // Prepare the form data for AJAX submission
+        var formData = {
+            password: password,
+            password_confirmation: password_confirmation,
+            _token: '{{ csrf_token() }}'  // CSRF token for security
+        };
+
+        // AJAX call to submit the form
+        $.ajax({
+            url: $('#changePasswordForm').attr('action'),
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.status === 200) {
+                    alert('Password changed successfully');
+                    // Close the modal (Bootstrap modal)
+                    $('#changePassword-{{$company->id}}').modal('hide');
+                } else {
+                    alert('An error occurred while changing the password.');
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle errors (for example, validation errors)
+                var errors = xhr.responseJSON.errors;
+                if (errors) {
+                    if (errors.password) {
+                        alert(errors.password[0]); // Display password validation error
+                    }
+                    if (errors.password_confirmation) {
+                        alert(errors.password_confirmation[0]); // Display password confirmation error
+                    }
+                }
+            }
+        });
+    });
+});
+</script>
 @endsection
