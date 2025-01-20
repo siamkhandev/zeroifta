@@ -47,14 +47,17 @@ class OtpController extends Controller
         if($request->phone)
         {
             $user = User::find($request->user_id);
-            if(str_contains($request->phone,'+1')){
-                $smsOTP =123456;
-            }else{
-                $smsOTP = rand(100000, 999999);
-            }
 
             try{
-                $this->twilioService->sendSmsOtp($request->phone, $smsOTP);
+                if(str_contains($request->phone,'+1')){
+                    $smsOTP = rand(100000, 999999);
+                    $this->twilioService->sendSmsOtp($request->phone, $smsOTP);
+
+                }else{
+                    $smsOTP =123456;
+                }
+
+
                 $user->otp_code = $smsOTP;
                 $user->update();
                 return response()->json([
@@ -92,15 +95,18 @@ class OtpController extends Controller
 
         }else{
             $user = User::find($request->user_id);
-            if(str_contains($request->phone,'+1')){
-                $smsOTP =123456;
-            }else{
-                $smsOTP = rand(100000, 999999);
-            }
-            $emailOTP = rand(100000, 999999);
+
             try{
+                if(str_contains($request->phone,'+1')){
+                    $smsOTP = rand(100000, 999999);
+                    $this->twilioService->sendSmsOtp($request->phone, $smsOTP);
+
+                }else{
+                    $smsOTP =123456;
+                }
+                $emailOTP = rand(100000, 999999);
                 $this->twilioService->sendEmailOtp($request->email, $emailOTP);
-                $this->twilioService->sendSmsOtp($request->phone, $smsOTP);
+
                 $user->otp_code = $smsOTP;
                 $user->email_otp= $emailOTP;
                 $user->update();
