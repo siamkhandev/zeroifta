@@ -180,5 +180,6 @@ return [
     "Payment Methods"=>"Métodos de pago",
     "Pages / Payment Methods"=>"Páginas / Metodos de pago",
     "Role"=>"Rol",
+    "Change Password"=>"Cambiar la contraseña"
 
 ];

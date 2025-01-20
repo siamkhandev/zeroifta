@@ -189,6 +189,7 @@ return [
     "Payment Methods"=>"Payment Methods",
     "Pages / Payment Methods"=>"Pages / Payment Methods",
     "Role"=>"Role",
+    "Change Password"=>"Change Password",
 
 
 
