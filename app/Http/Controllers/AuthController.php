@@ -88,7 +88,10 @@ class AuthController extends Controller
             $user->subscription = $checkSubscription;
             $user->features = $features;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
-            $findCard->is_default = true;
+            if($findCard){
+                $findCard->is_default = true;
+            }
+
             $user->defaultCard = $findCard;
 
             return response()->json(['status'=>200,'message'=>'Logged in successfully','data' => $user], 200);
