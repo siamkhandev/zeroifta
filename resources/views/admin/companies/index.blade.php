@@ -86,7 +86,7 @@
                     </a>
                   </span> -->
                   <span class="tabEdit-icon">
-                  <a href="{{route('companies.edit',$company->id)}}">
+                  <a href="{{route('companies.edit',$company->id)}}" class="btn btn-primary">
                     Change Password
                   </a>
                 </span>
