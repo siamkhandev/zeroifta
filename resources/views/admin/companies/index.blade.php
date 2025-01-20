@@ -222,7 +222,7 @@ $(document).ready(function() {
                 if (response.status === 200) {
                     alert('Password changed successfully');
                     // Close the modal (Bootstrap modal)
-                    $('.change_pas_modal').modal('hide');
+                    window.location.reload();
                 } else {
                     alert('An error occurred while changing the password.');
                 }
