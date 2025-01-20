@@ -154,9 +154,9 @@
                         <div class="modal-body">
                           <div class="text-center">
                            <form method="post" action="{{route('companies.changePassword',$company->id)}}">
-                           <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Password</label>
+
                             <input type="password" name="password" placeholder="Password" class="form-control">
-                            <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
+
                             <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control">
                            </form>
 
