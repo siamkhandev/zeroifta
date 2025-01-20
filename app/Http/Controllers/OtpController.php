@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\TwilioService;
+use Exception;
 use Illuminate\Support\Facades\Cache;
 class OtpController extends Controller
 {
@@ -47,25 +48,43 @@ class OtpController extends Controller
         {
             $user = User::find($request->user_id);
             $smsOTP = rand(100000, 999999);
-            $this->twilioService->sendSmsOtp($request->phone, $smsOTP);
-            $user->otp_code = $smsOTP;
-            $user->update();
-            return response()->json([
-                'status' => 200,
-                'message' => 'OTP sent successfully',
-                'data' => (object)[]
-            ]);
+            try{
+                $this->twilioService->sendSmsOtp($request->phone, $smsOTP);
+                $user->otp_code = $smsOTP;
+                $user->update();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'OTP sent successfully',
+                    'data' => (object)[]
+                ]);
+            }catch(Exception $e){
+                return response()->json([
+                    'status' => 500,
+                    'message' => $e->getMessage(),
+                    'data' => (object)[]
+                ]);
+            }
+
         }else{
             $user = User::find($request->user_id);
             $emailOTP = rand(100000, 999999);
-            $this->twilioService->sendEmailOtp($request->email, $emailOTP);
-            $user->email_otp= $emailOTP;
-            $user->update();
-            return response()->json([
-                'status' => 200,
-                'message' => 'OTP sent successfully',
-                'data' => (object)[]
-            ]);
+            try{
+                $this->twilioService->sendEmailOtp($request->email, $emailOTP);
+                $user->email_otp= $emailOTP;
+                $user->update();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'OTP sent successfully',
+                    'data' => (object)[]
+                ]);
+            }catch(Exception $e){
+                return response()->json([
+                    'status' => 500,
+                    'message' => $e->getMessage(),
+                    'data' => (object)[]
+                ]);
+            }
+
         }
     }
 
