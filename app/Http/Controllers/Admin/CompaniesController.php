@@ -71,4 +71,9 @@ class CompaniesController extends Controller
             return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
+    public function changePassword(Request $request)
+    {
+        dd($request->all());
+
+    }
 }

@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
       Route::get('companies/edit/{id}', [CompaniesController::class, 'edit'])->name('companies.edit');
       Route::post('companies/update/{id}', [CompaniesController::class, 'update'])->name('companies.update');
       Route::get('companies/delete/{id}', [CompaniesController::class, 'delete'])->name('companies.delete');
+      Route::post('companies/change-password/{id}', [CompaniesController::class, 'changePassword'])->name('companies.changePassword');
       Route::get('plans', [PlansController::class, 'index'])->name('plans');
       Route::get('plans/create', [PlansController::class, 'create'])->name('plans.create');
       Route::post('plans/store', [PlansController::class, 'store'])->name('plans.store');
@@ -129,7 +130,7 @@ Route::middleware('auth')->group(function () {
         Route::get('subscribe', [CompanyController::class, 'showPlans'])->name('subscribe');
 
         ////
-        
+
       });
       Route::get('payment-methods', [PaymentMethodsController::class, 'index'])->name('payment-methods.all');
       Route::get('/add-payment-method', [PaymentMethodsController::class, 'addPaymentMethod'])->name('payment_method.add');
