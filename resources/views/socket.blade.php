@@ -10,7 +10,7 @@
     <h1>User Location Simulation (Driver ID: 13 & 14)</h1>
 
     <script>
-        const socket = io('http://zeroifta.alnairtech.com:3000');  // Socket.io server address
+        const socket = io('https://ws.zeroifta.com');  // Socket.io server address
 
         // Coordinates for driver 13 (Lahore to Islamabad)
         const driver13Locations = [

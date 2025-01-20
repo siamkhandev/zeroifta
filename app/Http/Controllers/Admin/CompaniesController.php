@@ -15,7 +15,7 @@ class CompaniesController extends Controller
 {
     public function index()
     {
-        $companies = User::whereRole('company')->orderBy('id','desc')->get();
+        $companies = User::whereRole('company')->whereRole('trucker')->orderBy('id','desc')->get();
         return view('admin.companies.index',get_defined_vars());
     }
     public function edit($id)
@@ -25,14 +25,14 @@ class CompaniesController extends Controller
     }
     public function update(Request $request,$id)
     {
-        
+
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|unique:users,email,' . $id,
             'phone' => 'required|string|max:20',
             'dot' => 'required|string|max:255',
             'mc' => 'required|string|max:255',
-            
+
         ]);
         $company = User::find($id);
         $company->name=$request->name;
@@ -54,16 +54,16 @@ class CompaniesController extends Controller
         try {
             // Disable foreign key checks
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-    
+
             // Perform deletion
             Vehicle::where('company_id', $id)->delete();
             DriverVehicle::where('company_id', $id)->delete();
             CompanyDriver::where('company_id', $id)->delete();
             User::whereId($id)->delete();
-    
+
             // Enable foreign key checks
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-    
+
             DB::commit();
             return redirect()->back()->with('error', 'Company Deleted Successfully');
         } catch (\Exception $e) {
