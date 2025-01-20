@@ -15,7 +15,7 @@ class CompaniesController extends Controller
 {
     public function index()
     {
-        $companies = User::whereRole('company')->orWhereRole('trucker')->orderBy('id','desc')->get();
+        $companies = User::whereRole('company')->orWhere('role','trucker')->orderBy('id','desc')->get();
         return view('admin.companies.index',get_defined_vars());
     }
     public function edit($id)
