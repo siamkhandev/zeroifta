@@ -44,7 +44,7 @@ class OtpController extends Controller
     }
     public function resendOtp(Request $request)
     {
-        if($request->phone)
+        if($request->phone && !isset($request->email))
         {
             $user = User::find($request->user_id);
 
@@ -73,7 +73,7 @@ class OtpController extends Controller
                 ]);
             }
 
-        }else if($request->email){
+        }else if($request->email && !isset($request->phone)){
             $user = User::find($request->user_id);
             $emailOTP = rand(100000, 999999);
             try{
