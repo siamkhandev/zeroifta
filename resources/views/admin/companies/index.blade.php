@@ -154,10 +154,12 @@
                         <div class="modal-body">
                           <div class="text-center">
                            <form method="post" action="{{route('companies.changePassword',$company->id)}}">
-
+                           <div class="dash-input mb-3">
                             <input type="password" name="password" placeholder="Password" class="form-control">
-
+                           </div>
+                           <div class="dash-input mb-3">
                             <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control">
+                           </div>
                            </form>
 
                             <div class="buttons pt-3">
