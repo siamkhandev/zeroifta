@@ -43,11 +43,11 @@ class OtpController extends Controller
     }
     public function resendOtp(Request $request)
     {
-        if($request->type == "phone")
+        if($request->phone)
         {
             $user = User::find($request->user_id);
             $smsOTP = rand(100000, 999999);
-            $this->twilioService->sendSmsOtp($user->phone, $smsOTP);
+            $this->twilioService->sendSmsOtp($request->phone, $smsOTP);
             $user->otp_code = $smsOTP;
             $user->update();
             return response()->json([
@@ -58,7 +58,7 @@ class OtpController extends Controller
         }else{
             $user = User::find($request->user_id);
             $emailOTP = rand(100000, 999999);
-            $this->twilioService->sendEmailOtp($user->email, $emailOTP);
+            $this->twilioService->sendEmailOtp($request->email, $emailOTP);
             $user->email_otp= $emailOTP;
             $user->update();
             return response()->json([
@@ -106,13 +106,13 @@ class OtpController extends Controller
         if ($user->otp_code == $request->sms_otp) {
             $user->otp_code = null;
             $user->is_phone_verified = true;
-            
+
         }
         if($user->email_otp == $request->email_otp){
             $user->email_otp = null;
             $user->is_email_verified = true;
         }
-           
+
 
         $user->save();
 
@@ -123,6 +123,6 @@ class OtpController extends Controller
         ]);
     }
 
-       
-    
+
+
 }

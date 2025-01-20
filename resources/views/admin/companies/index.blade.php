@@ -33,6 +33,7 @@
             <th scope="col">{{__('messages.MC')}} #</th>
             <th scope="col">{{__('messages.DOT')}} #</th>
             <th scope="col">{{__('messages.Date')}}</th>
+            <th scope="col">{{__('messages.Role')}}</th>
             <th scope="col">{{__('messages.Action')}}</th>
           </tr>
         </thead>
@@ -66,6 +67,9 @@
             <td>{{$company->dot}}</td>
             <td>
               <span>{{$company->created_at->format('Y-m-d')}}</span>
+            </td>
+            <td>
+              <span>{{$company->role}}</span>
             </td>
             <td>
               <div class="tabAction-list">
