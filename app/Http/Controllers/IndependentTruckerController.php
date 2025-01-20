@@ -59,7 +59,7 @@ class IndependentTruckerController extends Controller
             $inputDate = $request->input('license_start_date'); // e.g., '12-30-2019'
 
             $inputDate = trim($inputDate);
-    
+
             // Ensure the input strictly matches the `m-d-Y` format
             $convertedDate = Carbon::createFromFormat('m-d-Y', $inputDate)->format('Y-m-d');
             $driver = new User();
@@ -75,14 +75,14 @@ class IndependentTruckerController extends Controller
             $driver->phone	 = $request->phone;
             $driver->password= Hash::make($request->password);
             $driver->role='trucker';
-    
-    
+
+
            if(str_contains($request->phone,'+1')) {
             $otp_sms = rand(100000, 999999);
            }else{
             $otp_sms = 123456;
            }
-            
+
             $otp_email = rand(100000, 999999);
             $twilioService->sendSmsOtp($request->phone, $otp_sms);
             $twilioService->sendEmailOtp($request->email, $otp_email);
@@ -121,7 +121,7 @@ class IndependentTruckerController extends Controller
             $driverFind->subscription = $checkSubscription;
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $driverFind->rsa_key = $rsaKey;
-    
+
             $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;;
             $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
             $driverFind->defaultCard = $findCard;
@@ -138,7 +138,7 @@ class IndependentTruckerController extends Controller
                 'data'=>(object)[]
             ]);
         }
-        
+
     }
     public function addVehicle(Request $request)
 
@@ -156,7 +156,7 @@ class IndependentTruckerController extends Controller
             'odometer_reading' => 'required',
             'mpg' => 'required',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:1024',
-            
+
 
         ]);
 

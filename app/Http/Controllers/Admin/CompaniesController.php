@@ -10,12 +10,13 @@ use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CompaniesController extends Controller
 {
     public function index()
     {
-        $companies = User::whereRole('company')->whereRole('trucker')->orderBy('id','desc')->get();
+        $companies = User::whereRole('company')->orWhere('role','trucker')->orderBy('id','desc')->get();
         return view('admin.companies.index',get_defined_vars());
     }
     public function edit($id)
@@ -70,5 +71,22 @@ class CompaniesController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
         }
+    }
+    public function changePassword(Request $request, $companyId)
+    {
+        $validated = $request->validate([
+            'password' => 'required|min:8|confirmed',  // password confirmation is automatically checked
+        ]);
+        $company = User::find($companyId);
+        if (!$company) {
+            return response()->json(['status' => 400, 'message' => 'Company not found']);
+        }
+
+        // Update password
+        $company->password = Hash::make($request->password);
+        $company->save();
+
+        return response()->json(['status' => 200, 'message' => 'Password changed successfully']);
+
     }
 }

@@ -33,6 +33,7 @@
             <th scope="col">{{__('messages.MC')}} #</th>
             <th scope="col">{{__('messages.DOT')}} #</th>
             <th scope="col">{{__('messages.Date')}}</th>
+            <th scope="col">{{__('messages.Role')}}</th>
             <th scope="col">{{__('messages.Action')}}</th>
           </tr>
         </thead>
@@ -68,19 +69,19 @@
               <span>{{$company->created_at->format('Y-m-d')}}</span>
             </td>
             <td>
+              <span><span class="label label-default" style="padding: 5px;
+    border-radius: 5px;
+    background: #28a328;color:white">{{$company->role == "trucker" ? 'Independent Trucker' :$company->role}}</span></span>
+            </td>
+            <td>
               <div class="tabAction-list">
-                <!-- <span class="tabView-icon">
-                    <a href="#">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="23" height="17" viewBox="0 0 23 17" fill="none">
-                        <path
-                          d="M22.4547 7.995C21.5726 5.71324 20.0412 3.73996 18.0498 2.31906C16.0584 0.898167 13.6943 0.0919297 11.2497 0C8.80507 0.0919297 6.44097 0.898167 4.44958 2.31906C2.45819 3.73996 0.926802 5.71324 0.0446809 7.995C-0.0148936 8.15978 -0.0148936 8.34022 0.0446809 8.505C0.926802 10.7868 2.45819 12.76 4.44958 14.1809C6.44097 15.6018 8.80507 16.4081 11.2497 16.5C13.6943 16.4081 16.0584 15.6018 18.0498 14.1809C20.0412 12.76 21.5726 10.7868 22.4547 8.505C22.5143 8.34022 22.5143 8.15978 22.4547 7.995ZM11.2497 15C7.27468 15 3.07468 12.0525 1.55218 8.25C3.07468 4.4475 7.27468 1.5 11.2497 1.5C15.2247 1.5 19.4247 4.4475 20.9472 8.25C19.4247 12.0525 15.2247 15 11.2497 15Z"
-                          fill="#19A130" />
-                        <path
-                          d="M11.75 3.25C10.86 3.25 9.98996 3.51392 9.24994 4.00839C8.50991 4.50285 7.93314 5.20566 7.59254 6.02792C7.25195 6.85019 7.16283 7.75499 7.33647 8.62791C7.5101 9.50082 7.93869 10.3026 8.56802 10.932C9.19736 11.5613 9.99918 11.9899 10.8721 12.1635C11.745 12.3372 12.6498 12.2481 13.4721 11.9075C14.2943 11.5669 14.9971 10.9901 15.4916 10.2501C15.9861 9.51005 16.25 8.64002 16.25 7.75C16.25 6.55653 15.7759 5.41193 14.932 4.56802C14.0881 3.72411 12.9435 3.25 11.75 3.25ZM11.75 10.75C11.1567 10.75 10.5766 10.5741 10.0833 10.2444C9.58994 9.91476 9.20543 9.44623 8.97836 8.89805C8.7513 8.34987 8.69189 7.74667 8.80765 7.16473C8.9234 6.58279 9.20912 6.04824 9.62868 5.62868C10.0482 5.20912 10.5828 4.9234 11.1647 4.80764C11.7467 4.69189 12.3499 4.7513 12.8981 4.97836C13.4462 5.20542 13.9148 5.58994 14.2444 6.08329C14.5741 6.57664 14.75 7.15666 14.75 7.75C14.75 8.54565 14.4339 9.30871 13.8713 9.87132C13.3087 10.4339 12.5457 10.75 11.75 10.75Z"
-                          fill="#19A130" />
-                      </svg>
-                    </a>
-                  </span> -->
+              @if($company->role=="trucker")
+                <span class="hover" href="#" type="button" data-bs-toggle="modal" data-bs-target="#changePassword-{{$company->id}}">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+                    <path d="M 25 3 C 18.363281 3 13 8.363281 13 15 L 13 20 L 9 20 C 7.300781 20 6 21.300781 6 23 L 6 47 C 6 48.699219 7.300781 50 9 50 L 41 50 C 42.699219 50 44 48.699219 44 47 L 44 23 C 44 21.300781 42.699219 20 41 20 L 37 20 L 37 15 C 37 8.363281 31.636719 3 25 3 Z M 25 5 C 30.566406 5 35 9.433594 35 15 L 35 20 L 15 20 L 15 15 C 15 9.433594 19.433594 5 25 5 Z M 25 30 C 26.699219 30 28 31.300781 28 33 C 28 33.898438 27.601563 34.6875 27 35.1875 L 27 38 C 27 39.101563 26.101563 40 25 40 C 23.898438 40 23 39.101563 23 38 L 23 35.1875 C 22.398438 34.6875 22 33.898438 22 33 C 22 31.300781 23.300781 30 25 30 Z"></path>
+                    </svg>
+                  </span>
+                @endif
                 <span class="tabEdit-icon">
                   <a href="{{route('companies.edit',$company->id)}}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -140,6 +141,42 @@
                     </div>
                   </div>
                 </div>
+                <div class="change_pas_modal modal-comm">
+                  <!-- Modal -->
+                  <div class="modal fade" id="changePassword-{{$company->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="closeBtn" data-bs-dismiss="modal" aria-label="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 28 28" fill="none">
+                              <path d="M14 10.8894L24.8894 0L28 3.11062L17.1106 14L28 24.8894L24.8894 28L14 17.1106L3.11062 28L0 24.8894L10.8894 14L0 3.11062L3.11062 0L14 10.8894Z" />
+                            </svg>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                        <h3>{{__('messages.Change Password')}}</h3>
+                          <div class="text-center mt-3">
+
+                           <form method="post" action="{{route('companies.changePassword',$company->id)}}" id="changePasswordForm">
+                           <div class="dash-input mb-3">
+
+                            <input type="password" name="password" placeholder="{{__('messages.Password')}}" class="form-control" id="password">
+                           </div>
+                           <div class="dash-input mb-3">
+                            <input type="password" name="password_confirmation" placeholder="{{__('messages.Confirm Password')}}" class="form-control" id="password_confirmation">
+                           </div>
+                           </form>
+
+                            <div class="buttons pt-3">
+                              <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
+                              <button type="submit" id="submitBtn" class="mainBtn">{{__('messages.Submit')}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <!-- Modal Div End -->
               </div>
             </td>
@@ -153,4 +190,61 @@
   </div>
 
 </div>
+@endsection
+@section('scripts')
+<script>
+$(document).ready(function() {
+    $('#submitBtn').click(function() {
+        // Get values
+        var password = $('#password').val();
+        var password_confirmation = $('#password_confirmation').val();
+
+        // Validate password and confirm password
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long.');
+            return;
+        }
+
+        if (password !== password_confirmation) {
+            alert('Password and Confirm Password must be the same.');
+            return;
+        }
+
+        // Prepare the form data for AJAX submission
+        var formData = {
+            password: password,
+            password_confirmation: password_confirmation,
+            _token: '{{ csrf_token() }}'  // CSRF token for security
+        };
+
+        // AJAX call to submit the form
+        $.ajax({
+            url: $('#changePasswordForm').attr('action'),
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.status === 200) {
+                    alert('Password changed successfully');
+                    // Close the modal (Bootstrap modal)
+                    window.location.reload();
+                } else {
+                    alert('An error occurred while changing the password.');
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle errors (for example, validation errors)
+                var errors = xhr.responseJSON.errors;
+                if (errors) {
+                    if (errors.password) {
+                        alert(errors.password[0]); // Display password validation error
+                    }
+                    if (errors.password_confirmation) {
+                        alert(errors.password_confirmation[0]); // Display password confirmation error
+                    }
+                }
+            }
+        });
+    });
+});
+</script>
 @endsection

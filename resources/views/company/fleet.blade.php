@@ -175,7 +175,7 @@
         });
 
         // Establish connection to Socket.IO server
-        const socket = io('https://ws.zeroifta.com');
+        const socket = io('http://zeroifta.alnairtech.com:3000');
 
         // Listen for real-time driver location updates
         socket.on('driverLocationUpdate', function(data) {
