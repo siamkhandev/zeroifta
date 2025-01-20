@@ -69,7 +69,7 @@
               <span>{{$company->created_at->format('Y-m-d')}}</span>
             </td>
             <td>
-              <span>{{$company->role}}</span>
+              <span><span class="label label-default">{{$company->role}}</span></span>
             </td>
             <td>
               <div class="tabAction-list">
