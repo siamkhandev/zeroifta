@@ -152,16 +152,16 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                        <h3>Change Password</h3>
-                          <div class="text-center mt-5">
+                        <h3>{{__('messages.Change Password')}}</h3>
+                          <div class="text-center mt-3">
 
                            <form method="post" action="{{route('companies.changePassword',$company->id)}}" id="changePasswordForm">
                            <div class="dash-input mb-3">
 
-                            <input type="password" name="password" placeholder="Password" class="form-control" id="password">
+                            <input type="password" name="password" placeholder="{{__('messages.Password')}}" class="form-control" id="password">
                            </div>
                            <div class="dash-input mb-3">
-                            <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control" id="password_confirmation">
+                            <input type="password" name="password_confirmation" placeholder="{{__('messages.Confirm Password')}}" class="form-control" id="password_confirmation">
                            </div>
                            </form>
 
