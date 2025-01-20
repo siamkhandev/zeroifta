@@ -59,7 +59,7 @@ class OtpController extends Controller
                 $user->update();
                 return response()->json([
                     'status' => 200,
-                    'message' => 'OTP sent successfully',
+                    'message' => 'OTP sent on phone',
                     'data' => (object)[]
                 ]);
             }catch(Exception $e){
@@ -79,7 +79,7 @@ class OtpController extends Controller
                 $user->update();
                 return response()->json([
                     'status' => 200,
-                    'message' => 'OTP sent successfully',
+                    'message' => 'OTP sent on email',
                     'data' => (object)[]
                 ]);
             }catch(Exception $e){
@@ -106,7 +106,7 @@ class OtpController extends Controller
                 $user->update();
                 return response()->json([
                     'status' => 200,
-                    'message' => 'OTP sent successfully',
+                    'message' => 'OTP sent on phone and email',
                     'data' => (object)[]
                 ]);
             }catch(Exception $e){
