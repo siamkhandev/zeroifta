@@ -74,14 +74,11 @@
             <td>
               <div class="tabAction-list">
               @if($company->role=="trucker")
-                  <span class="tabEdit-icon">
-
-                  <a href="{{route('companies.edit',$company->id)}}">
-                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+                <span class="hover" href="#" type="button" data-bs-toggle="modal" data-bs-target="#changePassword-{{$company->id}}">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
                     <path d="M 25 3 C 18.363281 3 13 8.363281 13 15 L 13 20 L 9 20 C 7.300781 20 6 21.300781 6 23 L 6 47 C 6 48.699219 7.300781 50 9 50 L 41 50 C 42.699219 50 44 48.699219 44 47 L 44 23 C 44 21.300781 42.699219 20 41 20 L 37 20 L 37 15 C 37 8.363281 31.636719 3 25 3 Z M 25 5 C 30.566406 5 35 9.433594 35 15 L 35 20 L 15 20 L 15 15 C 15 9.433594 19.433594 5 25 5 Z M 25 30 C 26.699219 30 28 31.300781 28 33 C 28 33.898438 27.601563 34.6875 27 35.1875 L 27 38 C 27 39.101563 26.101563 40 25 40 C 23.898438 40 23 39.101563 23 38 L 23 35.1875 C 22.398438 34.6875 22 33.898438 22 33 C 22 31.300781 23.300781 30 25 30 Z"></path>
                     </svg>
-                  </a>
-                </span>
+                  </span>
                 @endif
                 <span class="tabEdit-icon">
                   <a href="{{route('companies.edit',$company->id)}}">
@@ -107,6 +104,44 @@
                 <div class="delete_modal modal-comm">
                   <!-- Modal -->
                   <div class="modal fade" id="exampleModal-{{$company->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="closeBtn" data-bs-dismiss="modal" aria-label="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 28 28" fill="none">
+                              <path d="M14 10.8894L24.8894 0L28 3.11062L17.1106 14L28 24.8894L24.8894 28L14 17.1106L3.11062 28L0 24.8894L10.8894 14L0 3.11062L3.11062 0L14 10.8894Z" />
+                            </svg>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 73 72" fill="none">
+                              <path
+                                d="M36.5004 16.533C38.1834 16.533 39.8574 17.595 41.1324 19.719L58.8684 49.281C61.4214 53.526 59.4504 57 54.5004 57H18.5004C13.5504 57 11.5794 53.523 14.1324 49.281L31.8684 19.719C33.1434 17.595 34.8174 16.533 36.5004 16.533ZM36.5004 10.533C32.6124 10.533 29.0544 12.753 26.7234 16.626L8.9874 46.194C6.6294 50.121 6.3714 54.309 8.2824 57.684C10.1934 61.059 13.9194 63 18.5004 63H54.5004C59.0814 63 62.8104 61.062 64.7184 57.687C66.6264 54.312 66.3714 50.124 64.0134 46.197L46.2774 16.635C43.9464 12.753 40.3884 10.533 36.5004 10.533Z"
+                                fill="#B60F0F" />
+                              <path
+                                d="M36.4996 51.9001C38.6535 51.9001 40.3996 50.154 40.3996 48.0001C40.3996 45.8462 38.6535 44.1001 36.4996 44.1001C34.3457 44.1001 32.5996 45.8462 32.5996 48.0001C32.5996 50.154 34.3457 51.9001 36.4996 51.9001Z"
+                                fill="#B60F0F" />
+                              <path
+                                d="M40.9997 30C40.9997 27.51 38.9867 25.5 36.4997 25.5C35.7634 25.5009 35.0385 25.6824 34.3887 26.0286C33.7389 26.3748 33.184 26.8752 32.7727 27.4859C32.3613 28.0966 32.1061 28.7989 32.0294 29.5311C31.9527 30.2634 32.0568 31.0033 32.3327 31.686C33.9947 35.814 36.4997 42 36.4997 42L40.6727 31.686C40.8767 31.167 40.9997 30.597 40.9997 30Z"
+                                fill="#B60F0F" />
+                            </svg>
+                            <div class="pt-3">
+                              <p class="gray1">{{__('messages.Are you sure you want to delete this?')}}</p>
+                            </div>
+                            <div class="buttons pt-3">
+                              <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
+                              <a href="{{route('companies.delete',$company->id)}}" class="mainBtn">{{__('messages.Submit')}}</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="change_pas_modal modal-comm">
+                  <!-- Modal -->
+                  <div class="modal fade" id="changePassword-{{$company->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header">
