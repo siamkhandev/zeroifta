@@ -153,7 +153,7 @@
                         </div>
                         <div class="modal-body">
                         <h3>Change Password</h3>
-                          <div class="text-center">
+                          <div class="text-center mt-5">
 
                            <form method="post" action="{{route('companies.changePassword',$company->id)}}" id="changePasswordForm">
                            <div class="dash-input mb-3">
