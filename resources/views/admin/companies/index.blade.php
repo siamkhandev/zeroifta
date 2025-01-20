@@ -86,8 +86,8 @@
                     </a>
                   </span> -->
                   <span class="tabEdit-icon">
-                  <a href="{{route('companies.edit',$company->id)}}" class="btn btn-primary">
-                    Change Password
+                  <a href="{{route('companies.edit',$company->id)}}">
+                  <svg xmlns="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.svgrepo.com%2Fsvg%2F136946%2Flock&psig=AOvVaw2itRXj9taVq6jLxmjxX3bn&ust=1737452727768000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLj8qvaBhIsDFQAAAAAdAAAAABAE"></svg>
                   </a>
                 </span>
                 <span class="tabEdit-icon">
