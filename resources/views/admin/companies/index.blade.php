@@ -71,7 +71,7 @@
             <td>
               <span><span class="label label-default" style="padding: 5px;
     border-radius: 5px;
-    background: #28a328;">{{$company->role == "trucker" ? 'Independent Trucker' :$company->role}}</span></span>
+    background: #28a328;color:white">{{$company->role == "trucker" ? 'Independent Trucker' :$company->role}}</span></span>
             </td>
             <td>
               <div class="tabAction-list">
