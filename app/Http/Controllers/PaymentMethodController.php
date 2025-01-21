@@ -115,98 +115,78 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 
 
         try {
+            // Set Stripe secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            // Retrieve or create a Stripe customer for the authenticated user
             $user = User::find($request->user_id);
-
-            if (!$user) {
-                return response()->json([
-                    'status' => 404,
-                    'message' => 'User not found',
-                    'data' => (object)[],
-                ], 404);
-            }
-
             if (!$user->stripe_customer_id) {
+                // Create a new customer on Stripe
                 $customer = \Stripe\Customer::create([
                     'email' => $user->email,
                     'name' => $user->name,
                 ]);
+
+                // Save the customer ID to the user
                 $user->update(['stripe_customer_id' => $customer->id]);
             } else {
+                // Retrieve existing Stripe customer
                 $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
             }
+            $stripe = new \Stripe\StripeClient('pk_test_AvPEuYEvHgZr9uN2f8KxzfGn00wLRXCSAb');
+            $getMonth = explode('/',$cardDetails['expiry']);
 
-            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-            $getMonth = explode('/', $cardDetails['expiry']);
-
-            // Create a token from card details
-            $token = $stripe->tokens->create([
+           $token =  $stripe->tokens->create([
+              'card' => [
+                'name' => $cardDetails['cardHolderName'],
+                'number' => $cardDetails['cardNumber'],
+                'exp_month' =>(int)$getMonth[0],
+                'exp_year' => (int)$getMonth[1],
+                'cvc' =>$cardDetails['cvc'],
+              ],
+            ]);
+           //dd($token->id);
+            // Create a PaymentMethod from the token
+            $paymentMethod = \Stripe\PaymentMethod::create([
+                'type' => 'card',
                 'card' => [
-                    'name' => $cardDetails['cardHolderName'],
-                    'number' => $cardDetails['cardNumber'],
-                    'exp_month' => (int)$getMonth[0],
-                    'exp_year' => (int)$getMonth[1],
-                    'cvc' => $cardDetails['cvc'],
+                    'token' =>  $token->id, // Use the `tok_` received from the Android app
                 ],
             ]);
 
-            // Attempt to charge $1 for verification
-            try {
-                $charge = \Stripe\Charge::create([
-                    'amount' => 100, // $1 in cents
-                    'currency' => 'usd',
-                    'source' => $token->id,
-                    'description' => 'Card verification charge',
-                    'customer' => $customer->id,
-                ]);
-
-                // Refund the charge if successful
-                \Stripe\Refund::create(['charge' => $charge->id]);
-            } catch (\Stripe\Exception\CardException $e) {
-                // If card has insufficient funds or is declined
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'Card verification failed: ' . $e->getMessage(),
-                    'data' => (object)[],
-                ], 400);
-            }
-
-            // Create and attach the payment method
-            $paymentMethod = \Stripe\PaymentMethod::create([
-                'type' => 'card',
-                'card' => ['token' => $token->id],
-            ]);
+            // Attach the payment method to the Stripe customer
             $paymentMethod->attach(['customer' => $customer->id]);
 
-            // Check if the user has a default payment method
             $existingDefault = PaymentMethod::where('user_id', $user->id)
-                ->where('is_default', true)
-                ->exists();
+                                    ->where('is_default', true)
+                                    ->exists();
 
             if (!$existingDefault) {
+                // Update default payment method on Stripe only for the first card
                 \Stripe\Customer::update($customer->id, [
                     'invoice_settings' => ['default_payment_method' => $paymentMethod->id],
                 ]);
             }
 
-            // Store the payment method in your database
+            // Store payment method details in the database
             $storedPaymentMethod = PaymentMethod::create([
                 'user_id' => $user->id,
                 'method_name' => $validated['method_name'],
                 'card_holder_name' => $cardDetails['cardHolderName'],
-                'card_number' => substr($paymentMethod->card->last4, -4),
-                'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year,
-                'stripe_payment_method_id' => $paymentMethod->id,
+                'card_number' => substr($paymentMethod->card->last4, -4), // Store last 4 digits
+                'expiry_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year, // Expiry date
+                'stripe_payment_method_id' => $paymentMethod->id, // Stripe payment method ID
                 'card_type' => $paymentMethod->card->brand ?? null,
-                'is_default' => !$existingDefault,
+                'is_default' => !$existingDefault, // Set as default only if no default exists
             ]);
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Card verified and payment method added successfully',
+                'message' => 'Payment method added successfully',
                 'data' => $storedPaymentMethod,
             ]);
         } catch (\Exception $e) {
+            // Handle errors
             return response()->json([
                 'status' => 500,
                 'message' => $e->getMessage(),
