@@ -156,6 +156,10 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'confirm' => true,
                 'capture_method' => 'manual', // Prevent automatic charge
                 'description' => 'Card verification charge ($1 - to be reversed)',
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                    'allow_redirects' => 'never'
+                ],
             ]);
             $paymentIntent = $stripeC->paymentIntents->retrieve($paymentIntent->id);
             $paymentIntent->cancel();
