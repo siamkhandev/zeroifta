@@ -117,6 +117,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
         try {
             // Set Stripe secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
+            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
             $user = User::find($request->user_id);
             if (!$user->stripe_customer_id) {
                 $customer = \Stripe\Customer::create([
@@ -146,18 +147,15 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 ],
             ]);
             $paymentMethod->attach(['customer' => $customer->id]);
-            $paymentIntent = \Stripe\PaymentIntent::create([
+            $paymentIntent = $stripe->paymentIntents->create([
                 'amount' => 100, // $1 in cents
                 'currency' => 'usd',
                 'customer' => $customer->id,
                 'payment_method' => $paymentMethod->id,
+                'confirmation_method' => 'manual',
                 'confirm' => true,
-                'capture_method' => 'manual', // Prevents automatic charge
+                'capture_method' => 'manual', // Prevent automatic charge
                 'description' => 'Card verification charge ($1 - to be reversed)',
-                'automatic_payment_methods' => [
-                    'enabled' => true,
-                    'allow_redirects' => 'never'
-                ],
             ]);
             $paymentIntent = $stripe->paymentIntents->retrieve($paymentIntent->id);
             $paymentIntent->cancel();
