@@ -147,12 +147,17 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
             ]);
             $paymentMethod->attach(['customer' => $customer->id]);
             $paymentIntent = \Stripe\PaymentIntent::create([
-                'amount' => 100, // $1.00 (in cents)
+                'amount' => 100, // $1 in cents
                 'currency' => 'usd',
-                'payment_method' => $paymentMethod->id,
                 'customer' => $customer->id,
+                'payment_method' => $paymentMethod->id,
                 'confirm' => true,
-                'capture_method' => 'manual', // Authorization hold
+                'capture_method' => 'manual', // Prevents automatic charge
+                'description' => 'Card verification charge ($1 - to be reversed)',
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                    'allow_redirects' => 'never'
+                ],
             ]);
             $existingDefault = PaymentMethod::where('user_id', $user->id)
                                     ->where('is_default', true)
