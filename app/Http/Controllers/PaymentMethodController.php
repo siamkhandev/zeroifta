@@ -152,7 +152,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
                 'currency' => 'usd',
                 'customer' => $customer->id,
                 'payment_method' => $paymentMethod->id,
-                'confirmation_method' => 'manual',
+
                 'confirm' => true,
                 'capture_method' => 'manual', // Prevent automatic charge
                 'description' => 'Card verification charge ($1 - to be reversed)',
