@@ -185,7 +185,7 @@ CpNLB7aULQtFKuJCSUZtdRs33b9s3e3lYJRUFOzOqswk9gCl5uu0
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Payment method added successfully',
+                'message' => 'Payment method added successfully.',
                 'data' => $storedPaymentMethod,
             ]);
         } catch (\Exception $e) {
