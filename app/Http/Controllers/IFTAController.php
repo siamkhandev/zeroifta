@@ -404,16 +404,28 @@ class IFTAController extends Controller
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
                 $newDecodedPolyline = $this->decodePolyline($encodedPolyline);
                 $filteredPolyline = array_filter($newDecodedPolyline, function($coordinate) use ($startLat, $startLng) {
-                    dd($coordinate);
-                    $distance = $this->haversineDistanceFilter($startLat, $startLng, $coordinate[0], $coordinate[1]);
-                    return $distance > 9; // Keep only if distance is greater than 9 miles
+                    // Ensure $coordinate is an array with 'lat' and 'lng' keys
+                    if (isset($coordinate['lat']) && isset($coordinate['lng'])) {
+                        $distance = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
+                        return $distance > 9; // Keep only if distance is greater than 9 miles
+                    }
+                    return false; // Skip invalid coordinates
                 });
+                // $filteredPolyline = array_filter($newDecodedPolyline, function($coordinate) use ($startLat, $startLng) {
+                //     dd($coordinate);
+                //     $distance = $this->haversineDistanceFilter($startLat, $startLng, $coordinate[0], $coordinate[1]);
+                //     return $distance > 9; // Keep only if distance is greater than 9 miles
+                // });
 
                 // Reset array keys
                 $filteredPolyline = array_values($filteredPolyline);
-                // Step 2: Remove points within 9 miles of the end coordinates
                 $finalFilteredPolyline = array_filter($filteredPolyline, function($coordinate) use ($endLat, $endLng) {
-                    return $this->haversineDistanceFilter($endLat, $endLng, $coordinate[0], $coordinate[1]) > 9;
+                    // Ensure $coordinate is an array with 'lat' and 'lng' keys
+                    if (isset($coordinate['lat']) && isset($coordinate['lng'])) {
+                        $distance = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
+                        return $distance > 9; // Keep only if distance is greater than 9 miles
+                    }
+                    return false; // Skip invalid coordinates
                 });
 
                 // Reset array keys after second filtering
