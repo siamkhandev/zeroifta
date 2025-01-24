@@ -411,13 +411,7 @@ class IFTAController extends Controller
                     }
                     return false; // Skip invalid coordinates
                 });
-                // $filteredPolyline = array_filter($newDecodedPolyline, function($coordinate) use ($startLat, $startLng) {
-                //     dd($coordinate);
-                //     $distance = $this->haversineDistanceFilter($startLat, $startLng, $coordinate[0], $coordinate[1]);
-                //     return $distance > 9; // Keep only if distance is greater than 9 miles
-                // });
 
-                // Reset array keys
                 $filteredPolyline = array_values($filteredPolyline);
                 $finalFilteredPolyline = array_filter($filteredPolyline, function($coordinate) use ($endLat, $endLng) {
                     // Ensure $coordinate is an array with 'lat' and 'lng' keys
