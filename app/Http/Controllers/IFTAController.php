@@ -402,10 +402,12 @@ class IFTAController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
+
+
+
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                 $fuelStations = [];
                foreach ($result as  $value) {
@@ -426,10 +428,6 @@ class IFTAController extends Controller
                         'updated_at' => now(),
                     ];
                }
-               $fuelStations = array_unique($fuelStations, SORT_REGULAR);
-
-               // Insert only unique fuel stations
-               FuelStation::insert($fuelStations);
                FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
@@ -449,7 +447,7 @@ class IFTAController extends Controller
                 $responseData = [
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
-                    'fuel_stations' => $fuelStations,
+                    'fuel_stations' => $result,
                     'polyline' => $decodedPolyline,
                     'encoded_polyline'=>$encodedPolyline,
                     'stops'=>[],
@@ -479,7 +477,21 @@ class IFTAController extends Controller
             'message' => 'Failed to fetch polyline.',
         ], 500);
     }
+    public function haversineDistanceForPolyLine($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 3958.8; // Earth radius in miles
 
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
+    }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
     {
         $optimalStation = collect($fuelStations)->sortBy('price')->first();
