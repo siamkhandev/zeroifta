@@ -430,7 +430,7 @@ class IFTAController extends Controller
                     ];
                }
                $filteredFuelStations = array_filter($fuelStations, function ($station) use ($endLat, $endLng) {
-                return $this->haversineDistance($endLat, $endLng, $station['lat'], $station['lng']) <= 9;
+                return $this->haversineDistance($endLat, $endLng, $station['latitude'], $station['longitude']) <= 9;
             });
                FuelStation::insert($filteredFuelStations);
                 $trip->distance = $formattedDistance;
