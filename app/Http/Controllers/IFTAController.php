@@ -429,10 +429,8 @@ class IFTAController extends Controller
                         'updated_at' => now(),
                     ];
                }
-               $filteredFuelStations = array_filter($fuelStations, function ($station) use ($endLat, $endLng) {
-                return $this->haversineDistance($endLat, $endLng, $station['latitude'], $station['longitude']) <= 9;
-            });
-               FuelStation::insert($filteredFuelStations);
+
+               FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
@@ -451,7 +449,7 @@ class IFTAController extends Controller
                 $responseData = [
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
-                    'fuel_stations' => $fuelStations,
+                    'fuel_stations' => $result,
                     'polyline' => $decodedPolyline,
                     'encoded_polyline'=>$encodedPolyline,
                     'stops'=>[],
