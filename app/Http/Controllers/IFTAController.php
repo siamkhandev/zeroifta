@@ -402,6 +402,14 @@ class IFTAController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                $filteredPolyline = array_filter($decodedPolyline, function ($point) use ($startLat, $startLng) {
+                    return $this->haversineDistanceForPolyLine($startLat, $startLng, $point['lat'], $point['lng']) > 9;
+                });
+
+                // Filter out points within 9 miles from end
+                $filteredPolyline = array_filter($filteredPolyline, function ($point) use ($endLat, $endLng) {
+                    return $this->haversineDistanceForPolyLine($endLat, $endLng, $point['lat'], $point['lng']) > 9;
+                });
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
@@ -473,6 +481,21 @@ class IFTAController extends Controller
             'status' => false,
             'message' => 'Failed to fetch polyline.',
         ], 500);
+    }
+    public function haversineDistanceForPolyLine($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 3958.8; // Earth radius in miles
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
     }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
     {
