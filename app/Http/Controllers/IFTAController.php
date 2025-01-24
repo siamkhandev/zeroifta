@@ -424,7 +424,7 @@ class IFTAController extends Controller
 
                 // Reset array keys after second filtering
                 $finalFilteredPolyline = array_values($finalFilteredPolyline);
-
+dd($finalFilteredPolyline);
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
