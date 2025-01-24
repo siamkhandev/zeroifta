@@ -261,8 +261,23 @@ class IFTAController extends Controller
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
                     $ftpData = $this->loadAndParseFTPData();
+                    // Filter coordinates based on distance from start and end points
+                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($startLat, $startLng, $endLat, $endLng) {
+                        // Ensure $coordinate is valid
+                        if (isset($coordinate['lat'], $coordinate['lng'])) {
+                            // Calculate distances from both start and end points
+                            $distanceFromStart = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromEnd = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
 
-                    $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                            // Keep coordinates if they are sufficiently far from both points
+                            return $distanceFromStart > 9 && $distanceFromEnd > 9;
+                        }
+                        return false; // Skip invalid coordinates
+                    });
+
+                    // Reset array keys to ensure a clean array structure
+                    $finalFilteredPolyline = array_values($finalFilteredPolyline);
+                    $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     $trip = Trip::find($request->trip_id);
                     foreach ($result as  $value) {

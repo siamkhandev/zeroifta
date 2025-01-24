@@ -360,8 +360,24 @@ class TripController extends Controller
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                     // Filter coordinates based on distance from start and end points
+                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($startLat, $startLng, $endLat, $endLng) {
+                        // Ensure $coordinate is valid
+                        if (isset($coordinate['lat'], $coordinate['lng'])) {
+                            // Calculate distances from both start and end points
+                            $distanceFromStart = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromEnd = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
+
+                            // Keep coordinates if they are sufficiently far from both points
+                            return $distanceFromStart > 9 && $distanceFromEnd > 9;
+                        }
+                        return false; // Skip invalid coordinates
+                    });
+
+                // Reset array keys to ensure a clean array structure
+                $finalFilteredPolyline = array_values($finalFilteredPolyline);
                     $ftpData = $this->loadAndParseFTPData();
-                    $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                    $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $currentTrip = Trip::where('id', $trip->id)->first();
                     $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
 
@@ -643,8 +659,24 @@ class TripController extends Controller
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                    // Filter coordinates based on distance from start and end points
+                $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($startLat, $startLng, $endLat, $endLng) {
+                    // Ensure $coordinate is valid
+                    if (isset($coordinate['lat'], $coordinate['lng'])) {
+                        // Calculate distances from both start and end points
+                        $distanceFromStart = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
+                        $distanceFromEnd = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
+
+                        // Keep coordinates if they are sufficiently far from both points
+                        return $distanceFromStart > 9 && $distanceFromEnd > 9;
+                    }
+                    return false; // Skip invalid coordinates
+                });
+
+                // Reset array keys to ensure a clean array structure
+                $finalFilteredPolyline = array_values($finalFilteredPolyline);
                     $ftpData = $this->loadAndParseFTPData();
-                    $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                    $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $currentTrip = Trip::where('id', $trip->id)->first();
                     $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
 
@@ -669,7 +701,7 @@ class TripController extends Controller
                         $fuelStation->update();
                     }
                 }
-                
+
             }
         }
 
@@ -706,38 +738,48 @@ class TripController extends Controller
 
     }
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
-    {
-        $matchingRecords = [];
+{
+    $matchingRecords = [];
+    $uniqueRecords = []; // To track unique lat,lng combinations
 
-        // Iterate through decoded polyline points
-        foreach ($decodedPolyline as $decoded) {
-            $lat1 = $decoded['lat'];
-            $lng1 = $decoded['lng'];
+    // Iterate through decoded polyline points
+    foreach ($decodedPolyline as $decoded) {
+        $lat1 = $decoded['lat'];
+        $lng1 = $decoded['lng'];
 
-            // Compare with FTP data points
-            foreach ($ftpData as $lat2 => $lngData) {
-                foreach ($lngData as $lng2 => $data) {
-                    $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
+        // Compare with FTP data points
+        foreach ($ftpData as $lat2 => $lngData) {
+            foreach ($lngData as $lng2 => $data) {
+                $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
-                    // Check if within the defined proximity
-                    if ($distance < 500) { // Distance is less than 500 meters
+                // Check if within the defined proximity
+                if ($distance < 12000) { // Distance is less than 500 meters
+                    // Create a unique key for each lat,lng pair
+                    $uniqueKey = $lat2 . ',' . $lng2;
+
+                    // Only add if this key hasn't been processed
+                    if (!isset($uniqueRecords[$uniqueKey])) {
                         $matchingRecords[] = [
-                            'fuel_station_name'=>(string) $data['fuel_station_name'],
+                            'fuel_station_name' => (string) $data['fuel_station_name'],
                             'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
                             'ftp_lng' => (string) $lng2,
                             'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
                             'price' => (float) $data['price'],
                             'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
                             'address' => isset($data['address']) ? (string) $data['address'] : 'N/A',
-                            'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0
+                            'IFTA_tax' => isset($data['IFTA_tax']) ? (float) $data['IFTA_tax'] : 0.0,
                         ];
+
+                        // Mark this lat,lng pair as processed
+                        $uniqueRecords[$uniqueKey] = true;
                     }
                 }
             }
         }
-
-        return array_values($matchingRecords); // Reindex the array for proper JSON formatting
     }
+
+    return array_values($matchingRecords); // Reindex the array for proper JSON formatting
+}
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
     {
         $optimalStation = collect($fuelStations)->sortBy('price')->first();
