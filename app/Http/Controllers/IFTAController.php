@@ -402,33 +402,28 @@ class IFTAController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
-                $newDecodedPolyline = $this->decodePolyline($encodedPolyline);
-                $filteredPolyline = array_filter($newDecodedPolyline, function($coordinate) use ($startLat, $startLng) {
-                    // Ensure $coordinate is an array with 'lat' and 'lng' keys
-                    if (isset($coordinate['lat']) && isset($coordinate['lng'])) {
-                        $distance = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
-                        return $distance > 9; // Keep only if distance is greater than 9 miles
+
+                // Filter coordinates based on distance from start and end points
+                $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($startLat, $startLng, $endLat, $endLng) {
+                    // Ensure $coordinate is valid
+                    if (isset($coordinate['lat'], $coordinate['lng'])) {
+                        // Calculate distances from both start and end points
+                        $distanceFromStart = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
+                        $distanceFromEnd = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
+
+                        // Keep coordinates if they are sufficiently far from both points
+                        return $distanceFromStart > 9 && $distanceFromEnd > 9;
                     }
                     return false; // Skip invalid coordinates
                 });
 
-                $filteredPolyline = array_values($filteredPolyline);
-                $finalFilteredPolyline = array_filter($filteredPolyline, function($coordinate) use ($endLat, $endLng) {
-                    // Ensure $coordinate is an array with 'lat' and 'lng' keys
-                    if (isset($coordinate['lat']) && isset($coordinate['lng'])) {
-                        $distance = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
-                        return $distance > 9; // Keep only if distance is greater than 9 miles
-                    }
-                    return false; // Skip invalid coordinates
-                });
-
-                // Reset array keys after second filtering
+                // Reset array keys to ensure a clean array structure
                 $finalFilteredPolyline = array_values($finalFilteredPolyline);
 
                 $ftpData = $this->loadAndParseFTPData();
 
-                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
-                dd($matchingRecords);
+                $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                 $fuelStations = [];
                foreach ($result as  $value) {
