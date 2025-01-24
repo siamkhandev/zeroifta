@@ -404,6 +404,7 @@ class IFTAController extends Controller
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
                 $newDecodedPolyline = $this->decodePolyline($encodedPolyline);
                 $filteredPolyline = array_filter($newDecodedPolyline, function($coordinate) use ($startLat, $startLng) {
+                    dd($coordinate);
                     $distance = $this->haversineDistanceFilter($startLat, $startLng, $coordinate[0], $coordinate[1]);
                     return $distance > 9; // Keep only if distance is greater than 9 miles
                 });
