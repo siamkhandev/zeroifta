@@ -402,14 +402,11 @@ class IFTAController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
-                $filteredPolyline = array_filter($decodedPolyline, function ($point) use ($startLat, $startLng) {
-                    return $this->haversineDistanceForPolyLine($startLat, $startLng, $point['lat'], $point['lng']) > 9;
-                });
-
-                // Filter out points within 9 miles from end
-                $filteredPolyline = array_filter($filteredPolyline, function ($point) use ($endLat, $endLng) {
+                $filteredPolyline = array_filter($decodedPolyline, function ($point) use ($endLat, $endLng) {
                     return $this->haversineDistanceForPolyLine($endLat, $endLng, $point['lat'], $point['lng']) > 9;
                 });
+
+
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($filteredPolyline, $ftpData);
