@@ -402,14 +402,13 @@ class IFTAController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
-                $filteredPolyline = array_filter($decodedPolyline, function ($point) use ($endLat, $endLng) {
-                    return $this->haversineDistanceForPolyLine($endLat, $endLng, $point['lat'], $point['lng']) > 9;
-                });
+
 
 
                 $ftpData = $this->loadAndParseFTPData();
 
-                $matchingRecords = $this->findMatchingRecords($filteredPolyline, $ftpData);
+                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                 $fuelStations = [];
                foreach ($result as  $value) {
@@ -430,7 +429,10 @@ class IFTAController extends Controller
                         'updated_at' => now(),
                     ];
                }
-               FuelStation::insert($fuelStations);
+               $filteredFuelStations = array_filter($fuelStations, function ($station) use ($endLat, $endLng) {
+                return $this->haversineDistance($endLat, $endLng, $station['lat'], $station['lng']) <= 9;
+            });
+               FuelStation::insert($filteredFuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
@@ -449,7 +451,7 @@ class IFTAController extends Controller
                 $responseData = [
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
-                    'fuel_stations' => $result,
+                    'fuel_stations' => $fuelStations,
                     'polyline' => $decodedPolyline,
                     'encoded_polyline'=>$encodedPolyline,
                     'stops'=>[],
