@@ -666,7 +666,7 @@ private function removeDuplicateFuelStations($fuelStations)
                     $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
                     // Check if within the defined proximity
-                    if ($distance < 16094) { // Distance is less than 500 meters
+                    if ($distance < 1000) { // Distance is less than 500 meters
                         $matchingRecords[] = [
                             'fuel_station_name'=>(string) $data['fuel_station_name'],
                             'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
