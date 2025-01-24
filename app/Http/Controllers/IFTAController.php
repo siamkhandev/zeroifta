@@ -9,7 +9,6 @@ use App\Models\Tripstop;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -403,23 +402,6 @@ class IFTAController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
-                 // Store the full polyline for API response
-                $originalPolyline = $decodedPolyline;
-
-                // Step 4-1: Copy polyline for refinement
-                $refinedPolyline = $decodedPolyline;
-
-                // Step 4-2: Remove points within 9 miles of start location
-                $refinedPolyline = $this->removeNearbyCoordinates($startLat, $startLng, $refinedPolyline, 9);
-
-                // Step 4-3: Remove points within 9 miles of end location
-                $refinedPolyline = $this->removeNearbyCoordinates($endLat, $endLng, $refinedPolyline, 9);
-
-                // Step 5-2: Get fuel stations along refined polyline
-                $fuelStations = $this->getFuelStationsAlongPolyline($refinedPolyline);
-
-                // Step 5-3: Remove duplicate fuel stations based on lat & long
-                $fuelStations = $this->removeDuplicateFuelStations($fuelStations);
 
                 $ftpData = $this->loadAndParseFTPData();
 
@@ -463,7 +445,7 @@ class IFTAController extends Controller
                 $responseData = [
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
-                    'fuel_stations' => $fuelStations,
+                    'fuel_stations' => $result,
                     'polyline' => $decodedPolyline,
                     'encoded_polyline'=>$encodedPolyline,
                     'stops'=>[],
@@ -562,61 +544,13 @@ class IFTAController extends Controller
             $lng += $dlng;
 
             $points[] = [
-                'lat' => round($lat * 1e-5, 5),
-                'lng' => round($lng * 1e-5, 5),
+                'lat' => number_format($lat * 1e-5, 5),
+                'lng' => number_format($lng * 1e-5, 5),
             ];
         }
 
         return $points;
     }
-    private function removeNearbyCoordinates($refLat, $refLng, $polyline, $radiusMiles)
-{
-    return array_filter($polyline, function ($coordinate) use ($refLat, $refLng, $radiusMiles) {
-        return $this->calculateDistance($refLat, $refLng, $coordinate['lat'], $coordinate['lng']) > $radiusMiles;
-    });
-}
-private function calculateDistance($lat1, $lng1, $lat2, $lng2)
-{
-    $earthRadiusMiles = 3958.8; // Radius of Earth in miles
-    $lat1 = deg2rad($lat1);
-    $lng1 = deg2rad($lng1);
-    $lat2 = deg2rad($lat2);
-    $lng2 = deg2rad($lng2);
-
-    $latDiff = $lat2 - $lat1;
-    $lngDiff = $lng2 - $lng1;
-
-    $a = sin($latDiff / 2) * sin($latDiff / 2) +
-        cos($lat1) * cos($lat2) * sin($lngDiff / 2) * sin($lngDiff / 2);
-    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-    return $earthRadiusMiles * $c; // Distance in miles
-}
-private function getFuelStationsAlongPolyline($polyline)
-{
-    $fuelStations = [];
-
-    foreach ($polyline as $point) {
-        // Fetch fuel stations near each point (Assuming you have a FuelStations table)
-        $stations = DB::table('fuel_stations')
-            ->select('name', 'latitude', 'longitude', 'price', 'lastprice', 'discount', 'IFTA_tax', 'address')
-            ->whereRaw("ST_Distance_Sphere(POINT(longitude, latitude), POINT(?, ?)) <= ?", [$point['lng'], $point['lat'], 14484]) // 9 miles in meters (1 mile = 1609.34 meters)
-            ->get()
-            ->toArray();
-
-        $fuelStations = array_merge($fuelStations, $stations);
-    }
-
-    return $fuelStations;
-}
-private function removeDuplicateFuelStations($fuelStations)
-{
-    return array_values(array_reduce($fuelStations, function ($carry, $item) {
-        $key = $item->latitude . '-' . $item->longitude;
-        $carry[$key] = $item; // Only the last unique lat-long combination will be kept
-        return $carry;
-    }, []));
-}
 
     private function loadAndParseFTPData()
     {
@@ -666,7 +600,7 @@ private function removeDuplicateFuelStations($fuelStations)
                     $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
                     // Check if within the defined proximity
-                    if ($distance < 1000) { // Distance is less than 500 meters
+                    if ($distance < 16094) { // Distance is less than 500 meters
                         $matchingRecords[] = [
                             'fuel_station_name'=>(string) $data['fuel_station_name'],
                             'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
