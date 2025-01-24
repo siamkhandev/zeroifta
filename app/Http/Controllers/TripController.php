@@ -737,6 +737,26 @@ class TripController extends Controller
         }
 
     }
+    function haversineDistanceFilter($lat1, $lng1, $lat2, $lng2) {
+        $earthRadius = 3958.8; // Earth radius in miles
+
+        // Convert degrees to radians
+        $lat1 = deg2rad($lat1);
+        $lng1 = deg2rad($lng1);
+        $lat2 = deg2rad($lat2);
+        $lng2 = deg2rad($lng2);
+
+        // Haversine formula
+        $dLat = $lat2 - $lat1;
+        $dLng = $lng2 - $lng1;
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos($lat1) * cos($lat2) *
+             sin($dLng / 2) * sin($dLng / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        return $earthRadius * $c; // Distance in miles
+    }
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
 {
     $matchingRecords = [];
