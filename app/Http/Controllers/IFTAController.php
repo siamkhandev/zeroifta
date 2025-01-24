@@ -427,8 +427,8 @@ class IFTAController extends Controller
 
                 $ftpData = $this->loadAndParseFTPData();
 
-                $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-                dd($decodedPolyline);
+                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                dd($matchingRecords);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                 $fuelStations = [];
                foreach ($result as  $value) {
