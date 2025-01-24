@@ -402,10 +402,25 @@ class IFTAController extends Controller
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
+                $newDecodedPolyline = $this->decodePolyline($encodedPolyline);
+                $filteredPolyline = array_filter($newDecodedPolyline, function($coordinate) use ($startLat, $startLng) {
+                    $distance = $this->haversineDistanceFilter($startLat, $startLng, $coordinate[0], $coordinate[1]);
+                    return $distance > 9; // Keep only if distance is greater than 9 miles
+                });
+
+                // Reset array keys
+                $filteredPolyline = array_values($filteredPolyline);
+                // Step 2: Remove points within 9 miles of the end coordinates
+                $finalFilteredPolyline = array_filter($filteredPolyline, function($coordinate) use ($endLat, $endLng) {
+                    return $this->haversineDistanceFilter($endLat, $endLng, $coordinate[0], $coordinate[1]) > 9;
+                });
+
+                // Reset array keys after second filtering
+                $finalFilteredPolyline = array_values($finalFilteredPolyline);
 
                 $ftpData = $this->loadAndParseFTPData();
 
-                $matchingRecords = $this->findMatchingRecords($decodedPolyline, $ftpData);
+                $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                 $fuelStations = [];
                foreach ($result as  $value) {
@@ -475,6 +490,27 @@ class IFTAController extends Controller
             'message' => 'Failed to fetch polyline.',
         ], 500);
     }
+    function haversineDistanceFilter($lat1, $lng1, $lat2, $lng2) {
+        $earthRadius = 3958.8; // Earth radius in miles
+
+        // Convert degrees to radians
+        $lat1 = deg2rad($lat1);
+        $lng1 = deg2rad($lng1);
+        $lat2 = deg2rad($lat2);
+        $lng2 = deg2rad($lng2);
+
+        // Haversine formula
+        $dLat = $lat2 - $lat1;
+        $dLng = $lng2 - $lng1;
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos($lat1) * cos($lat2) *
+             sin($dLng / 2) * sin($dLng / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        return $earthRadius * $c; // Distance in miles
+    }
+
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
     {
         $optimalStation = collect($fuelStations)->sortBy('price')->first();
@@ -600,7 +636,7 @@ class IFTAController extends Controller
                     $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
                     // Check if within the defined proximity
-                    if ($distance < 10000) { // Distance is less than 500 meters
+                    if ($distance < 160934) { // Distance is less than 500 meters
                         $matchingRecords[] = [
                             'fuel_station_name'=>(string) $data['fuel_station_name'],
                             'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
