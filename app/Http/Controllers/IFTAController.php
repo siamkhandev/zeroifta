@@ -426,7 +426,10 @@ class IFTAController extends Controller
                         'updated_at' => now(),
                     ];
                }
+               $fuelStations = array_unique($fuelStations, SORT_REGULAR);
 
+               // Insert only unique fuel stations
+               FuelStation::insert($fuelStations);
                FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
@@ -446,7 +449,7 @@ class IFTAController extends Controller
                 $responseData = [
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
-                    'fuel_stations' => $result,
+                    'fuel_stations' => $fuelStations,
                     'polyline' => $decodedPolyline,
                     'encoded_polyline'=>$encodedPolyline,
                     'stops'=>[],
