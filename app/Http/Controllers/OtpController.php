@@ -52,7 +52,7 @@ class OtpController extends Controller
                     'status' => 404,
                     'message' => 'User not found',
                     'data' => (object)[]
-                ]);
+                ],404);
             }
             try{
                 if(str_contains($request->phone,'+1')){
@@ -86,7 +86,7 @@ class OtpController extends Controller
                     'status' => 404,
                     'message' => 'User not found',
                     'data' => (object)[]
-                ]);
+                ],404);
             }
             $emailOTP = rand(100000, 999999);
             try{
@@ -113,7 +113,7 @@ class OtpController extends Controller
                     'status' => 404,
                     'message' => 'User not found',
                     'data' => (object)[]
-                ]);
+                ],404);
             }
             try{
                 if(str_contains($request->phone,'+1')){
