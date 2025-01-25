@@ -79,12 +79,13 @@ class IndependentTruckerController extends Controller
 
            if(str_contains($request->phone,'+1')) {
             $otp_sms = rand(100000, 999999);
+            $twilioService->sendSmsOtp($request->phone, $otp_sms);
            }else{
             $otp_sms = 123456;
            }
 
             $otp_email = rand(100000, 999999);
-            $twilioService->sendSmsOtp($request->phone, $otp_sms);
+            
             $twilioService->sendEmailOtp($request->email, $otp_email);
             $driver->otp_code = $otp_sms;
             $driver->email_otp = $otp_email;
