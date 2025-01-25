@@ -47,7 +47,13 @@ class OtpController extends Controller
         if($request->phone && !isset($request->email))
         {
             $user = User::find($request->user_id);
-
+            if(!$user){
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'User not found',
+                    'data' => (object)[]
+                ]);
+            }
             try{
                 if(str_contains($request->phone,'+1')){
                     $smsOTP = rand(100000, 999999);
@@ -75,6 +81,13 @@ class OtpController extends Controller
 
         }else if($request->email && !isset($request->phone)){
             $user = User::find($request->user_id);
+            if(!$user){
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'User not found',
+                    'data' => (object)[]
+                ]);
+            }
             $emailOTP = rand(100000, 999999);
             try{
                 $this->twilioService->sendEmailOtp($request->email, $emailOTP);
@@ -95,7 +108,13 @@ class OtpController extends Controller
 
         }else{
             $user = User::find($request->user_id);
-
+            if(!$user){
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'User not found',
+                    'data' => (object)[]
+                ]);
+            }
             try{
                 if(str_contains($request->phone,'+1')){
                     $smsOTP = rand(100000, 999999);
