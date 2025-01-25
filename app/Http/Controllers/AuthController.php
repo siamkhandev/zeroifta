@@ -78,10 +78,10 @@ class AuthController extends Controller
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'Can not customize minimum number of gallons to fuel',
-                        'can not add a stop to trip',
-                        'can not change the default reserve fuel amount',
-                        'can not customize fuel tank capacity',
+                        'customize minimum gallons'=>false,
+                        'can add a stop'=>false,
+                        'can change reserve fuel'=>false,
+                        'can customize fuel tank capacity' =>false,
                     ];
                 }
             }
@@ -146,10 +146,10 @@ class AuthController extends Controller
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'Can not customize minimum number of gallons to fuel',
-                        'can not add a stop to trip',
-                        'can not change the default reserve fuel amount',
-                        'can not customize fuel tank capacity',
+                        'customize minimum gallons'=>false,
+                        'can add a stop'=>false,
+                        'can change reserve fuel'=>false,
+                        'can customize fuel tank capacity' =>false,
                     ];
                 }
             }
@@ -245,10 +245,10 @@ class AuthController extends Controller
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'Can not customize minimum number of gallons to fuel',
-                        'can not add a stop to trip',
-                        'can not change the default reserve fuel amount',
-                        'can not customize fuel tank capacity',
+                        'customize minimum gallons'=>false,
+                        'can add a stop'=>false,
+                        'can change reserve fuel'=>false,
+                        'can customize fuel tank capacity' =>false,
                     ];
                 }
             }
