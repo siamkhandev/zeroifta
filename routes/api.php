@@ -38,6 +38,7 @@ Route::post('/findgas', [IFTAController::class, 'getDecodedPolyline'])->name('fi
 Route::post('login',[AuthController::class,'login']);
 Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
+Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
@@ -74,7 +75,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/trip/complete', [TripController::class, 'completeTrip']);
     
     Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
-    Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
+   
     Route::post('stops/add',[TripController::class,'storeStop']);
     Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
     ///
