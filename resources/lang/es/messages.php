@@ -109,6 +109,7 @@ return [
     "Vehicle ID"=>"ID de vehiculo",
     "VIN"=>"VIN",
     "Vehicle Model"=>"Modelo de vehiculo",
+    "Vehicle Model Year"=>"Año del modelo de vehiculo",
     "Vehicle Make"=>"Fabricante de vehiculo",
     "Vehicle Year"=>"Año de vehiculo",
     "Fuel Type"=>"Tipo de combustible",

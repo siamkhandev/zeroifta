@@ -217,7 +217,7 @@
                         @endif
                       </div>
                       <div class="fc-content">
-                        <h6 class="head-16 grayWhite">{{$con->company->name??'N/A'}}</h6>
+                        <h6 class="head-16 grayWhite"><a href="{{route('admin.contactus')}}">{{$con->company->name??'N/A'}}</a></h6>
                         <p class="gray1 font-14">
                           {{$con->description ? Str::limit($con->message,20,'...'):'N/A'}}
                         </p>

@@ -61,7 +61,7 @@ const userId = {{ $userId }};  // Pass the userId from blade
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 7,
-        center: { lat: 31.5497, lng: 74.3436 }  // Default to Lahore
+        center: { lat: 39.5501, lng: -105.7821 } // Default to Lahore
     });
 
     routeRenderer = new google.maps.DirectionsRenderer({

@@ -119,6 +119,7 @@ return [
     "Vehicle ID"=>"Vehicle ID",
     "VIN"=>"VIN",
     "Vehicle Model"=>"Vehicle Model",
+    "Vehicle Model Year"=>"Vehicle Model Year",
     "Vehicle Make"=>"Vehicle Make",
     "Vehicle Year"=>"Vehicle Year",
     "Fuel Type"=>"Fuel Type",

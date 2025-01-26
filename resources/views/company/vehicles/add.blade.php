@@ -47,7 +47,7 @@
                 </div> -->
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model')}}</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Model Year')}}</label>
                         <select name="year" id="year" class="form-control login-input">
                             <option value="">Select Year</option>
                             @for ($year = date('Y'); $year >= 1970; $year--)
