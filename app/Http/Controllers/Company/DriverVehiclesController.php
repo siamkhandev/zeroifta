@@ -181,7 +181,12 @@ public function checkVehicleAlreadyAssignment(Request $request)
     }
     public function destroy($id)
     {
+        
         $vehicle = DriverVehicle::find($id);
+        $checkTrip = Trip::where('vehicle_id',$vehicle->vehicle_id)->where('status','active')->first();
+        if($checkTrip){
+            return redirect('driver/vehicles')->withError('Vehicle is in active trip.you can not delete this vehicle.');
+        }
         $vehicle->delete();
         return redirect('driver/vehicles')->withError('Vehicle unassigned successfully');
     }
