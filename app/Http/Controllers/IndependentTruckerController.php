@@ -129,7 +129,7 @@ class IndependentTruckerController extends Controller
                 $findCard->is_default = true;
             }
             $driverFind->defaultCard = $findCard;
-            $driverFind->features = (object)[];
+            $driverFind->features = null;
             return response()->json([
                 'status'=>200,
                 'message'=>'Registration successful',
