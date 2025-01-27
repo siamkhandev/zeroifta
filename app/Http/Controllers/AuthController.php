@@ -86,7 +86,7 @@ class AuthController extends Controller
                 }
             }
             $user->subscription = $checkSubscription;
-            $user->features = $features;
+            $user->features = array_values($features);
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
             if($findCard){
                 $findCard->is_default = true;
@@ -154,7 +154,7 @@ class AuthController extends Controller
                 }
             }
             $user->subscription = $checkSubscription;
-            $user->features = $features;
+            $user->features = array_values($features);
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
@@ -253,7 +253,7 @@ class AuthController extends Controller
                 }
             }
             $user->subscription = $checkSubscription;
-            $user->features = $features;
+            $user->features =array_values($features);
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();

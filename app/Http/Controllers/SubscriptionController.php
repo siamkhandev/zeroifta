@@ -101,7 +101,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $updatedSubscription->status,
-                    'features' => $features ?? [],
+                    'features' => array_values($features) ?? [],
                 ],
             ]);
         } else {
@@ -154,7 +154,7 @@ class SubscriptionController extends Controller
             }
 
             //$newSubscription->subscription = $checkSubscription;
-            $newSubscription['features'] = $features;
+            $newSubscription['features'] = array_values($features);
             SelectedPlan::where('user_id',$user->id)->delete();
             return response()->json([
                 'status' => 200,
@@ -164,7 +164,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $newSubscription->status,
-                    'features' => $features ?? [],
+                    'features' => array_values($features) ?? [],
                 ],
             ]);
         }
