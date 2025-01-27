@@ -391,7 +391,7 @@ class AuthController extends Controller
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $token = $user->createToken('zeroifta')->accessToken;
-            $user->current_access_token = $token;
+            $user->token = $token;
             if($user->driver_image){
                 $user->image =url('/drivers/'.$user->driver_image);
             }else{
