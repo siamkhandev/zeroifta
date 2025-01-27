@@ -145,10 +145,10 @@ class SubscriptionController extends Controller
                         'customize_fuel_tank_capacity' =>false,
                     ];
                 }else{
-                    $features=(object)[];
+                    $features=null;
                 }
             }else{
-                $features=(object)[];
+                $features=null;
             }
             //$newSubscription->subscription = $checkSubscription;
             $newSubscription->features = $features;
