@@ -92,7 +92,7 @@ class SubscriptionController extends Controller
             }else{
                 $features =[];
             }
-            dd($features);
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Subscription updated successfully',
@@ -152,6 +152,7 @@ class SubscriptionController extends Controller
             }else{
                 $features=[];
             }
+            dd($features);
             //$newSubscription->subscription = $checkSubscription;
             $newSubscription->features = $features;
             SelectedPlan::where('user_id',$user->id)->delete();
