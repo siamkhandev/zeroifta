@@ -72,7 +72,7 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $features = (object)[];
+            $features = null;
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -140,7 +140,7 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $user->image = url('/images/' .$user->image);
             $user->token=null;
-            $features = (object)[];
+            $features = null;
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -386,7 +386,59 @@ class AuthController extends Controller
         if($user){
             $user->email = $request->email;
             $user->phone = $request->phone;
+            
             $user->update();
+            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $user->rsa_key = $rsaKey;
+            $token = $user->createToken('zeroifta')->accessToken;
+            $user->current_access_token = $token;
+            if($user->driver_image){
+                $user->image =url('/drivers/'.$user->driver_image);
+            }else{
+                $user->image = null;
+            }
+            $vehicle = Vehicle::select(
+                'id',
+                'vehicle_image',
+                'vehicle_number',
+                'mpg',
+                'odometer_reading',
+                'fuel_left',
+                'fuel_tank_capacity',
+                'model',
+                'make',
+                'make_year',
+                'license_plate_number'
+            )
+            ->whereHas('driverVehicle', function ($query) use ($request,$user) {
+                $query->where('driver_id', $user->id);
+            })
+            ->first();
+            if ($vehicle) {
+                $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
+            }
+            $user->vehicle = $vehicle;
+            $features = null;
+            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            if($checkSubscription){
+                $planName = Plan::where('id',$checkSubscription->plan_id)->first();
+                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
+                    $features = [
+                        'minimum_gallons'=>false,
+                        'add_stop'=>false,
+                        'change_reserve_fuel'=>false,
+                        'customize_fuel_tank_capacity' =>false,
+                    ];
+                }
+            }
+            $user->subscription = $checkSubscription;
+            $user->features = $features;
+            $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
+            if($findCard){
+                $findCard->is_default = true;
+            }
+
+            $user->defaultCard = $findCard;
             return response()->json(['status'=>200,'message' => 'User Updated successfully.','data'=>$user], 200);
         }else{
             return response()->json(['status'=>404,'message' => 'User not found','data'=>(object)[]], 404);

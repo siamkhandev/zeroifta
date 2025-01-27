@@ -85,11 +85,11 @@ class SubscriptionController extends Controller
                         'customize_fuel_tank_capacity' =>false,
                     ];
                 }else{
-                    $features =(object)[];
+                    $features =null;
                 }
 
             }else{
-                $features =(object)[];
+                $features =null;
             }
             return response()->json([
                 'status' => 200,
@@ -99,7 +99,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $updatedSubscription->status,
-                    'features' => $features ?? (object)[],
+                    'features' => $features ?? null,
                 ],
             ]);
         } else {
@@ -161,7 +161,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $newSubscription->status,
-                    'features' => $features ?? (object)[],
+                    'features' => $features ?? null,
                 ],
             ]);
         }
