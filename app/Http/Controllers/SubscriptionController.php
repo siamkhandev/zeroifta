@@ -152,9 +152,9 @@ class SubscriptionController extends Controller
             }else{
                 $features=[];
             }
-            dd($features);
+
             //$newSubscription->subscription = $checkSubscription;
-            $newSubscription->features = $features;
+            $newSubscription['features'] = $features;
             SelectedPlan::where('user_id',$user->id)->delete();
             return response()->json([
                 'status' => 200,
