@@ -79,17 +79,17 @@ class SubscriptionController extends Controller
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'customize minimum gallons'=>false,
-                        'can add a stop'=>false,
-                        'can change reserve fuel'=>false,
-                        'can customize fuel tank capacity' =>false,
+                        'minimum_gallons'=>false,
+                        'add_stop'=>false,
+                        'change_reserve_fuel'=>false,
+                        'customize_fuel_tank_capacity' =>false,
                     ];
                 }else{
-                    $features =[];
+                    $features =(object)[];
                 }
 
             }else{
-                $features =[];
+                $features =(object)[];
             }
             return response()->json([
                 'status' => 200,
@@ -99,7 +99,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $updatedSubscription->status,
-                    'features' => $features ?? [],
+                    'features' => $features ?? (object)[],
                 ],
             ]);
         } else {
@@ -139,16 +139,16 @@ class SubscriptionController extends Controller
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'customize minimum gallons'=>false,
-                        'can add a stop'=>false,
-                        'can change reserve fuel'=>false,
-                        'can customize fuel tank capacity' =>false,
+                        'minimum_gallons'=>false,
+                        'add_stop'=>false,
+                        'change_reserve_fuel'=>false,
+                        'customize_fuel_tank_capacity' =>false,
                     ];
                 }else{
-                    $features=[];
+                    $features=(object)[];
                 }
             }else{
-                $features=[];
+                $features=(object)[];
             }
             //$newSubscription->subscription = $checkSubscription;
             $newSubscription->features = $features;
@@ -161,7 +161,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $newSubscription->status,
-                    'features' => $features ?? [],
+                    'features' => $features ?? (object)[],
                 ],
             ]);
         }
@@ -336,7 +336,9 @@ class SubscriptionController extends Controller
                                 ->first();
 
         $findCard = PaymentMethod::where('stripe_payment_method_id', $request->payment_method_id)->first();
-
+        if($findCard){
+            $findCard->is_default = true;
+        }
         $paymentMethodId = $findCard ? $findCard->id : ($checkCard ? $checkCard->id : null);
 
         if (!$paymentMethodId) {

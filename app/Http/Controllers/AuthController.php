@@ -72,16 +72,16 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $features = [];
+            $features = (object)[];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'customize minimum gallons'=>false,
-                        'can add a stop'=>false,
-                        'can change reserve fuel'=>false,
-                        'can customize fuel tank capacity' =>false,
+                        'minimum_gallons'=>false,
+                        'add_stop'=>false,
+                        'change_reserve_fuel'=>false,
+                        'customize_fuel_tank_capacity' =>false,
                     ];
                 }
             }
@@ -140,16 +140,16 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $user->image = url('/images/' .$user->image);
             $user->token=null;
-            $features = [];
+            $features = (object)[];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'customize minimum gallons'=>false,
-                        'can add a stop'=>false,
-                        'can change reserve fuel'=>false,
-                        'can customize fuel tank capacity' =>false,
+                        'minimum_gallons'=>false,
+                        'add_stop'=>false,
+                        'change_reserve_fuel'=>false,
+                        'customize_fuel_tank_capacity' =>false,
                     ];
                 }
             }
@@ -158,6 +158,9 @@ class AuthController extends Controller
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
+            if($findCard){
+                $findCard->is_default = true;
+            }
             $user->defaultCard = $findCard;
             return response()->json(['status'=>200,'message'=>'profile fetched successfully','data'=>$user]);
         }else{
@@ -239,16 +242,16 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $user->token=null;
-            $features = [];
+            $features =(object)[];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
-                        'customize minimum gallons'=>false,
-                        'can add a stop'=>false,
-                        'can change reserve fuel'=>false,
-                        'can customize fuel tank capacity' =>false,
+                        'minimum_gallons'=>false,
+                        'add_stop'=>false,
+                        'change_reserve_fuel'=>false,
+                        'customize_fuel_tank_capacity' =>false,
                     ];
                 }
             }
@@ -257,6 +260,9 @@ class AuthController extends Controller
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
+            if($findCard){
+                $findCard->is_default = true;
+            }
             $user->defaultCard = $findCard;
             $user->image = url('/images/'.$user->image);
             return response()->json(['status'=>200,'message' => 'Profile Updated successfully.','data'=>$user], 200);

@@ -85,7 +85,7 @@ class IndependentTruckerController extends Controller
            }
 
             $otp_email = rand(100000, 999999);
-            
+
             $twilioService->sendEmailOtp($request->email, $otp_email);
             $driver->otp_code = $otp_sms;
             $driver->email_otp = $otp_email;
@@ -125,8 +125,11 @@ class IndependentTruckerController extends Controller
 
             $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;;
             $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
+            if($findCard){
+                $findCard->is_default = true;
+            }
             $driverFind->defaultCard = $findCard;
-            $driverFind->features = [];
+            $driverFind->features = (object)[];
             return response()->json([
                 'status'=>200,
                 'message'=>'Registration successful',
