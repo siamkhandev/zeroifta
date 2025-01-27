@@ -392,6 +392,7 @@ class AuthController extends Controller
             $user->rsa_key = $rsaKey;
             $token = $user->createToken('zeroifta')->accessToken;
             $user->token = $token;
+            $user->current_access_token = $token;
             if($user->driver_image){
                 $user->image =url('/drivers/'.$user->driver_image);
             }else{
