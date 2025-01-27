@@ -34,7 +34,7 @@ class SubscriptionController extends Controller
 
     try {
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        
+
         $user = User::find($request->user_id);
 
         if (!$user->stripe_customer_id) {
@@ -73,11 +73,12 @@ class SubscriptionController extends Controller
                     ['id' => $currentSubscription->data[0]->items->data[0]->id, 'price' => $priceId],
                 ],
             ]);
-            
+
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
-                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
+                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly")
+                {
                     $features = [
                         'customize minimum gallons'=>false,
                         'can add a stop'=>false,
@@ -87,10 +88,11 @@ class SubscriptionController extends Controller
                 }else{
                     $features =[];
                 }
-               
+
             }else{
                 $features =[];
             }
+            dd($features);
             return response()->json([
                 'status' => 200,
                 'message' => 'Subscription updated successfully',
