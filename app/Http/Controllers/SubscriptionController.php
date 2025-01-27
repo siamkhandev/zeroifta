@@ -77,8 +77,7 @@ class SubscriptionController extends Controller
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
-                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly")
-                {
+                if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
                     $features = [
                         'customize minimum gallons'=>false,
                         'can add a stop'=>false,
@@ -92,7 +91,6 @@ class SubscriptionController extends Controller
             }else{
                 $features =[];
             }
-
             return response()->json([
                 'status' => 200,
                 'message' => 'Subscription updated successfully',
@@ -101,7 +99,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $updatedSubscription->status,
-                    'features' => array_values($features) ?? [],
+                    'features' => $features ?? [],
                 ],
             ]);
         } else {
@@ -152,9 +150,8 @@ class SubscriptionController extends Controller
             }else{
                 $features=[];
             }
-
             //$newSubscription->subscription = $checkSubscription;
-            $newSubscription['features'] = array_values($features);
+            $newSubscription->features = $features;
             SelectedPlan::where('user_id',$user->id)->delete();
             return response()->json([
                 'status' => 200,
@@ -164,7 +161,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $newSubscription->status,
-                    'features' => array_values($features) ?? [],
+                    'features' => $features ?? [],
                 ],
             ]);
         }
