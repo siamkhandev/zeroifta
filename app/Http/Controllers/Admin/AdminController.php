@@ -155,7 +155,7 @@ class AdminController extends Controller
 
             // Check for existing subscription
             $subscriptions = Subscription::all(['customer' => $customer->id, 'status' => 'active']);
-            dd($subscriptions);
+
             if ($subscriptions->data) {
                 // Update existing subscription
                 $subscription = $subscriptions->data[0];
