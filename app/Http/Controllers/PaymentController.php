@@ -60,6 +60,7 @@ class PaymentController extends Controller
             $subscriptions = Subscription::all(['customer' => $customer->id, 'status' => 'active']);
 
             if ($subscriptions->data) {
+                dd("here");
                 // Update existing subscription
                 $subscription = $subscriptions->data[0];
                 $updatedSubscription = Subscription::update($subscription->id, [
