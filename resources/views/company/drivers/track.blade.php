@@ -55,7 +55,7 @@
 
 <script>
 let map, routeRenderer, userMarker, startMarker, endMarker;
-const socket = io('http://zeroifta.alnairtech.com:3000');  // Socket.io server URL
+const socket = io('https://ws.zeroifta.com');  // Socket.io server URL
 const userId = {{ $userId }};  // Pass the userId from blade
 
 function initMap() {
