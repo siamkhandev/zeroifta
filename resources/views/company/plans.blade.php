@@ -341,9 +341,15 @@
 
                                                             <!-- Button -->
                                                             <div class="palns-btn mt-5">
-                                                            <a href="{{route('buy','premium_monthly')}}" class="mainBtn">
-                                                                Buy Plan
+                                                            @if($userPlan->planName->slug=="premium_monthly")
+                                                            <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
+                                                                Cancel Subscription
                                                             </a>
+                                                            @else
+                                                            <a href="{{route('buy','premium_monthly')}}" class="mainBtn">
+                                                                Upgrade
+                                                            </a>
+                                                            @endif
                                                             </div>
                                                         </div>
                                                         </div>
@@ -454,9 +460,15 @@
                                                             </div>
                                                             <!-- Button -->
                                                             <div class="palns-btn mt-5">
-                                                            <a href="{{route('buy','premium_plus_monthly')}}" class="mainBtn">
-                                                                Buy Plan
+                                                            @if($userPlan->planName->slug=="premium_plus_monthly")
+                                                            <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
+                                                                Cancel Subscription
                                                             </a>
+                                                            @else
+                                                            <a href="{{route('buy','premium_plus_monthly')}}" class="mainBtn">
+                                                                Upgrade
+                                                            </a>
+                                                            @endif
                                                             </div>
                                                         </div>
 
@@ -614,9 +626,15 @@
                                                         </div>
                                                         <!-- Button -->
                                                         <div class="palns-btn mt-5">
+                                                        @if($userPlan->planName->slug=="basic_yearly")
+                                                            <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
+                                                                Cancel Subscription
+                                                            </a>
+                                                            @else
                                                         <a href="{{route('buy','basic_yearly')}}" class="mainBtn">
-                                                            Buy Plan
+                                                            Upgrade
                                                         </a>
+                                                        @endif
                                                         </div>
                                                     </div>
 
@@ -779,9 +797,15 @@
 
                                                         <!-- Button -->
                                                         <div class="palns-btn mt-5">
+                                                        @if($userPlan->planName->slug=="premium_yearly")
+                                                            <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
+                                                                Cancel Subscription
+                                                            </a>
+                                                            @else
                                                         <a href="{{route('buy','premium_yearly')}}" class="mainBtn">
-                                                            Buy Plan
+                                                           Upgrade
                                                         </a>
+                                                        @endif
                                                         </div>
                                                     </div>
                                                     </div>
@@ -906,9 +930,15 @@
                                                         </div>
                                                         <!-- Button -->
                                                         <div class="palns-btn mt-5">
+                                                        @if($userPlan->planName->slug=="premium_plus_yearly")
+                                                            <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
+                                                                Cancel Subscription
+                                                            </a>
+                                                            @else
                                                         <a href="{{route('buy','premium_plus_yearly')}}" class="mainBtn">
                                                             Buy Plan
                                                         </a>
+                                                        @endif
                                                         </div>
                                                     </div>
 
