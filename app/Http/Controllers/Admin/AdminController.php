@@ -200,7 +200,7 @@ class AdminController extends Controller
                     'plan_id' => $plan->id,
                     'status' => 'active',
                 ]);
-                $payment_Method = \Stripe\PaymentMethod::retrieve($request->paymentMethodId);
+                $payment_Method = \Stripe\PaymentMethod::retrieve($paymentMethod);
                 $storedPaymentMethod = PaymentMethod::create([
                     'user_id' => $user->id,
                     'method_name' => 'card',
