@@ -8,6 +8,24 @@
                                         <div class="subs_plan">
                                             <div class="inHead-span">
                                                 <h2 class="head-20Med">{{__('messages.Subscription Plans')}}</h2>
+                                                <div class="plans-toggel">
+                  <div class="sub-toggel text-center">
+                    <div>
+                      <p>Monthly</p>
+                    </div>
+                    <div>
+                      <label class="switch">
+                        <input type="checkbox" id="plansSwitchCheckbox">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <div>
+                        <p>Yearly</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                                             </div>
                                             <div id="monthly_plans" class="monthly_plans">
                                                 <div class="row">
