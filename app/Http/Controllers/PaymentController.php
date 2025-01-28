@@ -106,7 +106,7 @@ class PaymentController extends Controller
                 $subscription = Subscription::retrieve($subscriptionId);
                 $subscription->cancel();
                 User::whereId($user->id)->update(['is_subscribed'=>0]);
-                ModelsSubscription::where('company_id',$user->id)->update(['status'=>'cancelled']);
+                ModelsSubscription::where('user_id',$user->id)->update(['status'=>'cancelled']);
                 return redirect('subscribe')->with('success', 'Subscription cancelled successfully.');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Failed to cancel subscription. Please try again later.');
