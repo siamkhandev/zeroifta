@@ -52,13 +52,13 @@
           </a>
         </li>
         @php
-    $checkSubscription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
-    $checkPlan = null; // Initialize to avoid undefined variable errors
+            $checkSubscription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
+            $checkPlan = null; // Initialize to avoid undefined variable errors
 
-    if ($checkSubscription) {
-        $checkPlan = \DB::table('plans')->where('id', $checkSubscription->plan_id)->first();
-    }
-@endphp
+            if ($checkSubscription) {
+                $checkPlan = \DB::table('plans')->where('id', $checkSubscription->plan_id)->first();
+            }
+        @endphp
 
 @if($checkPlan && !in_array($checkPlan->slug, ['basic_monthly', 'basic_yearly']))
     <li>

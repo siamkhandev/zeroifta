@@ -19,6 +19,7 @@ use Stripe\PaymentMethod as StripePaymentMethod;
 use Stripe\Stripe;
 use Stripe\Subscription;
 use App\Models\Subscription as ModelsSubscription;
+use Illuminate\Database\Eloquent\Model;
 
 class AdminController extends Controller
 {
@@ -174,8 +175,8 @@ class AdminController extends Controller
                     ],
                     'proration_behavior' => 'create_prorations',
                 ]);
-
-                ModelsSubscription::where('stripe_subscription_id', $subscription->id)->update([
+                ModelsSubscription::where('stripe_customer_id', $customer->id)->delete();
+                $request->user()->subscriptions()->create([
                     'stripe_customer_id' => $customer->id,
                     'stripe_subscription_id' => $subscription->id,
                     'plan_id' => $plan->id,
