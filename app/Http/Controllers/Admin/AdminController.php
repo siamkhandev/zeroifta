@@ -123,6 +123,7 @@ class AdminController extends Controller
     }
     public function pay(Request $request)
     {
+        dd($request->all());
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $user = Auth::user();
