@@ -156,6 +156,7 @@ Route::middleware('auth')->group(function () {
   Route::post('pay', [PaymentController::class, 'subscribe'])->name('pay');
 
   Route::get('/cancel-subscription/{id}', [PaymentController::class, 'cancel'])->name('cancel.subscription');
+
   Route::post('/messages', [ContactUsController::class, 'store'])->name('messages.store');
   Route::get('/messages/{contact_id}', [ContactUsController::class, 'fetchMessages'])->name('messages.fetch');
   //Route::post('/messages/read/{id}', [ContactUsController::class, 'markAsRead'])->name('messages.markAsRead');
