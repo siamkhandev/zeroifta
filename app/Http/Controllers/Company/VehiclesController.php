@@ -32,7 +32,7 @@ class VehiclesController extends Controller
     {
 
         $data = $request->validate([
-            'vehicle_id'=>'required',
+            'vehicle_id'=>'required,unique:vehicles',
             "vin"=>'required',
             "year"=>'required',
             "truck_make"=>'required',
