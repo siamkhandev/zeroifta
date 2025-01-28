@@ -171,12 +171,12 @@
                                             <label for="card-element" class="form-label">Choose Payment Method</label>
                                             <select name="payment_method" class="form-control">
                                               @foreach($paymentMethods as $method)
-                                                <option value="{{$method->stripe_payment_method_id}}">{{$method->method_name}} - {{$method->is_default}}</option>
+                                                <option value="{{$method->stripe_payment_method_id}}">{{$method->method_name}} - {{$method->is_default ==1 ? 'default' : 'not default'}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group mt-6">
-                                            <button type="submit" class="mainBtn">
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="mainBtn" style="margin-top:10px">
                                                 <i class="fas fa-credit-card"></i> Subscribe
                                             </button>
                                         </div>
