@@ -68,7 +68,7 @@ class CompanyController extends Controller
     public function showPlans()
     {
         $plans = Plan::get();
-        $userPlan = Subscription::where('user_id',Auth::id())->where('status','active')->first();
+        $userPlan = Subscription::with('planName')->where('user_id',Auth::id())->where('status','active')->first();
         return view('company.plans',get_defined_vars());
     }
     public function contactUsForms()
