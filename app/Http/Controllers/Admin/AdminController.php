@@ -176,8 +176,6 @@ class AdminController extends Controller
                 ]);
 
                 ModelsSubscription::where('stripe_subscription_id', $subscription->id)->update([
-
-
                     'stripe_customer_id' => $customer->id,
                     'stripe_subscription_id' => $subscription->id,
                     'plan_id' => $plan->id,
@@ -202,7 +200,17 @@ class AdminController extends Controller
                     'plan_id' => $plan->id,
                     'status' => 'active',
                 ]);
-
+                $payment_Method = \Stripe\PaymentMethod::retrieve($request->paymentMethodId);
+                $storedPaymentMethod = PaymentMethod::create([
+                    'user_id' => $user->id,
+                    'method_name' => 'card',
+                    'card_holder_name' => $payment_Method->billing_details->name ?? null, // Get the cardholder's name from Stripe
+                    'card_number' => substr($payment_Method->card->last4, -4), // Store last 4 digits
+                    'expiry_date' => $payment_Method->card->exp_month . '/' . $payment_Method->card->exp_year, // Expiry date
+                    'stripe_payment_method_id' => $payment_Method->id, // Stripe payment method ID
+                    'card_type' => $payment_Method->card->brand ?? null, // Card type (e.g., Visa, Mastercard)
+                    'is_default' => 1, // Set as default only if no default exists
+                ]);
                 // Mark the user as subscribed
                 User::whereId(Auth::id())->update(['is_subscribed' => 1]);
 
