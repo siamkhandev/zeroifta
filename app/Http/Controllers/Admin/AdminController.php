@@ -168,10 +168,12 @@ class AdminController extends Controller
                 ]);
 
                 ModelsSubscription::where('stripe_subscription_id', $subscription->id)->update([
-                    'plan' => $plan->billing_period,
-                    'amount' => $plan->price,
-                    'status' => 'active',
+
+
+                    'stripe_customer_id' => $customer->id,
+                    'stripe_subscription_id' => $subscription->id,
                     'plan_id' => $plan->id,
+                    'status' => 'active',
                 ]);
                 return redirect('/')->with('success', 'Subscription successfully updated.');
 
