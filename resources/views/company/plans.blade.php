@@ -33,19 +33,7 @@
                                                             <h3>{{$plan->name}}</h3>
                                                             <p>${{$plan->price}}</p>
                                                         </div>
-                                                        <div class="pp-inn">
-                                                            <ul>
-                                                                <li>
-                                                                    <span>Recurring</span>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Tax Free</span>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Recurring</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+
                                                         <a href="{{route('purchase',$plan->id)}}" class="mainBtn" >{{__('messages.Purchase')}}</a>
                                                     </div>
                                                 </div>
