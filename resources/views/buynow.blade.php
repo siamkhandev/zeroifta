@@ -175,7 +175,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="d-grid gap-2 mt-6">
+                                        <div class="form-group mt-6">
                                             <button type="submit" class="mainBtn">
                                                 <i class="fas fa-credit-card"></i> Subscribe
                                             </button>
