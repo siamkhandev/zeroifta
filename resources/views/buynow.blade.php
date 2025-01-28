@@ -168,14 +168,14 @@
                                         @csrf
                                         <input type="hidden" name="plan_id" value="{{ $plan->id }}">
                                         <div class="form-group">
-                                            <label for="card-element" class="form-label">Payment Method</label>
+                                            <label for="card-element" class="form-label">Choose Payment Method</label>
                                             <select name="payment_method" class="form-control">
                                               @foreach($paymentMethods as $method)
                                                 <option value="{{$method->stripe_payment_method_id}}">{{$method->method_name}} - {{$method->is_default}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="d-grid gap-2">
+                                        <div class="d-grid gap-2 mt-6">
                                             <button type="submit" class="mainBtn">
                                                 <i class="fas fa-credit-card"></i> Subscribe
                                             </button>
