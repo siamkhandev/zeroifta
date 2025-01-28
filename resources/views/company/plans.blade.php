@@ -918,3 +918,16 @@
 
 
 @endsection
+@section('scripts')
+<script>
+  $("#plansSwitchCheckbox").on('change', function() {
+    if ($(this).prop('checked')) {
+      $("#yearly_plans").show();
+      $("#monthly_plans").hide();
+    } else {
+      $("#yearly_plans").hide();
+      $("#monthly_plans").show();
+    }
+  });
+</script>
+@endsection
