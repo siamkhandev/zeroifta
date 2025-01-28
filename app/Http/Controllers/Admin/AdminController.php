@@ -16,6 +16,7 @@ use Stripe\Customer;
 use Stripe\PaymentMethod as StripePaymentMethod;
 use Stripe\Stripe;
 use Stripe\Subscription;
+use App\Models\Subscription as ModelsSubscription;
 
 class AdminController extends Controller
 {
@@ -151,26 +152,51 @@ class AdminController extends Controller
                     'default_payment_method' => $paymentMethod,
                 ],
             ]);
+            $subscriptions = Subscription::all(['customer' => $customer->id, 'status' => 'active']);
+            if($subscriptions->count() > 0){
+                //update a subscription
 
-            // Step 3: Create the subscription
-            $subscription = Subscription::create([
-                'customer' => $customer->id,
-                'items' => [[
-                    'plan' => $plan->stripe_plan_id, // The Stripe plan ID
-                ]],
-                'default_payment_method' => $paymentMethod,
-            ]);
+                $subscription = $subscriptions->data[0];
+                $updatedSubscription = Subscription::update($subscription->id, [
+                    'items' => [
+                        [
+                            'id' => $subscription->items->data[0]->id,
+                            'price' => $plan->stripe_plan_id,
+                        ],
+                    ],
+                    'proration_behavior' => 'create_prorations',
+                ]);
 
-            // Step 4: Save subscription details in your database
-            $request->user()->subscriptions()->create([
-                'stripe_customer_id' => $customer->id,
-                'stripe_subscription_id' => $subscription->id,
-                'plan_id' => $plan->id,
-                'status' => 'active',
-            ]);
+                ModelsSubscription::where('stripe_subscription_id', $subscription->id)->update([
+                    'plan' => $plan->billing_period,
+                    'amount' => $plan->price,
+                    'status' => 'active',
+                    'plan_id' => $plan->id,
+                ]);
+                return redirect('/')->with('success', 'Subscription successfully updated.');
 
-            // Mark the user as subscribed
-            User::whereId(Auth::id())->update(['is_subscribed' => 1]);
+            }else{
+                // Step 3: Create the subscription
+                $subscription = Subscription::create([
+                    'customer' => $customer->id,
+                    'items' => [[
+                        'plan' => $plan->stripe_plan_id, // The Stripe plan ID
+                    ]],
+                    'default_payment_method' => $paymentMethod,
+                ]);
+
+                // Step 4: Save subscription details in your database
+                $request->user()->subscriptions()->create([
+                    'stripe_customer_id' => $customer->id,
+                    'stripe_subscription_id' => $subscription->id,
+                    'plan_id' => $plan->id,
+                    'status' => 'active',
+                ]);
+
+                // Mark the user as subscribed
+                User::whereId(Auth::id())->update(['is_subscribed' => 1]);
+
+            }
 
             return redirect('/')->with('success', 'Subscription successfully created.');
         } catch (\Exception $e) {
