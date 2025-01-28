@@ -60,6 +60,7 @@ class CompaniesController extends Controller
             Vehicle::where('company_id', $id)->delete();
             DriverVehicle::where('company_id', $id)->delete();
             CompanyDriver::where('company_id', $id)->delete();
+            User::where('company_id', $id)->delete();
             User::whereId($id)->delete();
 
             // Enable foreign key checks
