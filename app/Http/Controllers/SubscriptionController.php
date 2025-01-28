@@ -345,6 +345,7 @@ class SubscriptionController extends Controller
             return response()->json([
                 'status' => 400,
                 'message' => 'No valid payment method found for the user.',
+                'data' => (object) [],
             ], 400);
         }
 

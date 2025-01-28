@@ -10,7 +10,7 @@
                                                 <h2 class="head-20Med">{{__('messages.Subscription Plans')}}</h2>
                                             </div>
                                             <div class="row" style="align-items: center">
-                                              @if(Auth::user()->is_subscribed==1)
+                                              <!-- @if(Auth::user()->is_subscribed==1) -->
                                               <div class="col-md-4 col-sm-12 col-12 mb-4">
                                                     <div class="price_plans plan-com weekly-plan">
                                                         <div class="ph-area">
@@ -25,7 +25,7 @@
                                                         @endif
                                                     </div>
                                                 </div>
-                                              @else
+                                              <!-- @else -->
                                             @foreach($plans as $plan)
                                                 <div class="col-md-4 col-sm-12 col-12 mb-4">
                                                     <div class="price_plans plan-com weekly-plan">
@@ -50,7 +50,7 @@
                                                     </div>
                                                 </div>
                                                @endforeach
-                                               @endif
+                                               <!-- @endif -->
                                             </div>
                                         </div>
                                     </div>
