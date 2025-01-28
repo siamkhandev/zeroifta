@@ -52,7 +52,7 @@
           </a>
         </li>
         @php
-            $checkSubscription = \DB::table('subscriptions')->where('user_id', auth()->id())->first();
+            $checkSubscription = \DB::table('subscriptions')->where('user_id', auth()->id())->where('status', 'active')->first();
             $checkPlan = null; // Initialize to avoid undefined variable errors
 
             if ($checkSubscription) {
