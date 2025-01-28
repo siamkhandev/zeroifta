@@ -57,7 +57,7 @@ class PaymentController extends Controller
             ]);
 
             // Store Payment Info in Database
-            Payment::create([
+            ModelsSubscription::create([
                 'company_id' => $user->id,
                 'stripe_payment_id' => $customer->id,
                 'stripe_subscription_id' => $subscription->id,
@@ -79,7 +79,7 @@ class PaymentController extends Controller
             ]);
 
             // Store Payment Info in Database
-            Payment::create([
+            ModelsSubscription::create([
                 'company_id' => $user->id,
                 'stripe_payment_id' => $customer->id,
                 'stripe_subscription_id' =>null,
@@ -106,7 +106,7 @@ class PaymentController extends Controller
                 $subscription = Subscription::retrieve($subscriptionId);
                 $subscription->cancel();
                 User::whereId($user->id)->update(['is_subscribed'=>0]);
-                Payment::where('company_id',$user->id)->update(['status'=>'cancelled']);
+                ModelsSubscription::where('company_id',$user->id)->update(['status'=>'cancelled']);
                 return redirect('subscribe')->with('success', 'Subscription cancelled successfully.');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Failed to cancel subscription. Please try again later.');
