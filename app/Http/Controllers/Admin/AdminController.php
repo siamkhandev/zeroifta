@@ -157,7 +157,7 @@ class AdminController extends Controller
             $subscriptions = Subscription::all(['customer' => $customer->id, 'status' => 'active']);
 
             if ($subscriptions->data) {
-                dd("Sss");
+
                 // Update existing subscription
                 $subscription = $subscriptions->data[0];
                 $updatedSubscription = Subscription::update($subscription->id, [
@@ -177,9 +177,9 @@ class AdminController extends Controller
                     'plan_id' => $plan->id,
                 ]);
 
-                return redirect('/subscribe')->with('success', 'Subscription updated successfully.');
+                return redirect('/')->with('success', 'Subscription updated successfully.');
             } else {
-                dd("Sssdsddd");
+
                 // Create a new subscription
                 $newSubscription = Subscription::create([
                     'customer' => $customer->id,
@@ -203,7 +203,7 @@ class AdminController extends Controller
 
                 $user->update(['is_subscribed' => 1]);
 
-                return redirect('/subscribe')->with('success', 'Subscription purchased successfully.');
+                return redirect('/')->with('success', 'Subscription purchased successfully.');
             }
         } catch (Exception $e) {
             return redirect('/subscribe')->with('error', 'Error managing subscription: ' . $e->getMessage());
