@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\CompanyContactUs;
 use App\Models\CompanyDriver;
 use App\Models\Message;
+use App\Models\Payment;
+use App\Models\PaymentMethod;
 use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -115,10 +117,16 @@ class AdminController extends Controller
     }
     public function buy($plan)
     {
-
         $plan = Plan::where('slug',$plan)->first();
+        $paymentMethods = PaymentMethod::where('user_id',Auth::id())->get();
+        if(count($paymentMethods)>0){
+            return view('buynow',get_defined_vars());
+        }else{
+            return view('buy',get_defined_vars());
+        }
+       
 
-        return view('buy',get_defined_vars());
+        
     }
     public function pay(Request $request)
     {
