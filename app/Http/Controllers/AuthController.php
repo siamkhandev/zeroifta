@@ -153,7 +153,7 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $user->image = url('/images/' .$user->image);
-            $user->token=null;
+            $user->token=$user->current_access_token;
             $features = [];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
