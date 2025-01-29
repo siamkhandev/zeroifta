@@ -73,7 +73,7 @@ class SubscriptionController extends Controller
                     ['id' => $currentSubscription->data[0]->items->data[0]->id, 'price' => $priceId],
                 ],
             ]);
-
+            $features =[];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -95,10 +95,10 @@ class SubscriptionController extends Controller
 
             }else{
                 $features = [
-                    'minimum_gallons'=>true,
-                    'add_stop'=>true,
-                    'change_reserve_fuel'=>true,
-                    'customize_fuel_tank_capacity' =>true,
+                    'minimum_gallons'=>false,
+                    'add_stop'=>false,
+                    'change_reserve_fuel'=>false,
+                    'customize_fuel_tank_capacity' =>false,
                 ];
             }
             return response()->json([
@@ -132,7 +132,7 @@ class SubscriptionController extends Controller
             }
 
             $newSubscription = \Stripe\Subscription::create($subscriptionData);
-
+            $features =[];
             $subscriptionModel = new Subscription();
             $subscriptionModel->user_id = $user->id;
             $subscriptionModel->stripe_customer_id = $user->stripe_customer_id;
@@ -164,10 +164,10 @@ class SubscriptionController extends Controller
                 }
             }else{
                 $features = [
-                    'minimum_gallons'=>true,
-                    'add_stop'=>true,
-                    'change_reserve_fuel'=>true,
-                    'customize_fuel_tank_capacity' =>true,
+                    'minimum_gallons'=>false,
+                    'add_stop'=>false,
+                    'change_reserve_fuel'=>false,
+                    'customize_fuel_tank_capacity' =>false,
                 ];
             }
             //$newSubscription->subscription = $checkSubscription;

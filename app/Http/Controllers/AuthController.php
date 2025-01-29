@@ -72,12 +72,7 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $features = [
-                'minimum_gallons'=>true,
-                'add_stop'=>true,
-                'change_reserve_fuel'=>true,
-                'customize_fuel_tank_capacity' =>true,
-            ];
+            $features = [];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -88,7 +83,21 @@ class AuthController extends Controller
                         'change_reserve_fuel'=>false,
                         'customize_fuel_tank_capacity' =>false,
                     ];
+                }else{
+                    $features = [
+                        'minimum_gallons'=>true,
+                        'add_stop'=>true,
+                        'change_reserve_fuel'=>true,
+                        'customize_fuel_tank_capacity' =>true,
+                    ];
                 }
+            }else{
+                $features = [
+                    'minimum_gallons'=>false,
+                    'add_stop'=>false,
+                    'change_reserve_fuel'=>false,
+                    'customize_fuel_tank_capacity' =>false,
+                ];
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;
@@ -145,12 +154,7 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $user->image = url('/images/' .$user->image);
             $user->token=null;
-            $features = [
-                'minimum_gallons'=>true,
-                'add_stop'=>true,
-                'change_reserve_fuel'=>true,
-                'customize_fuel_tank_capacity' =>true,
-            ];
+            $features = [];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -161,7 +165,21 @@ class AuthController extends Controller
                         'change_reserve_fuel'=>false,
                         'customize_fuel_tank_capacity' =>false,
                     ];
+                }else{
+                    $features = [
+                        'minimum_gallons'=>true,
+                        'add_stop'=>true,
+                        'change_reserve_fuel'=>true,
+                        'customize_fuel_tank_capacity' =>true,
+                    ];
                 }
+            }else{
+                $features = [
+                    'minimum_gallons'=>false,
+                    'add_stop'=>false,
+                    'change_reserve_fuel'=>false,
+                    'customize_fuel_tank_capacity' =>false,
+                ];
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;
@@ -252,12 +270,7 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $user->token=null;
-           $features = [
-                'minimum_gallons'=>true,
-                'add_stop'=>true,
-                'change_reserve_fuel'=>true,
-                'customize_fuel_tank_capacity' =>true,
-            ];
+            $features =[];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -268,7 +281,21 @@ class AuthController extends Controller
                         'change_reserve_fuel'=>false,
                         'customize_fuel_tank_capacity' =>false,
                     ];
+                }else{
+                    $features = [
+                        'minimum_gallons'=>true,
+                        'add_stop'=>true,
+                        'change_reserve_fuel'=>true,
+                        'customize_fuel_tank_capacity' =>true,
+                    ];
                 }
+            }else{
+                $features = [
+                    'minimum_gallons'=>false,
+                    'add_stop'=>false,
+                    'change_reserve_fuel'=>false,
+                    'customize_fuel_tank_capacity' =>false,
+                ];
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;
@@ -434,12 +461,7 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $features = [
-                'minimum_gallons'=>true,
-                'add_stop'=>true,
-                'change_reserve_fuel'=>true,
-                'customize_fuel_tank_capacity' =>true,
-            ];
+            $features = [];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -450,7 +472,21 @@ class AuthController extends Controller
                         'change_reserve_fuel'=>false,
                         'customize_fuel_tank_capacity' =>false,
                     ];
+                }else{
+                    $features = [
+                        'minimum_gallons'=>true,
+                        'add_stop'=>true,
+                        'change_reserve_fuel'=>true,
+                        'customize_fuel_tank_capacity' =>true,
+                    ];
                 }
+            }else{
+                $features = [
+                    'minimum_gallons'=>false,
+                    'add_stop'=>false,
+                    'change_reserve_fuel'=>false,
+                    'customize_fuel_tank_capacity' =>false,
+                ];
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;

@@ -129,7 +129,13 @@ class IndependentTruckerController extends Controller
                 $findCard->is_default = true;
             }
             $driverFind->defaultCard = $findCard;
-            $driverFind->features = null;
+            $features = [
+                'minimum_gallons'=>false,
+                'add_stop'=>false,
+                'change_reserve_fuel'=>false,
+                'customize_fuel_tank_capacity' =>false,
+            ];
+            $driverFind->features = $features;
             return response()->json([
                 'status'=>200,
                 'message'=>'Registration successful',

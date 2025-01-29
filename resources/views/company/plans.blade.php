@@ -171,7 +171,7 @@
                                                             </div>
                                                             <!-- Button -->
                                                             <div class="palns-btn mt-5">
-                                                            @if($userPlan->planName->slug=="basic_monthly")
+                                                            @if($userPlan->planName && $userPlan->planName->slug=="basic_monthly")
                                                             <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
                                                                 Cancel Subscription
                                                             </a>
@@ -341,7 +341,7 @@
 
                                                             <!-- Button -->
                                                             <div class="palns-btn mt-5">
-                                                            @if($userPlan->planName->slug=="premium_monthly")
+                                                            @if($userPlan->planName &&$userPlan->planName->slug=="premium_monthly")
                                                             <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
                                                                 Cancel Subscription
                                                             </a>
@@ -460,7 +460,7 @@
                                                             </div>
                                                             <!-- Button -->
                                                             <div class="palns-btn mt-5">
-                                                            @if($userPlan->planName->slug=="premium_plus_monthly")
+                                                            @if($userPlan->planName &&$userPlan->planName->slug=="premium_plus_monthly")
                                                             <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
                                                                 Cancel Subscription
                                                             </a>
@@ -626,7 +626,7 @@
                                                         </div>
                                                         <!-- Button -->
                                                         <div class="palns-btn mt-5">
-                                                        @if($userPlan->planName->slug=="basic_yearly")
+                                                        @if($userPlan->planName &&$userPlan->planName->slug=="basic_yearly")
                                                             <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
                                                                 Cancel Subscription
                                                             </a>
@@ -797,7 +797,7 @@
 
                                                         <!-- Button -->
                                                         <div class="palns-btn mt-5">
-                                                        @if($userPlan->planName->slug=="premium_yearly")
+                                                        @if($userPlan->planName &&$userPlan->planName->slug=="premium_yearly")
                                                             <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
                                                                 Cancel Subscription
                                                             </a>
@@ -930,7 +930,7 @@
                                                         </div>
                                                         <!-- Button -->
                                                         <div class="palns-btn mt-5">
-                                                        @if($userPlan->planName->slug=="premium_plus_yearly")
+                                                        @if($userPlan->planName &&$userPlan->planName->slug=="premium_plus_yearly")
                                                             <a href="{{route('cancel.subscription',$userPlan->stripe_subscription_id)}}" class="mainBtn">
                                                                 Cancel Subscription
                                                             </a>
