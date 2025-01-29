@@ -403,17 +403,18 @@ class SubscriptionController extends Controller
     public function getSelectedPlan(Request $request)
     {
         $selectedPlan = SelectedPlan::with(['user','plan','paymentMethod'])->where('user_id',$request->user_id)->first();
-        $selectedPlan->plan->price = '$'.$selectedPlan->plan->price;
-        if($selectedPlan && $selectedPlan->plan->billing_period=="month"){
-            $selectedPlan->plan->billing_period="monthly";
-        }
-        if($selectedPlan && $selectedPlan->plan->billing_period=="year"){
-            $selectedPlan->plan->billing_period="yearly";
-        }
         if($selectedPlan){
+            $selectedPlan->plan->price = '$'.$selectedPlan->plan->price;
+            if($selectedPlan->plan->billing_period=="month"){
+                $selectedPlan->plan->billing_period="monthly";
+            }
+            if($selectedPlan->plan->billing_period=="year"){
+                $selectedPlan->plan->billing_period="yearly";
+            }
             return response()->json(['status'=>200,'message'=>'selected plan fetched','data'=>$selectedPlan]);
-        }else{
-            return response()->json(['status'=>404,'message'=>'no selected plan available','data'=>(object)[]]);
         }
+        
+        return response()->json(['status'=>404,'message'=>'no selected plan available','data'=>(object)[]]);
+        
     }
 }
