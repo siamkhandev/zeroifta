@@ -336,7 +336,7 @@ class SubscriptionService
                 $plan->not_included =[];
                 $plan->price='$'.$plan->price.' - Year';
                 $plan->is_recommended=1;
-            }elseif ($plan->slug == 'premium_plus_yearly') {
+            }elseif ($plan->slug == 'premium_yearly_plus') {
                 $plan->summary = "The Premium+ Yearly Subscription gives you full access to all of ZeroIFTA's most powerful features at a discounted rate, offering the ultimate solution for fleet management and fuel optimization.";
                 $plan->description = [
                     [
