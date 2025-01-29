@@ -404,6 +404,12 @@ class SubscriptionController extends Controller
     {
         $selectedPlan = SelectedPlan::with(['user','plan','paymentMethod'])->where('user_id',$request->user_id)->first();
         $selectedPlan->plan->price = '$'.$selectedPlan->plan->price;
+        if($selectedPlan->plan->billing_period=="month"){
+            $selectedPlan->plan->billing_period="monthly";
+        }
+        if($selectedPlan->plan->billing_period=="year"){
+            $selectedPlan->plan->billing_period="yearly";
+        }
         if($selectedPlan){
             return response()->json(['status'=>200,'message'=>'selected plan fetched','data'=>$selectedPlan]);
         }else{
