@@ -40,9 +40,10 @@ Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
+Route::post('get-profile',[AuthController::class,'getProfile']);
 Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
-    Route::post('get-profile',[AuthController::class,'getProfile']);
+    
     Route::post('updateUser',[AuthController::class,'updateUser']);
     Route::post('select-vehicle',[AuthController::class,'selectVehicle']);
     Route::post('password/change',[AuthController::class,'changePassword']);
