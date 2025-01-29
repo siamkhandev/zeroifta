@@ -598,8 +598,8 @@ class IFTAController extends Controller
             $lng += $dlng;
 
             $points[] = [
-                'lat' => number_format($lat * 1e-5, 5),
-                'lng' => number_format($lng * 1e-5, 5),
+                'lat' => $lat * 1e-5,
+                'lng' => $lng * 1e-5,
             ];
         }
 
