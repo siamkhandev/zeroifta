@@ -655,7 +655,7 @@ class IFTAController extends Controller
                 $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
                 // Check if within the defined proximity
-                if ($distance < 500) { // Distance is less than 500 meters
+                if ($distance < 12000) { // Distance is less than 500 meters
                     // Create a unique key for each lat,lng pair
                     $uniqueKey = $lat2 . ',' . $lng2;
 
