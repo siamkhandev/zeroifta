@@ -237,7 +237,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Profile Picture')}}</label>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Image')}}</label>
                         <input type="file" required name="image" class="form-control login-input" accept="image/png, image/jpg, image/jpeg">
 
                     </div>
