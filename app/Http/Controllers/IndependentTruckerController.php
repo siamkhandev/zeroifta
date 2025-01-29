@@ -75,7 +75,9 @@ class IndependentTruckerController extends Controller
             $driver->phone	 = $request->phone;
             $driver->password= Hash::make($request->password);
             $driver->role='trucker';
-
+            $tokenRegister = $driver->createToken('zeroifta')->accessToken;
+            $driver->token = $tokenRegister;
+            $driver->current_access_token = $tokenRegister;
 
            if(str_contains($request->phone,'+1')) {
             $otp_sms = rand(100000, 999999);
