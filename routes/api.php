@@ -96,11 +96,12 @@ Route::middleware('auth:api')->group( function () {
     // Get subscription details
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
     Route::post('/send-otp', [OtpController::class, 'sendOtp']);
-    Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
+    
     Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
     ///
 
 });
+Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 //Route::post('/trip/start', [TripController::class, 'store']);
 Route::post('store-login-session', [LoginSessionsController::class, 'storeLoginSession']);
 ///
