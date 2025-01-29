@@ -292,6 +292,7 @@ class SubscriptionService
                 $plan->is_recommended=0;
             }elseif ($plan->slug == 'premium_yearly') {
                 $plan->summary = "Equivalent to $60.83 per month (around 9% discount)";
+                
                 $plan->description = [
                     [
                         "heading" => "All Features of the Basic Plan.",
