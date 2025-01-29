@@ -154,10 +154,9 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             if($user->image){
                 $user->image = url('/images/' .$user->image);
-            }else{
-                $user->image =null;
             }
-            $user->token=$user->current_access_token;
+            
+            $user->token=$user->current_access_token ?? null;
             $features = [];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
@@ -432,7 +431,7 @@ class AuthController extends Controller
         if($user){
             $user->email = $request->email;
             $user->phone = $request->phone;
-            
+
             $user->update();
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
