@@ -85,11 +85,21 @@ class SubscriptionController extends Controller
                         'customize_fuel_tank_capacity' =>false,
                     ];
                 }else{
-                    $features =null;
+                    $features = [
+                        'minimum_gallons'=>true,
+                        'add_stop'=>true,
+                        'change_reserve_fuel'=>true,
+                        'customize_fuel_tank_capacity' =>true,
+                    ];
                 }
 
             }else{
-                $features =null;
+                $features = [
+                    'minimum_gallons'=>true,
+                    'add_stop'=>true,
+                    'change_reserve_fuel'=>true,
+                    'customize_fuel_tank_capacity' =>true,
+                ];
             }
             return response()->json([
                 'status' => 200,
@@ -99,7 +109,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $updatedSubscription->status,
-                    'features' => $features ?? null,
+                    'features' => $features,
                 ],
             ]);
         } else {
@@ -145,10 +155,20 @@ class SubscriptionController extends Controller
                         'customize_fuel_tank_capacity' =>false,
                     ];
                 }else{
-                    $features=null;
+                    $features = [
+                        'minimum_gallons'=>true,
+                        'add_stop'=>true,
+                        'change_reserve_fuel'=>true,
+                        'customize_fuel_tank_capacity' =>true,
+                    ];
                 }
             }else{
-                $features=null;
+                $features = [
+                    'minimum_gallons'=>true,
+                    'add_stop'=>true,
+                    'change_reserve_fuel'=>true,
+                    'customize_fuel_tank_capacity' =>true,
+                ];
             }
             //$newSubscription->subscription = $checkSubscription;
             $newSubscription->features = $features;
@@ -161,7 +181,7 @@ class SubscriptionController extends Controller
                     'plan_name' => $planName->name ?? null,
                     'price' => $priceId, // Assuming $priceId holds the correct price
                     'status' => $newSubscription->status,
-                    'features' => $features ?? null,
+                    'features' => $features,
                 ],
             ]);
         }

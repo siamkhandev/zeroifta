@@ -72,7 +72,12 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $features = null;
+            $features = [
+                'minimum_gallons'=>true,
+                'add_stop'=>true,
+                'change_reserve_fuel'=>true,
+                'customize_fuel_tank_capacity' =>true,
+            ];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -140,7 +145,12 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $user->image = url('/images/' .$user->image);
             $user->token=null;
-            $features = null;
+            $features = [
+                'minimum_gallons'=>true,
+                'add_stop'=>true,
+                'change_reserve_fuel'=>true,
+                'customize_fuel_tank_capacity' =>true,
+            ];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -242,7 +252,12 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $user->token=null;
-            $features =(object)[];
+           $features = [
+                'minimum_gallons'=>true,
+                'add_stop'=>true,
+                'change_reserve_fuel'=>true,
+                'customize_fuel_tank_capacity' =>true,
+            ];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
@@ -386,7 +401,7 @@ class AuthController extends Controller
         if($user){
             $user->email = $request->email;
             $user->phone = $request->phone;
-            
+
             $user->update();
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
@@ -419,7 +434,12 @@ class AuthController extends Controller
                 $vehicle->vehicle_image = url('/vehicles/' . $vehicle->vehicle_image);
             }
             $user->vehicle = $vehicle;
-            $features = null;
+            $features = [
+                'minimum_gallons'=>true,
+                'add_stop'=>true,
+                'change_reserve_fuel'=>true,
+                'customize_fuel_tank_capacity' =>true,
+            ];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
