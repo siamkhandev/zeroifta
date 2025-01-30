@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPasswordMail;
+use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
@@ -73,7 +74,9 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $features = [];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
@@ -157,10 +160,12 @@ class AuthController extends Controller
             }else{
                 $user->image =null;
             }
-            
+
             $user->token=$user->current_access_token;
             $features = [];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
@@ -276,7 +281,9 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $user->token=null;
             $features =[];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
@@ -467,7 +474,9 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $features = [];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
