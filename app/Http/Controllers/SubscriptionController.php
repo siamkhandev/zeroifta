@@ -73,6 +73,13 @@ class SubscriptionController extends Controller
                     ['id' => $currentSubscription->data[0]->items->data[0]->id, 'price' => $priceId],
                 ],
             ]);
+            Subscription::where('stripe_customer_id', $user->stripe_customer_id)->delete();
+            $request->user()->subscriptions()->create([
+                'stripe_customer_id' => $user->stripe_customer_id,
+                'stripe_subscription_id' => $updatedSubscription->id,
+                'plan_id' => $request->plan_id,
+                'status' => 'active',
+            ]);
             $features =[];
             $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
             if($checkSubscription){
@@ -413,8 +420,8 @@ class SubscriptionController extends Controller
             }
             return response()->json(['status'=>200,'message'=>'selected plan fetched','data'=>$selectedPlan]);
         }
-        
+
         return response()->json(['status'=>404,'message'=>'no selected plan available','data'=>(object)[]]);
-        
+
     }
 }
