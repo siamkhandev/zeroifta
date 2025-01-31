@@ -404,7 +404,7 @@ class IFTAController extends Controller
                 // Filter out any null values if necessary
                 $polylinePoints = array_filter($polylinePoints);
         
-                dd($polylinePoints);
+                
             }
             $trip = Trip::create($validatedData);
             $route = $data['routes'][0];
@@ -494,6 +494,7 @@ class IFTAController extends Controller
                     'fuel_stations' => $result,
                     'polyline' => $decodedPolyline,
                     'encoded_polyline'=>$encodedPolyline,
+                    'polyline_paths'=>$polylinePoints ?? [],
                     'stops'=>[],
                     'vehicle' => $vehicle
                 ];
