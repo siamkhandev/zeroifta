@@ -55,7 +55,7 @@
                 <p id="modalMessage"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('messages.Cancel')}}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="hideModal()">{{__('messages.Cancel')}}</button>
                 <button type="button" id="confirmButton" class="btn btn-primary">{{__('messages.Reassign')}}</button>
             </div>
         </div>
@@ -88,7 +88,9 @@ $(document).ready(function () {
             $('#editVehicleForm').submit();
         }
     });
-
+    function hideModal(){
+        $("#confirmationModal").modal('hide');
+    }
     function checkDriverAssignment(driverId) {
         $.ajax({
             url: '{{ route("driver_vehicles.check_driver_assignment") }}',
