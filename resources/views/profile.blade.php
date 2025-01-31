@@ -178,5 +178,11 @@ function updateFileLabel(input) {
     const fileName = input.files[0]?.name || '{{ __('messages.No File chosen') }}';
     document.getElementById('fileLabel').textContent = fileName;
 }
+document.querySelector("input").addEventListener("input", function () {
+  if (this.value.length > 10) {
+    alert("Maximum 10 characters allowed");
+    this.value = this.value.slice(0, 10);
+  }
+});
   </script>
 @endsection
