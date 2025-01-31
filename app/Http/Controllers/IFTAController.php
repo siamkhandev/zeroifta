@@ -393,7 +393,7 @@ class IFTAController extends Controller
         if ($response->successful()) {
             $data = $response->json();
            if($data['routes'] && $data['routes'][0]){
-            dd($data['routes'][0]['legs']);
+            dd($data['routes'][0]['legs'][0]['steps']['polyline']['points']);
             $trip = Trip::create($validatedData);
             $route = $data['routes'][0];
 
