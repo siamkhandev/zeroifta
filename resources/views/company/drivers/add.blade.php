@@ -174,7 +174,7 @@
     <div class="dash-input mb-3 position-relative">
         <label class="input-lables pb-2" for="exampleFormControlInput1">{{ __('messages.Password') }}</label>
         
-        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" 
+        <input type="password" required class="form-control login-input" id="password" 
                placeholder="{{ __('messages.Password') }}" name="password" 
                value="{{ old('password') }}"/>
         
@@ -205,7 +205,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
     <div class="dash-input mb-3" style="position: relative;">
         <label class="input-lables pb-2" for="exampleFormControlInput1">{{ __('messages.Confirm Password') }}</label>
-        <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{ __('messages.Confirm Password') }}" name="password_confirmation" value="{{ old('password_confirmation') }}" />
+        <input type="password" required class="form-control login-input" id="confirm_password" placeholder="{{ __('messages.Confirm Password') }}" name="password_confirmation" value="{{ old('password_confirmation') }}" />
         
         <!-- Password visibility toggle -->
         <div class="show-pass1" style="position: absolute; right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;">
