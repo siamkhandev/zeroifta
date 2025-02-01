@@ -239,6 +239,19 @@ class IFTAController extends Controller
         if ($response->successful()) {
             $data = $response->json();
             if($data['routes'] && $data['routes'][0]){
+                if (!empty($data['routes'][0]['legs'][0]['steps'])) {
+                    $steps = $data['routes'][0]['legs'][0]['steps'];
+            
+                    // Extract polyline points as an array of strings
+                    $polylinePoints = array_map(function ($step) {
+                        return $step['polyline']['points'] ?? null;
+                    }, $steps);
+            
+                    // Filter out any null values if necessary
+                    $polylinePoints = array_filter($polylinePoints);
+            
+                    
+                }
                 $route = $data['routes'][0];
 
                 $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
@@ -322,6 +335,7 @@ class IFTAController extends Controller
                         'fuel_stations' => $result, // Fuel stations with optimal station marked
                         'polyline' => $decodedPolyline,
                         'encoded_polyline'=>$encodedPolyline,
+                        'polyline_paths' => $polylinePoints ?? [],
                         'stops' => $stops,
                         'vehicle' => $vehicle
                     ];
