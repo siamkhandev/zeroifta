@@ -174,7 +174,7 @@
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Password')}}</label>
                         <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Password')}}" name="password"  value="{{old('password')}}"/>
-                        <div class="show-pass position-absolute" style="right: 10px; top: 50%; " onclick="togglePasswordVisibility('password', 'show-icon1', 'hide-icon1')">
+                        <div class="show-pass" style="right: 10px; top: 50%; " onclick="togglePasswordVisibility('password', 'show-icon1', 'hide-icon1')">
         <span id="show-icon1" style="display: inline;">
             <!-- Eye icon SVG -->
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#a5a9ad">
@@ -199,7 +199,7 @@
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Confirm Password')}}</label>
                         <input type="password" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Confirm Password')}}" name="password_confirmation"  value="{{old('password_confirmation')}}"/>
-                        <div class="show-pass position-absolute" style="right: 10px; top: 50%; " onclick="togglePasswordVisibility('password_confirmation', 'show-icon2', 'hide-icon2')">
+                        <div class="show-pass " style="right: 10px; top: 50%; " onclick="togglePasswordVisibility('password_confirmation', 'show-icon2', 'hide-icon2')">
       <span id="show-icon2" style="display: inline;">
         <!-- Eye icon SVG -->
         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#a5a9ad">
@@ -230,21 +230,5 @@
     // Set the max attribute to today's date using JavaScript
     document.getElementById('licenseStartDate').setAttribute('max', new Date().toISOString().split('T')[0]);
 </script>
-<script>
-function togglePasswordVisibility(inputId, showIconId, hideIconId) {
-  const inputField = document.getElementById(inputId);
-  const showIcon = document.getElementById(showIconId);
-  const hideIcon = document.getElementById(hideIconId);
 
-  if (inputField.type === "password") {
-    inputField.type = "text";
-    showIcon.style.display = "none";
-    hideIcon.style.display = "inline";
-  } else {
-    inputField.type = "password";
-    showIcon.style.display = "inline";
-    hideIcon.style.display = "none";
-  }
-}
-</script>
 @endsection
