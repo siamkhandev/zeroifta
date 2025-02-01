@@ -181,6 +181,7 @@ return [
     "Payment Methods"=>"Métodos de pago",
     "Pages / Payment Methods"=>"Páginas / Metodos de pago",
     "Role"=>"Rol",
-    "Change Password"=>"Cambiar la contraseña"
-
+    "Change Password"=>"Cambiar la contraseña",
+    "Type"=>"Tipo",
+    "License Plate No."=>"Número de matrícula.",
 ];

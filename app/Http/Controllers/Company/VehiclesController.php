@@ -40,7 +40,8 @@ class VehiclesController extends Controller
             "fuel_type"=>'required',
             "license_state"=>'required',
             "license_number"=>'required',
-
+            "fuel_tank_type"=>'required',
+            "odometer_reading_type"=>'required',
             'odometer_reading' => 'required',
             'mpg' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
@@ -62,6 +63,8 @@ class VehiclesController extends Controller
                     $vehicle->odometer_reading	 = $request->odometer_reading;
                     $vehicle->company_id = Auth::id();
                     $vehicle->mpg= $request->mpg;
+                    $vehicle->odometer_reading_type = $request->odometer_reading_type;
+                    $vehicle->fuel_tank_type = $request->fuel_tank_type;
                     $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
                     $vehicle->vehicle_id = $request->vehicle_id;
                     $vehicle->vin = $request->vin;
@@ -145,7 +148,8 @@ class VehiclesController extends Controller
             "fuel_type"=>'required',
             "license_state"=>'required',
             "license_number"=>'required',
-
+            "fuel_tank_type"=>'required',
+            "odometer_reading_type"=>'required',
             'odometer_reading' => 'required',
             'mpg' => 'required',
             'image' => 'mimes:jpeg,png,jpg,gif|max:1024',
@@ -158,6 +162,8 @@ class VehiclesController extends Controller
         $vehicle->odometer_reading	 = $request->odometer_reading;
         $vehicle->company_id = Auth::id();
         $vehicle->mpg= $request->mpg;
+        $vehicle->odometer_reading_type = $request->odometer_reading_type;
+        $vehicle->fuel_tank_type = $request->fuel_tank_type;
         $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
         $vehicle->vehicle_id = $request->vehicle_id;
         $vehicle->vin = $request->vin;

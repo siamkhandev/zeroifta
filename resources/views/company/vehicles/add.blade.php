@@ -18,7 +18,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Number')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Vehicle ID')}}" name="vehicle_id" value="{{old('vehicle_id')}}"/>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Vehicle Number')}}" name="vehicle_id" value="{{old('vehicle_id')}}"/>
                     </div>
                     @error('vehicle_id')
                             <span class="invalid-feedback" role="alert" style="display: block;">
