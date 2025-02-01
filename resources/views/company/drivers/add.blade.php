@@ -179,7 +179,7 @@
                value="{{ old('password') }}"/>
         
         <div class="show-pass1 position-absolute" 
-             style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" 
+             style="right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;" 
              onclick="togglePasswordVisibility('password', 'show-icon1', 'hide-icon1')">
              
             <span id="show-icon1" style="display: inline;">
@@ -236,6 +236,22 @@
 <script>
     // Set the max attribute to today's date using JavaScript
     document.getElementById('licenseStartDate').setAttribute('max', new Date().toISOString().split('T')[0]);
+
+    function togglePasswordVisibility(inputId, showIconId, hideIconId) {
+  const inputField = document.getElementById(inputId);
+  const showIcon = document.getElementById(showIconId);
+  const hideIcon = document.getElementById(hideIconId);
+
+  if (inputField.type === "password") {
+    inputField.type = "text";
+    showIcon.style.display = "none";
+    hideIcon.style.display = "inline";
+  } else {
+    inputField.type = "password";
+    showIcon.style.display = "inline";
+    hideIcon.style.display = "none";
+  }
+}
 </script>
 
 @endsection
