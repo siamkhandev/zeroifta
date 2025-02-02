@@ -81,7 +81,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
     ///
     Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
-    Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
+  
     Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
     Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
     Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
@@ -106,6 +106,7 @@ Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 //Route::post('/trip/start', [TripController::class, 'store']);
 Route::post('store-login-session', [LoginSessionsController::class, 'storeLoginSession']);
 ///
+Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
 Route::post('register',[IndependentTruckerController::class,'store']);
 Route::post('generatetoken',[SubscriptionController::class,'generateToken']);
 
