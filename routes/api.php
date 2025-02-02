@@ -88,9 +88,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
     Route::post('/payment-methods/getDetails', [PaymentMethodController::class, 'getTransactionsByPaymentMethod']);
     /////
-    Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
-    Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
-    Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+    
     // Cancel subscription
     Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
 
@@ -102,6 +100,9 @@ Route::middleware('auth:api')->group( function () {
     ///
 
 });
+Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
+    Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
+    Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 //Route::post('/trip/start', [TripController::class, 'store']);
 Route::post('store-login-session', [LoginSessionsController::class, 'storeLoginSession']);
