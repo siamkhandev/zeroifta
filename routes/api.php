@@ -41,10 +41,11 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::post('get-profile',[AuthController::class,'getProfile']);
+Route::post('updateUser',[AuthController::class,'updateUser']);
 Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
     
-    Route::post('updateUser',[AuthController::class,'updateUser']);
+   
     Route::post('select-vehicle',[AuthController::class,'selectVehicle']);
     Route::post('password/change',[AuthController::class,'changePassword']);
     Route::post('profile/update',[AuthController::class,'profileUpdate']);
@@ -78,7 +79,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
    
     Route::post('stops/add',[TripController::class,'storeStop']);
-    Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
+    
     ///
     Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
   
@@ -94,12 +95,14 @@ Route::middleware('auth:api')->group( function () {
 
     // Get subscription details
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
-    Route::post('/send-otp', [OtpController::class, 'sendOtp']);
     
-    Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
     ///
 
 });
+Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
+Route::post('/send-otp', [OtpController::class, 'sendOtp']);
+    
+    Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
 Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
     Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
     Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
