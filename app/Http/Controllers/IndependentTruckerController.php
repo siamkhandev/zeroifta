@@ -123,7 +123,7 @@ class IndependentTruckerController extends Controller
             $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
             $driverFind->rsa_key = $rsaKey;
 
-            $driverFind->token =$driver->createToken('zeroifta')->accessToken;
+            $driverFind->token =$driver->current_access_token;
             $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
             if($findCard){
                 $findCard->is_default = true;
