@@ -43,7 +43,7 @@ Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::post('get-profile',[AuthController::class,'getProfile']);
 Route::post('updateUser',[AuthController::class,'updateUser']);
 Route::post('dashboard',[DriverDashboardController::class,'index']);
-Route::middleware('auth:api')->group( function () {
+//Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
 
 
@@ -99,7 +99,7 @@ Route::middleware('auth:api')->group( function () {
 
     ///
 
-});
+//});
 Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
 Route::post('/send-otp', [OtpController::class, 'sendOtp']);
 
