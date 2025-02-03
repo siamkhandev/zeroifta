@@ -42,15 +42,16 @@ Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFu
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::post('get-profile',[AuthController::class,'getProfile']);
 Route::post('updateUser',[AuthController::class,'updateUser']);
+Route::post('dashboard',[DriverDashboardController::class,'index']);
 Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
-    
-   
+
+
     Route::post('select-vehicle',[AuthController::class,'selectVehicle']);
     Route::post('password/change',[AuthController::class,'changePassword']);
     Route::post('profile/update',[AuthController::class,'profileUpdate']);
     ////dashboard/////
-    Route::post('dashboard',[DriverDashboardController::class,'index']);
+
 
     //////vehcile
     Route::post('vehicles/all',[VehicleController::class,'allVehicles']);
@@ -75,33 +76,33 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/trip/update', [IFTAController::class, 'updateTrip']);
     Route::post('/trip/delete', [TripController::class, 'deleteTrip']);
     Route::post('/trip/complete', [TripController::class, 'completeTrip']);
-    
+
     Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
-   
+
     Route::post('stops/add',[TripController::class,'storeStop']);
-    
+
     ///
     Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
-  
+
     Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
     Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
     Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
     Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
     Route::post('/payment-methods/getDetails', [PaymentMethodController::class, 'getTransactionsByPaymentMethod']);
     /////
-    
+
     // Cancel subscription
     Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
 
     // Get subscription details
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
-    
+
     ///
 
 });
 Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
 Route::post('/send-otp', [OtpController::class, 'sendOtp']);
-    
+
     Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
 Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
     Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
