@@ -108,7 +108,7 @@
                 @enderror
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                <div class="dash-input mb-3">
+                <div class="dash-input mb-3" style="position: relative;">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
                   <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Confirm Password" name="password_confirmation" required />
                   <div class="show-pass3" style="position: absolute; right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility('confirm_password', 'show-icon3', 'hide-icon3')">
