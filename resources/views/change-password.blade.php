@@ -59,7 +59,7 @@
             <div class="row pt-3">
 
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                <div class="dash-input mb-3">
+                <div class="dash-input mb-3" style="position: relative;">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Current Password</label>
                   <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="Current Password" name="current_password" required />
                   <div class="show-pass1 position-absolute"
@@ -85,7 +85,7 @@
                 @enderror
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-                <div class="dash-input mb-3">
+                <div class="dash-input mb-3" style="position: relative;">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">New Password</label>
                   <input type="password" class="form-control dis-input" id="exampleFormControlInput1" placeholder="New Password" name="password" required />
                   <div class="show-pass1" style="position: absolute; right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility('confirm_password', 'show-icon2', 'hide-icon2')">
