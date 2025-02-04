@@ -102,7 +102,7 @@
                             </span>
                         @enderror
                 </div>
-                @dd($vehicle);
+
                 @php
 
                 $states = [
