@@ -278,9 +278,9 @@ class VehicleController extends Controller
             return response()->json(['status' => 200, 'message' => 'Vehicle deleted successfully', 'data' => (object)[]], 200);
         }
     }
-    public function removeVehicleByTrucker($id)
+    public function removeVehicleByTrucker(Request $request)
     {
-        $vehicle = Vehicle::findOrFail($id);
+        $vehicle = Vehicle::where('id', $request->id)->first();
 
         // Ensure only independent truckers can remove the vehicle
         if ($vehicle->owner_type !== 'independent_trucker') {
