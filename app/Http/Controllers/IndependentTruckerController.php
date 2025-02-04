@@ -162,7 +162,7 @@ class IndependentTruckerController extends Controller
             "vehicle_model"=>'required',
             "fuel_type"=>'required',
             "license_state"=>'required',
-            "license_number"=>'required|unique:vehicles,license_plate_number',
+            "license_number"=>'required',
             'odometer_reading' => 'required',
             'mpg' => 'required',
 
