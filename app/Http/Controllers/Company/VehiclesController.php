@@ -47,6 +47,14 @@ class VehiclesController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
+        $existingVehicle = Vehicle::where('vin', $request->vin)
+            ->where('owner_type', 'company')
+            ->where('owner_id',Auth::id())
+            ->first();
+
+        if ($existingVehicle) {
+            return response()->json(['status' => 400, 'message' => 'This vehicle already belongs to the company.']);
+        }
         $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$request->vin}?format=json";
         $response = Http::get($apiUrl);
 
@@ -70,6 +78,8 @@ class VehiclesController extends Controller
                     $vehicle->vin = $request->vin;
                     $vehicle->model = $request->vehicle_model;
                     $vehicle->make = $request->truck_make;
+                    $vehicle->owner_id =Auth::id();
+                    $vehicle->owner_type = 'company';
                     $vehicle->make_year = $request->year;
                     $vehicle->fuel_type = $request->fuel_type;
                     $vehicle->license = $request->license_state;

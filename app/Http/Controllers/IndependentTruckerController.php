@@ -165,7 +165,7 @@ class IndependentTruckerController extends Controller
             "license_number"=>'required|unique:vehicles,license_plate_number',
             'odometer_reading' => 'required',
             'mpg' => 'required',
-            
+
 
 
         ]);
@@ -182,6 +182,8 @@ class IndependentTruckerController extends Controller
         $vehicle->model = $request->vehicle_model;
         $vehicle->make = $request->truck_make;
         $vehicle->make_year = $request->year;
+        $vehicle->owner_id =$request->driver_id;
+        $vehicle->owner_type= 'independent_trucker';
         $vehicle->fuel_type = $request->fuel_type;
         $vehicle->license = $request->license_state;
         $vehicle->license_plate_number = $request->license_number;
