@@ -98,7 +98,7 @@ Route::post('dashboard',[DriverDashboardController::class,'index']);
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
 
     ///
-
+    Route::post('/independent-trucker/remove-vehicle', [VehicleController::class, 'removeVehicleByTrucker']);
 //});
 Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
 Route::post('/send-otp', [OtpController::class, 'sendOtp']);

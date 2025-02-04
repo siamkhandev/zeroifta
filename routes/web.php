@@ -54,7 +54,7 @@ Route::get('login', function () {
 Route::get('company/register', [CompanyController::class, 'create'])->name('company.register');
 Route::post('company/register', [CompanyController::class, 'store'])->name('register');
 Route::post('login', [AdminController::class, 'login'])->name('login');
-
+Route::get('/company/remove-vehicle/{vehicle}', [VehiclesController::class, 'removeVehicleByCompany']);
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
 Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');

@@ -278,4 +278,36 @@ class VehicleController extends Controller
             return response()->json(['status' => 200, 'message' => 'Vehicle deleted successfully', 'data' => (object)[]], 200);
         }
     }
+    public function removeVehicleByTrucker($id)
+    {
+        $vehicle = Vehicle::findOrFail($id);
+
+        // Ensure only independent truckers can remove the vehicle
+        if ($vehicle->owner_type !== 'independent_trucker') {
+            return response()->json([
+                'status' => 422,
+                'message' => 'you are not owner of this vehicle',
+                'data' => (object)[],
+            ], 422);
+        }
+
+        // Check for active trips
+        $activeTrips = Trip::where('vehicle_id', $vehicle->id)->where('status', 'active')->exists();
+
+        if ($activeTrips) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Cannot remove vehicle with active trips',
+                'data' => (object)[],
+            ], 400);
+        }
+
+        $vehicle->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Vehicle removed successfully',
+            'data' => (object)[],
+        ], 200);
+    }
 }

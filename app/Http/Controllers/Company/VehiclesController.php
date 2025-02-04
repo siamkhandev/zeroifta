@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Imports\VehiclesImport;
 use App\Models\DriverVehicle;
+use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -225,4 +226,23 @@ class VehiclesController extends Controller
     return redirect('vehicles/all')
         ->with('success', "{$createdCount} vehicles imported. {$failedCount} vehicles failed to import.");
 }
+    public function removeVehicleByCompany($id)
+    {
+        $vehicle = Vehicle::findOrFail($id);
+
+        if ($vehicle->owner_type !== 'company') {
+            return redirect()->back()->withError('This vehicle does not belong to any owner.');
+        }
+
+        $activeTrips = Trip::where('vehicle_id', $vehicle->id)->where('status', 'active')->exists();
+
+        if ($activeTrips) {
+            return redirect()->back()->withError('Cannot remove vehicle with active trips.');
+
+        }
+
+        $vehicle->delete();
+
+        return redirect()->back()->withSuccess('Vehicle removed successfully.');
+    }
 }
