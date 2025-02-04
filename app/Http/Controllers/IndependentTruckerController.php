@@ -155,7 +155,7 @@ class IndependentTruckerController extends Controller
     {
 
         $data = $request->validate([
-            'vehicle_id'=>'required|unique:vehicles,vehicle_id',
+            'vehicle_id'=>'required',
             "vin"=>'required',
             "year"=>'required',
             "truck_make"=>'required',
