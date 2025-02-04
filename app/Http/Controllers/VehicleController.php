@@ -280,10 +280,10 @@ class VehicleController extends Controller
     }
     public function removeVehicleByTrucker(Request $request)
     {
-        $vehicle = Vehicle::where('id', $request->id)->first();
+        $vehicle = Vehicle::where('vin', $request->vin)->where('owner_type', 'company')->first();
 
         // Ensure only independent truckers can remove the vehicle
-        if ($vehicle->owner_type !== 'independent_trucker') {
+        if ($vehicle->owner_type !== 'company') {
             return response()->json([
                 'status' => 422,
                 'message' => 'you are not owner of this vehicle',
