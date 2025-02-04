@@ -58,7 +58,7 @@ Route::post('dashboard',[DriverDashboardController::class,'index']);
     Route::post('trips/all',[VehicleController::class,'allTrips']);
     Route::post('trip/detail',[TripController::class,'tripDetail']);
     Route::post('vehicle',[VehicleController::class,'index']);
-    //Route::post('vehicle/add',[VehicleController::class,'addVehicle']);
+
     Route::post('vehicle/update',[VehicleController::class,'update']);
     Route::delete('vehicle/{id}',[VehicleController::class,'delete']);
     ////receipts

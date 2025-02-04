@@ -102,7 +102,9 @@
                             </span>
                         @enderror
                 </div>
+                @dd($vehicle);
                 @php
+
                 $states = [
                     'AL' => 'Alabama', 'AK' => 'Alaska', 'AZ' => 'Arizona', 'AR' => 'Arkansas', 'CA' => 'California',
                     'CO' => 'Colorado', 'CT' => 'Connecticut', 'DE' => 'Delaware', 'DC' => 'District Of Columbia',
