@@ -658,7 +658,7 @@ class TripController extends Controller
                     }
                 
                     $polylinePoints = array_filter($polylinePoints);
-                    $completePolyline = implode('', $polylinePoints);
+                   // $completePolyline = implode('', $polylinePoints);
                 }
                 $route = $data['routes'][0] ?? null;
                 if ($route) {
@@ -751,7 +751,7 @@ class TripController extends Controller
                 'fuel_stations' => $result,
                 'polyline' => $decodedPolyline,
                 'encoded_polyline'=>$encodedPolyline,
-                'polyline_paths' => $completePolyline ?? [],
+                'polyline_paths' => $polylinePoints ?? [],
                 'stops' => $stops,
                 'vehicle' => $vehicle
             ];
