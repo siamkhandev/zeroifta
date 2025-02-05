@@ -579,7 +579,7 @@ class TripController extends Controller
     }
     public function storeStop(Request $request)
     {
-       // dd($request->all());
+      
         $validator = Validator::make($request->all(), [
             'trip_id' => 'required|exists:trips,id',
             'stops' => 'required|array',
@@ -635,33 +635,30 @@ class TripController extends Controller
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $waypoints = '';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
-        if(!empty($stops)){
-            $waypoints = $stops->map(function ($stop) {
-                return "{$stop->stop_lat},{$stop->stop_lng}";
-            })->implode('|');
+        if ($stops->isNotEmpty()) {
+            $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
-
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
         if ($waypoints) {
-            $url .= "&waypoints=optimize:true|{$waypoints}";
+            $url .= "&waypoints={$waypoints}";
         }
         $response = Http::get($url);
         if ($response->successful()) {
             $data = $response->json();
             if($data['routes'] && $data['routes'][0]){
-                if (!empty($data['routes'][0]['legs'][0]['steps'])) {
-                    $steps = $data['routes'][0]['legs'][0]['steps'];
-            
-                    // Extract polyline points as an array of strings
-                    $polylinePoints = array_map(function ($step) {
-                        return $step['polyline']['points'] ?? null;
-                    }, $steps);
-            
-                    // Filter out any null values if necessary
+                if (!empty($data['routes'][0]['legs'])) {
+                    $polylinePoints = [];
+                
+                    foreach ($data['routes'][0]['legs'] as $leg) {
+                        foreach ($leg['steps'] as $step) {
+                            $polylinePoints[] = $step['polyline']['points'] ?? null;
+                        }
+                    }
+                
                     $polylinePoints = array_filter($polylinePoints);
-            
-                    
+                    $completePolyline = implode('', $polylinePoints);
                 }
                 $route = $data['routes'][0] ?? null;
                 if ($route) {
@@ -754,7 +751,7 @@ class TripController extends Controller
                 'fuel_stations' => $result,
                 'polyline' => $decodedPolyline,
                 'encoded_polyline'=>$encodedPolyline,
-                'polyline_paths' => $polylinePoints ?? [],
+                'polyline_paths' => $completePolyline ?? [],
                 'stops' => $stops,
                 'vehicle' => $vehicle
             ];
