@@ -282,7 +282,13 @@ class VehicleController extends Controller
     {
         $vehicle = Vehicle::where('vin', $request->vin)->where('owner_type', 'company')->first();
 
-        // Ensure only independent truckers can remove the vehicle
+       if(!$vehicle){
+        return response()->json([
+            'status' => 404,
+            'message' => 'no vehicle found against this vin',
+            'data' => (object)[],
+        ], 404);
+       }
         if ($vehicle->owner_type !== 'company') {
             return response()->json([
                 'status' => 422,
