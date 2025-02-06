@@ -140,7 +140,7 @@
     </span>
     @enderror
   </div>
-
+  <input type="hidden" id="fcm_token" name="fcm_token">
   <div class="log_input mb-3 position-relative">
     <label for="password_confirmation" class="pb-1">Confirm Password</label>
     <input
