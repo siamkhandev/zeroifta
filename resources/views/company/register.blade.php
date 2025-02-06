@@ -217,37 +217,38 @@ const firebaseConfig = {
     measurementId: "G-NMWV5VXQ00"
   };
 
-    // Initialize Firebase App
-    const app = firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
+  const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
 
     // Request permission and get FCM token
+    function requestNotificationPermission() {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          getFCMToken();
+        } else {
+          console.warn("Notification permission denied");
+        }
+      });
+    }
+
+    // Get FCM token
     function getFCMToken() {
-      messaging
-        .getToken({ vapidKey: "YOUR_PUBLIC_VAPID_KEY" })
+      getToken(messaging, { vapidKey: "BJss0pujkWuYos4oS75_-NimZBRuxYFl1Ab7dmg33Q6FTiAkB8B6FZ8fBju7HvzUbSGp9Bu6W-V5Cdybf7Kd_Rg" })
         .then((currentToken) => {
           if (currentToken) {
             document.getElementById("fcm_token").value = currentToken;
             console.log("FCM Token: ", currentToken);
           } else {
-            console.warn("No FCM token found. User may not have granted permission.");
+            console.warn("No FCM token available. Request permission to generate one.");
           }
         })
-        .catch((error) => {
-          console.error("Error fetching FCM token", error);
+        .catch((err) => {
+          console.error("Error fetching FCM token", err);
         });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      if ("Notification" in window) {
-        Notification.requestPermission().then((permission) => {
-          if (permission === "granted") {
-            getFCMToken();
-          } else {
-            console.warn("Notifications permission denied.");
-          }
-        });
-      }
+      requestNotificationPermission();
     });
 function togglePasswordVisibility(inputId, showIconId, hideIconId) {
   const inputField = document.getElementById(inputId);
