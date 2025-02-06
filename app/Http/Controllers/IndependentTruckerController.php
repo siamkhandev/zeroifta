@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\FcmToken;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Subscription;
@@ -100,6 +101,10 @@ class IndependentTruckerController extends Controller
             $driver->email_otp = $otp_email;
 
             $driver->save();
+            FcmToken::updateOrCreate(
+                ['user_id' => $driver->id],
+                ['fcm_token' => $request->fcm]
+            );
             $companyDriver = new CompanyDriver();
             $companyDriver->driver_id =$driver->id;
             $companyDriver->company_id =$driver->id;

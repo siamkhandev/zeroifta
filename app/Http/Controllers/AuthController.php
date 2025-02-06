@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ResetPasswordMail;
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\FcmToken;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Plan;
@@ -44,6 +45,10 @@ class AuthController extends Controller
             // Store new token in DB
             $user->current_access_token = $token;
             $user->update();
+            FcmToken::updateOrCreate(
+                ['user_id' => $user->id],
+                ['fcm_token' => $request->fcm]
+            );
             $user->token = $token;
             if($user->driver_image){
                 $user->image =url('/drivers/'.$user->driver_image);
