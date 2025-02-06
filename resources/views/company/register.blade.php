@@ -204,7 +204,7 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
 
-<script>
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
 const firebaseConfig = {
@@ -249,7 +249,8 @@ const firebaseConfig = {
 
     document.addEventListener("DOMContentLoaded", () => {
       requestNotificationPermission();
-    });
+    });</script>
+    <script>
 function togglePasswordVisibility(inputId, showIconId, hideIconId) {
   const inputField = document.getElementById(inputId);
   const showIcon = document.getElementById(showIconId);
