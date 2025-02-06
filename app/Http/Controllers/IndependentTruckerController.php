@@ -78,8 +78,17 @@ class IndependentTruckerController extends Controller
             $driver->current_access_token =$driver->createToken('zeroifta')->accessToken;
 
            if(str_contains($request->phone,'+1')) {
-            $otp_sms = rand(100000, 999999);
-            $twilioService->sendSmsOtp($request->phone, $otp_sms);
+            try{
+                $otp_sms = rand(100000, 999999);
+                $twilioService->sendSmsOtp($request->phone, $otp_sms);
+            }catch(Exception $e){
+                return response()->json([
+                    'status'=>400,
+                    'message'=>$e->getMessage(),
+                    'data'=>(object)[]
+                ]);
+            }
+            
            }else{
             $otp_sms = 123456;
            }

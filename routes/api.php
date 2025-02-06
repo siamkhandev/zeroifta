@@ -102,11 +102,10 @@ Route::post('dashboard',[DriverDashboardController::class,'index']);
 //});
 Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
 Route::post('/send-otp', [OtpController::class, 'sendOtp']);
-
-    Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
+Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
 Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
-    Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
-    Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
+Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 //Route::post('/trip/start', [TripController::class, 'store']);
 Route::post('store-login-session', [LoginSessionsController::class, 'storeLoginSession']);
