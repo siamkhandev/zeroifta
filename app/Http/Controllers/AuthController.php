@@ -50,7 +50,7 @@ class AuthController extends Controller
             }else{
                 $user->image = null;
             }
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $vehicle = Vehicle::select(
                 'id',
@@ -193,7 +193,7 @@ class AuthController extends Controller
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
             if($findCard){
@@ -311,7 +311,7 @@ class AuthController extends Controller
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
             if($findCard){
@@ -442,7 +442,7 @@ class AuthController extends Controller
             $user->phone = $request->phone;
 
             $user->update();
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://zeroifta.alnairtech.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $token = $user->createToken('zeroifta')->accessToken;
             $user->token = $token;

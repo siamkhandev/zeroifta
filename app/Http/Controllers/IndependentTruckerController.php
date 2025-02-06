@@ -120,7 +120,7 @@ class IndependentTruckerController extends Controller
             $driverFind->vehicle = $vehicle;
             $checkSubscription = Subscription::where('user_id',$driver->id)->where('status','active')->first();
             $driverFind->subscription = $checkSubscription;
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://zeroifta.alnairtech.com/my_rsa_key.pub');
             $driverFind->rsa_key = $rsaKey;
 
             $driverFind->token =$driver->current_access_token;
