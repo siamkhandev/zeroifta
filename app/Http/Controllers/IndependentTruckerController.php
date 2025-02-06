@@ -101,10 +101,12 @@ class IndependentTruckerController extends Controller
             $driver->email_otp = $otp_email;
 
             $driver->save();
-            FcmToken::updateOrCreate(
-                ['user_id' => $driver->id],
-                ['token' => $request->fcm]
-            );
+            if($request->fcm){
+                FcmToken::updateOrCreate(
+                    ['user_id' => $driver->id],
+                    ['token' => $request->fcm]
+                );
+            }
             $companyDriver = new CompanyDriver();
             $companyDriver->driver_id =$driver->id;
             $companyDriver->company_id =$driver->id;
