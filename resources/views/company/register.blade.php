@@ -140,7 +140,6 @@
     </span>
     @enderror
   </div>
-  <input type="hidden" id="fcm_token" name="fcm_token" />
 
   <div class="log_input mb-3 position-relative">
     <label for="password_confirmation" class="pb-1">Confirm Password</label>
@@ -203,53 +202,6 @@
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
-const firebaseConfig = {
-    apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
-    authDomain: "zeroifta-4d9af.firebaseapp.com",
-    projectId: "zeroifta-4d9af",
-    storageBucket: "zeroifta-4d9af.firebasestorage.app",
-    messagingSenderId: "47332106822",
-    appId: "1:47332106822:web:69ec62c4634d6a776a2047",
-    measurementId: "G-NMWV5VXQ00"
-  };
-
-  const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-
-    // Request permission and get FCM token
-    function requestNotificationPermission() {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          getFCMToken();
-        } else {
-          console.warn("Notification permission denied");
-        }
-      });
-    }
-
-    // Get FCM token
-    function getFCMToken() {
-      getToken(messaging, { vapidKey: "BJss0pujkWuYos4oS75_-NimZBRuxYFl1Ab7dmg33Q6FTiAkB8B6FZ8fBju7HvzUbSGp9Bu6W-V5Cdybf7Kd_Rg" })
-        .then((currentToken) => {
-          if (currentToken) {
-            document.getElementById("fcm_token").value = currentToken;
-            console.log("FCM Token: ", currentToken);
-          } else {
-            console.warn("No FCM token available. Request permission to generate one.");
-          }
-        })
-        .catch((err) => {
-          console.error("Error fetching FCM token", err);
-        });
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      requestNotificationPermission();
-    });</script>
     <script>
 function togglePasswordVisibility(inputId, showIconId, hideIconId) {
   const inputField = document.getElementById(inputId);
