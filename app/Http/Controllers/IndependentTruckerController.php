@@ -103,7 +103,7 @@ class IndependentTruckerController extends Controller
             $driver->save();
             FcmToken::updateOrCreate(
                 ['user_id' => $driver->id],
-                ['fcm_token' => $request->fcm]
+                ['token' => $request->fcm]
             );
             $companyDriver = new CompanyDriver();
             $companyDriver->driver_id =$driver->id;

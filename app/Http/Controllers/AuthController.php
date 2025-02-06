@@ -47,7 +47,7 @@ class AuthController extends Controller
             $user->update();
             FcmToken::updateOrCreate(
                 ['user_id' => $user->id],
-                ['fcm_token' => $request->fcm]
+                ['token' => $request->fcm]
             );
             $user->token = $token;
             if($user->driver_image){
