@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\FcmToken;
 use App\Models\FuelStation;
 use App\Models\Trip;
 use App\Models\Tripstop;
+use App\Models\User;
 use App\Models\Vehicle;
+use App\Services\FcmService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -241,16 +245,16 @@ class IFTAController extends Controller
             if($data['routes'] && $data['routes'][0]){
                 if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
-            
+
                     // Extract polyline points as an array of strings
                     $polylinePoints = array_map(function ($step) {
                         return $step['polyline']['points'] ?? null;
                     }, $steps);
-            
+
                     // Filter out any null values if necessary
                     $polylinePoints = array_filter($polylinePoints);
-            
-                    
+
+
                 }
                 $route = $data['routes'][0];
 
@@ -368,7 +372,7 @@ class IFTAController extends Controller
             'data'=>(object)[]
         ]);
 }
-    public function getDecodedPolyline(Request $request)
+    public function getDecodedPolyline(Request $request, FcmService $firebaseService)
     {
         $validatedData =$request->validate([
             'user_id'   => 'required|exists:users,id',
@@ -409,18 +413,18 @@ class IFTAController extends Controller
            if($data['routes'] && $data['routes'][0]){
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
-        
+
                 // Extract polyline points as an array of strings
                 $polylinePoints = array_map(function ($step) {
                     return $step['polyline']['points'] ?? null;
                 }, $steps);
-        
+
                 // Filter out any null values if necessary
                 $polylinePoints = array_filter($polylinePoints);
-        
-                
+
+
             }
-            $trip = Trip::create($validatedData);
+
             $route = $data['routes'][0];
 
             $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
@@ -468,6 +472,7 @@ class IFTAController extends Controller
 
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                 $fuelStations = [];
+                $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
                     $fuelStations[] = [
                         'name' => $value['fuel_station_name'],
@@ -486,6 +491,18 @@ class IFTAController extends Controller
                         'updated_at' => now(),
                     ];
                }
+               $findDriver = User::where('id', $trip->user_id)->first();
+               if($findDriver){
+                $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
+                $fleetManagerTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('fcm_token');
+                foreach ($fleetManagerTokens as $token) {
+                    $firebaseService->sendNotification(
+                        'Trip Started',
+                        "Driver {$findDriver->name} has started a trip.",
+                        $token
+                    );
+                }
+            }
                FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
@@ -499,8 +516,6 @@ class IFTAController extends Controller
                 }else{
                     $vehicle = null;
                 }
-
-
 
                 $responseData = [
                     'trip_id'=>$trip->id,
