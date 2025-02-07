@@ -50,7 +50,7 @@ class AuthController extends Controller
                     ['user_id' => $user->id],
                     ['token' => $request->fcm]
                 );
-                $user->fcm = $fcm;
+                $user->fcm =$fcm->token;
             }else{
                 $user->fcm = null;
             }

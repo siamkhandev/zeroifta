@@ -112,7 +112,7 @@ class IndependentTruckerController extends Controller
                     ['user_id' => $driver->id],
                     ['token' => $request->fcm]
                 );
-                $driverFind->fcm = $fcm;
+                $driverFind->fcm = $fcm->token;
             }else{
                 $driverFind->fcm = null;
             }
