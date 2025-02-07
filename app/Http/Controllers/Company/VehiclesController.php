@@ -200,8 +200,13 @@ class VehiclesController extends Controller
         if($checkVehicle){
             return redirect()->back()->withError('Vehicle is assigned to a driver.Can not delete this vehicle.');
         }
-        $vehicle->delete();
-        return redirect('vehicles/all')->withError('vehicle Deleted Successfully');
+        if($vehicle){
+            $vehicle->delete();
+            return redirect('vehicles/all')->withError('vehicle Deleted Successfully');
+        }else{
+            return redirect('vehicles/all')->withError('No vehicle found');
+        }
+       
     }
     public function importForm()
     {
