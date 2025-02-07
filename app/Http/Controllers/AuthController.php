@@ -46,10 +46,13 @@ class AuthController extends Controller
             $user->current_access_token = $token;
             $user->update();
             if($request->fcm){
-                FcmToken::updateOrCreate(
+                $fcm =    FcmToken::updateOrCreate(
                     ['user_id' => $user->id],
                     ['token' => $request->fcm]
                 );
+                $user->fcm = $fcm;
+            }else{
+                $user->fcm = null;
             }
            
             $user->token = $token;
