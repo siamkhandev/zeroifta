@@ -18,6 +18,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodsController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
