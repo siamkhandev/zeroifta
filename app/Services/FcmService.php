@@ -15,7 +15,7 @@ class FcmService
 
     public function __construct()
     {
-        $this->serviceAccountPath = storage_path('app/zeroifta.json');
+        $this->serviceAccountPath = storage_path('app/zeroifta2.json');
     }
 
     public function sendNotification($deviceToken, $title, $body, $data = [])
