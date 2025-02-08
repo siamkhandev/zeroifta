@@ -205,17 +205,45 @@
     crossorigin="anonymous"></script>
  
     <script>
-     document.addEventListener('DOMContentLoaded', function () {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
-          .then(function (registration) {
-            console.log('Service Worker registered successfully:', registration);
-          })
-          .catch(function (error) {
-            console.error('Service Worker registration failed:', error);
-          });
-      }
+    document.addEventListener('DOMContentLoaded', function () {
+  if ('serviceWorker' in navigator) {
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
+      authDomain: "zeroifta-4d9af.firebaseapp.com",
+      projectId: "zeroifta-4d9af",
+      storageBucket: "zeroifta-4d9af.appspot.com",
+      messagingSenderId: "47332106822",
+      appId: "1:47332106822:web:69ec62c4634d6a776a2047",
+      measurementId: "G-NMWV5VXQ00"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    // Register the service worker and use it for messaging
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(function (registration) {
+        messaging.useServiceWorker(registration);
+        console.log('Service Worker registered successfully:', registration);
+
+        // Request permission for notifications
+        return messaging.getToken({ vapidKey: "BI2ILvTsBNnJ791Zigl6XuIxrI5rWBd_ijCobfbB2SItL5w7urpZPe0zcAtxBuPlY7baaCfD8LPXwemYUYyOy9w" });
+      })
+      .then(function (currentToken) {
+        if (currentToken) {
+          console.log("FCM Token:", currentToken);
+          // Save the token to your backend server for further use
+        } else {
+          console.warn("No registration token available.");
+        }
+      })
+      .catch(function (error) {
+        console.error("Service Worker registration failed or token retrieval failed:", error);
+      });
+  }
 });
+
 function togglePasswordVisibility(inputId, showIconId, hideIconId) {
   const inputField = document.getElementById(inputId);
   const showIcon = document.getElementById(showIconId);

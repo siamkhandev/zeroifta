@@ -29,15 +29,4 @@ messaging.onBackgroundMessage(function (payload) {
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
-messaging.getToken({ vapidKey: "BI2ILvTsBNnJ791Zigl6XuIxrI5rWBd_ijCobfbB2SItL5w7urpZPe0zcAtxBuPlY7baaCfD8LPXwemYUYyOy9w" })
-  .then((currentToken) => {
-    if (currentToken) {
-      console.log("FCM Token:", currentToken);
-      // Save the token to your server
-    } else {
-      console.warn("No registration token available. Request permission to generate one.");
-    }
-  })
-  .catch((err) => {
-    console.error("An error occurred while retrieving token.", err);
-  });
+
