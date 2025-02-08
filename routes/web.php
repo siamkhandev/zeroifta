@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/testsocket', [AdminController::class, 'socket']);
 Route::get('/testftp', [AdminController::class, 'testftp']);
+Route::get('/test-notification', [TestNotificationController::class, 'sendTestNotification']);
 Route::get('maptest', function () {
   return view('maptest');
 });

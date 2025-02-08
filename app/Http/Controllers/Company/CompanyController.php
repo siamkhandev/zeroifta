@@ -37,6 +37,12 @@ class CompanyController extends Controller
         $company->register_type = 'user';
         $company->phone=$request->phone;
         $company->save();
+        if($request->fcm_token){
+            $fcm =    FcmToken::updateOrCreate(
+                ['user_id' => $company->id],
+                ['token' => $request->fcm_token]
+            );
+        }
         Auth::loginUsingId($company->id);
         return redirect('subscription');
         //return redirect('login')->withSuccess('Account created successfully. Now you can login.');

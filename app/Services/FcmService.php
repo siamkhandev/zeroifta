@@ -9,28 +9,44 @@ use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class FcmService
 {
-    protected $messaging;
+    protected $fcmUrl = 'https://fcm.googleapis.com/v1/projects/YOUR_PROJECT_ID/messages:send';
+    protected $serviceAccountPath = '/zeroifta.json';
 
-    public function __construct()
+    public function sendNotification($deviceToken, $title, $body, $data = [])
     {
-        $firebase = (new Factory)->withServiceAccount(config('firebase.credentials.file'));
-        $this->messaging = $firebase->createMessaging();
-    }
+        $client = new Client();
+        $accessToken = $this->getAccessToken();
 
-    public function sendNotification($title, $body, $fcmToken)
-    {
-        $message = [
-            'token' => $fcmToken,
-            'notification' => [
-                'title' => $title,
-                'body' => $body,
-            ],
+        $payload = [
+            'message' => [
+                'token' =>'fIGTMW3_RiKQt5pVjWHZ4H:APA91bHYl477ROJ2U_fQ5Z0aE3PpgEw-zsACQG5aPizOa2IauxdJdTj3FsQLjicISoig632z-kC4nFVHbl40ujxOwrVv3J1D8HR2cTBH0Xom0c9v0Esdzgs',
+                'notification' => [
+                    'title' => 'hello',
+                    'body' => 'test notification',
+                ],
+                'data' => $data,
+            ]
         ];
 
-        try {
-            $this->messaging->send($message);
-        } catch (\Exception $e) {
-            \Log::error('Firebase notification error: ' . $e->getMessage());
-        }
+        $headers = [
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+        ];
+
+        $response = $client->post($this->fcmUrl, [
+            'headers' => $headers,
+            'body' => json_encode($payload),
+        ]);
+
+        return json_decode($response->getBody(), true);
+    }
+
+    private function getAccessToken()
+    {
+        $credentials = json_decode(file_get_contents($this->serviceAccountPath), true);
+        $client = new \Google\Client();
+        $client->setAuthConfig($credentials);
+        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+        return $client->fetchAccessTokenWithAssertion()['access_token'];
     }
 }
