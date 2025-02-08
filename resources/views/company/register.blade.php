@@ -233,7 +233,7 @@
           })
           .then(function (currentToken) {
             if (currentToken) {
-              $("#fcm_token").val(currentToken);
+              document.getElementById("fcm_token").value = currentToken;
             } else {
               console.warn('No registration token available.');
             }
