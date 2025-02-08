@@ -203,38 +203,19 @@
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js"></script>
-
+ 
     <script>
-     document.addEventListener("DOMContentLoaded", function () {
-    const firebaseConfig = {
-      apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
-      authDomain: "zeroifta-4d9af.firebaseapp.com",
-      projectId: "zeroifta-4d9af",
-      storageBucket: "zeroifta-4d9af.appspot.com",
-      messagingSenderId: "47332106822",
-      appId: "1:47332106822:web:69ec62c4634d6a776a2047",
-      measurementId: "G-NMWV5VXQ00"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-    messaging.getToken({ vapidKey: "YOUR_PUBLIC_VAPID_KEY" })
-      .then((currentToken) => {
-        if (currentToken) {
-          document.getElementById("fcm_token").value = currentToken;
-          console.log("FCM Token:", currentToken);
-        } else {
-          console.warn("No FCM token available.");
-        }
+     document.addEventListener('DOMContentLoaded', function () {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(function (registration) {
+        console.log('Service Worker registered successfully:', registration);
       })
-      .catch((err) => {
-        console.error("FCM token error: ", err);
+      .catch(function (error) {
+        console.error('Service Worker registration failed:', error);
       });
-  });
+  }
+});
 function togglePasswordVisibility(inputId, showIconId, hideIconId) {
   const inputField = document.getElementById(inputId);
   const showIcon = document.getElementById(showIconId);
