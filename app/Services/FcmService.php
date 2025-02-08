@@ -11,7 +11,12 @@ use GuzzleHttp\Client;
 class FcmService
 {
     protected $fcmUrl = 'https://fcm.googleapis.com/v1/projects/zeroifta-4d9af/messages:send';
-    protected $serviceAccountPath =storage_path('app/zeroifta.json');
+    protected $serviceAccountPath;
+
+    public function __construct()
+    {
+        $this->serviceAccountPath = storage_path('app/zeroifta.json');
+    }
 
     public function sendNotification($deviceToken, $title, $body, $data = [])
     {
