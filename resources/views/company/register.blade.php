@@ -233,7 +233,7 @@
           })
           .then(function (currentToken) {
             if (currentToken) {
-              console.log('FCM Token:', currentToken);
+              $("#fcm_token").val(currentToken);
             } else {
               console.warn('No registration token available.');
             }
