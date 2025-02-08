@@ -25,14 +25,15 @@ class FcmService
 
         $payload = [
             'message' => [
-                'token' =>'fIGTMW3_RiKQt5pVjWHZ4H:APA91bHYl477ROJ2U_fQ5Z0aE3PpgEw-zsACQG5aPizOa2IauxdJdTj3FsQLjicISoig632z-kC4nFVHbl40ujxOwrVv3J1D8HR2cTBH0Xom0c9v0Esdzgs',
+                'token' => $deviceToken,  // Replace this with the actual token
                 'notification' => [
-                    'title' => 'hello',
-                    'body' => 'test notification',
+                    'title' => $title,
+                    'body' => $body,
                 ],
-                'data' => $data,
+                'data' => (object) $data,  // Ensure this is cast to an object to avoid the list-to-map error
             ]
         ];
+        
 
         $headers = [
             'Authorization' => 'Bearer ' . $accessToken,
