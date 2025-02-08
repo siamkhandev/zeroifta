@@ -9,8 +9,8 @@ use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class FcmService
 {
-    protected $fcmUrl = 'https://fcm.googleapis.com/v1/projects/YOUR_PROJECT_ID/messages:send';
-    protected $serviceAccountPath = '/zeroifta.json';
+    protected $fcmUrl = 'https://fcm.googleapis.com/v1/projects/zeroifta-4d9af/messages:send';
+    protected $serviceAccountPath = '/storage/app/zeroifta.json';
 
     public function sendNotification($deviceToken, $title, $body, $data = [])
     {
