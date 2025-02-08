@@ -206,15 +206,15 @@
  
     <script>
      document.addEventListener('DOMContentLoaded', function () {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
-      .then(function (registration) {
-        console.log('Service Worker registered successfully:', registration);
-      })
-      .catch(function (error) {
-        console.error('Service Worker registration failed:', error);
-      });
-  }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+          .then(function (registration) {
+            console.log('Service Worker registered successfully:', registration);
+          })
+          .catch(function (error) {
+            console.error('Service Worker registration failed:', error);
+          });
+      }
 });
 function togglePasswordVisibility(inputId, showIconId, hideIconId) {
   const inputField = document.getElementById(inputId);
