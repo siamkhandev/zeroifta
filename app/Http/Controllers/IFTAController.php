@@ -494,14 +494,20 @@ class IFTAController extends Controller
                $findDriver = User::where('id', $trip->user_id)->first();
                if($findDriver){
                 $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
-                $fleetManagerTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('fcm_token');
-                foreach ($fleetManagerTokens as $token) {
-                    $firebaseService->sendNotification(
-                        'Trip Started',
-                        "Driver {$findDriver->name} has started a trip.",
-                        $token
-                    );
+                if($findCompany){
+                    $fleetManagerTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('fcm_token');
+                    if($fleetManagerTokens){
+                        foreach ($fleetManagerTokens as $token) {
+                            $firebaseService->sendNotification(
+                                'Trip Started',
+                                "Driver {$findDriver->name} has started a trip.",
+                                $token
+                            );
+                        }
+                    }
+                    
                 }
+                
             }
                FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
