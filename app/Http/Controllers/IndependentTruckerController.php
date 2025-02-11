@@ -176,7 +176,12 @@ class IndependentTruckerController extends Controller
 
         $data = $request->validate([
             'vehicle_id'=>'required',
-            "vin"=>'required',
+            'vin' => [
+                'required',
+                \Rule::unique('vehicles')->where(function ($query) use ($request) {
+                    return $query->where('owner_type', 'independent_trucker');
+                }),
+            ],
             "year"=>'required',
             "truck_make"=>'required',
             "vehicle_model"=>'required',

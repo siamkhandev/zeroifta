@@ -34,7 +34,12 @@ class VehiclesController extends Controller
 
         $data = $request->validate([
             'vehicle_id'=>'required|unique:vehicles,vehicle_id',
-            "vin"=>'required',
+           'vin' => [
+                'required',
+                \Rule::unique('vehicles')->where(function ($query) use ($request) {
+                    return $query->where('owner_type', 'company');
+                }),
+            ],
             "year"=>'required',
             "truck_make"=>'required',
             "vehicle_model"=>'required',
