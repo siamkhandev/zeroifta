@@ -495,6 +495,15 @@ class IFTAController extends Controller
                if($findDriver){
                 $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
                 if($findCompany){
+                    $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('fcm_token');
+                    if($driverFcm){
+                        $firebaseService->sendNotification(
+                            'Trip Started',
+                            "Your trip has been started",
+                            $driverFcm
+                        );
+                    }
+                    
                     $fleetManagerTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('fcm_token');
                     if($fleetManagerTokens){
                         foreach ($fleetManagerTokens as $token) {
