@@ -16,7 +16,7 @@ class TestNotificationController extends Controller
 
     public function sendTestNotification(Request $request)
     {
-        $deviceToken = 'fIGTMW3_RiKQt5pVjWHZ4H:APA91bHYl477ROJ2U_fQ5Z0aE3PpgEw-zsACQG5aPizOa2IauxdJdTj3FsQLjicISoig632z-kC4nFVHbl40ujxOwrVv3J1D8HR2cTBH0Xom0c9v0Esdzgs'; // Replace with actual FCM token.
+        $deviceToken = 'cB2U-Fq5Q16SSb_3ruYUfJ:APA91bHCv0ZWxtEtZDBun-Ly7n6qEweSMrmsNnFlPEwqbw3BIZoMwyRYnvDz1OpcQChhXnQJiuuwI-Wvx3zzS1QwX_JF1Me6Ittz7tolwk9ZVxbJGMnNyD8'; // Replace with actual FCM token.
         $title = 'Test Notification';
         $body = 'This is a test push notification.';
         
