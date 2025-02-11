@@ -8,6 +8,8 @@ use App\Models\DriverVehicle;
 use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
@@ -36,7 +38,7 @@ class VehiclesController extends Controller
             'vehicle_id'=>'required|unique:vehicles,vehicle_id',
            'vin' => [
                 'required',
-                \Rule::unique('vehicles')->where(function ($query) use ($request) {
+                Rule::unique('vehicles')->where(function ($query) use ($request) {
                     return $query->where('owner_type', 'company');
                 }),
             ],

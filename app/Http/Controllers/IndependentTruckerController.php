@@ -6,6 +6,8 @@ use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\FcmToken;
 use App\Models\Payment;
+use Illuminate\Validation\Rule;
+
 use App\Models\PaymentMethod;
 use App\Models\Subscription;
 use App\Models\User;
@@ -178,7 +180,7 @@ class IndependentTruckerController extends Controller
             'vehicle_id'=>'required',
             'vin' => [
                 'required',
-                \Rule::unique('vehicles')->where(function ($query) use ($request) {
+                Rule::unique('vehicles')->where(function ($query) use ($request) {
                     return $query->where('owner_type', 'independent_trucker');
                 }),
             ],
