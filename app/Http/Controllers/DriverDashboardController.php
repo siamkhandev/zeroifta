@@ -40,7 +40,8 @@ class DriverDashboardController extends Controller
             'model',
             'make',
             'make_year',
-            'license_plate_number'
+            'license_plate_number',
+            'reserve_fuel'
         )
         ->whereHas('driverVehicle', function ($query) use ($request) {
             $query->where('driver_id', $request->driver_id);
