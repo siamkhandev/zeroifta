@@ -48,7 +48,12 @@ class DriverDashboardController extends Controller
         })
         ->first();
         if ($vehicle) {
-            $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+            if($vehicle->vehicle_image){
+                $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
+            }else{
+                $vehicle->vehicle_image =null;
+            }
+           
         }
             $dashboardData['vehicle'] = $vehicle;
         
