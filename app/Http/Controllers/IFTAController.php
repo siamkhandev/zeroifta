@@ -228,10 +228,8 @@ class IFTAController extends Controller
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $request->trip_id)->get();
-        if(!empty($stops)){
-            $waypoints = $stops->map(function ($stop) {
-                return "{$stop->stop_lat},{$stop->stop_lng}";
-            })->implode('|');
+        if ($stops->isNotEmpty()) {
+            $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
         if ($waypoints) {
