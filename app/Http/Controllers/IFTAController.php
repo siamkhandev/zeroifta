@@ -384,6 +384,7 @@ class IFTAController extends Controller
             'truck_mpg' => 'required',
             'fuel_tank_capacity' => 'required',
             'total_gallons_present' => 'required',
+            'reserve_fuel'=>'required'
         ]);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
 
@@ -526,6 +527,8 @@ class IFTAController extends Controller
                 $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
                 if($vehicleFind){
                     $vehicle = Vehicle::where('id', $vehicleFind)->first();
+                    $vehicle->reserve_fuel = $request->reserve_fuel;
+                    $vehicle->update();
                     if($vehicle && $vehicle->vehicle_image != null){
                         $vehicle->vehicle_image =url('/vehicles/'.$vehicle->vehicle_image);
                     }
