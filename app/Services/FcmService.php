@@ -20,8 +20,9 @@ class FcmService
 
     public function sendNotification($deviceToken, $title, $body, $data = [])
     {
-        $client = new Client();
         $accessToken = $this->getAccessToken();
+        $client = new Client();
+
         dd($accessToken);
         $payload = [
             'message' => [
