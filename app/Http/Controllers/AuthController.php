@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPasswordMail;
+use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\FcmToken;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Plan;
@@ -42,14 +44,24 @@ class AuthController extends Controller
 
             // Store new token in DB
             $user->current_access_token = $token;
-            $user->save();
+            $user->update();
+            if($request->fcm){
+                $fcm =    FcmToken::updateOrCreate(
+                    ['user_id' => $user->id],
+                    ['token' => $request->fcm]
+                );
+                $user->fcm =$fcm->token;
+            }else{
+                $user->fcm = null;
+            }
+
             $user->token = $token;
             if($user->driver_image){
                 $user->image =url('/drivers/'.$user->driver_image);
             }else{
                 $user->image = null;
             }
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://staging.zeroifta.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $vehicle = Vehicle::select(
                 'id',
@@ -73,7 +85,9 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $features = [];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
@@ -154,11 +168,15 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             if($user->image){
                 $user->image = url('/images/' .$user->image);
+            }else{
+                $user->image =null;
             }
-            
-            $user->token= $user->current_access_token ?? null;
+
+            $user->token=$user->current_access_token;
             $features = [];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
@@ -186,7 +204,7 @@ class AuthController extends Controller
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://staging.zeroifta.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
             if($findCard){
@@ -274,7 +292,9 @@ class AuthController extends Controller
             $user->vehicle = $vehicle;
             $user->token=null;
             $features =[];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){
@@ -302,7 +322,7 @@ class AuthController extends Controller
             }
             $user->subscription = $checkSubscription;
             $user->features = $features;
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://staging.zeroifta.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $findCard = PaymentMethod::where('user_id',$user->id)->where('is_default',true)->first();
             if($findCard){
@@ -433,7 +453,7 @@ class AuthController extends Controller
             $user->phone = $request->phone;
 
             $user->update();
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://staging.zeroifta.com/my_rsa_key.pub');
             $user->rsa_key = $rsaKey;
             $token = $user->createToken('zeroifta')->accessToken;
             $user->token = $token;
@@ -465,7 +485,9 @@ class AuthController extends Controller
             }
             $user->vehicle = $vehicle;
             $features = [];
-            $checkSubscription = Subscription::where('user_id',$user->id)->where('status','active')->first();
+            $checkDriver = CompanyDriver::where('driver_id',$user->id)->first();
+
+            $checkSubscription = Subscription::where('user_id',$checkDriver->company_id)->where('status','active')->first();
             if($checkSubscription){
                 $planName = Plan::where('id',$checkSubscription->plan_id)->first();
                 if($planName->slug == "basic_monthly" || $planName->slug == "basic_yearly"){

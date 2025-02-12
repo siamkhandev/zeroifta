@@ -18,6 +18,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodsController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/testsocket', [AdminController::class, 'socket']);
 Route::get('/testftp', [AdminController::class, 'testftp']);
+Route::get('/test-notification', [TestNotificationController::class, 'sendTestNotification']);
 Route::get('maptest', function () {
   return view('maptest');
 });
@@ -54,7 +56,7 @@ Route::get('login', function () {
 Route::get('company/register', [CompanyController::class, 'create'])->name('company.register');
 Route::post('company/register', [CompanyController::class, 'store'])->name('register');
 Route::post('login', [AdminController::class, 'login'])->name('login');
-
+Route::get('/company/remove-vehicle/{vehicle}', [VehiclesController::class, 'removeVehicleByCompany']);
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
 Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');

@@ -124,7 +124,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.MC')}}</label>
-                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.MC')}}" name="mc" value="{{Auth::user()->mc}}" />
+                  <input type="number" class="form-control dis-input" maxlength="10" id="exampleFormControlInput1" placeholder="{{__('messages.MC')}}" name="mc" value="{{Auth::user()->mc}}" />
                 </div>
                 @error('mc')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -135,7 +135,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.DOT')}}</label>
-                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" placeholder="{{__('messages.DOT')}}" name="dot" value="{{Auth::user()->dot}}" />
+                  <input type="number" class="form-control dis-input" id="exampleFormControlInput1" maxlength="10" placeholder="{{__('messages.DOT')}}" name="dot" value="{{Auth::user()->dot}}" />
                 </div>
                 @error('dot')
                 <span class="invalid-feedback" role="alert" style="display: block;">
@@ -178,5 +178,11 @@ function updateFileLabel(input) {
     const fileName = input.files[0]?.name || '{{ __('messages.No File chosen') }}';
     document.getElementById('fileLabel').textContent = fileName;
 }
+document.querySelector("input").addEventListener("input", function () {
+  if (this.value.length > 10) {
+    alert("Maximum 10 characters allowed");
+    this.value = this.value.slice(0, 10);
+  }
+});
   </script>
 @endsection

@@ -191,6 +191,8 @@ return [
     "Pages / Payment Methods"=>"Pages / Payment Methods",
     "Role"=>"Role",
     "Change Password"=>"Change Password",
+    "Type"=>"Type",
+    "License Plate No."=>"License Plate No.",
 
 
 

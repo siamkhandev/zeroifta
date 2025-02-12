@@ -41,22 +41,24 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::get('/get-fuel-stations/{user_id}', [FuelStationController::class, 'getFuelStations']);
 Route::get('/user-trip/{user_id}', [TripController::class, 'getTrip']);
 Route::post('get-profile',[AuthController::class,'getProfile']);
-Route::middleware('auth:api')->group( function () {
+Route::post('updateUser',[AuthController::class,'updateUser']);
+Route::post('dashboard',[DriverDashboardController::class,'index']);
+//Route::middleware('auth:api')->group( function () {
     Route::post('profile',[AuthController::class,'profile']);
-    
-    Route::post('updateUser',[AuthController::class,'updateUser']);
+
+
     Route::post('select-vehicle',[AuthController::class,'selectVehicle']);
     Route::post('password/change',[AuthController::class,'changePassword']);
     Route::post('profile/update',[AuthController::class,'profileUpdate']);
     ////dashboard/////
-    Route::post('dashboard',[DriverDashboardController::class,'index']);
+
 
     //////vehcile
     Route::post('vehicles/all',[VehicleController::class,'allVehicles']);
     Route::post('trips/all',[VehicleController::class,'allTrips']);
     Route::post('trip/detail',[TripController::class,'tripDetail']);
     Route::post('vehicle',[VehicleController::class,'index']);
-    //Route::post('vehicle/add',[VehicleController::class,'addVehicle']);
+
     Route::post('vehicle/update',[VehicleController::class,'update']);
     Route::delete('vehicle/{id}',[VehicleController::class,'delete']);
     ////receipts
@@ -74,38 +76,41 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/trip/update', [IFTAController::class, 'updateTrip']);
     Route::post('/trip/delete', [TripController::class, 'deleteTrip']);
     Route::post('/trip/complete', [TripController::class, 'completeTrip']);
-    
+
     Route::post('/save-fuel-stations', [FuelStationController::class, 'store']);
-   
+
     Route::post('stops/add',[TripController::class,'storeStop']);
-    Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
+
     ///
     Route::post('/payment-methods', [PaymentMethodController::class, 'allPaymentMethod']);
-    Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
+
     Route::get('/payment-methods/{id}', [PaymentMethodController::class, 'getPaymentMethod']);
     Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'editPaymentMethod']);
     Route::post('/payment-methods/delete', [PaymentMethodController::class, 'deletePaymentMethod']);
     Route::post('/payment-methods/default', [PaymentMethodController::class, 'makeDefault']);
     Route::post('/payment-methods/getDetails', [PaymentMethodController::class, 'getTransactionsByPaymentMethod']);
     /////
-    Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
-    Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
-    Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+
     // Cancel subscription
     Route::post('/subscription/cancel', [SubscriptionController::class, 'cancelSubscription']);
 
     // Get subscription details
     Route::get('/subscription/details', [SubscriptionController::class, 'getSubscriptionDetails']);
-    Route::post('/send-otp', [OtpController::class, 'sendOtp']);
-    
-    Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
-    ///
 
-});
+    ///
+    Route::post('/remove-vehicle', [VehicleController::class, 'removeVehicleByTrucker']);
+//});
+Route::post('vehicle/add',[IndependentTruckerController::class,'addVehicle']);
+Route::post('/send-otp', [OtpController::class, 'sendOtp']);
+Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
+Route::post('selectedplan/store', [SubscriptionController::class, 'storeSelectedPlan']);
+Route::post('getSelectedPlan',[SubscriptionController::class, 'getSelectedPlan']);
+Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 //Route::post('/trip/start', [TripController::class, 'store']);
 Route::post('store-login-session', [LoginSessionsController::class, 'storeLoginSession']);
 ///
+Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
 Route::post('register',[IndependentTruckerController::class,'store']);
 Route::post('generatetoken',[SubscriptionController::class,'generateToken']);
 

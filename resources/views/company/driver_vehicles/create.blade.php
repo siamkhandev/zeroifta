@@ -71,7 +71,7 @@
                 <input type="hidden" name="driver_vehicle_id" value="" id="driverVehicleId">
                 <input type="hidden" name="driver_id" value="">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('messages.Cancel')}}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="hideModal()">{{__('messages.Cancel')}}</button>
                     <button type="submit" class="btn btn-primary">{{__('messages.Reassign')}}</button>
                 </div>
             </form>
@@ -113,7 +113,9 @@
         })
         .catch((error) => console.error(error));
 });
-
+function hideModal(){
+    $("#reassignModal").modal('hide');
+}
 // Reassign vehicle
 document.querySelector('#reassignForm').addEventListener('submit', function (e) {
     e.preventDefault();

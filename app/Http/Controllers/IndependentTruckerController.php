@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\FcmToken;
 use App\Models\Payment;
+use Illuminate\Validation\Rule;
+
 use App\Models\PaymentMethod;
 use App\Models\Subscription;
 use App\Models\User;
@@ -78,8 +81,17 @@ class IndependentTruckerController extends Controller
             $driver->current_access_token =$driver->createToken('zeroifta')->accessToken;
 
            if(str_contains($request->phone,'+1')) {
-            $otp_sms = rand(100000, 999999);
-            $twilioService->sendSmsOtp($request->phone, $otp_sms);
+            try{
+                $otp_sms = rand(100000, 999999);
+                $twilioService->sendSmsOtp($request->phone, $otp_sms);
+            }catch(Exception $e){
+                return response()->json([
+                    'status'=>400,
+                    'message'=>$e->getMessage(),
+                    'data'=>(object)[]
+                ]);
+            }
+
            }else{
             $otp_sms = 123456;
            }
@@ -91,11 +103,21 @@ class IndependentTruckerController extends Controller
             $driver->email_otp = $otp_email;
 
             $driver->save();
+
             $companyDriver = new CompanyDriver();
             $companyDriver->driver_id =$driver->id;
             $companyDriver->company_id =$driver->id;
             $companyDriver->save();
             $driverFind = User::whereId($driver->id)->first();
+            if($request->fcm){
+                $fcm = FcmToken::updateOrCreate(
+                    ['user_id' => $driver->id],
+                    ['token' => $request->fcm]
+                );
+                $driverFind->fcm = $fcm->token;
+            }else{
+                $driverFind->fcm = null;
+            }
             $vehicle = Vehicle::select(
                 'id',
                 'vehicle_image',
@@ -113,17 +135,18 @@ class IndependentTruckerController extends Controller
                 $query->where('driver_id', $driver->id);
             })
             ->first();
-            
+            //$driverFind->token = $driverFind->createToken('zeroifta')->accessToken;
             if ($vehicle) {
                 $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
             }
             $driverFind->vehicle = $vehicle;
             $checkSubscription = Subscription::where('user_id',$driver->id)->where('status','active')->first();
             $driverFind->subscription = $checkSubscription;
-            $rsaKey =  file_get_contents('http://zeroifta.alnairtech.com/my_rsa_key.pub');
+            $rsaKey =  file_get_contents('https://staging.zeroifta.com/my_rsa_key.pub');
             $driverFind->rsa_key = $rsaKey;
             $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;
 
+            $driverFind->token =$driver->current_access_token;
             $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
             if($findCard){
                 $findCard->is_default = true;
@@ -155,17 +178,22 @@ class IndependentTruckerController extends Controller
     {
 
         $data = $request->validate([
-            'vehicle_id'=>'required|unique:vehicles,vehicle_id',
-            "vin"=>'required',
+            'vehicle_id'=>'required',
+            'vin' => [
+                'required',
+                Rule::unique('vehicles')->where(function ($query) use ($request) {
+                    return $query->where('owner_type', 'independent_trucker');
+                }),
+            ],
             "year"=>'required',
             "truck_make"=>'required',
             "vehicle_model"=>'required',
             "fuel_type"=>'required',
             "license_state"=>'required',
-            "license_number"=>'required|unique:vehicles,license_plate_number',
+            "license_number"=>'required',
             'odometer_reading' => 'required',
             'mpg' => 'required',
-            
+
 
 
         ]);
@@ -182,6 +210,8 @@ class IndependentTruckerController extends Controller
         $vehicle->model = $request->vehicle_model;
         $vehicle->make = $request->truck_make;
         $vehicle->make_year = $request->year;
+        $vehicle->owner_id =$request->driver_id;
+        $vehicle->owner_type= 'independent_trucker';
         $vehicle->fuel_type = $request->fuel_type;
         $vehicle->license = $request->license_state;
         $vehicle->license_plate_number = $request->license_number;

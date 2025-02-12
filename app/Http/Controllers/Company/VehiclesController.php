@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Imports\VehiclesImport;
 use App\Models\DriverVehicle;
+use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
@@ -33,19 +36,33 @@ class VehiclesController extends Controller
 
         $data = $request->validate([
             'vehicle_id'=>'required|unique:vehicles,vehicle_id',
-            "vin"=>'required',
+           'vin' => [
+                'required',
+                Rule::unique('vehicles')->where(function ($query) use ($request) {
+                    return $query->where('owner_type', 'company');
+                }),
+            ],
             "year"=>'required',
             "truck_make"=>'required',
             "vehicle_model"=>'required',
             "fuel_type"=>'required',
             "license_state"=>'required',
             "license_number"=>'required',
-
+            "fuel_tank_type"=>'required',
+            "odometer_reading_type"=>'required',
             'odometer_reading' => 'required',
             'mpg' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
+        $existingVehicle = Vehicle::where('vin', $request->vin)
+            ->where('owner_type', 'company')
+            ->where('owner_id',Auth::id())
+            ->first();
+
+        if ($existingVehicle) {
+            return response()->json(['status' => 400, 'message' => 'This vehicle already belongs to the company.']);
+        }
         $apiUrl = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValues/{$request->vin}?format=json";
         $response = Http::get($apiUrl);
 
@@ -62,11 +79,15 @@ class VehiclesController extends Controller
                     $vehicle->odometer_reading	 = $request->odometer_reading;
                     $vehicle->company_id = Auth::id();
                     $vehicle->mpg= $request->mpg;
+                    $vehicle->odometer_reading_type = $request->odometer_reading_type;
+                    $vehicle->fuel_tank_type = $request->fuel_tank_type;
                     $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
                     $vehicle->vehicle_id = $request->vehicle_id;
                     $vehicle->vin = $request->vin;
                     $vehicle->model = $request->vehicle_model;
                     $vehicle->make = $request->truck_make;
+                    $vehicle->owner_id =Auth::id();
+                    $vehicle->owner_type = 'company';
                     $vehicle->make_year = $request->year;
                     $vehicle->fuel_type = $request->fuel_type;
                     $vehicle->license = $request->license_state;
@@ -145,7 +166,8 @@ class VehiclesController extends Controller
             "fuel_type"=>'required',
             "license_state"=>'required',
             "license_number"=>'required',
-
+            "fuel_tank_type"=>'required',
+            "odometer_reading_type"=>'required',
             'odometer_reading' => 'required',
             'mpg' => 'required',
             'image' => 'mimes:jpeg,png,jpg,gif|max:1024',
@@ -158,6 +180,8 @@ class VehiclesController extends Controller
         $vehicle->odometer_reading	 = $request->odometer_reading;
         $vehicle->company_id = Auth::id();
         $vehicle->mpg= $request->mpg;
+        $vehicle->odometer_reading_type = $request->odometer_reading_type;
+        $vehicle->fuel_tank_type = $request->fuel_tank_type;
         $vehicle->fuel_tank_capacity= $request->fuel_tank_capacity;
         $vehicle->vehicle_id = $request->vehicle_id;
         $vehicle->vin = $request->vin;
@@ -183,8 +207,13 @@ class VehiclesController extends Controller
         if($checkVehicle){
             return redirect()->back()->withError('Vehicle is assigned to a driver.Can not delete this vehicle.');
         }
-        $vehicle->delete();
-        return redirect('vehicles/all')->withError('vehicle Deleted Successfully');
+        if($vehicle){
+            $vehicle->delete();
+            return redirect('vehicles/all')->withError('vehicle Deleted Successfully');
+        }else{
+            return redirect('vehicles/all')->withError('No vehicle found');
+        }
+       
     }
     public function importForm()
     {
@@ -209,4 +238,23 @@ class VehiclesController extends Controller
     return redirect('vehicles/all')
         ->with('success', "{$createdCount} vehicles imported. {$failedCount} vehicles failed to import.");
 }
+    public function removeVehicleByCompany($id)
+    {
+        $vehicle = Vehicle::findOrFail($id);
+
+        if ($vehicle->owner_type !== 'company') {
+            return redirect()->back()->withError('This vehicle does not belong to any owner.');
+        }
+
+        $activeTrips = Trip::where('vehicle_id', $vehicle->id)->where('status', 'active')->exists();
+
+        if ($activeTrips) {
+            return redirect()->back()->withError('Cannot remove vehicle with active trips.');
+
+        }
+
+        $vehicle->delete();
+
+        return redirect()->back()->withSuccess('Vehicle removed successfully.');
+    }
 }

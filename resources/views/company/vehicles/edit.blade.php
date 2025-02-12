@@ -10,8 +10,8 @@
             <div class="row pt-3">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle ID')}}</label>
-                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Vehicle ID')}}" name="vehicle_id" value="{{$vehicle->vehicle_id}}"/>
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Vehicle Number')}}</label>
+                        <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Vehicle Number')}}" name="vehicle_id" value="{{$vehicle->vehicle_id}}"/>
                     </div>
                     @error('vehicle_id')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -102,7 +102,9 @@
                             </span>
                         @enderror
                 </div>
+
                 @php
+
                 $states = [
                     'AL' => 'Alabama', 'AK' => 'Alaska', 'AZ' => 'Arizona', 'AR' => 'Arkansas', 'CA' => 'California',
                     'CO' => 'Colorado', 'CT' => 'Connecticut', 'DE' => 'Delaware', 'DC' => 'District Of Columbia',
@@ -138,8 +140,8 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
-                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Number')}}</label>
-                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.License Number')}}" name="license_number" value="{{$vehicle->license_plate_number}}" />
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.License Plate No.')}}</label>
+                        <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.License Plate No.')}}" name="license_number" value="{{$vehicle->license_plate_number}}" />
                     </div>
                     @error('license_number')
                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -147,12 +149,27 @@
                             </span>
                         @enderror
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Odometer Reading')}}</label>
                         <input type="text" required  class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Odometer Reading')}}" name="odometer_reading" value="{{$vehicle->odometer_reading}}" />
                     </div>
                     @error('odometer_reading')
+                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Type')}}</label>
+                        <select class="form-control login-input" name="odometer_reading_type">
+                            <option value="">Select</option>
+                            <option value="miles" {{$vehicle->odometer_reading_type=="miles" ?'selected':''}}>Miles</option>
+                            <option value="km" {{$vehicle->odometer_reading_type=="km" ?'selected':''}}>KM</option>
+                        </select>
+                    </div>
+                    @error('odometer_reading_type')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -169,12 +186,27 @@
                             </span>
                         @enderror
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                     <div class="dash-input mb-3">
                         <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Fuel Tank Capacity')}}</label>
                         <input type="text" required class="form-control login-input" id="exampleFormControlInput1" placeholder="{{__('messages.Fuel Tank Capacity')}}" name="fuel_tank_capacity" value="{{$vehicle->fuel_tank_capacity}}" />
                     </div>
                     @error('fuel_tank_capacity')
+                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12 col-12 mb-2">
+                    <div class="dash-input mb-3">
+                        <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Type')}}</label>
+                        <select class="form-control login-input" name="fuel_tank_type">
+                            <option value="">Select</option>
+                            <option value="gallons" {{$vehicle->fuel_tank_type == "gallons" ? 'selected' : ''}}>Gallons</option>
+                            <option value="litres" {{$vehicle->fuel_tank_type == "litres" ? 'selected' : ''}}>Litres</option>
+                        </select>
+                    </div>
+                    @error('fuel_tank_type')
                             <span class="invalid-feedback" role="alert" style="display: block;">
                                 <strong>{{ $message }}</strong>
                             </span>
