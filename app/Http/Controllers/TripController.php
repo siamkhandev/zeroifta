@@ -341,16 +341,16 @@ class TripController extends Controller
                 $route = $data['routes'][0];
                 if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
-            
+
                     // Extract polyline points as an array of strings
                     $polylinePoints = array_map(function ($step) {
                         return $step['polyline']['points'] ?? null;
                     }, $steps);
-            
+
                     // Filter out any null values if necessary
                     $polylinePoints = array_filter($polylinePoints);
-            
-                    
+
+
                 }
                 $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
                 $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
@@ -579,7 +579,7 @@ class TripController extends Controller
     }
     public function storeStop(Request $request)
     {
-      
+
         $validator = Validator::make($request->all(), [
             'trip_id' => 'required|exists:trips,id',
             'stops' => 'required|array',
@@ -642,7 +642,7 @@ class TripController extends Controller
         }
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
         if ($waypoints) {
-            $url .= "&waypoints={$waypoints}";
+            $url .= "&waypoints=optimize:true|{$waypoints}";
         }
         $response = Http::get($url);
         if ($response->successful()) {
@@ -650,13 +650,13 @@ class TripController extends Controller
             if($data['routes'] && $data['routes'][0]){
                 if (!empty($data['routes'][0]['legs'])) {
                     $polylinePoints = [];
-                
+
                     foreach ($data['routes'][0]['legs'] as $leg) {
                         foreach ($leg['steps'] as $step) {
                             $polylinePoints[] = $step['polyline']['points'] ?? null;
                         }
                     }
-                
+
                     $polylinePoints = array_filter($polylinePoints);
                    // $completePolyline = implode('', $polylinePoints);
                 }
