@@ -31,7 +31,8 @@ class FcmService
                     'title' => $title,
                     'body' => $body,
                 ],
-                'data' => (object) $data,  // Ensure this is cast to an object to avoid the list-to-map error
+               'data' => is_array($data) ? $data : []
+  // Ensure this is cast to an object to avoid the list-to-map error
             ]
         ];
 
