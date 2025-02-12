@@ -241,18 +241,21 @@ class IFTAController extends Controller
         if ($response->successful()) {
             $data = $response->json();
             if($data['routes'] && $data['routes'][0]){
-                if (!empty($data['routes'][0]['legs'][0]['steps'])) {
-                    $steps = $data['routes'][0]['legs'][0]['steps'];
+                if (!empty($data['routes'][0]['legs'])) {
+                    $polylinePoints = [];
 
-                    // Extract polyline points as an array of strings
-                    $polylinePoints = array_map(function ($step) {
-                        return $step['polyline']['points'] ?? null;
-                    }, $steps);
+                    foreach ($data['routes'][0]['legs'] as $leg) {
+                        if (!empty($leg['steps'])) {
+                            foreach ($leg['steps'] as $step) {
+                                if (isset($step['polyline']['points'])) {
+                                    $polylinePoints[] = $step['polyline']['points'];
+                                }
+                            }
+                        }
+                    }
 
                     // Filter out any null values if necessary
                     $polylinePoints = array_filter($polylinePoints);
-
-
                 }
                 $route = $data['routes'][0];
 
