@@ -19,36 +19,54 @@ class FcmService
     }
 
     public function sendNotification($deviceToken, $title, $body, $data = [])
-    {
-        $accessToken = $this->getAccessToken();
-        $client = new Client();
+{
+    $accessToken = $this->getAccessToken();
+    $client = new Client();
 
-
-        $payload = [
-            'message' => [
-                'token' => $deviceToken,  // Replace this with the actual token
+    $payload = [
+        'message' => [
+            'token' => $deviceToken,  // The actual device token
+            'notification' => [
+                'title' => $title,
+                'body'  => $body,
+            ],
+            'android' => [
                 'notification' => [
-                    'title' => $title,
-                    'body' => $body,
-                ],
-               'data' => is_array($data) ? $data : []
-  // Ensure this is cast to an object to avoid the list-to-map error
-            ]
-        ];
+                    'sound' => 'default',
+                    'priority' => 'high',
+                ]
+            ],
+            'apns' => [
+                'payload' => [
+                    'aps' => [
+                        'sound' => 'default',
+                        'content-available' => 1,
+                    ]
+                ]
+            ],
+            'data' => (object) $data // Ensure it's an object if empty
+        ]
+    ];
 
+    $headers = [
+        'Authorization' => 'Bearer ' . $accessToken,
+        'Content-Type'  => 'application/json',
+    ];
 
-        $headers = [
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => 'application/json',
-        ];
-
+    try {
         $response = $client->post($this->fcmUrl, [
             'headers' => $headers,
-            'body' => json_encode($payload),
+            'json'    => $payload, // Use 'json' instead of 'body' for automatic encoding
         ]);
 
         return json_decode($response->getBody(), true);
+    } catch (\GuzzleHttp\Exception\ClientException $e) {
+        return [
+            'error'   => true,
+            'message' => $e->getResponse()->getBody()->getContents(),
+        ];
     }
+}
 
     private function getAccessToken()
     {
