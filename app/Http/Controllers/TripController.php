@@ -353,22 +353,31 @@ class TripController extends Controller
                     // Filter out any null values if necessary
                     $polylinePoints = array_filter($polylinePoints);
                 }
-                $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
-                $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+                if ($route) {
+                    $totalDistance = 0;
+                    $totalDuration = 0;
 
-                // Format distance (e.g., "100 miles")
-                if ($distanceText) {
-                    $distanceParts = explode(' ', $distanceText);
-                    $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
-                }
+                    foreach ($route['legs'] as $leg) {
+                        $totalDistance += $leg['distance']['value']; // Distance in meters
+                        $totalDuration += $leg['duration']['value']; // Duration in seconds
+                    }
 
-                // Format duration (e.g., "2 hr 20 min")
-                if ($durationText) {
-                    $durationParts = explode(' ', $durationText);
-                    $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
-                    $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
-                    $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+                    // Convert meters to miles
+                    $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
 
+                    // Convert seconds to hours and minutes
+                    $hours = floor($totalDuration / 3600);
+                    $minutes = floor(($totalDuration % 3600) / 60);
+
+                    // Format distance
+                    $formattedDistance = $totalDistanceMiles . ' miles';
+
+                    // Format duration
+                    if ($hours > 0) {
+                        $formattedDuration = "{$hours} hr {$minutes} min";
+                    } else {
+                        $formattedDuration = "{$minutes} min";
+                    }
                 }
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
@@ -662,29 +671,31 @@ class TripController extends Controller
                    // $completePolyline = implode('', $polylinePoints);
                 }
                 $route = $data['routes'][0] ?? null;
-                $totalDistance = 0;
-                $totalDuration = 0;
+                if ($route) {
+                    $totalDistance = 0;
+                    $totalDuration = 0;
 
-                foreach ($route['legs'] as $leg) {
-                    $totalDistance += $leg['distance']['value']; // Distance in meters
-                    $totalDuration += $leg['duration']['value']; // Duration in seconds
-                }
+                    foreach ($route['legs'] as $leg) {
+                        $totalDistance += $leg['distance']['value']; // Distance in meters
+                        $totalDuration += $leg['duration']['value']; // Duration in seconds
+                    }
 
-                // Convert meters to miles
-                $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
+                    // Convert meters to miles
+                    $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
 
-                // Convert seconds to hours and minutes
-                $hours = floor($totalDuration / 3600);
-                $minutes = floor(($totalDuration % 3600) / 60);
+                    // Convert seconds to hours and minutes
+                    $hours = floor($totalDuration / 3600);
+                    $minutes = floor(($totalDuration % 3600) / 60);
 
-                // Format distance
-                $formattedDistance = $totalDistanceMiles . ' miles';
+                    // Format distance
+                    $formattedDistance = $totalDistanceMiles . ' miles';
 
-                // Format duration
-                if ($hours > 0) {
-                    $formattedDuration = "{$hours} hr {$minutes} min";
-                } else {
-                    $formattedDuration = "{$minutes} min";
+                    // Format duration
+                    if ($hours > 0) {
+                        $formattedDuration = "{$hours} hr {$minutes} min";
+                    } else {
+                        $formattedDuration = "{$minutes} min";
+                    }
                 }
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
