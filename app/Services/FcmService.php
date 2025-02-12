@@ -22,7 +22,7 @@ class FcmService
     {
         $client = new Client();
         $accessToken = $this->getAccessToken();
-
+        dd($accessToken);
         $payload = [
             'message' => [
                 'token' => $deviceToken,  // Replace this with the actual token
@@ -33,7 +33,7 @@ class FcmService
                 'data' => (object) $data,  // Ensure this is cast to an object to avoid the list-to-map error
             ]
         ];
-        
+
 
         $headers = [
             'Authorization' => 'Bearer ' . $accessToken,
