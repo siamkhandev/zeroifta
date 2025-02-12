@@ -23,7 +23,7 @@ class FcmService
         $accessToken = $this->getAccessToken();
         $client = new Client();
 
-        dd($accessToken);
+
         $payload = [
             'message' => [
                 'token' => $deviceToken,  // Replace this with the actual token
