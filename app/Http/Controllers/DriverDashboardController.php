@@ -22,7 +22,7 @@ class DriverDashboardController extends Controller
 {
     public function index(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey('sk_test_51FYXgWJOfbRIs4ne6dmGfFbmR1pKgX5V1CQVQHSSlzjCom2KemJylbslX2ylQ2dpbrvmSBGUQSWt6kXETr1ByRR500fTaO7v7k');
         $start = microtime(true); // Measure execution time
 
         // Initialize dashboard data
