@@ -384,7 +384,7 @@ class IFTAController extends Controller
             'truck_mpg' => 'required',
             'fuel_tank_capacity' => 'required',
             'total_gallons_present' => 'required',
-            'reserve_fuel'=>'required'
+            //'reserve_fuel'=>'required'
         ]);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
 
