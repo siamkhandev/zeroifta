@@ -14,7 +14,7 @@ class FcmService
     protected $serviceAccountPath;
 
     public function __construct()
-    {
+    {dd(storage_path('app/zeroifta2.json'));
         $this->serviceAccountPath = storage_path('app/zeroifta2.json');
     }
 
