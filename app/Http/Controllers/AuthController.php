@@ -54,7 +54,7 @@ class AuthController extends Controller
             }else{
                 $user->fcm = null;
             }
-           
+
             $user->token = $token;
             if($user->driver_image){
                 $user->image =url('/drivers/'.$user->driver_image);

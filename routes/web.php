@@ -21,6 +21,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +41,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/testsocket', [AdminController::class, 'socket']);
 Route::get('/testftp', [AdminController::class, 'testftp']);
 Route::get('/test-notification', [TestNotificationController::class, 'sendTestNotification']);
+Route::get('/testmail', function(){
+  Mail::to('gulraizazam00@gmail.com');
+});
 Route::get('maptest', function () {
   return view('maptest');
 });

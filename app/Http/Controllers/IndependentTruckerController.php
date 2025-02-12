@@ -91,19 +91,23 @@ class IndependentTruckerController extends Controller
                     'data'=>(object)[]
                 ]);
             }
-            
+
            }else{
             $otp_sms = 123456;
            }
-
+           try{
             $otp_email = rand(100000, 999999);
 
             $twilioService->sendEmailOtp($request->email, $otp_email);
+           }catch(Exception $e){
+                dd($e->getMessage());
+           }
+            
             $driver->otp_code = $otp_sms;
             $driver->email_otp = $otp_email;
 
             $driver->save();
-            
+
             $companyDriver = new CompanyDriver();
             $companyDriver->driver_id =$driver->id;
             $companyDriver->company_id =$driver->id;
@@ -144,6 +148,7 @@ class IndependentTruckerController extends Controller
             $driverFind->subscription = $checkSubscription;
             $rsaKey =  file_get_contents('https://staging.zeroifta.com/my_rsa_key.pub');
             $driverFind->rsa_key = $rsaKey;
+            $driverFind->token = $driverFind->createToken('zeroifta')->accessToken;
 
             $driverFind->token =$driver->current_access_token;
             $findCard = PaymentMethod::where('user_id',$driver->id)->where('is_default',true)->first();
