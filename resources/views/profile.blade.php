@@ -105,22 +105,20 @@
                 @enderror
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
-    <div class="dash-input mb-3">
-        <label class="input-lables pb-2" for="profilePicture">{{ __('messages.Profile Picture') }}</label>
-        <div class="custom-file-input-wrapper">
-            <label for="profilePicture" class="custom-file-label">
-                <span id="fileLabel">{{ __('messages.No File chosen') }}</span>
-            </label>
-            <input
-                type="file"
-                class="form-control dis-input custom-file-input"
-                id="profilePicture"
-                name="image"
-                accept="image/png, image/jpg, image/jpeg"
-                onchange="updateFileLabel(this)" />
-        </div>
-    </div>
-</div>
+                <div class="dash-input mb-3">
+                    <label class="input-lables pb-2" for="profilePicture">{{ __('messages.Profile Picture') }}</label>
+                    <div class="custom-file-input-wrapper">
+
+                        <input
+                            type="file"
+                            class="form-control dis-input custom-file-input"
+
+                            name="image"
+                            accept="image/png, image/jpg, image/jpeg"
+                            onchange="updateFileLabel(this)" />
+                    </div>
+                </div>
+            </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.MC')}}</label>
