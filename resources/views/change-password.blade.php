@@ -60,8 +60,8 @@
 
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3" style="position: relative;">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Current Password</label>
-                  <input type="password" class="form-control dis-input" id="current_password" placeholder="Current Password" name="current_password" required />
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Current Password')}}</label>
+                  <input type="password" class="form-control dis-input" id="current_password" placeholder="{{__('messages.Current Password')}}" name="current_password" required />
                   <div class="show-pass1 position-absolute"
                             style="right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;"
                             onclick="togglePasswordVisibility('current_password', 'show-icon1', 'hide-icon1')">
@@ -86,8 +86,8 @@
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3" style="position: relative;">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">New Password</label>
-                  <input type="password" class="form-control dis-input" id="password" placeholder="New Password" name="password" required />
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.New Password')}}</label>
+                  <input type="password" class="form-control dis-input" id="password" placeholder="{{__('messages.New Password')}}" name="password" required />
                   <div class="show-pass1" style="position: absolute; right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility('password', 'show-icon2', 'hide-icon2')">
                     <span id="show-icon2" style="display: inline;" >
                         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#a5a9ad">
@@ -109,8 +109,8 @@
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3" style="position: relative;">
-                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">Confirm Password</label>
-                  <input type="password" class="form-control dis-input" id="confirm_password" placeholder="Confirm Password" name="password_confirmation" required />
+                  <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Confirm Password')}}</label>
+                  <input type="password" class="form-control dis-input" id="confirm_password" placeholder="{{__('messages.Confirm Password')}}" name="password_confirmation" required />
                   <div class="show-pass3" style="position: absolute; right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility('confirm_password', 'show-icon3', 'hide-icon3')">
                     <span id="show-icon3" style="display: inline;" >
                         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#a5a9ad">
@@ -129,7 +129,7 @@
 
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
-                  <button type="submit" class="mainBtn">Submit</button>
+                  <button type="submit" class="mainBtn">{{__('messages.Submit')}}</button>
                 </div>
               </div>
             </div>

@@ -46,18 +46,18 @@
             </td>
             <td>
               <div class="table-conTab">
-                <span>{{$form->company->name}} </span>
+                <span>{{$form->company->name ?? 'N/A'}} </span>
               </div>
             </td>
             <td>
               <div>
-                <p>{{$form->subject}}</p>
+                <p>{{$form->subject  ?? 'N/A'}}</p>
               </div>
             </td>
             <td>
               <div>
-                <p>{{$form->company->email}}</p>
-                <p>{{$form->phone}}</p>
+                <p>{{$form->company->email  ?? 'N/A'}}</p>
+                <p>{{$form->phone  ?? 'N/A'}}</p>
               </div>
             </td>
             <td>

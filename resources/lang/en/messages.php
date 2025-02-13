@@ -193,6 +193,8 @@ return [
     "Change Password"=>"Change Password",
     "Type"=>"Type",
     "License Plate No."=>"License Plate No.",
+    "Current Password"=>"Current Password",
+    "New Password"=>"New Password",
 
 
 
