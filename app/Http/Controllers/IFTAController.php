@@ -232,7 +232,7 @@ class IFTAController extends Controller
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
-        if ($waypoints) {
+        if (isset($waypoints)) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
         // Fetch data from Google Maps API
@@ -258,22 +258,31 @@ class IFTAController extends Controller
                     $polylinePoints = array_filter($polylinePoints);
                 }
                 $route = $data['routes'][0];
+                if($route){
+                    $totalDistance = 0;
+                    $totalDuration = 0;
 
-                $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
-                $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+                    foreach ($route['legs'] as $leg) {
+                        $totalDistance += $leg['distance']['value']; // Distance in meters
+                        $totalDuration += $leg['duration']['value']; // Duration in seconds
+                    }
 
-                // Format distance (e.g., "100 miles")
-                if ($distanceText) {
-                    $distanceParts = explode(' ', $distanceText);
-                    $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
-                }
+                    // Convert meters to miles
+                    $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
 
-                // Format duration (e.g., "2 hr 20 min")
-                if ($durationText) {
-                    $durationParts = explode(' ', $durationText);
-                    $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
-                    $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
-                    $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+                    // Convert seconds to hours and minutes
+                    $hours = floor($totalDuration / 3600);
+                    $minutes = floor(($totalDuration % 3600) / 60);
+
+                    // Format distance
+                    $formattedDistance = $totalDistanceMiles . ' miles';
+
+                    // Format duration
+                    if ($hours > 0) {
+                        $formattedDuration = "{$hours} hr {$minutes} min";
+                    } else {
+                        $formattedDuration = "{$minutes} min";
+                    }
                 }
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
