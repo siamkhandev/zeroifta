@@ -53,7 +53,9 @@ class UsersController extends Controller
             'current_password' => 'required',
             'password' => 'required|min:8|confirmed',
         ]);
-
+        if (!Hash::check($request->current_password, auth()->user()->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect'])->withInput();
+        }
         try {
             $user = User::find(Auth::id());
             if (!Hash::check($request->current_password, $user->password)) {
