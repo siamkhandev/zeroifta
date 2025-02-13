@@ -184,4 +184,6 @@ return [
     "Change Password"=>"Cambiar la contraseña",
     "Type"=>"Tipo",
     "License Plate No."=>"Número de matrícula.",
+    "Current Password"=>"Contraseña actual",
+    "New Password"=>"Nueva contraseña",
 ];
