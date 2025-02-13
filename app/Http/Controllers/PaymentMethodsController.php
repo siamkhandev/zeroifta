@@ -12,44 +12,59 @@ use Stripe\Stripe;
 class PaymentMethodsController extends Controller
 {
     public function index()
-    {
-        
-            // Set Stripe secret key
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+{
+    // Set Stripe secret key
+    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-            // Get the authenticated user
-            $user = Auth::user();
+    // Get the authenticated user
+    $user = Auth::user();
 
-            if (!$user->stripe_customer_id) {
-                return redirect()->back()->withError('No Stripe customer found for the user');
-                
-            }
-
-            // Retrieve all payment methods for the Stripe customer
-            $paymentMethods = \Stripe\PaymentMethod::all([
-                'customer' => $user->stripe_customer_id,
-                'type' => 'card', // Fetch only card payment methods
+    // Check if the user has a Stripe customer ID
+    if (!$user->stripe_customer_id) {
+        try {
+            // Create a new customer in Stripe
+            $stripeCustomer = \Stripe\Customer::create([
+                'email' => $user->email,
+                'name' => $user->name,
             ]);
 
-            // Retrieve the default payment method from Stripe
-            $stripeCustomer = \Stripe\Customer::retrieve($user->stripe_customer_id);
-            $defaultPaymentMethodId = $stripeCustomer->invoice_settings->default_payment_method;
-
-            $filteredMethods = array_map(function ($method) use ($defaultPaymentMethodId) {
-                return [
-                    'id' => $method['id'],
-                    'name' => $method['billing_details']['name'],
-                    'brand' => $method['card']['brand'],
-                    'expiry_month' => $method['card']['exp_month'],
-                    'expiry_year' => $method['card']['exp_year'],
-                    'last4' => $method['card']['last4'],
-                    'is_default' => $method['id'] === $defaultPaymentMethodId, // Check if this is the default method
-                ];
-            }, $paymentMethods->data);
-            return view('company.payment_methods.index',get_defined_vars());
-            
-        
+            // Save the Stripe customer ID to the user
+            $user->update(['stripe_customer_id' => $stripeCustomer->id]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error creating Stripe customer: ' . $e->getMessage()]);
+        }
     }
+
+    try {
+        // Retrieve all payment methods for the Stripe customer
+        $paymentMethods = \Stripe\PaymentMethod::all([
+            'customer' => $user->stripe_customer_id,
+            'type' => 'card',
+        ]);
+
+        // Retrieve the default payment method from Stripe
+        $stripeCustomer = \Stripe\Customer::retrieve($user->stripe_customer_id);
+        $defaultPaymentMethodId = $stripeCustomer->invoice_settings->default_payment_method;
+
+        $filteredMethods = array_map(function ($method) use ($defaultPaymentMethodId) {
+            return [
+                'id' => $method['id'],
+                'name' => $method['billing_details']['name'],
+                'brand' => $method['card']['brand'],
+                'expiry_month' => $method['card']['exp_month'],
+                'expiry_year' => $method['card']['exp_year'],
+                'last4' => $method['card']['last4'],
+                'is_default' => $method['id'] === $defaultPaymentMethodId,
+            ];
+        }, $paymentMethods->data);
+
+        return view('company.payment_methods.index', compact('filteredMethods'));
+
+    } catch (\Exception $e) {
+        return redirect()->back()->withErrors(['error' => 'Error retrieving payment methods: ' . $e->getMessage()]);
+    }
+}
+
     public function addPaymentMethod()
     {
         return view('company.payment_methods.add');
@@ -60,17 +75,17 @@ class PaymentMethodsController extends Controller
             'paymentMethodId' => 'required|string',
             'methodName' => 'required|string|max:255',
         ]);
-    
+
         try {
             // Set the Stripe API secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
-    
+
             // Retrieve the logged-in user
             $user = auth()->user();
-    
+
             // Retrieve the payment method from Stripe using the PaymentMethod ID
             $paymentMethod = \Stripe\PaymentMethod::retrieve($request->paymentMethodId);
-    
+
             // Check if the user has a Stripe customer ID
             if ($user->stripe_customer_id) {
                 // Attach the payment method to the Stripe customer
@@ -78,12 +93,12 @@ class PaymentMethodsController extends Controller
                     'customer' => $user->stripe_customer_id,
                 ]);
             }
-    
+
             // Check if a default payment method exists for the user
             $existingDefault = PaymentMethod::where('user_id', $user->id)
                 ->where('is_default', true)
                 ->exists();
-    
+
             // Save the payment method details to the database
             $storedPaymentMethod = PaymentMethod::create([
                 'user_id' => $user->id,
@@ -95,7 +110,7 @@ class PaymentMethodsController extends Controller
                 'card_type' => $paymentMethod->card->brand ?? null, // Card type (e.g., Visa, Mastercard)
                 'is_default' => !$existingDefault, // Set as default only if no default exists
             ]);
-    
+
             return response()->json(['status' => 200, 'message' => 'Payment method added successfully!', 'data' => $storedPaymentMethod]);
         } catch (ApiErrorException $e) {
             return response()->json(['status' => 500, 'message' => 'Stripe API Error: ' . $e->getMessage()]);
@@ -105,24 +120,24 @@ class PaymentMethodsController extends Controller
     }
     public function setDefaultPaymentMethod($id)
     {
-        
-    
+
+
         // Retrieve the logged-in user
         $user = auth()->user();
-    
+
         // Find the selected payment method from the database
         $paymentMethod = PaymentMethod::where('user_id', $user->id)
             ->where('stripe_payment_method_id', $id)
             ->first();
-    
+
         if (!$paymentMethod) {
             return redirect()->back()->withError('No payment Method Exist against this id');
         }
-    
+
         try {
             // Set the Stripe API secret key
             Stripe::setApiKey(env('STRIPE_SECRET'));
-    
+
             // Check if the user has a Stripe customer ID
             if ($user->stripe_customer_id) {
                 // Update the default payment method on Stripe
@@ -130,21 +145,21 @@ class PaymentMethodsController extends Controller
                 $customer->invoice_settings->default_payment_method = $paymentMethod->stripe_payment_method_id;
                 $customer->save();
             }
-    
+
             // Update the database to set the selected payment method as default
             // Set all other payment methods to non-default
             PaymentMethod::where('user_id', $user->id)->update(['is_default' => false]);
-    
+
             // Set the selected payment method as default
             $paymentMethod->update(['is_default' => true]);
             return redirect()->back()->withSuccess('Payment method set as default successfully.');
-           
+
         } catch (ApiErrorException $e) {
             return redirect()->back()->withError('Stripe API Error: ' . $e->getMessage());
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withError('Error: ' . $e->getMessage());
-           
+
         }
     }
 }
