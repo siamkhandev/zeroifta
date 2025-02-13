@@ -57,6 +57,7 @@
 let map, routeRenderer, userMarker, startMarker, endMarker;
 const socket = io('https://ws.zeroifta.com');  // Socket.io server URL
 const userId = {{ $userId }};  // Pass the userId from blade
+let stopMarkers = []; // Global variable to store stop markers
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
