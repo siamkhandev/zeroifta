@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
+use App\Models\FcmToken;
 use App\Models\FuelStation;
 use App\Models\Trip;
 use App\Models\Tripstop;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use App\Models\User;
 use App\Models\Vehicle;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -295,6 +300,8 @@ class TripController extends Controller
                 
                     $response = $messaging->sendMulticast($message, $driverFcm);
                 }
+            }
+        }
         return response()->json(['status' => 200, 'message' => 'Trip status updated successfully', 'data' => (object)[]]);
     }
     function fetchFileDataAndMatchCoordinates($latitude, $longitude)

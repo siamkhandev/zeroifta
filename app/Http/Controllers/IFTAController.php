@@ -376,6 +376,8 @@ class IFTAController extends Controller
                          
                              $response = $messaging->sendMulticast($message, $driverFcm);
                          }
+                        }
+                    }
                     return response()->json([
                         'status' => 200,
                         'message' => 'Fuel stations fetched successfully.',
