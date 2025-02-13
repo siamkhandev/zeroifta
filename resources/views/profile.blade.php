@@ -107,16 +107,16 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3">
                     <label class="input-lables pb-2" for="profilePicture">{{ __('messages.Profile Picture') }}</label>
-                    <div class="custom-file-input-wrapper">
+
 
                         <input
                             type="file"
-                            class="form-control dis-input custom-file-input"
+                            class="form-control dis-input"
 
                             name="image"
                             accept="image/png, image/jpg, image/jpeg"
-                            onchange="updateFileLabel(this)" />
-                    </div>
+                            />
+
                 </div>
             </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
