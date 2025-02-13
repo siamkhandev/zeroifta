@@ -400,7 +400,7 @@ class IFTAController extends Controller
         $json = Storage::get('zeroifta.json');
                     $data = json_decode($json, true);
 
-                   dd($data['private_key']);
+                   //dd($data['private_key']);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
 
         if ($findTrip) {
