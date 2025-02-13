@@ -323,6 +323,7 @@ class IFTAController extends Controller
                         $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
                         $vehicle->update([
                             'fuel_left'=> $currentFuel,
+                            'reserve_fuel'=>$request->reserve_fuel,
                         ]);
                         if($vehicle && $vehicle->vehicle_image != null){
                             $vehicle->vehicle_image = url('/vehicles/'.$vehicle->vehicle_image);
