@@ -1,5 +1,14 @@
 @extends('layouts.new_main')
 @section('content')
+<style>
+    .toggle-password {
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+    }
+</style>
 <div class="dashbord-inner">
   @if(Session::has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
@@ -154,25 +163,28 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                        <h3>{{__('messages.Change Password')}}</h3>
-                          <div class="text-center mt-3">
-
-                           <form method="post" action="{{route('companies.changePassword',$company->id)}}" id="changePasswordForm">
-                           <div class="dash-input mb-3">
-
-                            <input type="password" name="password" placeholder="{{__('messages.Password')}}" class="form-control" id="password">
-                           </div>
-                           <div class="dash-input mb-3">
-                            <input type="password" name="password_confirmation" placeholder="{{__('messages.Confirm Password')}}" class="form-control" id="password_confirmation">
-                           </div>
-                           </form>
-
-                            <div class="buttons pt-3">
-                              <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{__('messages.Close')}}</button>
-                              <button type="submit" id="submitBtn" class="mainBtn">{{__('messages.Submit')}}</button>
-                            </div>
-                          </div>
-                        </div>
+    <h3>{{ __('messages.Change Password') }}</h3>
+    <div class="text-center mt-3">
+        <form method="post" action="{{ route('companies.changePassword', $company->id) }}" id="changePasswordForm">
+            <div class="dash-input mb-3 position-relative">
+                <input type="password" name="password" placeholder="{{ __('messages.Password') }}" class="form-control" id="password">
+                <span class="toggle-password position-absolute" toggle="#password">
+                    <i class="fa fa-eye-slash"></i>
+                </span>
+            </div>
+            <div class="dash-input mb-3 position-relative">
+                <input type="password" name="password_confirmation" placeholder="{{ __('messages.Confirm Password') }}" class="form-control" id="password_confirmation">
+                <span class="toggle-password position-absolute" toggle="#password_confirmation">
+                    <i class="fa fa-eye-slash"></i>
+                </span>
+            </div>
+        </form>
+        <div class="buttons pt-3">
+            <button type="button" class="cancelBtn" data-bs-dismiss="modal">{{ __('messages.Close') }}</button>
+            <button type="submit" id="submitBtn" class="mainBtn">{{ __('messages.Submit') }}</button>
+        </div>
+    </div>
+</div>
                       </div>
                     </div>
                   </div>
@@ -246,5 +258,23 @@ $(document).ready(function() {
         });
     });
 });
+</script>
+<script>
+    document.querySelectorAll(".toggle-password").forEach(function (toggle) {
+        toggle.addEventListener("click", function () {
+            let input = document.querySelector(this.getAttribute("toggle"));
+            let icon = this.querySelector("i");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        });
+    });
 </script>
 @endsection
