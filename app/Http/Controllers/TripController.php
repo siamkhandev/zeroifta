@@ -744,6 +744,7 @@ class TripController extends Controller
                     $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
                     $truckMpg = $findVehicle->mpg;
                     $currentFuel = $findVehicle->fuel_left;
+                    $fuelStations = [];
                     $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     FuelStation::where('trip_id', $trip->id)->delete();
                     foreach ($result as  $value) {
