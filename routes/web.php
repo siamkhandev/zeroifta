@@ -23,6 +23,7 @@ use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,24 +46,20 @@ Route::get('/send-test-notification', function () {
   $serverKey = 'zeroifta-4d9af'; // Replace with your Firebase Server Key
   $deviceToken = 'ckj7QHD_U06DvlGmzb46Xc:APA91bEuOGPCxaNiS10vnjRqqGj2FUJ8Pdrsi9mr7FGMTV-6Uge4MbdKwdrSbvMRBWoW594iSW_96S3f6PW-1zGr3IXSuaIGbcgR4Fdn6wPfoJSUIUC7d58'; // Replace with your FCM Device Token
 
-  $data = [
-      "to" => $deviceToken,
-      "notification" => [
-          "title" => "Test Notification",
-          "body" => "Hello! This is a test notification from Firebase.",
-          "sound" => "default"
-      ]
-  ];
+  
+  $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+$messaging = $factory->createMessaging();
 
-  $response = Http::withHeaders([
-      'Authorization' => 'key=' . $serverKey,
-      'Content-Type' => 'application/json',
-  ])->post('https://fcm.googleapis.com/fcm/send', $data);
+$message = [
+    'notification' => [
+        'title' => 'Test Notification',
+        'body' => 'Hello from Firebase!',
+    ],
+    'token' => 'ckj7QHD_U06DvlGmzb46Xc:APA91bEuOGPCxaNiS10vnjRqqGj2FUJ8Pdrsi9mr7FGMTV-6Uge4MbdKwdrSbvMRBWoW594iSW_96S3f6PW-1zGr3IXSuaIGbcgR4Fdn6wPfoJSUIUC7d58',
+];
 
-  return response()->json([
-      'status' => $response->status(),
-      'response' => $response->json(),
-  ]);
+$messaging->send($message);
+dd("done");
 });
 Route::get('/testmail', function(){
   Mail::to('gulraizazam00@gmail.com');
