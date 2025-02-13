@@ -76,26 +76,32 @@ function initMap() {
 
     // Fetch trip data
     $.get('/api/user-trip/' + userId, function(response) {
-       
-        if (response.status == 200) {
-            const trip = response.data;
-            const start = { lat: parseFloat(trip.start_lat), lng: parseFloat(trip.start_lng) };
-            const end = { lat: parseFloat(trip.end_lat), lng: parseFloat(trip.end_lng) };
+    if (response.status == 200) {
+        const trip = response.data;
+        const start = { lat: parseFloat(trip.start_lat), lng: parseFloat(trip.start_lng) };
+        const end = { lat: parseFloat(trip.end_lat), lng: parseFloat(trip.end_lng) };
 
-            drawRoute(start, end);
+        const waypoints = trip.stops.map(stop => ({
+            location: new google.maps.LatLng(parseFloat(stop.lat), parseFloat(stop.lng)),
+            stopover: true
+        }));
 
-            socket.on('locationUpdate', function(data) {
-                const { user_id, lat, lng } = data;
-                if (user_id === userId) {
-                    const currentLocation = new google.maps.LatLng(lat, lng);
-                    userMarker.setPosition(currentLocation);
-                    map.setCenter(currentLocation);
-                }
-            });
-        } else {
-            alert(response.message);
-        }
-    });
+        drawRoute(start, end, waypoints); // Pass waypoints to drawRoute function
+
+        socket.on('locationUpdate', function(data) {
+            const { user_id, lat, lng } = data;
+            if (user_id === userId) {
+                const currentLocation = new google.maps.LatLng(lat, lng);
+                userMarker.setPosition(currentLocation);
+                map.setCenter(currentLocation);
+            }
+        });
+    } else {
+        alert(response.message);
+    }
+});
+
+
 
     let currentInfoWindow = null;
 
@@ -145,32 +151,55 @@ function initMap() {
 });
 }
 
-function drawRoute(start, end) {
+function drawRoute(start, end, waypoints = []) {
+    // Remove existing markers if any
     if (startMarker) startMarker.setMap(null);
     if (endMarker) endMarker.setMap(null);
+    if (stopMarkers) stopMarkers.forEach(marker => marker.setMap(null));
 
+    // Initialize an empty array to store stop markers
+    stopMarkers = [];
+
+    // Create markers for stops
+    waypoints.forEach((waypoint, index) => {
+        let stopMarker = new google.maps.Marker({
+            position: waypoint.location,
+            map: map,
+            icon: '{{asset("assets/img/location-orange.png")}}', // Use a different icon for stops
+            scaledSize: new google.maps.Size(30, 30)
+        });
+
+        stopMarkers.push(stopMarker);
+    });
+
+    // Create markers for start and end points
     startMarker = new google.maps.Marker({
         position: start,
         map: map,
         icon: '{{asset("assets/img/location-blue.png")}}',
-        url: '{{asset("assets/img/location-blue.png")}}',  // Path to the custom icon
-        scaledSize: new google.maps.Size(40, 40),  // Resize the icon if necessary
-        anchor: new google.maps.Point(20, 40)
+        scaledSize: new google.maps.Size(40, 40)
     });
 
     endMarker = new google.maps.Marker({
         position: end,
         map: map,
         icon: '{{asset("assets/img/location-blue.png")}}',
-        url: '{{asset("assets/img/location-blue.png")}}',  // Path to the custom icon
-        scaledSize: new google.maps.Size(40, 40),  // Resize the icon if necessary
-        anchor: new google.maps.Point(20, 40)
+        scaledSize: new google.maps.Size(40, 40)
     });
 
+    // Initialize the Directions Service and Renderer
     const directionsService = new google.maps.DirectionsService();
+    if (!routeRenderer) {
+        routeRenderer = new google.maps.DirectionsRenderer();
+        routeRenderer.setMap(map);
+    }
+
+    // Request route with waypoints
     directionsService.route({
         origin: start,
         destination: end,
+        waypoints: waypoints, // Include waypoints
+        optimizeWaypoints: true, // Optional: Optimizes route order
         travelMode: google.maps.TravelMode.DRIVING
     }, function(result, status) {
         if (status === google.maps.DirectionsStatus.OK) {
@@ -180,6 +209,7 @@ function drawRoute(start, end) {
         }
     });
 }
+
 
 // Handle tab change
 $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {

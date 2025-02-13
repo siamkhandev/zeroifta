@@ -17,4 +17,8 @@ class Trip extends Model
         return $this->hasOne(DriverVehicle::class, 'driver_id', 'user_id');
         // Or use 'driver_id' if that is the foreign key that relates the Trip to DriverVehicle.
     }
+    public function stops()
+    {
+        return $this->hasMany(Tripstop::class);
+    }
 }

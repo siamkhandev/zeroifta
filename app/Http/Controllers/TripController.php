@@ -241,8 +241,24 @@ class TripController extends Controller
         if (!$trip) {
             return response()->json(['status' =>404, 'message' => 'No trip found for this user', 'data' => (object)[]]);
         }
-
-        return response()->json(['status' => 200, 'message' => 'Trip retrieved successfully', 'data' => $trip]);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Trip retrieved successfully',
+            'data' => [
+                'id' => $trip->id,
+                'start_lat' => $trip->start_lat,
+                'start_lng' => $trip->start_lng,
+                'end_lat' => $trip->end_lat,
+                'end_lng' => $trip->end_lng,
+                'stops' => $trip->stops->map(function ($stop) {
+                    return [
+                        'lat' => $stop->stop_lat,
+                        'lng' => $stop->stop_lng,
+                    ];
+                }),
+            ]
+        ]);
+        // return response()->json(['status' => 200, 'message' => 'Trip retrieved successfully', 'data' => $trip]);
     }
     public function deleteTrip(Request $request)
     {
