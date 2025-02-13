@@ -1,5 +1,6 @@
 @extends('layouts.new_main')
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
     .toggle-password {
         right: 10px;
