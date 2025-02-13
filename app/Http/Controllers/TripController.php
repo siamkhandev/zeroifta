@@ -277,6 +277,24 @@ class TripController extends Controller
 
         $trip->status = $request->status;
         $trip->save();
+        $findDriver = User::where('id', $trip->user_id)->first();
+        if($findDriver){
+            
+            $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
+            if($findCompany){
+                $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
+                if (!empty($driverFcm)) {
+                    $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+                    $messaging = $factory->createMessaging();
+                
+                    $message = CloudMessage::new()
+                        ->withNotification([
+                            'title' => 'Trip Completed',
+                            'body'  => 'Trip completed successfully',
+                        ]);
+                
+                    $response = $messaging->sendMulticast($message, $driverFcm);
+                }
         return response()->json(['status' => 200, 'message' => 'Trip status updated successfully', 'data' => (object)[]]);
     }
     function fetchFileDataAndMatchCoordinates($latitude, $longitude)
