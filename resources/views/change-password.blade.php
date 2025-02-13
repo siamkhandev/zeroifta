@@ -110,7 +110,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
                 <div class="dash-input mb-3" style="position: relative;">
                   <label class="input-lables pb-2" for="exampleFormControlInput1" class="pb-1">{{__('messages.Confirm Password')}}</label>
-                  <input type="password" class="form-control dis-input" id="confirm_password" placeholder="{{__('messages.Confirm Password')}} name="password_confirmation" required />
+                  <input type="password" class="form-control dis-input" id="confirm_password" placeholder="{{__('messages.Confirm Password')}}" name="password_confirmation" required />
                   <div class="show-pass3" style="position: absolute; right: 10px; top: 65%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility('confirm_password', 'show-icon3', 'hide-icon3')">
                     <span id="show-icon3" style="display: inline;" >
                         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#a5a9ad">
