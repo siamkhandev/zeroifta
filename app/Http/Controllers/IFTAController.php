@@ -513,20 +513,18 @@ class IFTAController extends Controller
                 
                 $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
                 if($findCompany){
-                    $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token');
-                    if($driverFcm){
+                    $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
+                    if (!empty($driverFcm)) {
                         $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                         $messaging = $factory->createMessaging();
-
-                        $message = [
-                            'notification' => [
+                    
+                        $message = CloudMessage::new()
+                            ->withNotification([
                                 'title' => 'Trip Started',
-                                'body' => 'Trip started successfully',
-                            ],
-                            'token' => $driverFcm,
-                        ];
-
-                        $messaging->send($message);
+                                'body'  => 'Trip started successfully',
+                            ]);
+                    
+                        $response = $messaging->sendMulticast($message, $driverFcm);
                     }
 
                     // $fleetManagerTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('token');
