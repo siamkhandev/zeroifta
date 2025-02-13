@@ -506,6 +506,10 @@ class IFTAController extends Controller
                }
                $findDriver = User::where('id', $trip->user_id)->first();
                if($findDriver){
+                $json = Storage::get('zeroifta.json');
+                    $data = json_decode($json, true);
+
+                   dd(json_last_error() === JSON_ERROR_NONE ? 'Valid JSON' : json_last_error_msg());
                 $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
                 if($findCompany){
                     $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token');
