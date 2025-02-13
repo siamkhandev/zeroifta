@@ -936,7 +936,7 @@
                                                             </a>
                                                             @else
                                                         <a href="{{route('buy','premium_plus_yearly')}}" class="mainBtn">
-                                                            Buy Plan
+                                                            Upgrade
                                                         </a>
                                                         @endif
                                                         </div>
