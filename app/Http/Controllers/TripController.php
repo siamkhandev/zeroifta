@@ -10,6 +10,7 @@ use App\Models\Trip;
 use App\Models\Tripstop;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 use App\Models\User;
 use App\Models\Vehicle;
 use GuzzleHttp\Client;
@@ -286,18 +287,19 @@ class TripController extends Controller
         if($findDriver){
             
             $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
-            if($findCompany){
+            if ($findCompany) {
                 $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
+            
                 if (!empty($driverFcm)) {
                     $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                     $messaging = $factory->createMessaging();
-                
+            
                     $message = CloudMessage::new()
-                        ->withNotification([
-                            'title' => 'Trip Completed',
-                            'body'  => 'Trip completed successfully',
+                        ->withNotification(Notification::create('Trip Complete', 'Trip completed successfully'))
+                        ->withData([
+                            'sound' => 'default', // This triggers the sound
                         ]);
-                
+            
                     $response = $messaging->sendMulticast($message, $driverFcm);
                 }
             }

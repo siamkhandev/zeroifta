@@ -9,6 +9,7 @@ use App\Models\FuelStation;
 use App\Models\Trip;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 
 use App\Models\Tripstop;
 use App\Models\User;
@@ -362,21 +363,22 @@ class IFTAController extends Controller
                     if($findDriver){
                      
                      $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
-                     if($findCompany){
-                         $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-                         if (!empty($driverFcm)) {
-                             $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
-                             $messaging = $factory->createMessaging();
-                         
-                             $message = CloudMessage::new()
-                                 ->withNotification([
-                                     'title' => 'Trip Updated',
-                                     'body'  => 'Trip updated successfully',
-                                 ]);
-                         
-                             $response = $messaging->sendMulticast($message, $driverFcm);
-                         }
+                     if ($findCompany) {
+                        $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
+                    
+                        if (!empty($driverFcm)) {
+                            $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+                            $messaging = $factory->createMessaging();
+                    
+                            $message = CloudMessage::new()
+                                ->withNotification(Notification::create('Trip Updated', 'Trip updated successfully'))
+                                ->withData([
+                                    'sound' => 'default', // This triggers the sound
+                                ]);
+                    
+                            $response = $messaging->sendMulticast($message, $driverFcm);
                         }
+                    }
                     }
                     return response()->json([
                         'status' => 200,
@@ -533,32 +535,21 @@ class IFTAController extends Controller
                if($findDriver){
                 
                 $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
-                if($findCompany){
+                if ($findCompany) {
                     $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
+                
                     if (!empty($driverFcm)) {
                         $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                         $messaging = $factory->createMessaging();
-                    
+                
                         $message = CloudMessage::new()
-                            ->withNotification([
-                                'title' => 'Trip Started',
-                                'body'  => 'Trip started successfully',
+                            ->withNotification(Notification::create('Trip Started', 'Trip started successfully'))
+                            ->withData([
+                                'sound' => 'default', // This triggers the sound
                             ]);
-                    
+                
                         $response = $messaging->sendMulticast($message, $driverFcm);
                     }
-
-                    // $fleetManagerTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('token');
-                    // if($fleetManagerTokens){
-                    //     foreach ($fleetManagerTokens as $token) {
-                    //         $firebaseService->sendNotification(
-                    //             'Trip Started',
-                    //             "Driver {$findDriver->name} has started a trip.",
-                    //             $token
-                    //         );
-                    //     }
-                    // }
-
                 }
 
             }
