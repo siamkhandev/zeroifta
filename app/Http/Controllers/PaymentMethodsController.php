@@ -12,58 +12,58 @@ use Stripe\Stripe;
 class PaymentMethodsController extends Controller
 {
     public function index()
-{
-    // Set Stripe secret key
-    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    {
+        // Set Stripe secret key
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-    // Get the authenticated user
-    $user = Auth::user();
+        // Get the authenticated user
+        $user = Auth::user();
 
-    // Check if the user has a Stripe customer ID
-    if (!$user->stripe_customer_id) {
+        // Check if the user has a Stripe customer ID
+        if (!$user->stripe_customer_id) {
+            //try {
+                // Create a new customer in Stripe
+                $stripeCustomer = \Stripe\Customer::create([
+                    'email' => $user->email,
+                    'name' => $user->name,
+                ]);
+
+                // Save the Stripe customer ID to the user
+                $user->update(['stripe_customer_id' => $stripeCustomer->id]);
+            // } catch (\Exception $e) {
+            //     return redirect()->back()->withErrors(['error' => 'Error creating Stripe customer: ' . $e->getMessage()]);
+            // }
+        }
+
         try {
-            // Create a new customer in Stripe
-            $stripeCustomer = \Stripe\Customer::create([
-                'email' => $user->email,
-                'name' => $user->name,
+            // Retrieve all payment methods for the Stripe customer
+            $paymentMethods = \Stripe\PaymentMethod::all([
+                'customer' => $user->stripe_customer_id,
+                'type' => 'card',
             ]);
 
-            // Save the Stripe customer ID to the user
-            $user->update(['stripe_customer_id' => $stripeCustomer->id]);
+            // Retrieve the default payment method from Stripe
+            $stripeCustomer = \Stripe\Customer::retrieve($user->stripe_customer_id);
+            $defaultPaymentMethodId = $stripeCustomer->invoice_settings->default_payment_method;
+
+            $filteredMethods = array_map(function ($method) use ($defaultPaymentMethodId) {
+                return [
+                    'id' => $method['id'],
+                    'name' => $method['billing_details']['name'],
+                    'brand' => $method['card']['brand'],
+                    'expiry_month' => $method['card']['exp_month'],
+                    'expiry_year' => $method['card']['exp_year'],
+                    'last4' => $method['card']['last4'],
+                    'is_default' => $method['id'] === $defaultPaymentMethodId,
+                ];
+            }, $paymentMethods->data);
+
+            return view('company.payment_methods.index', compact('filteredMethods'));
+
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Error creating Stripe customer: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Error retrieving payment methods: ' . $e->getMessage()]);
         }
     }
-
-    try {
-        // Retrieve all payment methods for the Stripe customer
-        $paymentMethods = \Stripe\PaymentMethod::all([
-            'customer' => $user->stripe_customer_id,
-            'type' => 'card',
-        ]);
-
-        // Retrieve the default payment method from Stripe
-        $stripeCustomer = \Stripe\Customer::retrieve($user->stripe_customer_id);
-        $defaultPaymentMethodId = $stripeCustomer->invoice_settings->default_payment_method;
-
-        $filteredMethods = array_map(function ($method) use ($defaultPaymentMethodId) {
-            return [
-                'id' => $method['id'],
-                'name' => $method['billing_details']['name'],
-                'brand' => $method['card']['brand'],
-                'expiry_month' => $method['card']['exp_month'],
-                'expiry_year' => $method['card']['exp_year'],
-                'last4' => $method['card']['last4'],
-                'is_default' => $method['id'] === $defaultPaymentMethodId,
-            ];
-        }, $paymentMethods->data);
-
-        return view('company.payment_methods.index', compact('filteredMethods'));
-
-    } catch (\Exception $e) {
-        return redirect()->back()->withErrors(['error' => 'Error retrieving payment methods: ' . $e->getMessage()]);
-    }
-}
 
     public function addPaymentMethod()
     {
