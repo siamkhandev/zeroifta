@@ -7,6 +7,7 @@ use App\Models\DriverVehicle;
 use App\Models\FcmToken;
 use App\Models\FuelStation;
 use App\Models\Trip;
+use Kreait\Firebase\Factory;
 use App\Models\Tripstop;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -397,8 +398,7 @@ class IFTAController extends Controller
             'total_gallons_present' => 'required',
             //'reserve_fuel'=>'required'
         ]);
-        $json = Storage::get('zeroifta.json');
-                    $data = json_decode($json, true);
+       
 
                    //dd($data['private_key']);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
@@ -515,11 +515,18 @@ class IFTAController extends Controller
                 if($findCompany){
                     $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token');
                     if($driverFcm){
-                        $firebaseService->sendNotification(
-                            'Trip Started',
-                            "Your trip has been started",
-                            $driverFcm
-                        );
+                        $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+                        $messaging = $factory->createMessaging();
+
+                        $message = [
+                            'notification' => [
+                                'title' => 'Trip Started',
+                                'body' => 'Trip started successfully',
+                            ],
+                            'token' => $driverFcm,
+                        ];
+
+                        $messaging->send($message);
                     }
 
                     // $fleetManagerTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('token');
