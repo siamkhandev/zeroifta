@@ -21,6 +21,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,29 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/testsocket', [AdminController::class, 'socket']);
 Route::get('/testftp', [AdminController::class, 'testftp']);
-Route::get('/test-notification', [TestNotificationController::class, 'sendTestNotification']);
+Route::get('/send-test-notification', function () {
+  $serverKey = 'zeroifta-4d9af'; // Replace with your Firebase Server Key
+  $deviceToken = 'ckj7QHD_U06DvlGmzb46Xc:APA91bEuOGPCxaNiS10vnjRqqGj2FUJ8Pdrsi9mr7FGMTV-6Uge4MbdKwdrSbvMRBWoW594iSW_96S3f6PW-1zGr3IXSuaIGbcgR4Fdn6wPfoJSUIUC7d58'; // Replace with your FCM Device Token
+
+  $data = [
+      "to" => $deviceToken,
+      "notification" => [
+          "title" => "Test Notification",
+          "body" => "Hello! This is a test notification from Firebase.",
+          "sound" => "default"
+      ]
+  ];
+
+  $response = Http::withHeaders([
+      'Authorization' => 'key=' . $serverKey,
+      'Content-Type' => 'application/json',
+  ])->post('https://fcm.googleapis.com/fcm/send', $data);
+
+  return response()->json([
+      'status' => $response->status(),
+      'response' => $response->json(),
+  ]);
+});
 Route::get('/testmail', function(){
   Mail::to('gulraizazam00@gmail.com');
 });
