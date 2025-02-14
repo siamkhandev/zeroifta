@@ -1,3 +1,28 @@
+<style>
+  .bell-icon svg {
+    width: 24px;
+    height: 24px;
+    color: #333;
+  }
+
+  .notification-container {
+    position: relative;
+  }
+
+  #notificationDropdown {
+    display: none;
+    min-width: 200px;
+    background: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  #notificationDropdown.hidden {
+    display: none;
+  }
+</style>
+
 <div class="">
   <div class="header-main">
     <div>
