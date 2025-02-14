@@ -209,49 +209,52 @@
     <script>
     document.addEventListener('DOMContentLoaded', function () {
     if ('serviceWorker' in navigator) {
-      // Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
-        authDomain: "zeroifta-4d9af.firebaseapp.com",
-        projectId: "zeroifta-4d9af",
-        storageBucket: "zeroifta-4d9af.appspot.com",
-        messagingSenderId: "47332106822",
-        appId: "1:47332106822:web:69ec62c4634d6a776a2047",
-        measurementId: "G-NMWV5VXQ00"
-      };
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function (registration) {
+                console.log('Service Worker registered:', registration);
+            })
+            .catch(function (error) {
+                console.error('Service Worker registration failed:', error);
+            });
 
-      // Initialize Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-      const messaging = firebase.messaging();
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
+            authDomain: "zeroifta-4d9af.firebaseapp.com",
+            projectId: "zeroifta-4d9af",
+            storageBucket: "zeroifta-4d9af.appspot.com",
+            messagingSenderId: "47332106822",
+            appId: "1:47332106822:web:69ec62c4634d6a776a2047",
+            measurementId: "G-NMWV5VXQ00"
+        };
 
-      // Register the service worker and request notification permission
-      navigator.serviceWorker.register('/firebase-messaging-sw.js')
-        .then(function (registration) {
-          messaging.getToken({
-            vapidKey: "BI2ILvTsBNnJ791Zigl6XuIxrI5rWBd_ijCobfbB2SItL5w7urpZPe0zcAtxBuPlY7baaCfD8LPXwemYUYyOy9w",
-            serviceWorkerRegistration: registration
-          })
-          .then(function (currentToken) {
-            if (currentToken) {
-              document.getElementById("fcm_token").value = currentToken;
-            } else {
-              console.warn('No registration token available.');
-            }
-          })
-          .catch(function (err) {
-            console.error('Error retrieving token.', err);
-          });
-        })
-        .catch(function (error) {
-          console.error('Service Worker registration failed:', error);
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+
+        // Request permission and get token
+        messaging.requestPermission()
+            .then(() => messaging.getToken({ vapidKey: "BI2ILvTsBNnJ791Zigl6XuIxrI5rWBd_ijCobfbB2SItL5w7urpZPe0zcAtxBuPlY7baaCfD8LPXwemYUYyOy9w" }))
+            .then((token) => {
+                if (token) {
+                    console.log("FCM Token:", token);
+                } else {
+                    console.warn('No registration token available.');
+                }
+            })
+            .catch((err) => console.error('Error retrieving token.', err));
+
+        // Handle foreground messages
+        messaging.onMessage((payload) => {
+            console.log('[Firebase Messaging] Foreground message received:', payload);
+            const notificationTitle = payload.notification?.title || 'Notification Title';
+            const notificationOptions = {
+                body: payload.notification?.body || 'Notification body text',
+                icon: '/path-to-your-icon.png'
+            };
+            new Notification(notificationTitle, notificationOptions);
         });
-
-      // Handle background messages
-      messaging.onBackgroundMessage(function (payload) {
-        console.log('[Firebase Messaging] Background message received:', payload);
-      });
     }
-  });
+});
 
 function togglePasswordVisibility(inputId, showIconId, hideIconId) {
   const inputField = document.getElementById(inputId);
