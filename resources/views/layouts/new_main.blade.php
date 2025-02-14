@@ -273,17 +273,12 @@
     new DataTable('#example');
   </script>
 <script>
-    // Firebase Configuration
-    document.addEventListener("DOMContentLoaded", async function () {
-    // Ensure Firebase is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+    // Check if Firebase is loaded
     if (typeof firebase === "undefined") {
         console.error("Firebase SDK not loaded. Please check your script links.");
         return;
     }
-
-    // Import required Firebase modules
-    const { initializeApp } = firebase;
-    const { getMessaging, getToken, onMessage } = firebase.messaging;
 
     // Firebase configuration
     const firebaseConfig = {
@@ -297,15 +292,15 @@
     };
 
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
 
     // Request Notification Permission
     Notification.requestPermission()
         .then(permission => {
             if (permission === "granted") {
                 console.log("Notification permission granted.");
-                return getToken(messaging);
+                return messaging.getToken();
             } else {
                 console.warn("Notification permission denied.");
             }
@@ -313,13 +308,13 @@
         .then(token => {
             if (token) {
                 console.log("FCM Token:", token);
-                document.getElementById("fcm_token").value = token; // Store token in input field
+                document.getElementById("fcm_token").value = token;
             }
         })
         .catch(err => console.error("Error getting FCM token", err));
 
     // Handle incoming messages
-    onMessage(messaging, (payload) => {
+    messaging.onMessage((payload) => {
         console.log('[Firebase Messaging] Foreground message received:', payload);
 
         const notificationTitle = payload.notification?.title || 'Notification';
