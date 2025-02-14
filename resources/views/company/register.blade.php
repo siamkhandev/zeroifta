@@ -230,7 +230,7 @@
 
         firebase.initializeApp(firebaseConfig);
         const messaging = firebase.messaging();
-        console.log(messaging);
+
         // Request permission and get token
         messaging.requestPermission()
             .then(() => messaging.getToken({ vapidKey: "BI2ILvTsBNnJ791Zigl6XuIxrI5rWBd_ijCobfbB2SItL5w7urpZPe0zcAtxBuPlY7baaCfD8LPXwemYUYyOy9w" }))
@@ -242,7 +242,7 @@
                 }
             })
             .catch((err) => console.error('Error retrieving token.', err));
-
+            console.log('heee');
         // Handle foreground messages
         messaging.onMessage((payload) => {
             console.log('[Firebase Messaging] Foreground message received:', payload);
