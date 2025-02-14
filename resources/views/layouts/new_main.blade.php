@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         fetch("/store-fcm-token", {  // Replace with your actual backend route
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ fcm_token: token })
+                            'data': {'__token': '{{ csrf_token() }}', 'fcm_token': token},
                         })
                         .then(response => response.json())
                         .then(data => console.log("Token stored successfully:", data))
