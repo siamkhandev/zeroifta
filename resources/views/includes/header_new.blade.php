@@ -124,7 +124,8 @@
             </div>
           </div>
           <div class="menu-opt">
-            @if(Auth::user() && auth()->user()->role=='trucker')
+            @if(Auth::user() && auth()->user()->role=='admin')
+            @else
           @php
     $notifications = App\Models\Notification::where('user_id', auth()->id())
         ->orderBy('created_at', 'desc')
