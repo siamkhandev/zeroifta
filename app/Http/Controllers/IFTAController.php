@@ -6,6 +6,7 @@ use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\FcmToken;
 use App\Models\FuelStation;
+use App\Models\Notification as ModelsNotification;
 use App\Models\Trip;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -587,6 +588,11 @@ class IFTAController extends Controller
                             ]);
 
                         $response = $messaging->sendMulticast($message, $driverFcm);
+                        ModelsNotification::create([
+                            'user_id' => $findCompany->company_id,
+                            'title' => 'Trip Started',
+                            'body' => $findDriver->name . ' has started a trip.',
+                        ]);
                     }
                 }
 

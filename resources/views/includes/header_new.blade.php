@@ -21,12 +21,7 @@
   #notificationDropdown.hidden {
     display: none;
   }
-  .notification {
-    background: #f8f9fa;
-    padding: 10px;
-    margin: 5px 0;
-    border-left: 4px solid #007bff;
-}
+
 </style>
 
 <div class="">
@@ -126,7 +121,7 @@
 
     </div>
     <div class="right-opts">
-    <div id="notifications"></div>
+
       <div class="head-right">
         <!-- <div class="search-div">
           <div class="serch-tab">
@@ -155,23 +150,36 @@
             </div>
           </div>
           <div class="menu-opt">
+          @php
+            $notifications = App\Models\Notification::where('user_id', auth()->id())->orderBy('created_at', 'desc')->take(10)->get();
+            @endphp
           <div class="notification-container relative">
-  <div id="notificationIcon" class="bell-icon cursor-pointer">
-    <a href="#">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-      </svg>
-    </a>
-  </div>
+            <div id="notificationIcon" class="bell-icon cursor-pointer">
+                <a href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                </a>
+            </div>
 
-  <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-3">
-    <h3 class="text-sm font-semibold">Notifications</h3>
-    <ul id="notificationList" class="mt-2 text-sm">
-      <li class="p-2 border-b">No new notifications</li>
+            <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown" data-bs-toggle="dropdown">
+        Notifications <span class="badge bg-danger">{{ $notifications->where('is_read', false)->count() }}</span>
+    </button>
+    <ul class="dropdown-menu">
+        @forelse ($notifications as $notification)
+            <li class="dropdown-item">
+                <strong>{{ $notification->title }}</strong><br>
+                <span>{{ $notification->body }}</span>
+                <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
+            </li>
+        @empty
+            <li class="dropdown-item text-center">No notifications</li>
+        @endforelse
     </ul>
-  </div>
 </div>
+            </div>
             <div id="dark-themeIcon" class="dark-themeIcon hf-svg">
               <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
                 <path
