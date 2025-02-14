@@ -43,8 +43,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/testsocket', [AdminController::class, 'socket']);
 Route::get('/testftp', [AdminController::class, 'testftp']);
 Route::get('/send-test-notification', function () {
-  $serverKey = 'zeroifta-4d9af'; // Replace with your Firebase Server Key
-  $deviceToken = 'ckj7QHD_U06DvlGmzb46Xc:APA91bEuOGPCxaNiS10vnjRqqGj2FUJ8Pdrsi9mr7FGMTV-6Uge4MbdKwdrSbvMRBWoW594iSW_96S3f6PW-1zGr3IXSuaIGbcgR4Fdn6wPfoJSUIUC7d58'; // Replace with your FCM Device Token
 
 
   $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
@@ -55,7 +53,7 @@ $message = [
         'title' => 'Test Notification',
         'body' => 'Hello from Firebase!',
     ],
-    'token' => 'enTYLKly4LYCaQqW1xyyMr:APA91bGH8xqP-a5ZkJfOdpDeTTHWcYwAYW_u3CsxjUEeherzYTFu0ALBSX-kFkwTPiMUytJrRi4EF2iCB5x8-doui8YuqqC-9vzMTPdn4f9MqGSHfIHOSBU',
+    'token' => 'enTYLKly4LYCaQqW1xyyMr:APA91bEL_K5j5_X6dNuDaHJeIG70xgjsmRnWFgExWvd1pt6MBHLgqHVdzyryPko31kfNj6ImAdaE9boRUl-L5YgGd0AsVGDHrPTDt-d07kP_leI7aToMtIE',
 ];
 
 $messaging->send($message);
