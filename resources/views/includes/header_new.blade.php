@@ -159,31 +159,26 @@
         ->get();
 @endphp
 
-<div class="notification-container position-relative">
-    <!-- Bell Icon -->
-    <div id="notificationIcon" class="bell-icon cursor-pointer">
-        <a href="#" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-            <span class="badge bg-danger">{{ $notifications->where('is_read', false)->count() }}</span>
-        </a>
-    </div>
+<button class="btn btn-light position-relative" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+    </svg>
+    <span class="badge bg-danger">{{ $notifications->where('is_read', false)->count() }}</span>
+</button>
 
-    <!-- Dropdown -->
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
-        @forelse ($notifications as $notification)
-            <li class="dropdown-item">
-                <strong>{{ $notification->title }}</strong><br>
-                <span>{{ $notification->body }}</span>
-                <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
-            </li>
-        @empty
-            <li class="dropdown-item text-center">No notifications</li>
-        @endforelse
-    </ul>
-</div>
+<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
+    @forelse ($notifications as $notification)
+        <li class="dropdown-item">
+            <strong>{{ $notification->title }}</strong><br>
+            <span>{{ $notification->body }}</span>
+            <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
+        </li>
+    @empty
+        <li class="dropdown-item text-center">No notifications</li>
+    @endforelse
+</ul>
+
 
             <div id="dark-themeIcon" class="dark-themeIcon hf-svg">
               <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
