@@ -124,6 +124,12 @@
             </div>
           </div>
           <div class="menu-opt">
+          @php
+    $notifications = App\Models\Notification::where('user_id', auth()->id())
+        ->orderBy('created_at', 'desc')
+        ->take(10)
+        ->get();
+@endphp
           <button class="btn btn-light position-relative" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
