@@ -274,8 +274,18 @@
   </script>
 <script>
     // Firebase Configuration
-    document.addEventListener("DOMContentLoaded", function () {
-    // Firebase Configuration
+    document.addEventListener("DOMContentLoaded", async function () {
+    // Ensure Firebase is loaded
+    if (typeof firebase === "undefined") {
+        console.error("Firebase SDK not loaded. Please check your script links.");
+        return;
+    }
+
+    // Import required Firebase modules
+    const { initializeApp } = firebase;
+    const { getMessaging, getToken, onMessage } = firebase.messaging;
+
+    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
         authDomain: "zeroifta-4d9af.firebaseapp.com",
@@ -287,27 +297,15 @@
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then(function (registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
-                messaging.useServiceWorker(registration);
-            })
-            .catch(function (error) {
-                console.error('Service Worker registration failed:', error);
-            });
-    }
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
 
     // Request Notification Permission
     Notification.requestPermission()
         .then(permission => {
             if (permission === "granted") {
                 console.log("Notification permission granted.");
-                return messaging.getToken();
+                return getToken(messaging);
             } else {
                 console.warn("Notification permission denied.");
             }
@@ -315,13 +313,13 @@
         .then(token => {
             if (token) {
                 console.log("FCM Token:", token);
-                document.getElementById("fcm_token").value = token;  // Store token in input field
+                document.getElementById("fcm_token").value = token; // Store token in input field
             }
         })
         .catch(err => console.error("Error getting FCM token", err));
 
-    // Handle foreground messages
-    messaging.onMessage((payload) => {
+    // Handle incoming messages
+    onMessage(messaging, (payload) => {
         console.log('[Firebase Messaging] Foreground message received:', payload);
 
         const notificationTitle = payload.notification?.title || 'Notification';
@@ -330,15 +328,19 @@
             icon: '/path-to-your-icon.png'
         };
 
-        // Show browser notification
         new Notification(notificationTitle, notificationOptions);
-
-        // Optionally, display the notification inside a div
-        document.getElementById("notifications").innerHTML = `
-            <div class="alert alert-info">
-                <strong>${notificationTitle}</strong><br>${notificationOptions.body}
-            </div>`;
     });
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered:', registration);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    }
 });
 </script>
 
