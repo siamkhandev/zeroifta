@@ -272,15 +272,13 @@
   <script>
     new DataTable('#example');
   </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    // Check if Firebase is loaded
+  <script>
+document.addEventListener("DOMContentLoaded", async function () {
     if (typeof firebase === "undefined") {
         console.error("Firebase SDK not loaded. Please check your script links.");
         return;
     }
 
-    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
         authDomain: "zeroifta-4d9af.firebaseapp.com",
@@ -291,27 +289,40 @@
         measurementId: "G-NMWV5VXQ00"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
 
-    // Request Notification Permission
-    Notification.requestPermission()
-        .then(permission => {
-            if (permission === "granted") {
-                console.log("Notification permission granted.");
-                return messaging.getToken();
-            } else {
-                console.warn("Notification permission denied.");
+    // Function to get FCM token
+    async function getFCMToken() {
+        try {
+            let storedToken = localStorage.getItem("fcm_token");
+            if (storedToken) {
+                console.log("Using stored FCM Token:", storedToken);
+                return storedToken;
             }
-        })
-        .then(token => {
+
+            const permission = await Notification.requestPermission();
+            if (permission !== "granted") {
+                console.warn("Notification permission denied.");
+                return null;
+            }
+
+            const token = await messaging.getToken();
             if (token) {
-                console.log("FCM Token:", token);
+                console.log("New FCM Token:", token);
+                localStorage.setItem("fcm_token", token); // Store token
                 document.getElementById("fcm_token").value = token;
             }
-        })
-        .catch(err => console.error("Error getting FCM token", err));
+
+            return token;
+        } catch (error) {
+            console.error("Error getting FCM token:", error);
+            return null;
+        }
+    }
+
+    // Call the function
+    getFCMToken();
 
     // Handle incoming messages
     messaging.onMessage((payload) => {
