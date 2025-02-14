@@ -273,12 +273,13 @@
     new DataTable('#example');
   </script>
   <script>
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", function () {
     if (typeof firebase === "undefined") {
         console.error("Firebase SDK not loaded. Please check your script links.");
         return;
     }
 
+    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
         authDomain: "zeroifta-4d9af.firebaseapp.com",
@@ -289,40 +290,52 @@ document.addEventListener("DOMContentLoaded", async function () {
         measurementId: "G-NMWV5VXQ00"
     };
 
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
 
-    // Function to get FCM token
-    async function getFCMToken() {
-        try {
-            let storedToken = localStorage.getItem("fcm_token");
-            if (storedToken) {
-                console.log("Using stored FCM Token:", storedToken);
-                return storedToken;
+    // Fetch stored FCM token from database
+    fetch("/get-fcm-token")  // Replace with your actual backend API route
+        .then(response => response.json())
+        .then(data => {
+            if (data.fcm_token) {
+                console.log("Retrieved FCM Token from DB:", data.fcm_token);
+                document.getElementById("fcm_token").value = data.fcm_token;
+            } else {
+                console.warn("No FCM token found in DB.");
+                requestNewToken();  // If no token found, request a new one
             }
+        })
+        .catch(error => {
+            console.error("Error fetching FCM token:", error);
+            requestNewToken(); // If fetching fails, request a new one
+        });
 
-            const permission = await Notification.requestPermission();
-            if (permission !== "granted") {
+    // Function to request a new token
+    function requestNewToken() {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                messaging.getToken().then(token => {
+                    if (token) {
+                        console.log("Generated New FCM Token:", token);
+                        document.getElementById("fcm_token").value = token;
+
+                        // Send the new token to the backend to store in the database
+                        fetch("/store-fcm-token", {  // Replace with your actual backend route
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ fcm_token: token })
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("Token stored successfully:", data))
+                        .catch(error => console.error("Error storing token:", error));
+                    }
+                }).catch(err => console.error("Error getting FCM token", err));
+            } else {
                 console.warn("Notification permission denied.");
-                return null;
             }
-
-            const token = await messaging.getToken();
-            if (token) {
-                console.log("New FCM Token:", token);
-                localStorage.setItem("fcm_token", token); // Store token
-                document.getElementById("fcm_token").value = token;
-            }
-
-            return token;
-        } catch (error) {
-            console.error("Error getting FCM token:", error);
-            return null;
-        }
+        });
     }
-
-    // Call the function
-    getFCMToken();
 
     // Handle incoming messages
     messaging.onMessage((payload) => {
@@ -340,12 +353,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Register service worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then((registration) => {
-                console.log('Service Worker registered:', registration);
-            })
-            .catch((error) => {
-                console.error('Service Worker registration failed:', error);
-            });
+            .then((registration) => console.log('Service Worker registered:', registration))
+            .catch((error) => console.error('Service Worker registration failed:', error));
     }
 });
 </script>
