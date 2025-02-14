@@ -270,21 +270,74 @@
     new DataTable('#example');
   </script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const bellIcon = document.getElementById("notificationIcon");
-    const dropdown = document.getElementById("notificationDropdown");
+document.addEventListener('DOMContentLoaded', function () {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function (registration) {
+                console.log('Service Worker registered:', registration);
+            })
+            .catch(function (error) {
+                console.error('Service Worker registration failed:', error);
+            });
 
-    bellIcon.addEventListener("click", function(event) {
-      event.preventDefault();
-      dropdown.classList.toggle("hidden");
-    });
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
+            authDomain: "zeroifta-4d9af.firebaseapp.com",
+            projectId: "zeroifta-4d9af",
+            storageBucket: "zeroifta-4d9af.appspot.com",
+            messagingSenderId: "47332106822",
+            appId: "1:47332106822:web:69ec62c4634d6a776a2047",
+            measurementId: "G-NMWV5VXQ00"
+        };
 
-    document.addEventListener("click", function(event) {
-      if (!bellIcon.contains(event.target) && !dropdown.contains(event.target)) {
-        dropdown.classList.add("hidden");
-      }
-    });
-  });
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+
+        // Request permission for notifications
+        Notification.requestPermission()
+            .then(permission => {
+                if (permission === "granted") {
+                    console.log("Notification permission granted.");
+                    return messaging.getToken();
+                } else {
+                    console.warn("Notification permission denied.");
+                }
+            })
+            .then(token => {
+                if (token) {
+                    console.log("FCM Token:", token);
+                    document.getElementById("fcm_token").value = token;
+                }
+            })
+            .catch(err => console.error("Error getting FCM token", err));
+
+        // Handle incoming messages in the foreground
+        messaging.onMessage((payload) => {
+            console.log('[Firebase Messaging] Foreground message received:', payload);
+
+            const notificationTitle = payload.notification?.title || 'Notification';
+            const notificationOptions = {
+                body: payload.notification?.body || 'You have a new notification',
+                icon: '/path-to-your-icon.png',
+                data: payload.data // Store payload data for further use
+            };
+
+            new Notification(notificationTitle, notificationOptions);
+
+            // You can also update the UI dynamically here
+            showNotificationOnPage(notificationTitle, notificationOptions.body);
+        });
+
+        function showNotificationOnPage(title, message) {
+            const notificationContainer = document.getElementById('notifications');
+            const notificationElement = document.createElement('div');
+            notificationElement.classList.add('notification');
+            notificationElement.innerHTML = `<strong>${title}</strong>: ${message}`;
+            notificationContainer.appendChild(notificationElement);
+        }
+    }
+});
 </script>
 
 

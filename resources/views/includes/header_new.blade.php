@@ -21,6 +21,12 @@
   #notificationDropdown.hidden {
     display: none;
   }
+  .notification {
+    background: #f8f9fa;
+    padding: 10px;
+    margin: 5px 0;
+    border-left: 4px solid #007bff;
+}
 </style>
 
 <div class="">
@@ -120,7 +126,7 @@
 
     </div>
     <div class="right-opts">
-
+    <div id="notifications"></div>
       <div class="head-right">
         <!-- <div class="search-div">
           <div class="serch-tab">

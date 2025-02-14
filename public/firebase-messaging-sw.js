@@ -1,6 +1,7 @@
 importScripts('https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js');
 
+// Firebase project configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
   authDomain: "zeroifta-4d9af.firebaseapp.com",
@@ -11,19 +12,20 @@ const firebaseConfig = {
   measurementId: "G-NMWV5VXQ00"
 };
 
-// Initialize Firebase
+// Initialize Firebase app
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 // Handle background messages
-messaging.onBackgroundMessage((payload) => {
-    console.log("[firebase-messaging-sw.js] Received background message:", payload);
+messaging.onBackgroundMessage(function (payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
-    const notificationTitle = payload.notification?.title || "Notification Title";
-    const notificationOptions = {
-        body: payload.notification?.body || "Notification body text",
-        icon: "/path-to-your-icon.png"
-    };
+  const notificationTitle = payload.notification?.title || 'New Notification';
+  const notificationOptions = {
+    body: payload.notification?.body || 'You have a new notification',
+    icon: '/path-to-your-icon.png',
+    data: payload.data // Store payload data for further use
+  };
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
