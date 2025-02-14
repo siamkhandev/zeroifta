@@ -20,6 +20,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
