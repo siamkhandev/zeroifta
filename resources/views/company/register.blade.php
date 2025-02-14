@@ -232,17 +232,23 @@
         const messaging = firebase.messaging();
 
         // Request permission and get token
-        messaging.requestPermission()
-            .then(() => messaging.getToken({ vapidKey: "BI2ILvTsBNnJ791Zigl6XuIxrI5rWBd_ijCobfbB2SItL5w7urpZPe0zcAtxBuPlY7baaCfD8LPXwemYUYyOy9w" }))
-            .then((token) => {
-                if (token) {
-                    console.log("FCM Token:", token);
-                } else {
-                    console.warn('No registration token available.');
-                }
-            })
-            .catch((err) => console.error('Error retrieving token.', err));
-            console.log('heee');
+        Notification.requestPermission()
+  .then(permission => {
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
+      return messaging.getToken();
+    } else {
+      console.warn("Notification permission denied.");
+    }
+  })
+  .then(token => {
+    if (token) {
+      console.log("FCM Token:", token);
+      document.getElementById("fcm_token").value = token;
+    }
+  })
+  .catch(err => console.error("Error getting FCM token", err));
+
         // Handle foreground messages
         messaging.onMessage((payload) => {
             console.log('[Firebase Messaging] Foreground message received:', payload);
