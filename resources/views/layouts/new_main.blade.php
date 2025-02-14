@@ -276,6 +276,19 @@
     new DataTable('#example');
   </script>
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdownBtn = document.getElementById("notificationDropdownBtn");
+
+        if (dropdownBtn) {
+            dropdownBtn.addEventListener("click", function (event) {
+                event.stopPropagation(); // Prevents any unintended bubbling
+                const dropdown = new bootstrap.Dropdown(dropdownBtn);
+                dropdown.toggle();
+            });
+        }
+    });
+</script>
+  <script>
 document.addEventListener("DOMContentLoaded", function () {
     if (typeof firebase === "undefined") {
         console.error("Firebase SDK not loaded. Please check your script links.");
