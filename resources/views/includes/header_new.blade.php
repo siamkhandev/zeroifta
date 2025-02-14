@@ -153,14 +153,14 @@
           </div>
           <div class="menu-opt">
           @php
-    $notifications = App\Models\Notification::where('user_id', auth()->id())
-        ->orderBy('created_at', 'desc')
-        ->take(10)
-        ->get();
-@endphp
+                $notifications = App\Models\Notification::where('user_id', auth()->id())
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+            @endphp
 
-            <div class="lag-span">
-              <div class="dropdown-center">
+            <div class="lag-span1">
+              <div class="dropdown-center1">
 
 
                 <button class="btn btn-light position-relative" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
@@ -170,7 +170,7 @@
                     </svg>
                     <span class="badge bg-danger">{{ $notifications->where('is_read', false)->count() }}</span>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu1">
                 @forelse ($notifications as $notification)
                   <li>
                   <strong>{{ $notification->title }}</strong><br>
