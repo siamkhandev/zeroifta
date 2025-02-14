@@ -21,6 +21,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Kreait\Firebase\Factory;
@@ -42,6 +43,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/testsocket', [AdminController::class, 'socket']);
 Route::get('/testftp', [AdminController::class, 'testftp']);
+Route::get('/get-fcm-token', function () {
+    $token = DB::table('fcm_tokens')->where('user_id', auth()->id())->value('token');
+    return response()->json(['fcm_token' => $token]);
+});
+Route::post('/store-fcm-token', function (Request $request) {
+    DB::table('fcm_tokens')->where('user_id', auth()->id())->update(['token' => $request->fcm_token]);
+    return response()->json(['message' => 'Token stored successfully']);
+});
 Route::get('/send-test-notification', function () {
 
 
