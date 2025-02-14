@@ -46,7 +46,7 @@ Route::get('/send-test-notification', function () {
   $serverKey = 'zeroifta-4d9af'; // Replace with your Firebase Server Key
   $deviceToken = 'ckj7QHD_U06DvlGmzb46Xc:APA91bEuOGPCxaNiS10vnjRqqGj2FUJ8Pdrsi9mr7FGMTV-6Uge4MbdKwdrSbvMRBWoW594iSW_96S3f6PW-1zGr3IXSuaIGbcgR4Fdn6wPfoJSUIUC7d58'; // Replace with your FCM Device Token
 
-  
+
   $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
 $messaging = $factory->createMessaging();
 
@@ -55,7 +55,7 @@ $message = [
         'title' => 'Test Notification',
         'body' => 'Hello from Firebase!',
     ],
-    'token' => 'ckj7QHD_U06DvlGmzb46Xc:APA91bEuOGPCxaNiS10vnjRqqGj2FUJ8Pdrsi9mr7FGMTV-6Uge4MbdKwdrSbvMRBWoW594iSW_96S3f6PW-1zGr3IXSuaIGbcgR4Fdn6wPfoJSUIUC7d58',
+    'token' => 'cp-FLfCSb_aG-QAIMV3BMP:APA91bGU2qXcLB-Up3ZTMr-Qdp0jPntLZH-mq8LFcoOhHA_FyHfiT9R3r9iWNp5maQ7l1Tl3ZxJxMHtG_lCG2vq0Hwqz0nZelQtnRkurxeTzUuW6XgDldwM',
 ];
 
 $messaging->send($message);
