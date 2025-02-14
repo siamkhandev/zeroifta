@@ -321,11 +321,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("fcm_token").value = token;
 
                         // Send the new token to the backend to store in the database
-                        fetch("/store-fcm-token", {  // Replace with your actual backend route
+                        fetch("/store-fcm-token", {
                             method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            'data': {'__token': '{{ csrf_token() }}', 'fcm_token': token},
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content") // Get CSRF Token from meta tag
+                            },
+                            body: JSON.stringify({ fcm_token: token }) // Correctly send the token as JSON
                         })
+
                         .then(response => response.json())
                         .then(data => console.log("Token stored successfully:", data))
                         .catch(error => console.error("Error storing token:", error));

@@ -49,7 +49,16 @@ Route::get('/get-fcm-token', function () {
     return response()->json(['fcm_token' => $token]);
 });
 Route::post('/store-fcm-token', function (Request $request) {
-    DB::table('fcm_tokens')->where('user_id', auth()->id())->update(['token' => $request->fcm_token]);
+    $request->validate(['fcm_token' => 'required|string']);
+
+    $user = Auth::user();
+    if (!$user) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    // Store the token in the database
+    DB::table('fcm_tokens')->where('user_id', $user->id)->update(['token' => $request->fcm_token]);
+
     return response()->json(['message' => 'Token stored successfully']);
 });
 Route::get('/send-test-notification', function () {
