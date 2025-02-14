@@ -20,6 +20,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
+use App\Models\FcmToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -66,13 +67,13 @@ Route::get('/send-test-notification', function () {
 
   $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
 $messaging = $factory->createMessaging();
-
+$token = FcmToken::where('user_id',159)->pluck('token')->first();
 $message = [
     'notification' => [
         'title' => 'Test Notification',
         'body' => 'Hello from Firebase!',
     ],
-    'token' => 'enTYLKly4LYCaQqW1xyyMr:APA91bEL_K5j5_X6dNuDaHJeIG70xgjsmRnWFgExWvd1pt6MBHLgqHVdzyryPko31kfNj6ImAdaE9boRUl-L5YgGd0AsVGDHrPTDt-d07kP_leI7aToMtIE',
+    'token' => $token,
 ];
 
 $messaging->send($message);
