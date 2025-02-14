@@ -35,7 +35,7 @@
     @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'all')
         <span class="bc-text">{{__('messages.Pages / Drivers')}}</span>
         <h1 class="head-1">{{__('messages.Manage Drivers')}}</h1>
-        
+
     @elseif($currentSegment2 == 'driver' && $currentSegment3 == 'vehicles')
         <span class="bc-text">{{__('messages.Pages / Driver Vehicles')}}</span>
         <h1 class="head-1">{{__('messages.Manage Driver Vehicles')}}</h1>
@@ -46,7 +46,7 @@
         @elseif($currentSegment2 == 'company' && $currentSegment3 == 'contactus' && $currentSegment4 == 'all')
         <span class="bc-text">{{__('messages.Pages / Contact Forms')}}</span>
         <h1 class="head-1">{{__('messages.Contact Forms')}}</h1>
-        
+
     @elseif($currentSegment2 == 'subscribe')
         <span class="bc-text">{{__('messages.Pages / Subscribe')}}</span>
         <h1 class="head-1">{{__('messages.Subscriptions')}}</h1>
@@ -75,7 +75,7 @@
         <span class="bc-text">{{__('messages.Pages / Subscriptions')}}</span>
         <h1 class="head-1">{{__('messages.Subscriptions')}}</h1>
 
-   
+
     @elseif($currentSegment2 == 'drivers' && $currentSegment3 == 'create')
         <span class="bc-text">{{__('messages.Pages / Create Driver')}}</span>
         <h1 class="head-1">{{__('messages.Create Driver')}}</h1>
@@ -85,7 +85,7 @@
         @elseif($currentSegment2 == 'subscribe')
         <span class="bc-text">{{__('messages.Pages / Subscriptions')}}</span>
         <h1 class="head-1">{{__('messages.Subscriptions')}} </h1>
-        
+
     @else
         <!-- Default case -->
     @endif
@@ -124,7 +124,14 @@
             </div>
           </div>
           <div class="menu-opt">
-
+          <div id="dark-themeIcon" class="dark-themeIcon hf-svg">
+              <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
+                <path
+                  d="M9 18C11.776 18 14.3114 16.737 15.9911 14.6675C16.2396 14.3613 15.9686 13.9141 15.5846 13.9872C11.2181 14.8188 7.20819 11.4709 7.20819 7.06303C7.20819 4.52398 8.5674 2.18914 10.7765 0.931992C11.117 0.738211 11.0314 0.221941 10.6444 0.150469C10.102 0.0504468 9.55158 8.21369e-05 9 0C4.03211 0 0 4.02578 0 9C0 13.9679 4.02578 18 9 18Z"
+                  fill="" />
+              </svg>
+              </a>
+            </div>
             <div id="dark-themeIcon" class="dark-themeIcon hf-svg">
               <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
                 <path
@@ -238,7 +245,7 @@
                       </div>
 
                     </div>
-</a>
+                </a>
                   </li>
                 </ul>
                 </d>

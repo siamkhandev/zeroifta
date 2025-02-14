@@ -361,21 +361,21 @@ class IFTAController extends Controller
                     ];
                     $findDriver = User::where('id', $trip->user_id)->first();
                     if($findDriver){
-                     
+
                      $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
                      if ($findCompany) {
                         $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-                    
+
                         if (!empty($driverFcm)) {
                             $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                             $messaging = $factory->createMessaging();
-                    
+
                             $message = CloudMessage::new()
                                 ->withNotification(Notification::create('Trip Updated', 'Trip updated successfully'))
                                 ->withData([
                                     'sound' => 'default', // This triggers the sound
                                 ]);
-                    
+
                             $response = $messaging->sendMulticast($message, $driverFcm);
                         }
                     }
@@ -421,7 +421,7 @@ class IFTAController extends Controller
             'total_gallons_present' => 'required',
             //'reserve_fuel'=>'required'
         ]);
-       
+
 
                    //dd($data['private_key']);
         $findTrip = Trip::where('user_id', $validatedData['user_id'])->where('status', 'active')->first();
@@ -533,21 +533,40 @@ class IFTAController extends Controller
                }
                $findDriver = User::where('id', $trip->user_id)->first();
                if($findDriver){
-                
+
                 $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
                 if ($findCompany) {
                     $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-                
+                    $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)
+                    ->pluck('token')
+                    ->toArray();
+
+                    if (!empty($companyFcmTokens)) {
+                        $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+                        $messaging = $factory->createMessaging();
+
+                        // Create the notification payload
+                        $message = CloudMessage::new()
+                            ->withNotification(Notification::create('Trip Started', 'A driver has started a trip.'))
+                            ->withData([
+                                'trip_id' => (string) $trip->id,  // Include trip ID for reference
+                                'driver_name' => $findDriver->name, // Driver's name
+                                'sound' => 'default',  // This triggers the sound
+                            ]);
+
+                        // Send notification to all FCM tokens of the company
+                        $response = $messaging->sendMulticast($message, $companyFcmTokens);
+                    }
                     if (!empty($driverFcm)) {
                         $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                         $messaging = $factory->createMessaging();
-                
+
                         $message = CloudMessage::new()
                             ->withNotification(Notification::create('Trip Started', 'Trip started successfully'))
                             ->withData([
                                 'sound' => 'default', // This triggers the sound
                             ]);
-                
+
                         $response = $messaging->sendMulticast($message, $driverFcm);
                     }
                 }
