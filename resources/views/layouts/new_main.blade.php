@@ -264,14 +264,17 @@
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
 
 <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging.js"></script>
+
 
   @yield('scripts')
   <script>
     new DataTable('#example');
   </script>
 <script>
+    // Firebase Configuration
+    document.addEventListener("DOMContentLoaded", function () {
     // Firebase Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
@@ -286,6 +289,18 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function (registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+                messaging.useServiceWorker(registration);
+            })
+            .catch(function (error) {
+                console.error('Service Worker registration failed:', error);
+            });
+    }
 
     // Request Notification Permission
     Notification.requestPermission()
@@ -305,7 +320,7 @@
         })
         .catch(err => console.error("Error getting FCM token", err));
 
-    // Handle incoming messages
+    // Handle foreground messages
     messaging.onMessage((payload) => {
         console.log('[Firebase Messaging] Foreground message received:', payload);
 
@@ -315,8 +330,16 @@
             icon: '/path-to-your-icon.png'
         };
 
+        // Show browser notification
         new Notification(notificationTitle, notificationOptions);
+
+        // Optionally, display the notification inside a div
+        document.getElementById("notifications").innerHTML = `
+            <div class="alert alert-info">
+                <strong>${notificationTitle}</strong><br>${notificationOptions.body}
+            </div>`;
     });
+});
 </script>
 
 
