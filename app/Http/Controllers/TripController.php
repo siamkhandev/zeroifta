@@ -285,21 +285,40 @@ class TripController extends Controller
         $trip->save();
         $findDriver = User::where('id', $trip->user_id)->first();
         if($findDriver){
-            
+
             $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
             if ($findCompany) {
                 $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-            
+                $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)
+                ->pluck('token')
+                ->toArray();
+
+                if (!empty($companyFcmTokens)) {
+                    $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+                    $messaging = $factory->createMessaging();
+
+                    // Create the notification payload
+                    $message = CloudMessage::new()
+                        ->withNotification(Notification::create('Trip Completed', $findDriver->name . 'has completed a trip.'))
+                        ->withData([
+                            'trip_id' => (string) $trip->id,  // Include trip ID for reference
+                            'driver_name' => $findDriver->name, // Driver's name
+                            'sound' => 'default',  // This triggers the sound
+                        ]);
+
+                    // Send notification to all FCM tokens of the company
+                    $response = $messaging->sendMulticast($message, $companyFcmTokens);
+                }
                 if (!empty($driverFcm)) {
                     $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                     $messaging = $factory->createMessaging();
-            
+
                     $message = CloudMessage::new()
                         ->withNotification(Notification::create('Trip Complete', 'Trip completed successfully'))
                         ->withData([
                             'sound' => 'default', // This triggers the sound
                         ]);
-            
+
                     $response = $messaging->sendMulticast($message, $driverFcm);
                 }
             }
