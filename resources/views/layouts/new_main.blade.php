@@ -262,8 +262,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-<!-- Bootstrap 5 JavaScript Bundle (Includes Popper.js) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
@@ -275,19 +273,6 @@
   <script>
     new DataTable('#example');
   </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const dropdownBtn = document.getElementById("notificationDropdownBtn");
-
-        if (dropdownBtn) {
-            dropdownBtn.addEventListener("click", function (event) {
-                event.stopPropagation(); // Prevents any unintended bubbling
-                const dropdown = new bootstrap.Dropdown(dropdownBtn);
-                dropdown.toggle();
-            });
-        }
-    });
-</script>
   <script>
 document.addEventListener("DOMContentLoaded", function () {
     if (typeof firebase === "undefined") {
