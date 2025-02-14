@@ -6,6 +6,7 @@ use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\FcmToken;
 use App\Models\FuelStation;
+use App\Models\Notification as ModelsNotification;
 use App\Models\Trip;
 use App\Models\Tripstop;
 use Kreait\Firebase\Factory;
@@ -320,6 +321,11 @@ class TripController extends Controller
                         ]);
 
                     $response = $messaging->sendMulticast($message, $driverFcm);
+                    ModelsNotification::create([
+                        'user_id' => $findCompany->company_id,
+                        'title' => 'Trip Completed',
+                        'body' => $findDriver->name . ' has completed a trip.',
+                    ]);
                 }
             }
         }

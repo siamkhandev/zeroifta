@@ -397,6 +397,11 @@ class IFTAController extends Controller
                                 ]);
 
                             $response = $messaging->sendMulticast($message, $driverFcm);
+                            ModelsNotification::create([
+                                'user_id' => $findCompany->company_id,
+                                'title' => 'Trip Updated',
+                                'body' => $findDriver->name . ' has updated a trip.',
+                            ]);
                         }
                     }
                     }
