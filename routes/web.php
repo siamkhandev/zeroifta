@@ -55,7 +55,7 @@ $message = [
         'title' => 'Test Notification',
         'body' => 'Hello from Firebase!',
     ],
-    'token' => 'ckj7QHD_U06DvlGmzb46Xc:APA91bEuOGPCxaNiS10vnjRqqGj2FUJ8Pdrsi9mr7FGMTV-6Uge4MbdKwdrSbvMRBWoW594iSW_96S3f6PW-1zGr3IXSuaIGbcgR4Fdn6wPfoJSUIUC7d58',
+    'token' => 'enTYLKly4LYCaQqW1xyyMr:APA91bGH8xqP-a5ZkJfOdpDeTTHWcYwAYW_u3CsxjUEeherzYTFu0ALBSX-kFkwTPiMUytJrRi4EF2iCB5x8-doui8YuqqC-9vzMTPdn4f9MqGSHfIHOSBU',
 ];
 
 $messaging->send($message);
