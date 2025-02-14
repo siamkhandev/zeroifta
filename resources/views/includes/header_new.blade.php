@@ -23,6 +23,8 @@
   }
 
 </style>
+<!-- Bootstrap JS (Required for Dropdown) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <div class="">
   <div class="header-main">
@@ -151,23 +153,26 @@
           </div>
           <div class="menu-opt">
           @php
-            $notifications = App\Models\Notification::where('user_id', auth()->id())->orderBy('created_at', 'desc')->take(10)->get();
-            @endphp
-          <div class="notification-container relative">
-            <div id="notificationIcon" class="bell-icon cursor-pointer">
-                <a href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                </a>
-            </div>
+    $notifications = App\Models\Notification::where('user_id', auth()->id())
+        ->orderBy('created_at', 'desc')
+        ->take(10)
+        ->get();
+@endphp
 
-            <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown" data-bs-toggle="dropdown">
-        Notifications <span class="badge bg-danger">{{ $notifications->where('is_read', false)->count() }}</span>
-    </button>
-    <ul class="dropdown-menu">
+<div class="notification-container position-relative">
+    <!-- Bell Icon -->
+    <div id="notificationIcon" class="bell-icon cursor-pointer">
+        <a href="#" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="badge bg-danger">{{ $notifications->where('is_read', false)->count() }}</span>
+        </a>
+    </div>
+
+    <!-- Dropdown -->
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
         @forelse ($notifications as $notification)
             <li class="dropdown-item">
                 <strong>{{ $notification->title }}</strong><br>
@@ -179,7 +184,7 @@
         @endforelse
     </ul>
 </div>
-            </div>
+
             <div id="dark-themeIcon" class="dark-themeIcon hf-svg">
               <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
                 <path
