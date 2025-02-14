@@ -264,8 +264,8 @@
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
 
 <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js"></script>
 
 
   @yield('scripts')
