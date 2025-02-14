@@ -207,58 +207,61 @@
 <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then(function (registration) {
-                console.log('Service Worker registered:', registration);
-            })
-            .catch(function (error) {
-                console.error('Service Worker registration failed:', error);
+   document.addEventListener("DOMContentLoaded", async function () {
+    if ("serviceWorker" in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+            console.log("Service Worker Registered:", registration);
+
+            // Initialize Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
+                authDomain: "zeroifta-4d9af.firebaseapp.com",
+                projectId: "zeroifta-4d9af",
+                storageBucket: "zeroifta-4d9af.appspot.com",
+                messagingSenderId: "47332106822",
+                appId: "1:47332106822:web:69ec62c4634d6a776a2047",
+                measurementId: "G-NMWV5VXQ00"
+            };
+
+            const app = firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
+
+            // Request Notification Permission
+            const permission = await Notification.requestPermission();
+            if (permission !== "granted") {
+                console.warn("Notification permission denied.");
+                return;
+            }
+
+            console.log("Notification permission granted.");
+
+            // **Use your own VAPID key from Firebase Console**
+            const vapidKey = "BI2ILvTsBNnJ791Zigl6XuIxrI5rWBd_ijCobfbB2SItL5w7urpZPe0zcAtxBuPlY7baaCfD8LPXwemYUYyOy9w";
+
+            // Get Token
+            const token = await messaging.getToken({ vapidKey });
+            if (token) {
+                console.log("FCM Token:", token);
+                document.getElementById("fcm_token").value = token;
+            } else {
+                console.warn("Failed to generate FCM token.");
+            }
+
+            // Handle foreground messages
+            messaging.onMessage((payload) => {
+                console.log("[Firebase Messaging] Foreground message received:", payload);
+                const notificationTitle = payload.notification?.title || "Notification Title";
+                const notificationOptions = {
+                    body: payload.notification?.body || "Notification body text",
+                    icon: "/path-to-your-icon.png"
+                };
+                new Notification(notificationTitle, notificationOptions);
             });
 
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCKydVjKzwlLemInyUL0wumXBI1aOylVrc",
-            authDomain: "zeroifta-4d9af.firebaseapp.com",
-            projectId: "zeroifta-4d9af",
-            storageBucket: "zeroifta-4d9af.appspot.com",
-            messagingSenderId: "47332106822",
-            appId: "1:47332106822:web:69ec62c4634d6a776a2047",
-            measurementId: "G-NMWV5VXQ00"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const messaging = firebase.messaging();
-
-        // Request permission and get token
-        Notification.requestPermission()
-  .then(permission => {
-    if (permission === "granted") {
-      console.log("Notification permission granted.");
-      return messaging.getToken();
-    } else {
-      console.warn("Notification permission denied.");
-    }
-  })
-  .then(token => {
-    if (token) {
-      console.log("FCM Token:", token);
-      document.getElementById("fcm_token").value = token;
-    }
-  })
-  .catch(err => console.error("Error getting FCM token", err));
-
-        // Handle foreground messages
-        messaging.onMessage((payload) => {
-            console.log('[Firebase Messaging] Foreground message received:', payload);
-            const notificationTitle = payload.notification?.title || 'Notification Title';
-            const notificationOptions = {
-                body: payload.notification?.body || 'Notification body text',
-                icon: '/path-to-your-icon.png'
-            };
-            new Notification(notificationTitle, notificationOptions);
-        });
+        } catch (error) {
+            console.error("Service Worker registration failed:", error);
+        }
     }
 });
 
