@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 messaging.getToken().then(token => {
                     if (token) {
                         console.log("Generated New FCM Token:", token);
-                        document.getElementById("fcm_token").value = token;
+                        //document.getElementById("fcm_token").value = token;
 
                         // Send the new token to the backend to store in the database
                         fetch("/store-fcm-token", {
