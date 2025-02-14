@@ -266,6 +266,7 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
   @yield('scripts')
@@ -343,16 +344,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Handle incoming messages
     messaging.onMessage((payload) => {
-        console.log('[Firebase Messaging] Foreground message received:', payload);
+    console.log("[Firebase Messaging] Foreground message received:", payload);
 
-        const notificationTitle = payload.notification?.title || 'Notification';
-        const notificationOptions = {
-            body: payload.notification?.body || 'You have a new notification',
-            icon: '/path-to-your-icon.png'
-        };
+    const notificationTitle = payload.notification?.title || "Notification";
+    const notificationBody = payload.notification?.body || "You have a new notification";
 
-        new Notification(notificationTitle, notificationOptions);
+    // Display Toast Notification using SweetAlert2
+    Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "info",
+        title: notificationTitle,
+        text: notificationBody,
+        showConfirmButton: false,
+        timer: 5000, // Auto close after 5 seconds
+        timerProgressBar: true,
     });
+});
 
     // Register service worker
     if ('serviceWorker' in navigator) {
