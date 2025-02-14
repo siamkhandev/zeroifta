@@ -124,6 +124,7 @@
             </div>
           </div>
           <div class="menu-opt">
+            @if(Auth::user() && auth()->user()->role=='trucker')
           @php
     $notifications = App\Models\Notification::where('user_id', auth()->id())
         ->orderBy('created_at', 'desc')
@@ -149,6 +150,7 @@
         <li class="dropdown-item text-center">No notifications</li>
     @endforelse
 </ul>
+@endif
             <div id="dark-themeIcon" class="dark-themeIcon hf-svg">
               <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
                 <path
