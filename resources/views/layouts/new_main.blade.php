@@ -269,7 +269,23 @@
   <script>
     new DataTable('#example');
   </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const bellIcon = document.getElementById("notificationIcon");
+    const dropdown = document.getElementById("notificationDropdown");
 
+    bellIcon.addEventListener("click", function(event) {
+      event.preventDefault();
+      dropdown.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", function(event) {
+      if (!bellIcon.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  });
+</script>
 
 
 
