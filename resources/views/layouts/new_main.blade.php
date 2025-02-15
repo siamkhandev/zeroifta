@@ -274,6 +274,18 @@
     new DataTable('#example');
   </script>
   <script>
+    function refreshNotifications() {
+        fetch("/notifications/latest") // Laravel route to get latest notifications
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector(".dropdown-menu").innerHTML = html;
+                updateNotificationCount();
+            })
+            .catch(error => console.error("Error fetching notifications:", error));
+    }
+
+    // Refresh notifications every 10 seconds
+    setInterval(refreshNotifications, 10000);
 document.addEventListener("DOMContentLoaded", function () {
     if (typeof firebase === "undefined") {
         console.error("Firebase SDK not loaded. Please check your script links.");
@@ -398,18 +410,7 @@ function prependNotification(title, body) {
     }
 });
 
-function refreshNotifications() {
-        fetch("/notifications/latest") // Laravel route to get latest notifications
-            .then(response => response.text())
-            .then(html => {
-                document.querySelector(".dropdown-menu").innerHTML = html;
-                updateNotificationCount();
-            })
-            .catch(error => console.error("Error fetching notifications:", error));
-    }
 
-    // Refresh notifications every 10 seconds
-    setInterval(refreshNotifications, 10000);
 </script>
 
 
