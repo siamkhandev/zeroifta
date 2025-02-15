@@ -21,6 +21,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TestNotificationController;
 use App\Models\CompanyContactUs;
 use App\Models\FcmToken;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -70,6 +71,18 @@ Route::post('/store-fcm-token', function (Request $request) {
     
     return response()->json(['message' => 'Token stored successfully']);
 });
+Route::get('/notifications/count', function () {
+  $count = Notification::where('user_id', Auth::id())->where('is_read', false)->count();
+  return response()->json(['count' => $count]);
+})->middleware('auth');
+Route::get('/notifications/latest', function () {
+  $notifications = App\Models\Notification::where('user_id', auth()->id())
+      ->orderBy('created_at', 'desc')
+      ->take(10)
+      ->get();
+
+  return view('includes.notifications', compact('notifications'));
+})->middleware('auth');
 Route::get('/send-test-notification', function () {
 
 

@@ -141,15 +141,7 @@
 </button>
 
 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
-    @forelse ($notifications as $notification)
-        <li class="dropdown-item">
-            <strong>{{ $notification->title }}</strong><br>
-            <span>{{ $notification->body }}</span>
-            <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
-        </li>
-    @empty
-        <li class="dropdown-item text-center">No notifications</li>
-    @endforelse
+    @include('includes.notifications')
 </ul>
 @endif
             <div id="dark-themeIcon" class="dark-themeIcon hf-svg">

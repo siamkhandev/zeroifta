@@ -344,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Handle incoming messages
     messaging.onMessage((payload) => {
-    console.log("[Firebase Messaging] Foreground message received:", payload);
+    console.log("Message received:", payload);
 
     const notificationTitle = payload.notification?.title || "Notification";
     const notificationBody = payload.notification?.body || "You have a new notification";
@@ -360,8 +360,36 @@ document.addEventListener("DOMContentLoaded", function () {
         timer: 5000, // Auto close after 5 seconds
         timerProgressBar: true,
     });
-});
 
+    // Update Notification Count (Fetch updated count from the server)
+    updateNotificationCount();
+
+    // Append the new notification to the dropdown
+    prependNotification(notificationTitle, notificationBody);
+});
+function updateNotificationCount() {
+    fetch("/notifications/count") // Laravel route to fetch unread notification count
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector("#notificationDropdownBtn .badge").textContent = data.count;
+        })
+        .catch(error => console.error("Error fetching notification count:", error));
+}
+function prependNotification(title, body) {
+    const dropdown = document.querySelector(".dropdown-menu");
+
+    // Create a new notification item
+    const newNotification = `
+        <li class="dropdown-item">
+            <strong>${title}</strong><br>
+            <span>${body}</span>
+            <small class="text-muted d-block">Just now</small>
+        </li>
+    `;
+
+    // Insert new notification at the top
+    dropdown.insertAdjacentHTML("afterbegin", newNotification);
+}
     // Register service worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
@@ -369,6 +397,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.error('Service Worker registration failed:', error));
     }
 });
+
+function refreshNotifications() {
+        fetch("/notifications/latest") // Laravel route to get latest notifications
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector(".dropdown-menu").innerHTML = html;
+                updateNotificationCount();
+            })
+            .catch(error => console.error("Error fetching notifications:", error));
+    }
+
+    // Refresh notifications every 10 seconds
+    setInterval(refreshNotifications, 10000);
 </script>
 
 
