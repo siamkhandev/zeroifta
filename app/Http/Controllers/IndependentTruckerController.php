@@ -100,7 +100,7 @@ class IndependentTruckerController extends Controller
 
             $twilioService->sendEmailOtp($request->email, $otp_email);
            }catch(Exception $e){
-                dd($e->getMessage());
+                return response()->json(['status'=>200,'message'=>$e->getMessage(),'data'=>(object)[]]);
            }
             
             $driver->otp_code = $otp_sms;
