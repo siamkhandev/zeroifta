@@ -532,8 +532,20 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                $testFuelStations = [
+                    ['ftp_lat' => 40.7128, 'ftp_lng' => -74.0060, 'price' => 3.50], // Station A
+                    ['ftp_lat' => 40.7308, 'ftp_lng' => -73.9973, 'price' => 3.40], // Station B (Cheapest)
+                    ['ftp_lat' => 40.7508, 'ftp_lng' => -73.9903, 'price' => 3.55], // Station C
+                ];
+                $startLat = 40.7000;
+                $startLng = -74.0100;
+                $mpg = 20; // Miles per gallon
+                $currentGallons = 5; // Current fuel in gallons
+                $destinationLat = 40.8000;
+                $destinationLng = -73.9500;
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $testFuelStations, $destinationLat, $destinationLng);
+                dd($result);
+               // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $testFuelStations, $endLat, $endLng);
 
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
