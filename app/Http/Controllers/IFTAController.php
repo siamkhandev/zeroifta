@@ -534,7 +534,7 @@ class IFTAController extends Controller
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
 
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
-                dd($result);
+
                 $fuelStations = [];
                 //$trip = Trip::create($validatedData);
                foreach ($result as  $value) {
