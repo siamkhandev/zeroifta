@@ -542,11 +542,11 @@ class IFTAController extends Controller
                     ['ftp_lat' => 40.8000, 'ftp_lng' => -73.9500, 'price' => 3.52], // Station G
                 ];
                 $startLat = 40.7000;
-                $startLng = -74.0100;
-                $mpg = 2; // Miles per gallon
-                $currentGallons = 5; // Current fuel in gallons
-                $destinationLat = 40.8000;
-                $destinationLng = -73.9500;
+$startLng = -74.0100;
+$mpg = 20; // Miles per gallon
+$currentGallons = 5; // Current fuel in gallons
+$destinationLat = 40.8500;
+$destinationLng = -73.9000;
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $testFuelStations, $destinationLat, $destinationLng);
                 dd($result);
                // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $testFuelStations, $endLat, $endLng);
