@@ -297,15 +297,25 @@ class TripController extends Controller
                 if (!empty($companyFcmTokens)) {
                     $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                     $messaging = $factory->createMessaging();
-
-                    // Create the notification payload
-                    $message = CloudMessage::new()
+                    if($request->status == "completed"){
+                        $message = CloudMessage::new()
                         ->withNotification(Notification::create('Trip Completed', $findDriver->name . 'has completed a trip.'))
                         ->withData([
                             'trip_id' => (string) $trip->id,  // Include trip ID for reference
                             'driver_name' => $findDriver->name, // Driver's name
                             'sound' => 'default',  // This triggers the sound
                         ]);
+                    }else{
+                        $message = CloudMessage::new()
+                        ->withNotification(Notification::create('Trip Cancelled', $findDriver->name . 'has cancelled a trip.'))
+                        ->withData([
+                            'trip_id' => (string) $trip->id,  // Include trip ID for reference
+                            'driver_name' => $findDriver->name, // Driver's name
+                            'sound' => 'default',  // This triggers the sound
+                        ]);
+                    }
+                    // Create the notification payload
+                    
 
                     // Send notification to all FCM tokens of the company
                     $response = $messaging->sendMulticast($message, $companyFcmTokens);
@@ -313,19 +323,32 @@ class TripController extends Controller
                 if (!empty($driverFcm)) {
                     $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
                     $messaging = $factory->createMessaging();
-
-                    $message = CloudMessage::new()
-                        ->withNotification(Notification::create('Trip Complete', 'Trip completed successfully'))
-                        ->withData([
-                            'sound' => 'default', // This triggers the sound
-                        ]);
-
-                    $response = $messaging->sendMulticast($message, $driverFcm);
-                    ModelsNotification::create([
-                        'user_id' => $findCompany->company_id,
-                        'title' => 'Trip Completed',
-                        'body' => $findDriver->name . ' has completed a trip.',
-                    ]);
+                    if($request->status == "completed"){
+                        $message = CloudMessage::new()
+                            ->withNotification(Notification::create('Trip Completed', 'Trip completed successfully'))
+                            ->withData([
+                                'sound' => 'default', // This triggers the sound
+                            ]);
+                            $response = $messaging->sendMulticast($message, $driverFcm);
+                            ModelsNotification::create([
+                                'user_id' => $findCompany->company_id,
+                                'title' => 'Trip Completed',
+                                'body' => $findDriver->name . ' has completed a trip.',
+                            ]);
+                    }else{
+                        $message = CloudMessage::new()
+                            ->withNotification(Notification::create('Trip Cancelled', 'Trip cancelled successfully'))
+                            ->withData([
+                                'sound' => 'default', // This triggers the sound
+                            ]);
+                            $response = $messaging->sendMulticast($message, $driverFcm);
+                            ModelsNotification::create([
+                                'user_id' => $findCompany->company_id,
+                                'title' => 'Trip Cancelled',
+                                'body' => $findDriver->name . ' has cancelled a trip.',
+                            ]);
+                    }
+                    
                 }
             }
         }
