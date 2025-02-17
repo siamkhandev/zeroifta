@@ -533,9 +533,13 @@ class IFTAController extends Controller
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                 $testFuelStations = [
-                    ['ftp_lat' => 40.7128, 'ftp_lng' => -74.0060, 'price' => 3.50], // Station A
-                    ['ftp_lat' => 40.7308, 'ftp_lng' => -73.9973, 'price' => 3.90], // Station B (Cheapest)
+                    ['ftp_lat' => 40.7128, 'ftp_lng' => -74.0060, 'price' => 3.60], // Station A
+                    ['ftp_lat' => 40.7308, 'ftp_lng' => -73.9973, 'price' => 3.40], // Station B (Cheapest)
                     ['ftp_lat' => 40.7508, 'ftp_lng' => -73.9903, 'price' => 3.55], // Station C
+                    ['ftp_lat' => 40.7708, 'ftp_lng' => -73.9800, 'price' => 3.45], // Station D
+                    ['ftp_lat' => 40.7808, 'ftp_lng' => -73.9700, 'price' => 3.50], // Station E
+                    ['ftp_lat' => 40.7908, 'ftp_lng' => -73.9600, 'price' => 3.48], // Station F
+                    ['ftp_lat' => 40.8000, 'ftp_lng' => -73.9500, 'price' => 3.52], // Station G
                 ];
                 $startLat = 40.7000;
                 $startLng = -74.0100;
