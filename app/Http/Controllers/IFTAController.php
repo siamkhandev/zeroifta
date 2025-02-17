@@ -539,7 +539,7 @@ class IFTAController extends Controller
                 ];
                 $startLat = 40.7000;
                 $startLng = -74.0100;
-                $mpg = 20; // Miles per gallon
+                $mpg = 2; // Miles per gallon
                 $currentGallons = 5; // Current fuel in gallons
                 $destinationLat = 40.8000;
                 $destinationLng = -73.9500;
