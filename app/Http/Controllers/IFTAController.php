@@ -742,6 +742,7 @@ class IFTAController extends Controller
         }
 
         foreach ($fuelStations as &$station) {
+            dd($station);
             $station['is_optimal'] = false;
             $station['gallons_to_buy'] = null;
 
