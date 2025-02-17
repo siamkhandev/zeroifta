@@ -742,7 +742,7 @@ class IFTAController extends Controller
         }
 
         foreach ($fuelStations as &$station) {
-            dd($station);
+
             $station['is_optimal'] = false;
             $station['gallons_to_buy'] = null;
 
@@ -776,7 +776,7 @@ class IFTAController extends Controller
             }
             $stationsWithDetails[] = $station;
         }
-
+        dd($stationsWithDetails);
         return $stationsWithDetails; // Return all stations with optimal one highlighted
     }
     private function decodePolyline($encoded)
