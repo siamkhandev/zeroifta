@@ -707,10 +707,16 @@ class IFTAController extends Controller
 
     //     return array_values($fuelStations); // Re-index for JSON response
     // }
-    private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
+    private function findOptimalFuelStations($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
 {
     $stationsWithDetails = [];
     $optimalStations = [];
+
+    // Ensure every station has default values
+    foreach ($fuelStations as &$station) {
+        $station['is_optimal'] = false;
+        $station['gallons_to_buy'] = 0;
+    }
 
     // Find the overall cheapest station
     $cheapestStation = null;
@@ -760,7 +766,6 @@ class IFTAController extends Controller
 
     foreach ($optimalStations as $index => &$station) {
         $station['is_optimal'] = true;
-        $station['gallons_to_buy'] = 0;
 
         // If this station is the cheapest overall, buy enough fuel to complete the trip
         if ($station['price'] == $cheapestStation['price']) {
@@ -785,13 +790,9 @@ class IFTAController extends Controller
         }
     }
 
-    // Step 3: Mark all stations
-    foreach ($fuelStations as &$station) {
-        $station['is_optimal'] = in_array($station, $optimalStations, true);
-    }
-
     return $fuelStations;
 }
+
 
 
     private function decodePolyline($encoded)
