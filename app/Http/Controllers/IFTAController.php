@@ -712,25 +712,24 @@ class IFTAController extends Controller
     $stationsWithDetails = [];
     $optimalStations = [];
 
-    // Ensure every station has default values
+    // Set default values for all stations
     foreach ($fuelStations as &$station) {
         $station['is_optimal'] = false;
         $station['gallons_to_buy'] = 0;
     }
 
-    // Step 1: Find the overall cheapest station
+    // Step 1: Identify the cheapest station
     $cheapestStation = null;
     foreach ($fuelStations as $station) {
         if (!$cheapestStation || $station['price'] < $cheapestStation['price']) {
             $cheapestStation = $station;
         }
     }
+    if (!$cheapestStation) return []; // No stations available
 
-    if (!$cheapestStation) {
-        return []; // No stations available
-    }
+    error_log("Cheapest Station: " . print_r($cheapestStation, true));
 
-    // Step 2: Find the first reachable station (nearestOptimal)
+    // Step 2: Find the first reachable station
     $nearestOptimal = null;
     foreach ($fuelStations as &$station) {
         $distanceFromStart = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
@@ -745,30 +744,31 @@ class IFTAController extends Controller
     }
 
     if (!$nearestOptimal) {
-        return []; // No reachable station
+        error_log("No reachable station found.");
+        return [];
     }
 
     // Mark the first optimal station
-    $optimalStations[] = $nearestOptimal;
     $nearestOptimal['is_optimal'] = true;
+    $optimalStations[] = &$nearestOptimal; // Store reference for updates
+    error_log("Nearest Optimal Station: " . print_r($nearestOptimal, true));
 
-    // Step 3: If nearestOptimal is the cheapest, buy fuel to complete the trip
+    // Step 3: Decide Fuel Purchase Strategy
     if ($nearestOptimal['price'] == $cheapestStation['price']) {
+        // Buy enough fuel to complete the trip
         $distanceToDestination = $this->haversineDistance(
             $nearestOptimal['ftp_lat'], $nearestOptimal['ftp_lng'], $destinationLat, $destinationLng
         );
         $distanceInMiles = $distanceToDestination / 1609.34;
         $nearestOptimal['gallons_to_buy'] = max(0, ($distanceInMiles / $mpg) - $currentGallons);
     } else {
-        // Step 4: Find the next optimal stations leading to the cheapest
+        // Step 4: Find the next optimal station leading to the cheapest
         $currentGallonsRemaining = $currentGallons;
         while (true) {
             $nextOptimal = null;
 
             foreach ($fuelStations as &$station) {
-                if (in_array($station, $optimalStations, true)) {
-                    continue; // Skip already selected stations
-                }
+                if (in_array($station, $optimalStations, true)) continue; // Skip already selected
 
                 $lastStation = end($optimalStations);
                 $distanceFromLast = $this->haversineDistance(
@@ -784,14 +784,13 @@ class IFTAController extends Controller
                 }
             }
 
-            if (!$nextOptimal) {
-                break; // No more reachable optimal stations
-            }
+            if (!$nextOptimal) break; // Stop if no next station found
 
-            $optimalStations[] = $nextOptimal;
             $nextOptimal['is_optimal'] = true;
+            $optimalStations[] = &$nextOptimal;
+            error_log("Next Optimal Station: " . print_r($nextOptimal, true));
 
-            // If this next station is the cheapest, buy fuel for the full trip
+            // If this station is the cheapest, buy full trip fuel
             if ($nextOptimal['price'] == $cheapestStation['price']) {
                 $distanceToDestination = $this->haversineDistance(
                     $nextOptimal['ftp_lat'], $nextOptimal['ftp_lng'], $destinationLat, $destinationLng
@@ -800,7 +799,7 @@ class IFTAController extends Controller
                 $nextOptimal['gallons_to_buy'] = max(0, ($distanceInMiles / $mpg) - $currentGallonsRemaining);
                 break;
             } else {
-                // Buy just enough to reach the next optimal station
+                // Buy enough fuel to reach the next optimal station
                 $nextStation = $optimalStations[count($optimalStations) - 1] ?? null;
                 if ($nextStation) {
                     $distanceToNext = $this->haversineDistance(
@@ -814,8 +813,15 @@ class IFTAController extends Controller
         }
     }
 
+    // Ensure at least one station is optimal
+    if (empty($optimalStations)) {
+        error_log("No optimal stations selected.");
+        return [];
+    }
+
     return $fuelStations;
 }
+
 
 
 
