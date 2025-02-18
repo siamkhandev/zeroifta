@@ -708,51 +708,49 @@ class IFTAController extends Controller
     //     return array_values($fuelStations); // Re-index for JSON response
     // }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
-    {
-        $optimalStations = [];
-        $cheapestStation = null;
-        $reachableStation = null;
-    
-        // Convert current fuel to miles
-        $currentRange = $currentGallons * $mpg;
-    
-        // Find the cheapest fuel station
-        foreach ($fuelStations as $station) {
-            if (!$cheapestStation || $station['price'] < $cheapestStation['price']) {
-                $cheapestStation = $station;
+{
+    $optimalStations = [];
+    $cheapestStation = null;
+    $reachableStation = null;
+
+    // Convert current fuel to miles
+    $currentRange = $currentGallons * $mpg;
+
+    // Find the cheapest fuel station
+    foreach ($fuelStations as $station) {
+        if (!$cheapestStation || $station['price'] < $cheapestStation['price']) {
+            $cheapestStation = $station;
+        }
+    }
+
+    // Find the nearest reachable fuel station
+    foreach ($fuelStations as $station) {
+        $distanceFromVehicle = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
+        $distanceInMiles = $distanceFromVehicle / 1609.34; // Convert meters to miles
+        $fuelRequired = $distanceInMiles / $mpg;
+
+        if ($fuelRequired <= $currentGallons) { // If the station is reachable
+            if (!$reachableStation || $distanceInMiles < $this->haversineDistance($startLat, $startLng, $reachableStation['ftp_lat'], $reachableStation['ftp_lng']) / 1609.34) {
+                $reachableStation = $station;
             }
         }
-    
-        // Find the nearest reachable fuel station
-        foreach ($fuelStations as $station) {
-            $distanceFromVehicle = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']);
-            $distanceInMiles = $distanceFromVehicle / 1609.34; // Convert meters to miles
-            $fuelRequired = $distanceInMiles / $mpg;
-    
-            if ($fuelRequired <= $currentGallons) { // If the station is reachable
-                if (!$reachableStation || $distanceInMiles < $this->haversineDistance($startLat, $startLng, $reachableStation['ftp_lat'], $reachableStation['ftp_lng']) / 1609.34) {
-                    $reachableStation = $station;
-                }
-            }
-        }
-    
-        if (!$reachableStation) {
-            return []; // No reachable station found
-        }
-    
-        // Mark the first reachable station as optimal
-        $reachableStation['is_optimal'] = true;
-        $reachableStation['gallons_to_buy'] = null;
-        $optimalStations[] = $reachableStation;
-    
-        // If the first reachable station is the cheapest, buy enough fuel for the whole trip
-        if ($reachableStation['price'] == $cheapestStation['price']) {
-            $distanceToDestination = $this->haversineDistance($reachableStation['ftp_lat'], $reachableStation['ftp_lng'], $destinationLat, $destinationLng);
-            $distanceInMiles = $distanceToDestination / 1609.34;
-            $reachableStation['gallons_to_buy'] = max(0, $distanceInMiles / $mpg - $currentGallons);
-            return $optimalStations;
-        }
-    
+    }
+
+    if (!$reachableStation) {
+        return []; // No reachable station found
+    }
+
+    // Mark the first reachable station as optimal
+    $reachableStation['is_optimal'] = true;
+    $reachableStation['gallons_to_buy'] = null;
+    $optimalStations[] = $reachableStation;
+
+    // If the first reachable station is the cheapest, buy enough fuel for the whole trip
+    if ($reachableStation['price'] == $cheapestStation['price']) {
+        $distanceToDestination = $this->haversineDistance($reachableStation['ftp_lat'], $reachableStation['ftp_lng'], $destinationLat, $destinationLng);
+        $distanceInMiles = $distanceToDestination / 1609.34;
+        $reachableStation['gallons_to_buy'] = max(0, $distanceInMiles / $mpg - $currentGallons);
+    } else {
         // If the first reachable station is NOT the cheapest, find the next optimal station
         $nextOptimalStation = null;
         foreach ($fuelStations as $station) {
@@ -761,17 +759,18 @@ class IFTAController extends Controller
                 break;
             }
         }
-    
+
         if ($nextOptimalStation) {
+            // Calculate fuel needed to reach the next optimal station
             $distanceToNextOptimal = $this->haversineDistance($reachableStation['ftp_lat'], $reachableStation['ftp_lng'], $nextOptimalStation['ftp_lat'], $nextOptimalStation['ftp_lng']);
             $distanceInMiles = $distanceToNextOptimal / 1609.34;
             $reachableStation['gallons_to_buy'] = max(0, $distanceInMiles / $mpg - $currentGallons);
-    
+
             // Mark the next optimal station
             $nextOptimalStation['is_optimal'] = true;
             $nextOptimalStation['gallons_to_buy'] = null;
             $optimalStations[] = $nextOptimalStation;
-    
+
             // If the next optimal is also the cheapest, buy fuel for the whole trip
             if ($nextOptimalStation['price'] == $cheapestStation['price']) {
                 $distanceToDestination = $this->haversineDistance($nextOptimalStation['ftp_lat'], $nextOptimalStation['ftp_lng'], $destinationLat, $destinationLng);
@@ -779,10 +778,18 @@ class IFTAController extends Controller
                 $nextOptimalStation['gallons_to_buy'] = max(0, $distanceInMiles / $mpg);
             }
         }
-    
-        return $optimalStations;
     }
-    
+
+    // Now, mark all fuel stations with proper 'is_optimal' status
+    foreach ($fuelStations as &$station) {
+        if (!isset($station['is_optimal'])) {
+            $station['is_optimal'] = false; // If not optimal, set to false
+        }
+    }
+
+    return $fuelStations; // Return all stations with optimal ones marked
+}
+
 
 
 
