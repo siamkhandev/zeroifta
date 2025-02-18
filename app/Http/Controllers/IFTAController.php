@@ -707,7 +707,7 @@ class IFTAController extends Controller
 
     //     return array_values($fuelStations); // Re-index for JSON response
     // }
-    private function findOptimalFuelStations($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
+    private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
 {
     $stationsWithDetails = [];
     $optimalStations = [];
