@@ -697,10 +697,11 @@ class IFTAController extends Controller
                 //  $truckMpg = 5;
                 //  $currentFuel =2;
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
-dd($result);
+
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
+                dd($value);
                     $fuelStations[] = [
                         'name' => $value['fuel_station_name'],
                         'latitude' => $value['ftp_lat'],
