@@ -710,9 +710,9 @@ dd($result);
                         'lastprice' => $value['lastprice'],
                         'discount' => $value['discount'],
                         'ifta_tax' => $value['IFTA_tax'],
-                        'is_optimal' => $value['is_optimal'],
+                        'is_optimal' => $value['is_optimal'] ?? false,
                         'address' => $value['address'],
-                        'gallons_to_buy' => $value['gallons_to_buy'],
+                        'gallons_to_buy' => $value['gallons_to_buy'] ?? 0,
                         'trip_id' => $trip->id,
                         'user_id' => $validatedData['user_id'],
                         'created_at' => now(),
@@ -893,7 +893,9 @@ dd($result);
                 $reachableStations[] = [
                     'station' => $station,
                     'distance' => $distanceToStation,
-                    'fuel_required' => $fuelRequired
+                    'fuel_required' => $fuelRequired,
+
+                    
 
                 ];
             }
