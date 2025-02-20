@@ -35,7 +35,7 @@ class VehiclesController extends Controller
     {
 
         $data = $request->validate([
-            'vehicle_id'=>'required|unique:vehicles,vehicle_id',
+            'vehicle_id'=>'required',
            'vin' => [
                 'required',
                 Rule::unique('vehicles')->where(function ($query) use ($request) {
@@ -55,6 +55,11 @@ class VehiclesController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif|max:1024',
 
         ]);
+        $checkVehicle = Vehicle::where('vin', $request->vin)->first();
+
+        if ($checkVehicle && $checkVehicle->vehicle_id !== $request->vehicle_id) {
+            return redirect()->back()->withError('The vehicle number must be the same for the given VIN across companies and independent truckers');    
+        }
         $existingVehicle = Vehicle::where('vin', $request->vin)
             ->where('owner_type', 'company')
             ->where('owner_id',Auth::id())
