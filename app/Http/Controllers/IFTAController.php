@@ -909,7 +909,7 @@ class IFTAController extends Controller
                     );
                     $distanceInMiles = $distanceToDestination / 1609.34;
                     $fuelNeeded = $distanceInMiles / $mpg;
-                
+                dd($distanceToDestination ,$distanceInMiles,$fuelNeeded,$currentGallons);
                     // 🔍 Debugging Log
                     Log::info("Optimal Station: {$station['ftp_lat']}, {$station['ftp_lng']}");
                     Log::info("Distance to Destination: {$distanceInMiles} miles");
