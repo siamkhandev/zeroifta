@@ -911,30 +911,38 @@ class IFTAController extends Controller
                     $fuelNeeded = $distanceInMiles / $mpg;
                 
                    // Distance to optimal station in miles
-// Distance to optimal station in miles
-$distanceToStation = $this->haversineDistance(
-    $startLat, $startLng, 
-    $station['ftp_lat'], $station['ftp_lng']
-) / 1609.34; // Convert meters to miles
-
-// Fuel left after reaching the optimal station
-$remainingFuel = $currentGallons - ($distanceToStation / $mpg);
-$remainingRange = $remainingFuel * $mpg;
-
-// Distance to final destination in miles
-$distanceToDestination = $this->haversineDistance(
-    $station['ftp_lat'], $station['ftp_lng'], 
-    $destinationLat, $destinationLng
-) / 1609.34;
-
-// Exact fuel needed to reach the destination
-$fuelNeeded = ($distanceToDestination / $mpg) - $remainingFuel;
-
-// Ensure gallons to buy is never negative
-$station['gallons_to_buy'] = max(0, round($fuelNeeded, 2));
-
-\Log::info("Station: {$station['fuel_station_name']}, Distance to Station: {$distanceToStation} miles, Fuel Left: {$remainingFuel} gallons, Distance to Destination: {$distanceToDestination} miles, Gallons to Buy: {$station['gallons_to_buy']}");
-
+                   $distanceToStation = $this->haversineDistance(
+                    $startLat, $startLng, 
+                    $station['ftp_lat'], $station['ftp_lng']
+                ) / 1609.34; // Convert meters to miles
+                
+                // Fuel required to reach the optimal station
+                $fuelRequiredToStation = $distanceToStation / $mpg;
+                
+                // Fuel left after reaching optimal station
+                $remainingFuel = $currentGallons - $fuelRequiredToStation;
+                
+                // Distance from optimal station to final destination
+                $distanceToDestination = $this->haversineDistance(
+                    $station['ftp_lat'], $station['ftp_lng'], 
+                    $destinationLat, $destinationLng
+                ) / 1609.34;
+                
+                // Fuel required to reach destination
+                $fuelRequiredToDestination = $distanceToDestination / $mpg;
+                
+                // Gallons to buy = fuel needed minus remaining fuel
+                $gallonsToBuy = max(0, $fuelRequiredToDestination - $remainingFuel);
+                $station['gallons_to_buy'] = round($gallonsToBuy, 2);
+                
+                // Log all calculations
+                \Log::info("Station: {$station['fuel_station_name']}");
+                \Log::info("Distance to Station: {$distanceToStation} miles");
+                \Log::info("Fuel Required to Reach Station: {$fuelRequiredToStation} gallons");
+                \Log::info("Fuel Left at Station: {$remainingFuel} gallons");
+                \Log::info("Distance to Destination: {$distanceToDestination} miles");
+                \Log::info("Fuel Needed for Destination: {$fuelRequiredToDestination} gallons");
+                \Log::info("Gallons to Buy: {$station['gallons_to_buy']} gallons");
                 }
                
             } else {
