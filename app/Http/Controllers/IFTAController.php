@@ -911,6 +911,7 @@ class IFTAController extends Controller
                     $fuelNeeded = $distanceInMiles / $mpg;
                 
                    // Distance to optimal station in miles
+// Distance to optimal station in miles
 $distanceToStation = $this->haversineDistance(
     $startLat, $startLng, 
     $station['ftp_lat'], $station['ftp_lng']
@@ -926,15 +927,13 @@ $distanceToDestination = $this->haversineDistance(
     $destinationLat, $destinationLng
 ) / 1609.34;
 
-// Check if refueling is needed to reach the destination
-if ($remainingRange < $distanceToDestination) {
-    $fuelNeeded = ($distanceToDestination / $mpg) - $remainingFuel;
-    $station['gallons_to_buy'] = max(0, round($fuelNeeded, 2)); // Ensure no negative values
-} else {
-    $station['gallons_to_buy'] = 0;
-}
+// Exact fuel needed to reach the destination
+$fuelNeeded = ($distanceToDestination / $mpg) - $remainingFuel;
 
-\Log::info("Station: {$station['fuel_station_name']}, Gallons to Buy: {$station['gallons_to_buy']}");
+// Ensure gallons to buy is never negative
+$station['gallons_to_buy'] = max(0, round($fuelNeeded, 2));
+
+\Log::info("Station: {$station['fuel_station_name']}, Distance to Station: {$distanceToStation} miles, Fuel Left: {$remainingFuel} gallons, Distance to Destination: {$distanceToDestination} miles, Gallons to Buy: {$station['gallons_to_buy']}");
 
                 }
                
