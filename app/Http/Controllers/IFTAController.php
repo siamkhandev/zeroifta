@@ -886,12 +886,14 @@ class IFTAController extends Controller
         foreach ($fuelStations as &$station) {
             $distanceToStation = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34; // Convert meters to miles
             $fuelRequired = $distanceToStation / $mpg; // Gallons required to reach
-            
+            $station['is_optimal'] = false;
+            $station['gallons_to_buy'] = null;
             if ($fuelRequired <= $currentGallons) {
                 $reachableStations[] = [
                     'station' => $station,
                     'distance' => $distanceToStation,
                     'fuel_required' => $fuelRequired
+
                 ];
             }
         }
