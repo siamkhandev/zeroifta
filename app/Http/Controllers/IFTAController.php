@@ -701,7 +701,7 @@ class IFTAController extends Controller
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
-                dd($value);
+                //dd($value);
                     $fuelStations[] = [
                         'name' => $value['fuel_station_name'],
                         'latitude' => $value['ftp_lat'],
