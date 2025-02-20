@@ -19,6 +19,7 @@ use App\Services\FcmService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class IFTAController extends Controller
@@ -902,7 +903,7 @@ class IFTAController extends Controller
 
             if ($optimalStation && $station['ftp_lat'] == $optimalStation['ftp_lat'] && $station['ftp_lng'] == $optimalStation['ftp_lng']) {
                 $station['is_optimal'] = true;
-                if ($station['is_optimal']) {
+               // if ($station['is_optimal']) {
                     $distanceToDestination = $this->haversineDistance(
                         $station['ftp_lat'], $station['ftp_lng'], $destinationLat, $destinationLng
                     );
@@ -910,14 +911,14 @@ class IFTAController extends Controller
                     $fuelNeeded = $distanceInMiles / $mpg;
                 
                     // 🔍 Debugging Log
-                    error_log("Optimal Station: {$station['ftp_lat']}, {$station['ftp_lng']}");
-                    error_log("Distance to Destination: {$distanceInMiles} miles");
-                    error_log("Fuel Needed: {$fuelNeeded} gallons");
-                    error_log("Current Gallons: {$currentGallons}");
-                    error_log("Gallons to Buy (Before Max Calculation): " . ($fuelNeeded - $currentGallons));
+                    Log::info("Optimal Station: {$station['ftp_lat']}, {$station['ftp_lng']}");
+                    Log::info("Distance to Destination: {$distanceInMiles} miles");
+                    Log::info("Fuel Needed: {$fuelNeeded} gallons");
+                    Log::info("Current Gallons: {$currentGallons}");
+                    Log::info("Gallons to Buy (Before Max Calculation): " . ($fuelNeeded - $currentGallons));
                 
-                    $station['gallons_to_buy'] = max(0, $fuelNeeded - $currentGallons);
-                }
+                    $station['gallons_to_buy'] =  max(0, ceil($fuelNeeded - $currentGallons));
+                //}
                
             } else {
                 // Find the next cheapest station that is reachable
