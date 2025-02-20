@@ -532,11 +532,173 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
-
+                $fuel_stations = [
+                    [
+                        "fuel_station_name" => "QUICK FUEL HESPERIA 4402",
+                        "ftp_lat" => "34.4201",
+                        "ftp_lng" => "-117.3034",
+                        "lastprice" => 4.999,
+                        "price" => 4.999,
+                        "discount" => 0,
+                        "address" => "9269 SANTA FE",
+                        "IFTA_tax" => 1.023,
+                       
+                    ],
+                    [
+                        "fuel_station_name" => "Pilot TC #381",
+                        "ftp_lat" => "34.4099",
+                        "ftp_lng" => "-117.3991",
+                        "lastprice" => 4.959,
+                        "price" => 4.959,
+                        "discount" => 0,
+                        "address" => "8701 US -395",
+                        "IFTA_tax" => 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name" => "Pilot TC #1328",
+                        "ftp_lat" => "34.1375",
+                        "ftp_lng" => "-117.4274",
+                        "lastprice" => 4.939,
+                        "price" => 4.939,
+                        "discount" => 0,
+                        "address" => "2325 Sierra Lakes Pkwy",
+                        "IFTA_tax" => 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name" => "JACKSONS #0212",
+                        "ftp_lat" => "34.1382",
+                        "ftp_lng" => "-117.4201",
+                        "lastprice" => 4.599,
+                        "price" => 4.599,
+                        "discount" => 0,
+                        "address" => "2281 W CASMALIA ST",
+                        "IFTA_tax" => 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "Noil Fontana",
+                        "ftp_lat"=> "34.0779",
+                        "ftp_lng"=> "-117.4848",
+                        "lastprice"=> 4.649,
+                        "price"=> 4.649,
+                        "discount"=> 0,
+                        "address"=> "9668 Redwood Ave",
+                        "IFTA_tax"=> 1.023,
+                       
+                    ],
+                    [
+                        "fuel_station_name"=> "A-Z Fuel Stop",
+                        "ftp_lat"=> "34.0772",
+                        "ftp_lng"=> "-117.4881",
+                        "lastprice"=> 4.699,
+                        "price"=> 4.699,
+                        "discount"=> 0,
+                        "address"=> "14529 San Bernardino Ave",
+                        "IFTA_tax"=> 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "QUICK FUEL FONTANA 468",
+                        "ftp_lat"=> "34.0753",
+                        "ftp_lng"=> "-117.4895",
+                        "lastprice"=> 5.039,
+                        "price"=> 5.039,
+                        "discount"=> 0,
+                        "address"=> "9808 Cherry Ave",
+                        "IFTA_tax"=> 1.023,
+                       
+                    ],
+                    [
+                        "fuel_station_name"=> "Valley Blvd Truckstop",
+                        "ftp_lat"=> "34.0702",
+                        "ftp_lng"=> "-117.4533",
+                        "lastprice"=> 2.699,
+                        "price"=> 2.699,
+                        "discount"=> 0,
+                        "address"=> "16111 Valley Blvd.",
+                        "IFTA_tax"=> 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "SC Fuels Fontana",
+                        "ftp_lat"=> "34.0712",
+                        "ftp_lng"=> "-117.5043",
+                        "lastprice"=> 5.199,
+                        "price"=> 5.199,
+                        "discount"=> 0,
+                        "address"=> "13800 Valley Blvd",
+                        "IFTA_tax"=> 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "Truck Town Truckstop",
+                        "ftp_lat"=> "34.0678",
+                        "ftp_lng"=> "-117.4890",
+                        "lastprice"=> 6.59,
+                        "price"=> 6.59,
+                        "discount"=> 0,
+                        "address"=> "10238 Cherry Avenue",
+                        "IFTA_tax"=> 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "SC FUELS FONTANA",
+                        "ftp_lat"=> "34.0624",
+                        "ftp_lng"=> "-117.4761",
+                        "lastprice"=> 4.879,
+                        "price"=> 4.879,
+                        "discount"=> 0,
+                        "address"=> "15087 Slover Ave",
+                        "IFTA_tax"=> 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "Three Sisters Truckstop",
+                        "ftp_lat"=> "34.0630",
+                        "ftp_lng"=> "-117.4911",
+                        "lastprice"=> 4.799,
+                        "price"=> 4.799,
+                        "discount"=> 0,
+                        "address"=> "14416 Slover Ave",
+                        "IFTA_tax"=> 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "Pilot TC #1177",
+                        "ftp_lat"=> "34.0646",
+                        "ftp_lng"=> "-117.4929",
+                        "lastprice"=> 4.939,
+                        "price"=> 4.939,
+                        "discount"=> 0,
+                        "address"=> "14320 Slover Ave",
+                        "IFTA_tax"=> 1.023,
+                        
+                    ],
+                    [
+                        "fuel_station_name"=> "SC Fuels Rancho Cucamonga",
+                        "ftp_lat"=> "34.0842",
+                        "ftp_lng"=> "-117.5455",
+                        "lastprice"=> 4.939,
+                        "price"=> 4.939,
+                        "discount"=> 0,
+                        "address"=> "9291 Charles Smith Ave",
+                        "IFTA_tax"=> 1.023,
+                       
+                    ],
+                    
+                ];
+                $startLat = '34.5362184';
+                $startLng = '-117.2927641';
+                $endLat = '34.0549076';
+                 $endLng = '-118.242643';
+                 $truckMpg = 8;
+                 $currentFuel =10;
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $fuel_stations, $endLat, $endLng);
+                dd($result);
                 $fuelStations = [];
-                $trip = Trip::create($validatedData);
+                //$trip = Trip::create($validatedData);
                foreach ($result as  $value) {
                     $fuelStations[] = [
                         'name' => $value['fuel_station_name'],
