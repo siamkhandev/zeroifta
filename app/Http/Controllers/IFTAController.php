@@ -917,7 +917,21 @@ class IFTAController extends Controller
                     Log::info("Current Gallons: {$currentGallons}");
                     Log::info("Gallons to Buy (Before Max Calculation): " . ($fuelNeeded - $currentGallons));
                 
-                    $station['gallons_to_buy'] =  max(0, ceil($fuelNeeded - $currentGallons));
+                    if ($fuelNeeded > $currentGallons) {
+                        // Need more fuel to reach the destination
+                        $station['gallons_to_buy'] = ceil($fuelNeeded - $currentGallons);
+                    } elseif ($fuelRequired <= $currentGallons) {
+                        // If we can reach the station, check how much fuel is needed to complete the trip
+                        $distanceToDestination = $this->haversineDistance(
+                            $station['ftp_lat'], $station['ftp_lng'], $destinationLat, $destinationLng
+                        ) / 1609.34;
+                    
+                        $totalFuelNeeded = $distanceToDestination / $mpg;
+                        $station['gallons_to_buy'] = ceil($totalFuelNeeded - $currentGallons);
+                    } else {
+                        // If we are already at the destination or have enough fuel, buy nothing
+                        $station['gallons_to_buy'] = 0;
+                    }
                 //}
                
             } else {
