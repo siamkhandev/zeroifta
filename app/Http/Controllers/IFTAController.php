@@ -910,25 +910,31 @@ class IFTAController extends Controller
                     $distanceInMiles = $distanceToDestination / 1609.34;
                     $fuelNeeded = $distanceInMiles / $mpg;
                 
-                   
-                    $distanceToDestination = $this->haversineDistance(
-                        $station['ftp_lat'], $station['ftp_lng'], 
-                        $destinationLat, $destinationLng
-                    ) / 1609.34; // Convert to miles
+                   // Distance to optimal station in miles
+$distanceToStation = $this->haversineDistance(
+    $startLat, $startLng, 
+    $station['ftp_lat'], $station['ftp_lng']
+) / 1609.34; // Convert meters to miles
 
-                    // Remaining fuel on arrival
-                    $remainingFuel = $currentGallons - ($distanceFromVehicle / $mpg);
-                    $remainingRange = $remainingFuel * $mpg;
+// Fuel left after reaching the optimal station
+$remainingFuel = $currentGallons - ($distanceToStation / $mpg);
+$remainingRange = $remainingFuel * $mpg;
 
-                    // If remaining range is less than the distance to destination, refuel is needed
-                    if ($remainingRange < $distanceToDestination) {
-                        $fuelNeeded = ($distanceToDestination / $mpg) - $remainingFuel;
-                        $station['gallons_to_buy'] = max(0, $fuelNeeded);
-                    } else {
-                        $station['gallons_to_buy'] = 0;
-                    }
+// Distance to final destination in miles
+$distanceToDestination = $this->haversineDistance(
+    $station['ftp_lat'], $station['ftp_lng'], 
+    $destinationLat, $destinationLng
+) / 1609.34;
 
-                    \Log::info("Gallons to Buy at {$station['fuel_station_name']}: {$station['gallons_to_buy']}");
+// Check if refueling is needed to reach the destination
+if ($remainingRange < $distanceToDestination) {
+    $fuelNeeded = ($distanceToDestination / $mpg) - $remainingFuel;
+    $station['gallons_to_buy'] = max(0, round($fuelNeeded, 2)); // Ensure no negative values
+} else {
+    $station['gallons_to_buy'] = 0;
+}
+
+\Log::info("Station: {$station['fuel_station_name']}, Gallons to Buy: {$station['gallons_to_buy']}");
 
                 }
                
