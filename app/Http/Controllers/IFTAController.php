@@ -848,8 +848,8 @@ class IFTAController extends Controller
                 $startLng = '-117.2927641';
                 $endLat = '34.0549076';
                  $endLng = '-118.242643';
-                 $truckMpg = 5;
-                 $currentFuel =5;
+                 $truckMpg = 15;
+                 $currentFuel =150;
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $fuel_stations, $endLat, $endLng);
                 dd($result);
                 $fuelStations = [];
