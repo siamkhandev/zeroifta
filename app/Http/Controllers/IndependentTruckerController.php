@@ -100,10 +100,10 @@ class IndependentTruckerController extends Controller
 
             $twilioService->sendEmailOtp($request->email, $otp_email);
            }catch(Exception $e){
-            
+
                 return response()->json(['status'=>400,'message'=>$e->getMessage(),'data'=>(object)[]],400);
            }
-            
+
             $driver->otp_code = $otp_sms;
             $driver->email_otp = $otp_email;
 
@@ -202,11 +202,14 @@ class IndependentTruckerController extends Controller
 
 
         ]);
-        $existingVehicle = Vehicle::where('vin', $request->vin)->first();
+        $existingVehicle = Vehicle::where('vehicle_id', $request->vehicle_id)->first();
 
-        if ($existingVehicle && $existingVehicle->vehicle_id !== $request->vehicle_id) {
-            return response()->json(['status'=>422,'message'=>'The vehicle number must be the same for the given VIN across companies and independent truckers','data'=>(object)[]]);
-            
+        if ($existingVehicle && $existingVehicle->vin !== $request->vin) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'This vehicle ID is already associated with a different VIN.',
+                'data' => (object)[],
+            ]);
         }
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
