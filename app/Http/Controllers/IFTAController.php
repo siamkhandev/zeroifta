@@ -543,7 +543,7 @@ class IFTAController extends Controller
                         "discount" => 0,
                         "address" => "9269 SANTA FE",
                         "IFTA_tax" => 1.023,
-                       
+
                     ],
                     [
                         "fuel_station_name" => "Pilot TC #381",
@@ -554,7 +554,7 @@ class IFTAController extends Controller
                         "discount" => 0,
                         "address" => "8701 US -395",
                         "IFTA_tax" => 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name" => "Pilot TC #1328",
@@ -565,7 +565,7 @@ class IFTAController extends Controller
                         "discount" => 0,
                         "address" => "2325 Sierra Lakes Pkwy",
                         "IFTA_tax" => 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name" => "JACKSONS #0212",
@@ -576,7 +576,7 @@ class IFTAController extends Controller
                         "discount" => 0,
                         "address" => "2281 W CASMALIA ST",
                         "IFTA_tax" => 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "Noil Fontana",
@@ -587,7 +587,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "9668 Redwood Ave",
                         "IFTA_tax"=> 1.023,
-                       
+
                     ],
                     [
                         "fuel_station_name"=> "A-Z Fuel Stop",
@@ -598,7 +598,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "14529 San Bernardino Ave",
                         "IFTA_tax"=> 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "QUICK FUEL FONTANA 468",
@@ -609,7 +609,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "9808 Cherry Ave",
                         "IFTA_tax"=> 1.023,
-                       
+
                     ],
                     [
                         "fuel_station_name"=> "Valley Blvd Truckstop",
@@ -620,7 +620,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "16111 Valley Blvd.",
                         "IFTA_tax"=> 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "SC Fuels Fontana",
@@ -631,7 +631,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "13800 Valley Blvd",
                         "IFTA_tax"=> 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "Truck Town Truckstop",
@@ -642,7 +642,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "10238 Cherry Avenue",
                         "IFTA_tax"=> 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "SC FUELS FONTANA",
@@ -653,7 +653,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "15087 Slover Ave",
                         "IFTA_tax"=> 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "Three Sisters Truckstop",
@@ -664,7 +664,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "14416 Slover Ave",
                         "IFTA_tax"=> 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "Pilot TC #1177",
@@ -675,7 +675,7 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "14320 Slover Ave",
                         "IFTA_tax"=> 1.023,
-                        
+
                     ],
                     [
                         "fuel_station_name"=> "SC Fuels Rancho Cucamonga",
@@ -686,18 +686,18 @@ class IFTAController extends Controller
                         "discount"=> 0,
                         "address"=> "9291 Charles Smith Ave",
                         "IFTA_tax"=> 1.023,
-                       
-                    ],
-                    
-                ];
-                // $startLat = '34.5362184';
-                // $startLng = '-117.2927641';
-                // $endLat = '34.0549076';
-                //  $endLng = '-118.242643';
-                //  $truckMpg = 5;
-                //  $currentFuel =2;
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
 
+                    ],
+
+                ];
+                $startLat = '34.5362184';
+                $startLng = '-117.2927641';
+                $endLat = '34.0549076';
+                 $endLng = '-118.242643';
+                 $truckMpg = 5;
+                 $currentFuel =2;
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $fuel_stations, $endLat, $endLng);
+                dd($result);
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
@@ -871,72 +871,113 @@ class IFTAController extends Controller
     //     return array_values($fuelStations); // Re-index for JSON response
     // }
     private function findOptimalFuelStation($startLat, $startLng, $mpg, $currentGallons, $fuelStations, $destinationLat, $destinationLng)
-    {
-        $vehicleRange = $mpg * $currentGallons; // Total miles vehicle can travel with current fuel
-        $cheapestStation = null;
-        $reachableStations = [];
-        
-        // Identify the absolute cheapest fuel station
-        foreach ($fuelStations as $station) {
-            if (!$cheapestStation || $station['price'] < $cheapestStation['price']) {
-                $cheapestStation = $station;
-            }
-        }
-        
-        // Check which stations are reachable
-        foreach ($fuelStations as &$station) {
-            $distanceToStation = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34; // Convert meters to miles
-            $fuelRequired = $distanceToStation / $mpg; // Gallons required to reach
-            $station['is_optimal'] = false;
-            $station['gallons_to_buy'] = null;
-            if ($fuelRequired <= $currentGallons) {
-                $reachableStations[] = [
-                    'station' => $station,
-                    'distance' => $distanceToStation,
-                    'fuel_required' => $fuelRequired,
+{
+    $vehicleRange = $mpg * $currentGallons; // Total miles the vehicle can travel with current fuel
+    $cheapestStation = null;
+    $reachableStations = [];
 
-                    
+    // Identify the absolute cheapest fuel station
+    foreach ($fuelStations as $station) {
+        if (!$cheapestStation || $station['price'] < $cheapestStation['price']) {
+            $cheapestStation = $station;
+        }
+    }
 
-                ];
-            }
+    // Check which stations are reachable
+    foreach ($fuelStations as &$station) {
+        $distanceToStation = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34; // Convert meters to miles
+        $fuelRequired = $distanceToStation / $mpg; // Gallons required to reach
+        $station['is_optimal'] = false;
+        $station['first_in_range'] = false;
+        $station['second_in_range'] = false;
+        $station['gallons_to_buy'] = null;
+
+        if ($fuelRequired <= $currentGallons) {
+            $reachableStations[] = [
+                'station' => $station,
+                'distance' => $distanceToStation,
+                'fuel_required' => $fuelRequired
+            ];
         }
-        
-        if (empty($reachableStations)) {
-            return ['error' => 'No reachable fuel station with current fuel.'];
-        }
-        
-        // Sort reachable stations by distance (nearest first)
-        usort($reachableStations, fn($a, $b) => $a['distance'] <=> $b['distance']);
-        $nearestReachable = $reachableStations[0]['station'];
-        
-        // Case 1: If the cheapest station is reachable, calculate gallons to complete trip
-        $distanceToCheapest = $this->haversineDistance($startLat, $startLng, $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
-        if ($distanceToCheapest <= $vehicleRange) {
-            $distanceToDestination = $this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
-            $gallonsToBuy = max(0, ($distanceToDestination / $mpg) - ($currentGallons - ($distanceToCheapest / $mpg)));
-            $cheapestStation['is_optimal'] = true;
-            $cheapestStation['gallons_to_buy'] = $gallonsToBuy;
-        } else {
-            // Case 2: The cheapest station is not reachable, pick the nearest reachable
-            $distanceToNextStation = $this->haversineDistance($nearestReachable['ftp_lat'], $nearestReachable['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
-            $gallonsToBuy = max(0, ($distanceToNextStation / $mpg) - ($currentGallons - ($reachableStations[0]['fuel_required'])));
-            
-            $nearestReachable['is_optimal'] = true;
-            $nearestReachable['gallons_to_buy'] = $gallonsToBuy;
-        }
-        
-        return array_map(function ($station) use ($nearestReachable, $cheapestStation) {
+    }
+
+    if (empty($reachableStations)) {
+        return ['error' => 'No reachable fuel station with current fuel.'];
+    }
+
+    // Sort reachable stations by distance (nearest first)
+    usort($reachableStations, fn($a, $b) => $a['distance'] <=> $b['distance']);
+    $nearestReachable = $reachableStations[0]['station'];
+
+    // Case 1: Cheapest station is reachable
+    $distanceToCheapest = $this->haversineDistance($startLat, $startLng, $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
+    if ($distanceToCheapest <= $vehicleRange) {
+        $distanceToDestination = $this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
+        $gallonsToBuy = max(0, ($distanceToDestination / $mpg) - ($currentGallons - ($distanceToCheapest / $mpg)));
+
+        $cheapestStation['is_optimal'] = true;
+        $cheapestStation['gallons_to_buy'] = $gallonsToBuy;
+
+        return array_map(function ($station) use ($cheapestStation) {
             if ($station['ftp_lat'] == $cheapestStation['ftp_lat'] && $station['ftp_lng'] == $cheapestStation['ftp_lng']) {
                 return $cheapestStation;
             }
-            if ($station['ftp_lat'] == $nearestReachable['ftp_lat'] && $station['ftp_lng'] == $nearestReachable['ftp_lng']) {
-                return $nearestReachable;
-            }
-            $station['is_optimal'] = false;
-            $station['gallons_to_buy'] = null;
             return $station;
         }, $fuelStations);
     }
+
+    // Case 2: Find the first and second optimal stations
+    $firstOptimal = $nearestReachable;
+    $distanceToNextStation = null;
+    $gallonsToNext = null;
+
+    foreach ($fuelStations as $station) {
+        if ($station['price'] < $firstOptimal['price'] && $this->haversineDistance($firstOptimal['ftp_lat'], $firstOptimal['ftp_lng'], $station['ftp_lat'], $station['ftp_lng']) / 1609.34 <= ($mpg * $currentGallons)) {
+            $secondOptimal = $station;
+            break;
+        }
+    }
+
+    if (!isset($secondOptimal)) {
+        return ['error' => 'No second optimal fuel station found.'];
+    }
+
+    // Calculate gallons needed from first to second optimal
+    $distanceToNextStation = $this->haversineDistance($firstOptimal['ftp_lat'], $firstOptimal['ftp_lng'], $secondOptimal['ftp_lat'], $secondOptimal['ftp_lng']) / 1609.34;
+    $gallonsToNext = max(0, ($distanceToNextStation / $mpg) - ($currentGallons - ($firstOptimal['fuel_required'])));
+
+    // Calculate gallons needed from second to cheapest
+    $distanceToCheapest = $this->haversineDistance($secondOptimal['ftp_lat'], $secondOptimal['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
+    $gallonsToCheapest = max(0, ($distanceToCheapest / $mpg) - ($gallonsToNext));
+
+    // Calculate gallons needed from cheapest to destination
+    $distanceToDestination = $this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
+    $gallonsToDestination = max(0, ($distanceToDestination / $mpg) - ($gallonsToCheapest));
+
+    // Mark optimal stations
+    $firstOptimal['first_in_range'] = true;
+    $firstOptimal['gallons_to_buy'] = $gallonsToNext;
+
+    $secondOptimal['second_in_range'] = true;
+    $secondOptimal['gallons_to_buy'] = $gallonsToCheapest;
+
+    $cheapestStation['is_optimal'] = true;
+    $cheapestStation['gallons_to_buy'] = $gallonsToDestination;
+
+    // Return updated stations
+    return array_map(function ($station) use ($firstOptimal, $secondOptimal, $cheapestStation) {
+        if ($station['ftp_lat'] == $firstOptimal['ftp_lat'] && $station['ftp_lng'] == $firstOptimal['ftp_lng']) {
+            return $firstOptimal;
+        }
+        if ($station['ftp_lat'] == $secondOptimal['ftp_lat'] && $station['ftp_lng'] == $secondOptimal['ftp_lng']) {
+            return $secondOptimal;
+        }
+        if ($station['ftp_lat'] == $cheapestStation['ftp_lat'] && $station['ftp_lng'] == $cheapestStation['ftp_lng']) {
+            return $cheapestStation;
+        }
+        return $station;
+    }, $fuelStations);
+}
     private function decodePolyline($encoded)
     {
         $points = [];
