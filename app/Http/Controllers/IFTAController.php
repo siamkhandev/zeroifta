@@ -1029,7 +1029,16 @@ dd($result);
     // }
     function findOptimalFuelStation($startLat, $startLng, $mpg, $totalFuel, $fuelStations, $endLat, $endLng)
     {
-        // 🚀 1️⃣ Find the Cheapest Fuel Station
+        // 🚀 1️⃣ Calculate Truck's Maximum Range
+        $vehicleRange = $mpg * $totalFuel;
+        $tripDistance = $this->haversineDistance($startLat, $startLng, $endLat, $endLng) / 1609.34; // Convert to miles
+
+        // ✅ If Vehicle Can Complete the Trip Without Refueling, Return Empty Array
+        if ($vehicleRange >= $tripDistance) {
+            return []; // 🚀 No refueling needed!
+        }
+
+        // 🚀 2️⃣ Find the Cheapest Fuel Station
         $cheapestStation = collect($fuelStations)->sortBy('price')->first();
 
         // Initialize the response array with all stations
@@ -1040,11 +1049,10 @@ dd($result);
             $station['gallons_to_buy'] = 0;
         }
 
-        // 🚀 2️⃣ Calculate the Truck's Maximum Range
-        $vehicleRange = $mpg * $totalFuel;
+        // 🚀 3️⃣ Calculate the Distance to the Cheapest Station
         $distanceToCheapest = $this->haversineDistance($startLat, $startLng, $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
 
-        // ✅ If Truck Can Reach Cheapest Directly, Set All Flags To True
+        // ✅ If Truck Can Reach Cheapest Directly, Set It as Optimal
         if ($vehicleRange >= $distanceToCheapest) {
             $cheapestStation['gallons_to_buy'] = max(0, ($this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $endLat, $endLng) / 1609.34) / $mpg);
             $cheapestStation['first_in_range'] = true;
@@ -1054,11 +1062,10 @@ dd($result);
             return array_map(fn($s) => $s['fuel_station_name'] === $cheapestStation['fuel_station_name'] ? $cheapestStation : $s, $fuelStations);
         }
 
-        // 🚀 3️⃣ Find First and Second Optimal Stations
+        // 🚀 4️⃣ Find First and Second Optimal Stations
         $firstStation = null;
         $secondStation = null;
 
-        // 🔹 Find the First Station the Truck Can Reach
         foreach ($fuelStations as &$station) {
             $distanceFromStart = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
             if ($distanceFromStart <= $vehicleRange) {
@@ -1068,7 +1075,6 @@ dd($result);
             }
         }
 
-        // 🚀 4️⃣ Find Second Optimal Station
         if ($firstStation) {
             foreach ($fuelStations as &$station) {
                 $distanceFromFirst = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
@@ -1138,6 +1144,7 @@ dd($result);
             return $station;
         }, $fuelStations);
     }
+
 
 
 
