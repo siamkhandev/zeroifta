@@ -849,7 +849,7 @@ class IFTAController extends Controller
                 $startLng = '-117.2927641';
                 $endLat = '34.0549076';
                  $endLng = '-118.242643';
-                 $truckMpg = 5;
+                 $truckMpg = 2;
                  $currentFuel =5;
                  $reserve_fuel = 2;
                 $totalFuel = $currentFuel+$reserve_fuel;
