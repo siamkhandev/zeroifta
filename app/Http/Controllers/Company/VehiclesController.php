@@ -56,7 +56,7 @@ class VehiclesController extends Controller
 
         ]);
         $checkExistingVehicle = Vehicle::where('vehicle_id', $request->vehicle_id)->first();
-
+        //dd($checkExistingVehicle);
         if ($checkExistingVehicle && $checkExistingVehicle->vin !== $request->vin) {
             return redirect()->back()->withError('This vehicle ID is already associated with a different VIN.');
         }
