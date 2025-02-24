@@ -1033,19 +1033,19 @@ dd($result);
         $cheapestStation = null;
         $reachableStations = [];
 
-        // Identify the absolute cheapest fuel station
+        // Find the absolute cheapest station
         foreach ($fuelStations as &$station) {
             if (!$cheapestStation || $station['price'] < $cheapestStation['price']) {
                 $cheapestStation = &$station;
             }
-            // Initialize response keys
+            // Initialize flags
             $station['is_optimal'] = false;
             $station['first_in_range'] = false;
             $station['second_in_range'] = false;
             $station['gallons_to_buy'] = null;
         }
 
-        // Identify which stations are within range
+        // Find reachable stations
         foreach ($fuelStations as &$station) {
             $distanceToStation = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34; // Convert meters to miles
             $fuelRequired = $distanceToStation / $mpg;
@@ -1059,7 +1059,7 @@ dd($result);
             }
         }
 
-        // If no stations are reachable, return an error
+        // If no stations are reachable, return error
         if (empty($reachableStations)) {
             return ['error' => 'No reachable fuel station with current fuel.'];
         }
@@ -1068,64 +1068,63 @@ dd($result);
         usort($reachableStations, fn($a, $b) => $a['distance'] <=> $b['distance']);
 
         // Check if the cheapest station is reachable
-        $cheapestReachable = null;
+        $canReachCheapest = false;
         foreach ($reachableStations as &$reachable) {
             if ($reachable['station']['ftp_lat'] == $cheapestStation['ftp_lat'] && $reachable['station']['ftp_lng'] == $cheapestStation['ftp_lng']) {
-                $cheapestReachable = &$reachable['station'];
+                $canReachCheapest = true;
                 break;
             }
         }
 
-        if ($cheapestReachable) {
-            // If the cheapest station is reachable, mark it as optimal
-            $cheapestReachable['is_optimal'] = true;
-            // Calculate gallons required to reach the destination from the cheapest station
-            $distanceToDestination = $this->haversineDistance($cheapestReachable['ftp_lat'], $cheapestReachable['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
-            $cheapestReachable['gallons_to_buy'] = $distanceToDestination / $mpg;
+        // ✅ Case 1: If the cheapest station is reachable, buy fuel there and return
+        if ($canReachCheapest) {
+            $cheapestStation['is_optimal'] = true;
+            $distanceToDestination = $this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
+            $cheapestStation['gallons_to_buy'] = $distanceToDestination / $mpg;
             return $fuelStations;
         }
 
-        // If cheapest station is not reachable, find the first reachable station
+        // ✅ Case 2: Find the first reachable station
         $firstStation = &$reachableStations[0]['station'];
         $firstStation['first_in_range'] = true;
 
-        // Find the second station: it must be cheaper than the first and closer to the optimal station
+        // ✅ Case 3: Find the second station (if available)
         $secondStation = null;
         foreach ($reachableStations as &$reachable) {
-            if ($reachable['station']['price'] < $firstStation['price'] &&
-                $this->haversineDistance($reachable['station']['ftp_lat'], $reachable['station']['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) <
-                $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'])
-            ) {
+            $distanceToCheapest = $this->haversineDistance($reachable['station']['ftp_lat'], $reachable['station']['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']);
+            $distanceFirstToCheapest = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']);
+
+            if ($reachable['station']['price'] < $firstStation['price'] && $distanceToCheapest < $distanceFirstToCheapest) {
                 $secondStation = &$reachable['station'];
                 break;
             }
         }
 
         if ($secondStation) {
+            // ✅ Case 3.1: Found a second station, set flags and calculate gallons
             $secondStation['second_in_range'] = true;
 
-            // Calculate gallons required from first to second
-            $distanceToSecondStation = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $secondStation['ftp_lat'], $secondStation['ftp_lng']) / 1609.34;
-            $firstStation['gallons_to_buy'] = $distanceToSecondStation / $mpg;
+            // Gallons from first to second
+            $distanceToSecond = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $secondStation['ftp_lat'], $secondStation['ftp_lng']) / 1609.34;
+            $firstStation['gallons_to_buy'] = $distanceToSecond / $mpg;
 
-            // Calculate gallons required from second to cheapest
-            $distanceToOptimalStation = $this->haversineDistance($secondStation['ftp_lat'], $secondStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
-            $secondStation['gallons_to_buy'] = $distanceToOptimalStation / $mpg;
+            // Gallons from second to cheapest
+            $distanceToCheapest = $this->haversineDistance($secondStation['ftp_lat'], $secondStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
+            $secondStation['gallons_to_buy'] = $distanceToCheapest / $mpg;
         } else {
-            // If no second station found, calculate directly from first to cheapest
-            $distanceToOptimalStation = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
-            $firstStation['gallons_to_buy'] = $distanceToOptimalStation / $mpg;
+            // ✅ Case 3.2: No second station found, go directly from first to cheapest
+            $distanceToCheapest = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
+            $firstStation['gallons_to_buy'] = $distanceToCheapest / $mpg;
         }
 
-        // Mark the cheapest station as optimal
+        // ✅ Mark the cheapest station as optimal
         $cheapestStation['is_optimal'] = true;
-
-        // Calculate gallons required to reach the destination from the cheapest station
         $distanceToDestination = $this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
         $cheapestStation['gallons_to_buy'] = $distanceToDestination / $mpg;
 
         return $fuelStations;
     }
+
 
 
 
