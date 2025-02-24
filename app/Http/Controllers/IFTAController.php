@@ -1082,21 +1082,25 @@ dd($result);
         $distanceToOptimalStation = 0;
 
         // Find the second station (cheapest station reachable from the first station)
+        $minPrice = PHP_FLOAT_MAX; // Initialize with a large value
         foreach ($reachableStations as $index => $reachable) {
             if ($index > 0) { // Skip the first station
                 $distanceToSecondStation = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $reachable['station']['ftp_lat'], $reachable['station']['ftp_lng']) / 1609.34;
-                $fuelRequiredToSecond = ($distanceToSecondStation / $mpg) - $remainingFuelAfterFirst;
+                $fuelRequiredToSecond = $distanceToSecondStation / $mpg;
 
-                if ($fuelRequiredToSecond <= 0) { // If reachable with remaining fuel
-                    $secondStation = &$reachable['station'];
-                    $secondStation['second_in_range'] = true;
-                    break; // Stop after finding the first reachable second station
+                if ($fuelRequiredToSecond <= $remainingFuelAfterFirst) { // If reachable with remaining fuel
+                    if ($reachable['station']['price'] < $minPrice) { // Find the cheapest station
+                        $minPrice = $reachable['station']['price'];
+                        $secondStation = &$reachable['station'];
+                    }
                 }
             }
         }
 
-        // If a second station is found, calculate fuel required
+        // If a second station is found, mark it and calculate fuel required
         if ($secondStation) {
+            $secondStation['second_in_range'] = true;
+
             $distanceToSecondStation = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $secondStation['ftp_lat'], $secondStation['ftp_lng']) / 1609.34;
             $fuelRequiredToSecond = ($distanceToSecondStation / $mpg) - $remainingFuelAfterFirst;
 
