@@ -1028,6 +1028,8 @@ dd($result);
     //     return array_values($fuelStations); // Re-index for JSON response
     // }
     function findOptimalFuelStation($startLat, $startLng, $mpg, $totalFuel, $fuelStations, $endLat, $endLng) {
+        $allStations = $fuelStations; // Preserve all fuel stations for final return
+
         // 🚀 1️⃣ Find the Cheapest Fuel Station
         $cheapestStation = collect($fuelStations)->sortBy('price')->first();
 
@@ -1038,7 +1040,12 @@ dd($result);
         // ✅ If Truck Can Reach the Cheapest Station Directly, Buy Fuel Only There
         if ($vehicleRange >= $distanceToCheapest) {
             $cheapestStation['gallons_to_buy'] = max(0, ($this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $endLat, $endLng) / 1609.34) / $mpg);
-            return [$cheapestStation];
+
+            // Return all stations, marking the optimal ones
+            return array_map(function($station) use ($cheapestStation) {
+                $station['gallons_to_buy'] = $station['fuel_station_name'] === $cheapestStation['fuel_station_name'] ? $cheapestStation['gallons_to_buy'] : 0;
+                return $station;
+            }, $allStations);
         }
 
         // 🚀 3️⃣ Truck Cannot Reach Cheapest: Find First and Second Optimal Stations
@@ -1069,12 +1076,10 @@ dd($result);
                     $distanceToCheapest < $distanceFirstToCheapest
                 ) {
                     $secondStation = $station;
-                    dump("Second station selected:", $secondStation);
                     break; // Exit loop immediately after finding the first valid second station
                 }
             }
         }
-
 
         // 🚀 5️⃣ Calculate Fuel Needed at Each Stop
         if ($firstStation) {
@@ -1102,9 +1107,21 @@ dd($result);
             $endLng
         ) / 1609.34 / $mpg);
 
-        // 🚀 6️⃣ Return Optimal Stations (Filtered for Null Values)
-        return array_filter([$firstStation, $secondStation, $cheapestStation]);
+        // 🚀 6️⃣ Add Gallons Data to All Stations (Set to 0 for Non-Optimal)
+        return array_map(function($station) use ($firstStation, $secondStation, $cheapestStation) {
+            if ($station['fuel_station_name'] === ($firstStation['fuel_station_name'] ?? '')) {
+                $station['gallons_to_buy'] = $firstStation['gallons_to_buy'];
+            } elseif ($station['fuel_station_name'] === ($secondStation['fuel_station_name'] ?? '')) {
+                $station['gallons_to_buy'] = $secondStation['gallons_to_buy'];
+            } elseif ($station['fuel_station_name'] === $cheapestStation['fuel_station_name']) {
+                $station['gallons_to_buy'] = $cheapestStation['gallons_to_buy'];
+            } else {
+                $station['gallons_to_buy'] = 0;
+            }
+            return $station;
+        }, $allStations);
     }
+
 
 
 
