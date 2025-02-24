@@ -1081,17 +1081,19 @@ dd($result);
     $remainingFuelAfterSecond = $remainingFuelAfterFirst;
     $distanceToOptimalStation = 0;
 
-    // Calculate fuel required to reach the second station from the first station (if available)
+    // If there is a second reachable station
     if (count($reachableStations) > 1) {
         $secondStation = &$reachableStations[1]['station'];
+        $secondStation['second_in_range'] = true;
+
+        // Calculate distance to second station
         $distanceToSecondStation = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $secondStation['ftp_lat'], $secondStation['ftp_lng']) / 1609.34;
+
+        // Calculate fuel required to reach the second station
         $fuelRequiredToSecond = ($distanceToSecondStation / $mpg) - $remainingFuelAfterFirst;
 
         // Ensure the fuel required is not negative
         $firstStation['gallons_to_buy'] = max(0, $fuelRequiredToSecond);
-
-        // Mark the second reachable station
-        $secondStation['second_in_range'] = true;
 
         // Calculate remaining fuel after reaching the second station
         $remainingFuelAfterSecond = $remainingFuelAfterFirst + $firstStation['gallons_to_buy'] - ($distanceToSecondStation / $mpg);
@@ -1109,13 +1111,16 @@ dd($result);
     // Ensure the fuel required is not negative
     if ($secondStation) {
         $secondStation['gallons_to_buy'] = max(0, $fuelRequiredToOptimal);
+    } else {
+        // If there is no second station, calculate fuel required to reach the optimal station from the first station
+        $firstStation['gallons_to_buy'] = max(0, $fuelRequiredToOptimal);
     }
 
     // Mark the cheapest station as optimal
     $cheapestStation['is_optimal'] = true;
 
     // Calculate remaining fuel after reaching the optimal station
-    $remainingFuelAfterOptimal = $remainingFuelAfterSecond + ($secondStation ? $secondStation['gallons_to_buy'] : 0) - ($distanceToOptimalStation / $mpg);
+    $remainingFuelAfterOptimal = $remainingFuelAfterSecond + ($secondStation ? $secondStation['gallons_to_buy'] : $firstStation['gallons_to_buy']) - ($distanceToOptimalStation / $mpg);
 
     // Calculate fuel required to reach the destination from the optimal station
     $distanceToDestination = $this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
