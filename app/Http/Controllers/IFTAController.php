@@ -1075,7 +1075,7 @@ dd($result);
             }
         }
 
-        dd($secondStation);
+
         // 🚀 5️⃣ Calculate Fuel Needed at Each Stop
         if ($firstStation) {
             $firstStation['gallons_to_buy'] = max(0, $this->haversineDistance(
