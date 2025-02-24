@@ -1049,8 +1049,12 @@ dd($result);
         $cheapestStation['is_optimal'] = true;
         $cheapestStation['first_in_range'] = true;
         $cheapestStation['second_in_range'] = true;
-        $cheapestStation['gallons_to_buy'] = max(0, ($this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34) / $mpg;
-        return $fuelStations;
+        $cheapestStation['gallons_to_buy'] = max(0, ($this->haversineDistance(
+            $cheapestStation['ftp_lat'],
+            $cheapestStation['ftp_lng'],
+            $destinationLat,
+            $destinationLng
+        ) / 1609.34) / $mpg);
     }
 
     // Identify which stations are within range
