@@ -1053,10 +1053,11 @@ dd($result);
                 break;
             }
         }
-        dd($firstStation);
+
         // 🚀 4️⃣ Find Second Optimal Station Between First & Cheapest
         if ($firstStation) {
             foreach ($fuelStations as $station) {
+                dd($station);
                 $distanceFromFirst = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
                 $distanceFromStart = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
                 $distanceToCheapest = $this->haversineDistance($station['ftp_lat'], $station['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
