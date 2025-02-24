@@ -1027,7 +1027,7 @@ dd($result);
 
     //     return array_values($fuelStations); // Re-index for JSON response
     // }
-    function findOptimalFuelStations($startLat, $startLng, $mpg, $totalFuel, $fuelStations, $endLat, $endLng) {
+    function findOptimalFuelStation($startLat, $startLng, $mpg, $totalFuel, $fuelStations, $endLat, $endLng) {
         // 🚀 1️⃣ Find the Cheapest Fuel Station
         $cheapestStation = collect($fuelStations)->sortBy('price')->first();
 
