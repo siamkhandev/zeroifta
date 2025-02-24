@@ -1047,8 +1047,8 @@ dd($result);
         // ✅ If Truck Can Reach the Cheapest Station Directly, Buy Fuel Only There
         if ($vehicleRange >= $distanceToCheapest) {
             $cheapestStation['gallons_to_buy'] = max(0, ($this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $endLat, $endLng) / 1609.34) / $mpg);
-            $cheapestStation['first_in_range'] = true;
-            $cheapestStation['second_in_range'] = true;
+            $cheapestStation['first_in_range'] = false;
+            $cheapestStation['second_in_range'] = false;
             $cheapestStation['is_optimal'] = true;
 
             return array_map(function ($station) use ($cheapestStation) {
@@ -1117,6 +1117,8 @@ dd($result);
             $endLng
         ) / 1609.34 / $mpg);
         $cheapestStation['is_optimal'] = true;
+        $cheapestStation['first_in_range'] = false;
+        $cheapestStation['second_in_range'] = false;
 
         // 🚀 6️⃣ Return All Fuel Stations With Updated Flags
         return array_map(function ($station) use ($firstStation, $secondStation, $cheapestStation) {
@@ -1132,6 +1134,7 @@ dd($result);
             return $station;
         }, $fuelStations);
     }
+
 
 
 
