@@ -1044,19 +1044,17 @@ dd($result);
         $vehicleRange = $mpg * $totalFuel;
         $distanceToCheapest = $this->haversineDistance($startLat, $startLng, $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
 
-        // ✅ If Truck Can Reach the Cheapest Station Directly, Buy Fuel Only There
+        // ✅ If Truck Can Reach Cheapest Directly, Set All Flags To True
         if ($vehicleRange >= $distanceToCheapest) {
             $cheapestStation['gallons_to_buy'] = max(0, ($this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $endLat, $endLng) / 1609.34) / $mpg);
-            $cheapestStation['first_in_range'] = false;
-            $cheapestStation['second_in_range'] = false;
+            $cheapestStation['first_in_range'] = true;
+            $cheapestStation['second_in_range'] = true;
             $cheapestStation['is_optimal'] = true;
 
-            return array_map(function ($station) use ($cheapestStation) {
-                return $station['fuel_station_name'] === $cheapestStation['fuel_station_name'] ? $cheapestStation : $station;
-            }, $fuelStations);
+            return array_map(fn($s) => $s['fuel_station_name'] === $cheapestStation['fuel_station_name'] ? $cheapestStation : $s, $fuelStations);
         }
 
-        // 🚀 3️⃣ Truck Cannot Reach Cheapest: Find First and Second Optimal Stations
+        // 🚀 3️⃣ Find First and Second Optimal Stations
         $firstStation = null;
         $secondStation = null;
 
@@ -1070,19 +1068,18 @@ dd($result);
             }
         }
 
-        // 🚀 4️⃣ Find Second Optimal Station Between First & Cheapest
+        // 🚀 4️⃣ Find Second Optimal Station
         if ($firstStation) {
             foreach ($fuelStations as &$station) {
                 $distanceFromFirst = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
                 $distanceFromStart = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
                 $distanceToCheapest = $this->haversineDistance($station['ftp_lat'], $station['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
-                $distanceFirstToCheapest = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
 
                 if (
                     $station['price'] < $firstStation['price'] &&
                     $station['price'] > $cheapestStation['price'] &&
                     $distanceFromStart > ($this->haversineDistance($startLat, $startLng, $firstStation['ftp_lat'], $firstStation['ftp_lng']) / 1609.34) &&
-                    $distanceToCheapest < $distanceFirstToCheapest
+                    $distanceToCheapest < $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34
                 ) {
                     $secondStation = &$station;
                     $secondStation['second_in_range'] = true;
@@ -1117,10 +1114,17 @@ dd($result);
             $endLng
         ) / 1609.34 / $mpg);
         $cheapestStation['is_optimal'] = true;
-        $cheapestStation['first_in_range'] = false;
-        $cheapestStation['second_in_range'] = false;
 
-        // 🚀 6️⃣ Return All Fuel Stations With Updated Flags
+        // 🚀 6️⃣ If No First or Second In-Range Station Exists, Set All Flags True for Cheapest
+        if (!$firstStation && !$secondStation) {
+            $cheapestStation['first_in_range'] = true;
+            $cheapestStation['second_in_range'] = true;
+        } else {
+            $cheapestStation['first_in_range'] = false;
+            $cheapestStation['second_in_range'] = false;
+        }
+
+        // 🚀 7️⃣ Return All Fuel Stations With Updated Flags
         return array_map(function ($station) use ($firstStation, $secondStation, $cheapestStation) {
             if ($station['fuel_station_name'] === $firstStation['fuel_station_name']) {
                 return $firstStation;
