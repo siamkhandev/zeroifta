@@ -1056,37 +1056,24 @@ dd($result);
 
         // 🚀 4️⃣ Find Second Optimal Station Between First & Cheapest
         if ($firstStation) {
-            $secondStation = null; // Initialize second station
             foreach ($fuelStations as $station) {
                 $distanceFromFirst = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
                 $distanceFromStart = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
                 $distanceToCheapest = $this->haversineDistance($station['ftp_lat'], $station['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
-
-                // Debug: Print station details
-                dump([
-                    'Station' => $station['fuel_station_name'],
-                    'Price' => $station['price'],
-                    'DistanceFromFirst' => $distanceFromFirst,
-                    'DistanceFromStart' => $distanceFromStart,
-                    'DistanceToCheapest' => $distanceToCheapest
-                ]);
+                $distanceFirstToCheapest = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
 
                 if (
                     $station['price'] < $firstStation['price'] &&
                     $station['price'] > $cheapestStation['price'] &&
                     $distanceFromStart > ($this->haversineDistance($startLat, $startLng, $firstStation['ftp_lat'], $firstStation['ftp_lng']) / 1609.34) &&
-                    $distanceToCheapest < ($this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34)
+                    $distanceToCheapest < $distanceFirstToCheapest
                 ) {
                     $secondStation = $station;
-                    break; // Exit loop when second station is found
+                    dump("Second station selected:", $secondStation);
+                    break; // Exit loop immediately after finding the first valid second station
                 }
             }
         }
-
-        // Debugging output
-        dump("First Station:", $firstStation);
-        dump("Cheapest Station:", $cheapestStation);
-        dump("Second Station:", $secondStation);
 
         dd($secondStation);
         // 🚀 5️⃣ Calculate Fuel Needed at Each Stop
