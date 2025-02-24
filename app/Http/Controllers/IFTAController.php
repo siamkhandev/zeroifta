@@ -1073,7 +1073,8 @@ dd($result);
         $firstStation['first_in_range'] = true;
 
         // Calculate remaining fuel after reaching the first station
-        $remainingFuelAfterFirst = $currentFuel - ($firstStation['distance'] / $mpg);
+        $distanceToFirstStation = $reachableStations[0]['distance']; // Access distance from $reachableStations
+        $remainingFuelAfterFirst = $currentFuel - ($distanceToFirstStation / $mpg);
 
         // Calculate fuel required to reach the second station from the first station
         if (count($reachableStations) > 1) {
