@@ -1053,7 +1053,7 @@ dd($result);
                 break;
             }
         }
-
+        dd($firstStation);
         // 🚀 4️⃣ Find Second Optimal Station Between First & Cheapest
         if ($firstStation) {
             foreach ($fuelStations as $station) {
