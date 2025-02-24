@@ -853,8 +853,8 @@ class IFTAController extends Controller
                  $currentFuel =15;
                  $reserve_fuel = 2;
                 $totalFuel = $currentFuel+$reserve_fuel;
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $fuel_stations, $endLat, $endLng);
-dd($result);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $matchingRecords, $endLat, $endLng);
+
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
