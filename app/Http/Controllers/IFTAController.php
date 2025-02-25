@@ -865,7 +865,7 @@ class IFTAController extends Controller
     function findOptimalFuelStation($startLat, $startLng, $mpg, $totalFuel, $fuelStations, $endLat, $endLng)
     {
         $vehicleRange = $mpg * $totalFuel;
-        $tripDistance = $this->haversineDistance($startLat, $startLng, $endLat, $endLng) / 1609.34; // Convert to miles
+        $tripDistance = $this->haversineDistance($startLat, $startLng, $endLat, $endLng) / 1609.34; // Convert meters to miles
 
         // ✅ If the vehicle can reach the destination without refueling, return with all flags false.
         if ($vehicleRange >= $tripDistance) {
@@ -899,43 +899,44 @@ class IFTAController extends Controller
             return array_map(fn($s) => $s['fuel_station_name'] === $cheapestStation['fuel_station_name'] ? $cheapestStation : $s, $fuelStations);
         }
 
-        // 🚀 Find the best in-range fuel stations
-        $inRangeStations = collect($fuelStations)->filter(function ($station) use ($startLat, $startLng, $vehicleRange) {
-            $distance = $this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
-            return $distance <= $vehicleRange;
-        });
+        // 🚀 Find the first in-range station
+        $firstInRange = collect($fuelStations)
+            ->filter(fn($station) => ($this->haversineDistance($startLat, $startLng, $station['ftp_lat'], $station['ftp_lng']) / 1609.34) <= $vehicleRange)
+            ->sortBy('price')
+            ->first();
 
-        if ($inRangeStations->isEmpty()) {
-            return $fuelStations; // No in-range stations found
+        if (!$firstInRange) {
+            return $fuelStations; // No valid first in-range station found
         }
-
-        // Sort stations by price first, then by farthest distance
-        $optimalStations = $inRangeStations->sortBy([['price', 'asc'], ['ftp_lat', 'desc'], ['ftp_lng', 'desc']])->take(3)->values();
-
-        // Pick the most optimal station
-        $firstStation = $optimalStations->first();
-        $firstStation['first_in_range'] = true;
-        $firstStation['is_optimal'] = true;
-        $fuelNeededFromFirstStation = max(0, ($this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $endLat, $endLng) / 1609.34) / $mpg);
-        $firstStation['gallons_to_buy'] = $fuelNeededFromFirstStation;
 
         // 🚀 Check if there is a cheaper station between first_in_range and cheapestStation
-        $hasCheaperInBetween = collect($fuelStations)->filter(function ($station) use ($firstStation, $cheapestStation) {
-            $stationDistance = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
-            $cheapestDistance = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
-            return $stationDistance < $cheapestDistance && $station['price'] < $firstStation['price'];
+        $hasCheaperInBetween = collect($fuelStations)->filter(function ($station) use ($firstInRange, $cheapestStation) {
+            $stationDistance = $this->haversineDistance($firstInRange['ftp_lat'], $firstInRange['ftp_lng'], $station['ftp_lat'], $station['ftp_lng']) / 1609.34;
+            $cheapestDistance = $this->haversineDistance($firstInRange['ftp_lat'], $firstInRange['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
+            return $stationDistance < $cheapestDistance && $station['price'] < $firstInRange['price'];
         })->isNotEmpty();
 
-        // ✅ If no cheaper station exists or all in-between stations are more expensive, mark second_in_range on firstStation
+        // ✅ If no cheaper station exists between first_in_range and cheapest, mark first_in_range and second_in_range
         if (!$hasCheaperInBetween) {
-            $firstStation['second_in_range'] = true;
+            $firstInRange['first_in_range'] = true;
+            $firstInRange['second_in_range'] = true;
         }
 
+        // 🚀 Mark the cheapest station as the only optimal stop
+        $cheapestStation['is_optimal'] = true;
+
         // 🚀 Update fuel stations data
-        return array_map(function ($station) use ($firstStation) {
-            return $station['fuel_station_name'] === $firstStation['fuel_station_name'] ? $firstStation : $station;
+        return array_map(function ($station) use ($firstInRange, $cheapestStation) {
+            if ($station['fuel_station_name'] === $firstInRange['fuel_station_name']) {
+                return $firstInRange;
+            }
+            if ($station['fuel_station_name'] === $cheapestStation['fuel_station_name']) {
+                return $cheapestStation;
+            }
+            return $station;
         }, $fuelStations);
     }
+
 
 
 
