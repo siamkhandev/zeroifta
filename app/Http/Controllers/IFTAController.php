@@ -998,7 +998,6 @@ class IFTAController extends Controller
 
 
 
-
     private function decodePolyline($encoded)
     {
         $points = [];
