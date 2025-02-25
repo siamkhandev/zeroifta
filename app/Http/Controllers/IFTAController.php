@@ -458,22 +458,14 @@ class IFTAController extends Controller
         if ($vehicle_id) {
             $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
         }
-        // $startLat = $request->start_lat;
-        // $startLng = $request->start_lng;
-        // $endLat = $request->end_lat;
-        // $endLng = $request->end_lng;
-        // $truckMpg = $request->truck_mpg;
-        // $fuelTankCapacity = $request->fuel_tank_capacity;
-        // $currentFuel = $request->total_gallons_present;
-        $reserve_fuel = $request->reserve_fuel;
-                $startLat = '34.5362184';
-                $startLng = '-117.2927641';
-                $endLat = '36.171563';
-                 $endLng = '-115.1391009';
-                 $truckMpg = 5;
-                 $currentFuel =25;
-                 $reserve_fuel = 0;
-                $totalFuel = $currentFuel+$reserve_fuel;
+        $startLat = $request->start_lat;
+        $startLng = $request->start_lng;
+        $endLat = $request->end_lat;
+        $endLng = $request->end_lng;
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
+
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
@@ -542,320 +534,161 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-                dd($matchingRecords);
-                $fuel_stations = [
-                    [
-                        "fuel_station_name" => "QUICK FUEL HESPERIA 4402",
-                        "ftp_lat" => "34.4201",
-                        "ftp_lng" => "-117.3034",
-                        "lastprice" => 4.999,
-                        "price" => 4.999,
-                        "discount" => 0,
-                        "address" => "9269 SANTA FE",
-                        "IFTA_tax" => 1.023,
 
-                    ],
-                    [
-                        "fuel_station_name" => "Pilot TC #381",
-                        "ftp_lat" => "34.4099",
-                        "ftp_lng" => "-117.3991",
+                $fuel_stations = [
+                   [
+                        "fuel_station_name" => "Pilot TC #282",
+                        "ftp_lat" => "34.8547",
+                        "ftp_lng" => "-117.0882",
                         "lastprice" => 4.959,
                         "price" => 4.959,
-                        "discount" => 0,
-                        "address" => "8701 US -395",
+                        "discount" => 0.0,
+                        "address" => "2591 Commerce Pkwy.",
                         "IFTA_tax" => 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name" => "Pilot TC #1328",
-                        "ftp_lat" => "34.1375",
-                        "ftp_lng" => "-117.4274",
-                        "lastprice" => 4.939,
-                        "price" => 4.939,
-                        "discount" => 0,
-                        "address" => "2325 Sierra Lakes Pkwy",
+                      ]
+                      ,[
+                        "fuel_station_name" => "T/A - Barstow",
+                        "ftp_lat" => "34.8513",
+                        "ftp_lng" => "-117.0831",
+                        "lastprice" => 4.999,
+                        "price" => 4.859,
+                        "discount" => 0.14,
+                        "address" => "2930 Lenwood Rd.",
                         "IFTA_tax" => 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name" => "JACKSONS #0212",
-                        "ftp_lat" => "34.1382",
-                        "ftp_lng" => "-117.4201",
+                      ]
+                     , [
+                        "fuel_station_name" => "Love's #374",
+                        "ftp_lat" => "34.8524",
+                        "ftp_lng" => "-117.0833",
+                        "lastprice" => 4.949,
+                        "price" => 4.894,
+                        "discount" => 0.055,
+                        "address" => "2974 Lenwood Rd",
+                        "IFTA_tax" => 1.023,
+                      ]
+                      , [
+                        "fuel_station_name" => "Flying J #614",
+                        "ftp_lat" => "34.8548",
+                        "ftp_lng" => "-117.0830",
+                        "lastprice" => 4.959,
+                        "price" => 4.959,
+                        "discount" => 0.0,
+                        "address" => "2611 Fisher Blvd.",
+                        "IFTA_tax" => 1.023,
+                      ]
+                      ,[
+                        "fuel_station_name" => "QUICK FUEL BARSTOW 4404",
+                        "ftp_lat" => "34.8906",
+                        "ftp_lng" => "-117.0657",
+                        "lastprice" => 4.999,
+                        "price" => 4.999,
+                        "discount" => 0.0,
+                        "address" => "2370 W MAIN ST",
+                        "IFTA_tax" => 1.023,
+                      ]
+                      ,[
+                        "fuel_station_name" => "The Travel Center",
+                        "ftp_lat" => "34.8924",
+                        "ftp_lng" => "-117.0546",
+                        "lastprice" => 4.149,
+                        "price" => 4.149,
+                        "discount" => 0.0,
+                        "address" => "2191 West Main St.",
+                        "IFTA_tax" => 1.023,
+                      ]
+                    ,[
+                        "fuel_station_name" => "Mohsen Oil #5",
+                        "ftp_lat" => "34.9012",
+                        "ftp_lng" => "-116.8866",
+                        "lastprice" => 4.899,
+                        "price" => 4.899,
+                        "discount" => 0.0,
+                        "address" => "35680 Daggett Yermo Road",
+                        "IFTA_tax" => 1.023,
+                    ]
+                      , [
+                        "fuel_station_name" => "Pilot TC #1272",
+                        "ftp_lat" => "34.9041",
+                        "ftp_lng" => "-116.8873",
+                        "lastprice" => 4.959,
+                        "price" => 4.959,
+                        "discount" => 0.0,
+                        "address" => "35858 Ghost Town Rd",
+                        "IFTA_tax" => 1.023,
+                      ]
+                      ,[
+                        "fuel_station_name" => "Terrible's 412",
+                        "ftp_lat" => "35.5428",
+                        "ftp_lng" => "-115.4161",
                         "lastprice" => 4.599,
                         "price" => 4.599,
-                        "discount" => 0,
-                        "address" => "2281 W CASMALIA ST",
+                        "discount" => 0.0,
+                        "address" => "101620 Yates Well Rd",
                         "IFTA_tax" => 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "Noil Fontana",
-                        "ftp_lat"=> "34.0779",
-                        "ftp_lng"=> "-117.4848",
-                        "lastprice"=> 4.649,
-                        "price"=> 4.649,
-                        "discount"=> 0,
-                        "address"=> "9668 Redwood Ave",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "A-Z Fuel Stop",
-                        "ftp_lat"=> "34.0772",
-                        "ftp_lng"=> "-117.4881",
-                        "lastprice"=> 4.699,
-                        "price"=> 4.699,
-                        "discount"=> 0,
-                        "address"=> "14529 San Bernardino Ave",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "QUICK FUEL FONTANA 468",
-                        "ftp_lat"=> "34.0753",
-                        "ftp_lng"=> "-117.4895",
-                        "lastprice"=> 5.039,
-                        "price"=> 5.039,
-                        "discount"=> 0,
-                        "address"=> "9808 Cherry Ave",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "Valley Blvd Truckstop",
-                        "ftp_lat"=> "34.0702",
-                        "ftp_lng"=> "-117.4533",
-                        "lastprice"=> 2.699,
-                        "price"=> 2.699,
-                        "discount"=> 0,
-                        "address"=> "16111 Valley Blvd.",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "SC Fuels Fontana",
-                        "ftp_lat"=> "34.0712",
-                        "ftp_lng"=> "-117.5043",
-                        "lastprice"=> 5.199,
-                        "price"=> 5.199,
-                        "discount"=> 0,
-                        "address"=> "13800 Valley Blvd",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "Truck Town Truckstop",
-                        "ftp_lat"=> "34.0678",
-                        "ftp_lng"=> "-117.4890",
-                        "lastprice"=> 6.59,
-                        "price"=> 6.59,
-                        "discount"=> 0,
-                        "address"=> "10238 Cherry Avenue",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "SC FUELS FONTANA",
-                        "ftp_lat"=> "34.0624",
-                        "ftp_lng"=> "-117.4761",
-                        "lastprice"=> 4.879,
-                        "price"=> 4.879,
-                        "discount"=> 0,
-                        "address"=> "15087 Slover Ave",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "Three Sisters Truckstop",
-                        "ftp_lat"=> "34.0630",
-                        "ftp_lng"=> "-117.4911",
-                        "lastprice"=> 4.799,
-                        "price"=> 4.799,
-                        "discount"=> 0,
-                        "address"=> "14416 Slover Ave",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "Pilot TC #1177",
-                        "ftp_lat"=> "34.0646",
-                        "ftp_lng"=> "-117.4929",
-                        "lastprice"=> 4.939,
-                        "price"=> 4.939,
-                        "discount"=> 0,
-                        "address"=> "14320 Slover Ave",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                        "fuel_station_name"=> "SC Fuels Rancho Cucamonga",
-                        "ftp_lat"=> "34.0842",
-                        "ftp_lng"=> "-117.5455",
-                        "lastprice"=> 4.939,
-                        "price"=> 4.939,
-                        "discount"=> 0,
-                        "address"=> "9291 Charles Smith Ave",
-                        "IFTA_tax"=> 1.023,
-
-                    ],
-                    [
-                       "fuel_station_name"=> "QUICK FUEL ONTARIO 409",
-                        "ftp_lat"=> "34.0643",
-                        "ftp_lng"=> "-117.5666",
-                        "lastprice"=> 4.999,
-                        "price"=> 4.999,
-                        "discount"=> 0,
-                        "address"=> "3901 E Guasti Rd",
-                        "IFTA_tax"=> 1.023,
-
-
-                    ],
-                    [
-                        "fuel_station_name"=> "T\/A - Ontario West",
-                        "ftp_lat"=> "34.0641",
-                        "ftp_lng"=> "-117.5595",
-                        "lastprice"=> 4.939,
-                        "price"=> 4.799,
-                        "discount"=> 0.14,
-                        "address"=> "4265 E. Guasti Rd.",
-                        "IFTA_tax"=> 1.023,
-
-                     ],
-                     [
-                        "fuel_station_name"=> "Petro Ontario #026",
-                        "ftp_lat"=> "34.0642",
-                        "ftp_lng"=> "-117.5576",
-                        "lastprice"=> 4.939,
-                        "price"=> 4.799,
-                        "discount"=> 0.14,
-                        "address"=> "4325 E Guasti Rd",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "Fontana T\/S Center",
-                            "ftp_lat"=> "34.0467",
-                            "ftp_lng"=> "-117.4955",
-                            "lastprice"=> 4.799,
-                            "price"=> 4.799,
-                            "discount"=> 0,
-                            "address"=> "14264 Almond Ave",
-                            "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "QUICK FUEL MIRA LOMA 462",
-                        "ftp_lat"=> "34.0301",
-                        "ftp_lng"=> "-117.5265",
-                        "lastprice"=> 6.669,
-                        "price"=> 6.669,
-                        "discount"=> 0,
-                        "address"=> "11074 Inland Ave",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC Fuels Ontario",
-                        "ftp_lat"=> "34.0563",
-                        "ftp_lng"=> "-117.6679",
-                        "lastprice"=> 4.659,
-                        "price"=> 4.659,
-                        "discount"=> 0,
-                        "address"=> "1008 W Mission Blvd",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC FUELS MONTCLAIR",
-                        "ftp_lat"=> "34.0921",
-                        "ftp_lng"=> "-117.7003",
-                        "lastprice"=> 4.959,
-                        "price"=> 4.959,
-                        "discount"=> 0,
-                        "address"=> "4799 Arrow Hwy",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC Fuels Chino",
-                        "ftp_lat"=> "34.0258",
-                        "ftp_lng"=> "-117.7285",
-                        "lastprice"=> 5.499,
-                        "price"=> 5.499,
-                        "discount"=> 0,
-                        "address"=> "3501 County Rd",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC Fuels Azusa",
-                        "ftp_lat"=> "34.1126",
-                        "ftp_lng"=> "-117.9261",
-                        "lastprice"=> 4.999,
-                        "price"=> 4.999,
-                        "discount"=> 0,
-                        "address"=> "575 S Vincent Ave",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC FUELS IRWINDALE",
-                        "ftp_lat"=> "34.1128",
-                        "ftp_lng"=> "-117.9899",
-                        "lastprice"=> 4.959,
-                        "price"=> 4.959,
-                        "discount"=> 0,
-                        "address"=> "1200 Arrow Hwy",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC Fuels Irwindale",
-                        "ftp_lat"=> "34.1112",
-                        "ftp_lng"=> "-117.9920",
-                        "lastprice"=> 5.399,
-                        "price"=> 5.399,
-                        "discount"=> 0,
-                        "address"=> "600 Live Oak Ave",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC Fuels South El Monte",
-                        "ftp_lat"=> "34.0448",
-                        "ftp_lng"=> "-118.0314",
-                        "lastprice"=> 4.999,
-                        "price"=> 4.999,
-                        "discount"=> 0,
-                        "address"=> "1903 Durfee Ave",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "SC Fuels Hacienda Heights",
-                        "ftp_lat"=> "34.0126",
-                        "ftp_lng"=> "-117.9693",
-                        "lastprice"=> 4.999,
-                        "price"=> 4.999,
-                        "discount"=> 0,
-                        "address"=> "15508 Gale Ave",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "Bluff Road Truck Stop",
-                        "ftp_lat"=> "33.9791",
-                        "ftp_lng"=> "-118.1190",
-                        "lastprice"=> 4.999,
-                        "price"=> 4.999,
-                        "discount"=> 0,
-                        "address"=> "1601 S Bluff Rd",
-                        "IFTA_tax"=> 1.023,
-                     ],
-                     [
-                        "fuel_station_name"=> "Commerce Truckstop",
-                        "ftp_lat"=> "34.0053",
-                        "ftp_lng"=> "-118.1758",
-                        "lastprice"=> 5.099,
-                        "price"=> 5.099,
-                        "discount"=> 0,
-                        "address"=> "4560 E Washington Blvd",
-                        "IFTA_tax"=> 1.023,
-                     ],
+                      ]
+                    ,[
+                        "fuel_station_name" => "Flying J #513",
+                        "ftp_lat" => "35.6095",
+                        "ftp_lng" => "-115.3910",
+                        "lastprice" => 3.849,
+                        "price" => 3.849,
+                        "discount" => 0.0,
+                        "address" => "115 West Primm Boulevard",
+                        "IFTA_tax" => 0.27,
+                      ]
+                      , [
+                        "fuel_station_name" => "One9 #1395",
+                        "ftp_lat" => "35.7800",
+                        "ftp_lng" => "-115.3249",
+                        "lastprice" => 3.559,
+                        "price" => 3.559,
+                        "discount" => 0.0,
+                        "address" => "1 Main St",
+                        "IFTA_tax" => 0.27,
+                      ],
+                      [
+                        "fuel_station_name" => "Vegas Valley Travel Ctr",
+                        "ftp_lat" => "35.9658",
+                        "ftp_lng" => "-115.1725",
+                        "lastprice" => 3.699,
+                        "price" => 3.699,
+                        "discount" => 0.0,
+                        "address" => "4191 Saint Rose Pkwy",
+                        "IFTA_tax" => 0.27,
+                      ],
+                      [
+                        "fuel_station_name" => "T/A - Las Vegas",
+                        "ftp_lat" => "36.0433",
+                        "ftp_lng" => "-115.1864",
+                        "lastprice" => 3.849,
+                        "price" => 3.709,
+                        "discount" => 0.14,
+                        "address" => "8050 Dean Martin Dr",
+                        "IFTA_tax" => 0.27,
+                      ],
+                      [
+                        "fuel_station_name" => "Tropicana Sta/Wild Wild T",
+                        "ftp_lat" => "36.1009",
+                        "ftp_lng" => "-115.1840",
+                        "lastprice" => 3.969,
+                        "price" => 3.969,
+                        "discount" => 0.0,
+                        "address" => "3330 W Tropicana Ave",
+                        "IFTA_tax" => 0.27,
+                      ]
 
 
                 ];
-
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $matchingRecords, $endLat, $endLng);
+                $reserve_fuel = $request->reserve_fuel;
+                $startLat = '34.5362184';
+                $startLng = '-117.2927641';
+                $endLat = '36.171563';
+                 $endLng = '-115.1391009';
+                 $truckMpg = 5;
+                 $currentFuel =25;
+                 $reserve_fuel = 0;
+                $totalFuel = $currentFuel+$reserve_fuel;
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $fuel_stations, $endLat, $endLng);
                 dd($result);
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
