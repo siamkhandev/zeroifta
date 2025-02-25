@@ -458,13 +458,21 @@ class IFTAController extends Controller
         if ($vehicle_id) {
             $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
         }
-        $startLat = $request->start_lat;
-        $startLng = $request->start_lng;
-        $endLat = $request->end_lat;
-        $endLng = $request->end_lng;
-        $truckMpg = $request->truck_mpg;
-        $fuelTankCapacity = $request->fuel_tank_capacity;
-        $currentFuel = $request->total_gallons_present;
+        // $startLat = $request->start_lat;
+        // $startLng = $request->start_lng;
+        // $endLat = $request->end_lat;
+        // $endLng = $request->end_lng;
+        // $truckMpg = $request->truck_mpg;
+        // $fuelTankCapacity = $request->fuel_tank_capacity;
+        // $currentFuel = $request->total_gallons_present;
+
+        $startLat = '34.5362184';
+                $startLng = '-117.2927641';
+                $endLat = '36.171563';
+                 $endLng = '-115.1391009';
+                 $truckMpg = 6;
+                 $currentFuel =15;
+                 $reserve_fuel = 0;
 
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
@@ -534,7 +542,7 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-
+                dd($matchingRecords);
                 $fuel_stations = [
                    [
                         "fuel_station_name" => "Pilot TC #282",
@@ -680,13 +688,7 @@ class IFTAController extends Controller
 
                 ];
                 $reserve_fuel = $request->reserve_fuel;
-                // $startLat = '34.5362184';
-                // $startLng = '-117.2927641';
-                // $endLat = '36.171563';
-                //  $endLng = '-115.1391009';
-                //  $truckMpg = 5;
-                //  $currentFuel =25;
-                //  $reserve_fuel = 0;
+                
                 $totalFuel = $currentFuel+$reserve_fuel;
                 $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $matchingRecords, $endLat, $endLng);
                 //dd($result);
