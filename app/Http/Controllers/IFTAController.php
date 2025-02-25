@@ -458,13 +458,13 @@ class IFTAController extends Controller
         if ($vehicle_id) {
             $validatedData['vehicle_id'] = $vehicle_id->vehicle_id;
         }
-        // $startLat = $request->start_lat;
-        // $startLng = $request->start_lng;
-        // $endLat = $request->end_lat;
-        // $endLng = $request->end_lng;
-        // $truckMpg = $request->truck_mpg;
-        // $fuelTankCapacity = $request->fuel_tank_capacity;
-        // $currentFuel = $request->total_gallons_present;
+        $startLat = $request->start_lat;
+        $startLng = $request->start_lng;
+        $endLat = $request->end_lat;
+        $endLng = $request->end_lng;
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
 
        
 
