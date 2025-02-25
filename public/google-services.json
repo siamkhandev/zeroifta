@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "47332106822",
+    "project_id": "zeroifta-4d9af",
+    "storage_bucket": "zeroifta-4d9af.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47332106822:android:d867b89e4abc929d6a2047",
+        "android_client_info": {
+          "package_name": "com.zeroifta.truckerApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgyJlg5NjYyOAMNkjQpC3m8vTv-sVVt_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
