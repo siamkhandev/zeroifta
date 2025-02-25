@@ -542,6 +542,7 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+                dd($matchingRecords);
                 $fuel_stations = [
                     [
                         "fuel_station_name" => "QUICK FUEL HESPERIA 4402",
