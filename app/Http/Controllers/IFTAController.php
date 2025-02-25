@@ -579,7 +579,7 @@ class IFTAController extends Controller
                         "ftp_lat" => "34.8906",
                         "ftp_lng" => "-117.0657",
                         "lastprice" => 4.999,
-                        "price" => 4.999,
+                        "price" => 3.699,
                         "discount" => 0.0,
                         "address" => "2370 W MAIN ST",
                         "IFTA_tax" => 1.023,
