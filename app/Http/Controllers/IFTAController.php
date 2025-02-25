@@ -970,23 +970,23 @@ class IFTAController extends Controller
             $fuelRequiredToOptimal = $distanceToOptimalStation / $mpg;
             $secondStation['gallons_to_buy'] = $fuelRequiredToOptimal;
         } else {
-            // If no second station is found, go directly to the cheapest station from the first station
+            // If no second station is found, mark the cheapest station as second_in_range and is_optimal
+            $cheapestStation['second_in_range'] = true;
+            $cheapestStation['is_optimal'] = true;
+
+            // Calculate fuel required to reach the cheapest station from the first station
             $distanceToOptimalStation = $this->haversineDistance($firstStation['ftp_lat'], $firstStation['ftp_lng'], $cheapestStation['ftp_lat'], $cheapestStation['ftp_lng']) / 1609.34;
             $fuelRequiredToOptimal = $distanceToOptimalStation / $mpg;
             $firstStation['gallons_to_buy'] = $fuelRequiredToOptimal;
         }
 
-        // Step 3: Mark the cheapest station as optimal
-        $cheapestStation['is_optimal'] = true;
-
-        // Calculate fuel required to reach the destination from the cheapest station
+        // Step 3: Calculate fuel required to reach the destination from the cheapest station
         $distanceToDestination = $this->haversineDistance($cheapestStation['ftp_lat'], $cheapestStation['ftp_lng'], $destinationLat, $destinationLng) / 1609.34;
         $fuelRequiredToDestination = $distanceToDestination / $mpg;
         $cheapestStation['gallons_to_buy'] = $fuelRequiredToDestination;
 
         return $fuelStations;
     }
-
 
 
 
