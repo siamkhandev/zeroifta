@@ -466,13 +466,7 @@ class IFTAController extends Controller
         // $fuelTankCapacity = $request->fuel_tank_capacity;
         // $currentFuel = $request->total_gallons_present;
 
-        $startLat = '34.5362184';
-                $startLng = '-117.2927641';
-                $endLat = '36.171563';
-                 $endLng = '-115.1391009';
-                 $truckMpg = 6;
-                 $currentFuel =15;
-                 $reserve_fuel = 0;
+       
 
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
@@ -542,9 +536,9 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-                dd($matchingRecords);
+                
                 $fuel_stations = [
-                   [
+                     [
                         "fuel_station_name" => "Pilot TC #282",
                         "ftp_lat" => "34.8547",
                         "ftp_lng" => "-117.0882",
@@ -553,8 +547,7 @@ class IFTAController extends Controller
                         "discount" => 0.0,
                         "address" => "2591 Commerce Pkwy.",
                         "IFTA_tax" => 1.023,
-                      ]
-                      ,[
+                    ], [
                         "fuel_station_name" => "T/A - Barstow",
                         "ftp_lat" => "34.8513",
                         "ftp_lng" => "-117.0831",
@@ -563,8 +556,7 @@ class IFTAController extends Controller
                         "discount" => 0.14,
                         "address" => "2930 Lenwood Rd.",
                         "IFTA_tax" => 1.023,
-                      ]
-                     , [
+                      ], [
                         "fuel_station_name" => "Love's #374",
                         "ftp_lat" => "34.8524",
                         "ftp_lng" => "-117.0833",
@@ -573,8 +565,7 @@ class IFTAController extends Controller
                         "discount" => 0.055,
                         "address" => "2974 Lenwood Rd",
                         "IFTA_tax" => 1.023,
-                      ]
-                      , [
+                      ], [
                         "fuel_station_name" => "Flying J #614",
                         "ftp_lat" => "34.8548",
                         "ftp_lng" => "-117.0830",
@@ -583,8 +574,7 @@ class IFTAController extends Controller
                         "discount" => 0.0,
                         "address" => "2611 Fisher Blvd.",
                         "IFTA_tax" => 1.023,
-                      ]
-                      ,[
+                      ],[
                         "fuel_station_name" => "QUICK FUEL BARSTOW 4404",
                         "ftp_lat" => "34.8906",
                         "ftp_lng" => "-117.0657",
@@ -594,7 +584,7 @@ class IFTAController extends Controller
                         "address" => "2370 W MAIN ST",
                         "IFTA_tax" => 1.023,
                       ]
-                      ,[
+                      , [
                         "fuel_station_name" => "The Travel Center",
                         "ftp_lat" => "34.8924",
                         "ftp_lng" => "-117.0546",
@@ -604,17 +594,7 @@ class IFTAController extends Controller
                         "address" => "2191 West Main St.",
                         "IFTA_tax" => 1.023,
                       ]
-                    ,[
-                        "fuel_station_name" => "Mohsen Oil #5",
-                        "ftp_lat" => "34.9012",
-                        "ftp_lng" => "-116.8866",
-                        "lastprice" => 4.899,
-                        "price" => 4.899,
-                        "discount" => 0.0,
-                        "address" => "35680 Daggett Yermo Road",
-                        "IFTA_tax" => 1.023,
-                    ]
-                      , [
+                     , [
                         "fuel_station_name" => "Pilot TC #1272",
                         "ftp_lat" => "34.9041",
                         "ftp_lng" => "-116.8873",
@@ -624,7 +604,17 @@ class IFTAController extends Controller
                         "address" => "35858 Ghost Town Rd",
                         "IFTA_tax" => 1.023,
                       ]
-                      ,[
+                      , [
+                        "fuel_station_name" => "Mohsen Oil #5",
+                        "ftp_lat" => "34.9012",
+                        "ftp_lng" => "-116.8866",
+                        "lastprice" => 4.899,
+                        "price" => 4.899,
+                        "discount" => 0.0,
+                        "address" => "35680 Daggett Yermo Road",
+                        "IFTA_tax" => 1.023,
+                      ]
+                      , [
                         "fuel_station_name" => "Terrible's 412",
                         "ftp_lat" => "35.5428",
                         "ftp_lng" => "-115.4161",
@@ -634,7 +624,7 @@ class IFTAController extends Controller
                         "address" => "101620 Yates Well Rd",
                         "IFTA_tax" => 1.023,
                       ]
-                    ,[
+                      , [
                         "fuel_station_name" => "Flying J #513",
                         "ftp_lat" => "35.6095",
                         "ftp_lng" => "-115.3910",
@@ -644,7 +634,7 @@ class IFTAController extends Controller
                         "address" => "115 West Primm Boulevard",
                         "IFTA_tax" => 0.27,
                       ]
-                      , [
+                      ,[
                         "fuel_station_name" => "One9 #1395",
                         "ftp_lat" => "35.7800",
                         "ftp_lng" => "-115.3249",
@@ -653,8 +643,8 @@ class IFTAController extends Controller
                         "discount" => 0.0,
                         "address" => "1 Main St",
                         "IFTA_tax" => 0.27,
-                      ],
-                      [
+                      ]
+                      ,[
                         "fuel_station_name" => "Vegas Valley Travel Ctr",
                         "ftp_lat" => "35.9658",
                         "ftp_lng" => "-115.1725",
@@ -663,8 +653,8 @@ class IFTAController extends Controller
                         "discount" => 0.0,
                         "address" => "4191 Saint Rose Pkwy",
                         "IFTA_tax" => 0.27,
-                      ],
-                      [
+                      ]
+                      , [
                         "fuel_station_name" => "T/A - Las Vegas",
                         "ftp_lat" => "36.0433",
                         "ftp_lng" => "-115.1864",
@@ -673,8 +663,8 @@ class IFTAController extends Controller
                         "discount" => 0.14,
                         "address" => "8050 Dean Martin Dr",
                         "IFTA_tax" => 0.27,
-                      ],
-                      [
+                      ]
+                      ,[
                         "fuel_station_name" => "Tropicana Sta/Wild Wild T",
                         "ftp_lat" => "36.1009",
                         "ftp_lng" => "-115.1840",
@@ -688,10 +678,16 @@ class IFTAController extends Controller
 
                 ];
                 $reserve_fuel = $request->reserve_fuel;
-                
+                $startLat = '34.5362184';
+                $startLng = '-117.2927641';
+                $endLat = '36.171563';
+                 $endLng = '-115.1391009';
+                 $truckMpg = 6;
+                 $currentFuel =15;
+                 $reserve_fuel = 0;
                 $totalFuel = $currentFuel+$reserve_fuel;
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $matchingRecords, $endLat, $endLng);
-                //dd($result);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $fuel_stations, $endLat, $endLng);
+                dd($result);
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
