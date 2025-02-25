@@ -209,7 +209,7 @@ class IndependentTruckerController extends Controller
                 'status' => 422,
                 'message' => 'This vehicle ID is already associated with a different VIN.',
                 'data' => (object)[],
-            ]);
+            ],422);
         }
         $vehicle = new Vehicle();
         $vehicle->vehicle_type = $request->vehicle_type;
@@ -242,7 +242,7 @@ class IndependentTruckerController extends Controller
         $driver_vehicle->company_id = $request->driver_id;
         $driver_vehicle->save();
         $vehicle->vehicle_image = url('vehicles/' . $vehicle->vehicle_image);
-        return response()->json(['status'=>200,'message'=>'Vehicle add successfully','data'=>$vehicle]);
+        return response()->json(['status'=>200,'message'=>'Vehicle add successfully','data'=>$vehicle],200);
 
     }
 }
