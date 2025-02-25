@@ -677,7 +677,7 @@ class IFTAController extends Controller
 
 
                 ];
-                 $reserve_fuel = $request->reserve_fuel;
+                $reserve_fuel = $request->reserve_fuel;
                 // $startLat = '34.5362184';
                 // $startLng = '-117.2927641';
                 // $endLat = '36.171563';
@@ -686,7 +686,7 @@ class IFTAController extends Controller
                 //  $currentFuel =7;
                 //  $reserve_fuel = 0;
                  $totalFuel = $currentFuel+$reserve_fuel;
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $matchingRecords, $fuel_stations, $endLat, $endLng);
+                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $matchingRecords, $endLat, $endLng);
              //   dd($result);
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
