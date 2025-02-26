@@ -224,6 +224,11 @@ class IFTAController extends Controller
             'fuel_tank_capacity' => 'required',
             'total_gallons_present' => 'required',
         ]);
+        
+        $updatedStartLat = $request->start_lat;
+        $updatedStartLng = $request->start_lng;
+        $updatedEndLat = $request->end_lat;
+        $updatedEndLng = $request->end_lng;
         $startLat = $request->start_lat;
         $startLng = $request->start_lng;
         $endLat = $request->end_lat;
@@ -237,7 +242,7 @@ class IFTAController extends Controller
         if ($stops->isNotEmpty()) {
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$$updatedStartLat},{$$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
         if (isset($waypoints)) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
@@ -295,12 +300,12 @@ class IFTAController extends Controller
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
                     $ftpData = $this->loadAndParseFTPData();
                     // Filter coordinates based on distance from start and end points
-                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($startLat, $startLng, $endLat, $endLng) {
+                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
                         // Ensure $coordinate is valid
                         if (isset($coordinate['lat'], $coordinate['lng'])) {
                             // Calculate distances from both start and end points
-                            $distanceFromStart = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
-                            $distanceFromEnd = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
 
                             // Keep coordinates if they are sufficiently far from both points
                             return $distanceFromStart > 9 && $distanceFromEnd > 9;
@@ -318,12 +323,12 @@ class IFTAController extends Controller
                     'data' => [
                         'trip' => [
                             'start' => [
-                                'latitude' => $startLat,
-                                'longitude' => $startLng
+                                'latitude' => $updatedStartLat,
+                                'longitude' => $updatedStartLng
                             ],
                             'end' => [
-                                'latitude' => $endLat,
-                                'longitude' => $endLng
+                                'latitude' => $updatedStartLng,
+                                'longitude' => $updatedEndLng
                             ]
                         ],
                         'vehicle' => [
@@ -339,7 +344,12 @@ class IFTAController extends Controller
 
                    // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     $trip = Trip::find($request->trip_id);
-
+                    $trip->update([
+                        'updated_start_lat' => $updatedStartLat,
+                        'updated_start_lng' => $updatedStartLng,
+                        'updated_end_lat' => $updatedEndLat,
+                        'updated_end_lng' => $updatedEndLng,
+                    ]);
                     foreach ($result as  $value) {
                         $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
                         $fuelStation->name = $value['fuel_station_name'];
@@ -491,9 +501,6 @@ class IFTAController extends Controller
         $truckMpg = $request->truck_mpg;
         $fuelTankCapacity = $request->fuel_tank_capacity;
         $currentFuel = $request->total_gallons_present;
-
-
-
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
@@ -591,6 +598,10 @@ class IFTAController extends Controller
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
 
                 $fuelStations = [];
+                $validatedData['updated_start_lat'] = $request->start_lat;
+                $validatedData['updated_start_lng'] = $request->start_lng;
+                $validatedData['updated_end_lat'] = $request->end_lat;
+                $validatedData['updated_end_lng'] = $request->end_lat;
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
 

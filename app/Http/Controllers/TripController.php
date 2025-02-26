@@ -411,14 +411,17 @@ class TripController extends Controller
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
-
+        $updatedStartLat = $trip->updated_start_lat;
+        $updatedStartLng = $trip->updated_start_lng;
+        $updatedEndLat =$trip->updated_end_lat;
+        $updatedEndLng = $trip->updated_end_lng;
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
 
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
         if (isset($waypoints)) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
@@ -474,12 +477,12 @@ class TripController extends Controller
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
                      // Filter coordinates based on distance from start and end points
-                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($startLat, $startLng, $endLat, $endLng) {
+                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
                         // Ensure $coordinate is valid
                         if (isset($coordinate['lat'], $coordinate['lng'])) {
                             // Calculate distances from both start and end points
-                            $distanceFromStart = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
-                            $distanceFromEnd = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
 
                             // Keep coordinates if they are sufficiently far from both points
                             return $distanceFromStart > 9 && $distanceFromEnd > 9;
@@ -497,7 +500,32 @@ class TripController extends Controller
                         $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
                         $truckMpg = $findVehicle->mpg;
                         $currentFuel = $findVehicle->fuel_left;
-                        $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                        $reserve_fuel = $request->reserve_fuel ?? 0;
+                
+                        $totalFuel = $currentFuel+$reserve_fuel;
+                        $tripDetailResponse = [
+                            'data' => [
+                                'trip' => [
+                                    'start' => [
+                                        'latitude' => $updatedStartLat,
+                                        'longitude' => $updatedStartLng
+                                    ],
+                                    'end' => [
+                                        'latitude' => $updatedStartLng,
+                                        'longitude' => $updatedEndLng
+                                    ]
+                                ],
+                                'vehicle' => [
+                                    'mpg' => $truckMpg,
+                                    'fuelLeft' => $totalFuel
+                                ],
+                                'fuelStations' => $matchingRecords
+        
+                            ]
+                        ];
+        
+                        $result = $this->markOptimumFuelStations($tripDetailResponse);
+                       
                         foreach ($result as  $value) {
                             $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
                             $fuelStation->name = $value['fuel_station_name'];
@@ -739,13 +767,17 @@ class TripController extends Controller
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
+        $updatedStartLat = $trip->updated_start_lat;
+        $updatedStartLng = $trip->updated_start_lng;
+        $updatedEndLat =$trip->updated_end_lat;
+        $updatedEndLng = $trip->updated_end_lng;
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $waypoints = '';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
         if ($waypoints) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
@@ -796,12 +828,12 @@ class TripController extends Controller
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
                     // Filter coordinates based on distance from start and end points
-                $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($startLat, $startLng, $endLat, $endLng) {
+                $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
                     // Ensure $coordinate is valid
                     if (isset($coordinate['lat'], $coordinate['lng'])) {
                         // Calculate distances from both start and end points
-                        $distanceFromStart = $this->haversineDistanceFilter($startLat, $startLng, $coordinate['lat'], $coordinate['lng']);
-                        $distanceFromEnd = $this->haversineDistanceFilter($endLat, $endLng, $coordinate['lat'], $coordinate['lng']);
+                        $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
+                        $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
 
                         // Keep coordinates if they are sufficiently far from both points
                         return $distanceFromStart > 9 && $distanceFromEnd > 9;
@@ -820,19 +852,19 @@ class TripController extends Controller
                     $truckMpg = $findVehicle->mpg;
                     $currentFuel = $findVehicle->fuel_left;
                     $fuelStations = [];
-                    $reserve_fuel = $request->reserve_fuel;
+                    $reserve_fuel = $request->reserve_fuel ?? 0;
                 
                  $totalFuel = $currentFuel+$reserve_fuel;
                 $tripDetailResponse = [
                     'data' => [
                         'trip' => [
                             'start' => [
-                                'latitude' => $startLat,
-                                'longitude' => $startLng
+                                'latitude' => $updatedStartLat,
+                                'longitude' => $updatedStartLng
                             ],
                             'end' => [
-                                'latitude' => $endLat,
-                                'longitude' => $endLng
+                                'latitude' => $updatedEndLat,
+                                'longitude' => $updatedEndLng
                             ]
                         ],
                         'vehicle' => [
