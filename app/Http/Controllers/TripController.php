@@ -427,6 +427,7 @@ class TripController extends Controller
         }
 
         $response = Http::get($url);
+        dd($response);
         if ($response->successful()) {
             $data = $response->json();
             if($data['routes'] && $data['routes'][0]){
@@ -458,7 +459,7 @@ class TripController extends Controller
 
                     // Convert meters to miles
                     $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
-dd($totalDistanceMiles);
+
                     // Convert seconds to hours and minutes
                     $hours = floor($totalDuration / 3600);
                     $minutes = floor(($totalDuration % 3600) / 60);
