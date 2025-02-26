@@ -415,7 +415,7 @@ class TripController extends Controller
         $updatedStartLng = (float)$trip->updated_start_lng;
         $updatedEndLat =(float)$trip->updated_end_lat;
         $updatedEndLng = (float)$trip->updated_end_lng;
-        
+        dd($startLat,$updatedStartLat);
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {
