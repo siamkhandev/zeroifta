@@ -458,7 +458,7 @@ class TripController extends Controller
 
                     // Convert meters to miles
                     $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
-
+dd($totalDistanceMiles);
                     // Convert seconds to hours and minutes
                     $hours = floor($totalDuration / 3600);
                     $minutes = floor(($totalDuration % 3600) / 60);
@@ -561,7 +561,7 @@ class TripController extends Controller
         }
 
         unset($trip->vehicle_id);
-        dd($formattedDistance);
+       
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
