@@ -882,7 +882,7 @@ class TripController extends Controller
 
         }
 
-
+dd($trip);
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
