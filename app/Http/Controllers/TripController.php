@@ -526,7 +526,7 @@ class TripController extends Controller
         
                             ]
                         ];
-        
+                        dd($tripDetailResponse);
                         $result = $this->markOptimumFuelStations($tripDetailResponse);
                        
                         foreach ($result as  $value) {
