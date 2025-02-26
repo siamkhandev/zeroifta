@@ -529,13 +529,13 @@ class TripController extends Controller
                         foreach ($result as  $value) {
                             $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
                             $fuelStation->name = $value['fuel_station_name'];
-                            $fuelStation->latitude = $value['ftp_lat'];
-                            $fuelStation->longitude = $value['ftp_lng'];
+                            $fuelStation->latitude = $value['ftpLat'];
+                            $fuelStation->longitude = $value['ftpLng'];
                             $fuelStation->price = $value['price'];
                             $fuelStation->lastprice = $value['lastprice'];
                             $fuelStation->discount = $value['discount'];
                             $fuelStation->ifta_tax = $value['IFTA_tax'];
-                            $fuelStation->is_optimal = $value['is_optimal'];
+                            $fuelStation->is_optimal = $value['isOptimal'] ?? false;
                             $fuelStation->address = $value['address'];
                             $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
                             $fuelStation->trip_id = $trip->id;
@@ -882,13 +882,13 @@ class TripController extends Controller
                     foreach ($result as  $value) {
                         $fuelStations[] = [
                             'name' => $value['fuel_station_name'],
-                            'latitude' => $value['ftp_lat'],
-                            'longitude' => $value['ftp_lng'],
+                            'latitude' => $value['ftpLat'],
+                            'longitude' => $value['ftpLng'],
                             'price' => $value['price'],
                             'lastprice' => $value['lastprice'],
                             'discount' => $value['discount'],
                             'ifta_tax' => $value['IFTA_tax'],
-                            'is_optimal' => $value['is_optimal'],
+                            'is_optimal' => $value['isOptimal'] ?? false,
                             'address' => $value['address'],
                             'gallons_to_buy' => $value['gallons_to_buy'],
                             'trip_id' => $trip->id,
