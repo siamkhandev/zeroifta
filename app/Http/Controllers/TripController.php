@@ -561,7 +561,7 @@ class TripController extends Controller
         }
 
         unset($trip->vehicle_id);
-        dd($trip);
+        dd($formattedDistance);
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
