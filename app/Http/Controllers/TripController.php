@@ -387,7 +387,7 @@ class TripController extends Controller
     }
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
-        dd($trip);
+        
         $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()
         ->map(function ($station) {
         // Convert the station to an array, keeping all attributes
@@ -412,7 +412,7 @@ class TripController extends Controller
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
-
+dd($endLng );
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {
