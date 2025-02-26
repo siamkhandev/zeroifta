@@ -1104,7 +1104,7 @@ class IFTAController extends Controller
             }
             return $station;
         });
-
+dd($fuelStations->values()->all());
         $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
         return $fuelStations->values()->all();
     }
