@@ -466,7 +466,7 @@ class IFTAController extends Controller
         $fuelTankCapacity = $request->fuel_tank_capacity;
         $currentFuel = $request->total_gallons_present;
 
-       
+
 
         // Replace with your Google API key
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
@@ -536,172 +536,54 @@ class IFTAController extends Controller
                 $ftpData = $this->loadAndParseFTPData();
 
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-                
-                $fuel_stations = [
-                     [
-                        "fuel_station_name" => "Pilot TC #282",
-                        "ftp_lat" => "34.8547",
-                        "ftp_lng" => "-117.0882",
-                        "lastprice" => 4.959,
-                        "price" => 4.959,
-                        "discount" => 0.0,
-                        "address" => "2591 Commerce Pkwy.",
-                        "IFTA_tax" => 1.023,
-                    ], [
-                        "fuel_station_name" => "T/A - Barstow",
-                        "ftp_lat" => "34.8513",
-                        "ftp_lng" => "-117.0831",
-                        "lastprice" => 4.999,
-                        "price" => 4.859,
-                        "discount" => 0.14,
-                        "address" => "2930 Lenwood Rd.",
-                        "IFTA_tax" => 1.023,
-                      ], [
-                        "fuel_station_name" => "Love's #374",
-                        "ftp_lat" => "34.8524",
-                        "ftp_lng" => "-117.0833",
-                        "lastprice" => 4.949,
-                        "price" => 4.894,
-                        "discount" => 0.055,
-                        "address" => "2974 Lenwood Rd",
-                        "IFTA_tax" => 1.023,
-                      ], [
-                        "fuel_station_name" => "Flying J #614",
-                        "ftp_lat" => "34.8548",
-                        "ftp_lng" => "-117.0830",
-                        "lastprice" => 4.959,
-                        "price" => 4.959,
-                        "discount" => 0.0,
-                        "address" => "2611 Fisher Blvd.",
-                        "IFTA_tax" => 1.023,
-                      ],[
-                        "fuel_station_name" => "QUICK FUEL BARSTOW 4404",
-                        "ftp_lat" => "34.8906",
-                        "ftp_lng" => "-117.0657",
-                        "lastprice" => 4.999,
-                        "price" => 4.000,
-                        "discount" => 0.0,
-                        "address" => "2370 W MAIN ST",
-                        "IFTA_tax" => 1.023,
-                      ]
-                      , [
-                        "fuel_station_name" => "The Travel Center",
-                        "ftp_lat" => "34.8924",
-                        "ftp_lng" => "-117.0546",
-                        "lastprice" => 4.149,
-                        "price" => 4.149,
-                        "discount" => 0.0,
-                        "address" => "2191 West Main St.",
-                        "IFTA_tax" => 1.023,
-                      ]
-                     , [
-                        "fuel_station_name" => "Pilot TC #1272",
-                        "ftp_lat" => "34.9041",
-                        "ftp_lng" => "-116.8873",
-                        "lastprice" => 4.959,
-                        "price" => 3.959,
-                        "discount" => 0.0,
-                        "address" => "35858 Ghost Town Rd",
-                        "IFTA_tax" => 1.023,
-                      ]
-                      , [
-                        "fuel_station_name" => "Mohsen Oil #5",
-                        "ftp_lat" => "34.9012",
-                        "ftp_lng" => "-116.8866",
-                        "lastprice" => 4.899,
-                        "price" => 4.899,
-                        "discount" => 0.0,
-                        "address" => "35680 Daggett Yermo Road",
-                        "IFTA_tax" => 1.023,
-                      ]
-                      , [
-                        "fuel_station_name" => "Terrible's 412",
-                        "ftp_lat" => "35.5428",
-                        "ftp_lng" => "-115.4161",
-                        "lastprice" => 4.599,
-                        "price" => 4.599,
-                        "discount" => 0.0,
-                        "address" => "101620 Yates Well Rd",
-                        "IFTA_tax" => 1.023,
-                      ]
-                      , [
-                        "fuel_station_name" => "Flying J #513",
-                        "ftp_lat" => "35.6095",
-                        "ftp_lng" => "-115.3910",
-                        "lastprice" => 3.849,
-                        "price" => 3.849,
-                        "discount" => 0.0,
-                        "address" => "115 West Primm Boulevard",
-                        "IFTA_tax" => 0.27,
-                      ]
-                      ,[
-                        "fuel_station_name" => "One9 #1395",
-                        "ftp_lat" => "35.7800",
-                        "ftp_lng" => "-115.3249",
-                        "lastprice" => 3.559,
-                        "price" => 3.559,
-                        "discount" => 0.0,
-                        "address" => "1 Main St",
-                        "IFTA_tax" => 0.27,
-                      ]
-                      ,[
-                        "fuel_station_name" => "Vegas Valley Travel Ctr",
-                        "ftp_lat" => "35.9658",
-                        "ftp_lng" => "-115.1725",
-                        "lastprice" => 3.699,
-                        "price" => 3.699,
-                        "discount" => 0.0,
-                        "address" => "4191 Saint Rose Pkwy",
-                        "IFTA_tax" => 0.27,
-                      ]
-                      , [
-                        "fuel_station_name" => "T/A - Las Vegas",
-                        "ftp_lat" => "36.0433",
-                        "ftp_lng" => "-115.1864",
-                        "lastprice" => 3.849,
-                        "price" => 3.709,
-                        "discount" => 0.14,
-                        "address" => "8050 Dean Martin Dr",
-                        "IFTA_tax" => 0.27,
-                      ]
-                      ,[
-                        "fuel_station_name" => "Tropicana Sta/Wild Wild T",
-                        "ftp_lat" => "36.1009",
-                        "ftp_lng" => "-115.1840",
-                        "lastprice" => 3.969,
-                        "price" => 3.969,
-                        "discount" => 0.0,
-                        "address" => "3330 W Tropicana Ave",
-                        "IFTA_tax" => 0.27,
-                      ]
 
 
-                ];
                 $reserve_fuel = $request->reserve_fuel;
                 $startLat = '34.5362184';
                 $startLng = '-117.2927641';
                 $endLat = '36.171563';
                  $endLng = '-115.1391009';
-                 $truckMpg =4;
-                 $currentFuel =7;
+                 $truckMpg =5;
+                 $currentFuel =5;
                  $reserve_fuel = 0;
                  $totalFuel = $currentFuel+$reserve_fuel;
-                $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $totalFuel, $fuel_stations, $endLat, $endLng);
-                dd($result);
+                $tripDetailResponse = [
+                    'data' => [
+                        'trip' => [
+                            'start' => [
+                                'latitude' => $startLat,
+                                'longitude' => $startLng
+                            ],
+                            'end' => [
+                                'latitude' => $endLat,
+                                'longitude' => $endLng
+                            ]
+                        ],
+                        'vehicle' => [
+                            'mpg' => $truckMpg,
+                            'fuelLeft' => $totalFuel
+                        ],
+                        'fuelStations' => $matchingRecords
+
+                    ]
+                ];
+
+                $result = $this->markOptimumFuelStations($tripDetailResponse);
+
                 $fuelStations = [];
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
 
                     $fuelStations[] = [
                         'name' => $value['fuel_station_name'],
-                        'latitude' => $value['ftp_lat'],
-                        'longitude' => $value['ftp_lng'],
+                        'latitude' => $value['ftpLat'],
+                        'longitude' => $value['ftpLng'],
                         'price' => $value['price'],
                         'lastprice' => $value['lastprice'],
                         'discount' => $value['discount'],
                         'ifta_tax' => $value['IFTA_tax'],
-                        'is_optimal' => $value['is_optimal'] ?? false,
-                        'address' => $value['address'],
+                        'is_optimal' => $value['isOptimal'] ?? false,
+                        'address' => $value['address'] ?? 'N/A',
                         'gallons_to_buy' => $value['gallons_to_buy'] ?? 0,
                         'trip_id' => $trip->id,
                         'user_id' => $validatedData['user_id'],
@@ -1033,8 +915,8 @@ class IFTAController extends Controller
                         if (!isset($uniqueRecords[$uniqueKey])) {
                             $matchingRecords[] = [
                                 'fuel_station_name' => (string) $data['fuel_station_name'],
-                                'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
-                                'ftp_lng' => (string) $lng2,
+                                'ftpLat' => (string) $lat2, // Ensure lat/lng are strings for consistency
+                                'ftpLng' => (string) $lng2,
                                 'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
                                 'price' => (float) $data['price'],
                                 'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
@@ -1068,4 +950,260 @@ class IFTAController extends Controller
 
         return $earthRadius * $c; // Distance in meters
     }
+    function markOptimumFuelStations($tripDetailResponse)
+    {
+        if (!$tripDetailResponse) {
+            return null;
+        }
+
+        $mutableData = $tripDetailResponse;
+        $startLat = $tripDetailResponse['data']['trip']['start']['latitude'] ?? null;
+        $startLng = $tripDetailResponse['data']['trip']['start']['longitude'] ?? null;
+        $endLat = $tripDetailResponse['data']['trip']['end']['latitude'] ?? null;
+        $endLng = $tripDetailResponse['data']['trip']['end']['longitude'] ?? null;
+        $start = $tripDetailResponse['data']['trip']['start'] ?? null;
+        $fuelStations = collect($tripDetailResponse['data']['fuelStations']);
+        $optimalStation = $fuelStations->firstWhere('isOptimal', true);
+
+        // Calculate truck's travelable distance
+        $truckTravelableDistanceInMiles = 0;
+        if (!empty($tripDetailResponse['data']['vehicle']['mpg'])) {
+            $mpg = floatval($tripDetailResponse['data']['vehicle']['mpg']);
+            $fuelLeft = floatval($tripDetailResponse['data']['vehicle']['fuelLeft'] ?? 0);
+            $truckTravelableDistanceInMiles = $mpg * $fuelLeft;
+        }
+
+        // Add distanceFromStart to every fuel station
+        $fuelStations = $fuelStations->map(function ($fuelStation) use ($start) {
+            if ($start) {
+                $fuelStation['distanceFromStart'] = $this->getDistance($start, $fuelStation);
+            }
+            return $fuelStation;
+        });
+
+        // Also, add distanceFromStart to the optimal station if it exists
+        if ($optimalStation && $start) {
+            $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation);
+        }
+
+        // Find the cheapest station and mark it as isOptimal
+        $cheapestStation = $fuelStations->sortBy('price')->first();
+        if ($cheapestStation) {
+            $cheapestStation['isOptimal'] = true;
+            $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $cheapestStation['ftpLat'] && $fs['ftpLng'] === $cheapestStation['ftpLng'])->push($cheapestStation);
+        }
+
+        // Separate stations into in-range and out-of-range based on truck's fuel capacity
+        $fuelStationsInRange = $fuelStations->filter(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
+        $fuelStationsOutsideRange = $fuelStations->reject(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
+
+        // Find the cheapest stations
+        $firstCheapestInRange = $fuelStationsInRange->sortBy('price')->first();
+        $secondCheapestInRange = $fuelStationsOutsideRange->sortBy('price')->first();
+
+        // Find mid-optimal station
+        $midOptimal = $fuelStationsOutsideRange->filter(fn($fs) =>
+            $firstCheapestInRange &&
+            $secondCheapestInRange &&
+            $fs['price'] < $firstCheapestInRange['price'] &&
+            $fs['distanceFromStart'] < $secondCheapestInRange['distanceFromStart']
+        )->sortBy('distanceFromStart')->first();
+
+        // Mark stations as optimal
+        if ($secondCheapestInRange && $firstCheapestInRange && $secondCheapestInRange['price'] < $firstCheapestInRange['price']) {
+            $secondCheapestInRange['secondOptimal'] = true;
+        }
+
+        // Remove stations if they are farther than optimal
+        if ($optimalStation) {
+            if ($secondCheapestInRange && $secondCheapestInRange['distanceFromStart'] > $optimalStation['distanceFromStart']) {
+                $secondCheapestInRange = null;
+            }
+            if ($firstCheapestInRange && $firstCheapestInRange['distanceFromStart'] > $optimalStation['distanceFromStart']) {
+                $firstCheapestInRange = null;
+            }
+        }
+
+        // Append optimal stations
+        if ($firstCheapestInRange) {
+            $firstCheapestInRange['firstOptimal'] = true;
+            $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $firstCheapestInRange['ftpLat'] && $fs['ftpLng'] === $firstCheapestInRange['ftpLng'])->push($firstCheapestInRange);
+        }
+        if ($secondCheapestInRange) {
+            $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $secondCheapestInRange['ftpLat'] && $fs['ftpLng'] === $secondCheapestInRange['ftpLng'])->push($secondCheapestInRange);
+        }
+        if ($midOptimal) {
+            $midOptimal['midOptimal'] = true;
+            $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $midOptimal['ftpLat'] && $fs['ftpLng'] === $midOptimal['ftpLng'])->push($midOptimal);
+        }
+
+        // Add optimal station back
+        if ($optimalStation) {
+            $fuelStations->push($optimalStation);
+        }
+        $fuelStations = $fuelStations->map(function ($station) use ($firstCheapestInRange) {
+            if (!isset($station['gallons_to_buy']) || $station['gallons_to_buy'] === null) {
+                // Only set to null if it's completely missing, don't overwrite existing values
+                $station['gallons_to_buy'] = $station['gallons_to_buy'] ?? null;
+            }
+            return $station;
+        });
+        // Calculate gallons_to_buy for firstOptimal to midOptimal
+        if ($firstCheapestInRange && $midOptimal) {
+            $distanceToFirstOptimal = $firstCheapestInRange['distanceFromStart'];
+            $fuelUsedToFirstOptimal = $distanceToFirstOptimal / $mpg;
+
+            // Fuel left after reaching firstOptimal
+            $fuelLeftAfterFirstOptimal = max(0, $fuelLeft - $fuelUsedToFirstOptimal);
+
+            $distanceBetweenFirstAndMid = $midOptimal['distanceFromStart'] - $firstCheapestInRange['distanceFromStart'];
+            $fuelNeededForMid = $distanceBetweenFirstAndMid / $mpg;
+
+            // If fuel left is not enough, buy fuel
+            if ($fuelLeftAfterFirstOptimal < $fuelNeededForMid) {
+                $gallonsToBuyFirst = $fuelNeededForMid - $fuelLeftAfterFirstOptimal;
+
+                // Update fuel stations in the original collection
+                $fuelStations = $fuelStations->map(function ($station) use ($firstCheapestInRange, $gallonsToBuyFirst) {
+                    if ($station['fuel_station_name'] === $firstCheapestInRange['fuel_station_name']) {
+                        $station['gallons_to_buy'] = $gallonsToBuyFirst;
+                    }
+                    return $station;
+                });
+
+                $fuelLeftAfterFirstOptimal += $gallonsToBuyFirst; // Update fuel after refueling
+            }
+
+            if ($midOptimal && $secondCheapestInRange) {
+                $distanceBetweenMidAndSecond = $secondCheapestInRange['distanceFromStart'] - $midOptimal['distanceFromStart'];
+                $fuelNeededForSecond = $distanceBetweenMidAndSecond / $mpg;
+
+                $gallonsToBuyMid = max(0, $fuelNeededForSecond - $fuelLeftAfterFirstOptimal);
+
+                // Update midOptimal in the collection
+                $fuelStations = $fuelStations->map(function ($station) use ($midOptimal, $gallonsToBuyMid) {
+                    if ($station['fuel_station_name'] === $midOptimal['fuel_station_name']) {
+                        $station['gallons_to_buy'] = $gallonsToBuyMid;
+                    }
+                    return $station;
+                });
+            }
+        }
+
+        // ✅ Now handle `isOptimal` and `secondOptimal`
+        if ($fuelStations) {
+            $fuelStations = $fuelStations->map(function ($station) use ($mpg, $fuelLeft, $endLat, $endLng, $fuelStations) {
+                // Ensure keys exist before accessing them
+                $isOptimal = $station['isOptimal'] ?? false;
+                $secondOptimal = $station['secondOptimal'] ?? false;
+
+                // ✅ Case 1: If the same station is both `isOptimal` and `secondOptimal`
+                if ($isOptimal && $secondOptimal) {
+                    $distanceFromIsOptimalToEnd = $this->calculateDistance(
+                        $station['ftpLat'], $station['ftpLng'],
+                        $endLat, $endLng
+                    );
+
+                    $fuelUsedToReachIsOptimal = ($station['distanceFromStart'] ?? 0) / $mpg;
+                    $fuelLeftAtIsOptimal = max(0, $fuelLeft - $fuelUsedToReachIsOptimal);
+
+                    $fuelNeededToEnd = $distanceFromIsOptimalToEnd / $mpg;
+                    $gallonsToBuy = max(0, $fuelNeededToEnd - $fuelLeftAtIsOptimal);
+
+                    $station['gallons_to_buy'] = $gallonsToBuy;
+                }
+
+                // ✅ Case 2: `secondOptimal` is true but it is NOT `isOptimal`
+                elseif ($secondOptimal) {
+                    // Find the next `isOptimal` station after this `secondOptimal`
+                    $nextIsOptimal = collect($fuelStations)->first(function ($s) use ($station) {
+                        return ($s['isOptimal'] ?? false) && ($s['distanceFromStart'] ?? 0) > ($station['distanceFromStart'] ?? 0);
+                    });
+
+                    if ($nextIsOptimal) {
+                        // Distance & fuel needed to reach `isOptimal`
+                        $distanceToIsOptimal = ($nextIsOptimal['distanceFromStart'] ?? 0) - ($station['distanceFromStart'] ?? 0);
+                        $fuelNeededToIsOptimal = $distanceToIsOptimal / $mpg;
+
+                        // Fuel left at `secondOptimal`
+                        $fuelUsedToSecondOptimal = ($station['distanceFromStart'] ?? 0) / $mpg;
+                        $fuelLeftAtSecondOptimal = max(0, $fuelLeft - $fuelUsedToSecondOptimal);
+
+                        // If fuel is not enough, calculate gallons to buy
+                        $gallonsToBuyAtSecondOptimal = max(0, $fuelNeededToIsOptimal - $fuelLeftAtSecondOptimal);
+
+                        // ✅ Update `secondOptimal` station
+                        $station['gallons_to_buy'] = $gallonsToBuyAtSecondOptimal;
+
+                        // Calculate fuel needed from `isOptimal` to end location
+                        $distanceFromIsOptimalToEnd = $this->calculateDistance(
+                            $nextIsOptimal['ftpLat'], $nextIsOptimal['ftpLng'],
+                            $endLat, $endLng
+                        );
+
+                        $fuelNeededToEnd = $distanceFromIsOptimalToEnd / $mpg;
+                        $fuelLeftAtIsOptimal = max(0, $fuelLeftAtSecondOptimal - $fuelNeededToIsOptimal);
+                        $gallonsToBuyAtIsOptimal = max(0, $fuelNeededToEnd - $fuelLeftAtIsOptimal);
+
+                        // ✅ Update `isOptimal` station in the collection
+                        $fuelStations = $fuelStations->map(function ($s) use ($nextIsOptimal, $gallonsToBuyAtIsOptimal) {
+                            if ($s['fuel_station_name'] === $nextIsOptimal['fuel_station_name']) {
+                                $s['gallons_to_buy'] = $gallonsToBuyAtIsOptimal;
+                            }
+                            return $s;
+                        });
+                    }
+                }
+
+                return $station;
+            });
+        }
+
+        $fuelStations = $fuelStations->map(function ($station) use ($start) {
+            if (!isset($station['distanceFromStart'])) {
+                $station['distanceFromStart'] = $this->getDistance($start, $station);
+            }
+            return $station;
+        });
+
+        $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
+        return $fuelStations->values()->all();
+    }
+
+
+function getDistance($start, $fuelStation)
+{
+    // Dummy function to simulate distance calculation
+    $earthRadius = 3958.8; // in miles
+    $lat1 = deg2rad($start['latitude']);
+    $lon1 = deg2rad($start['longitude']);
+    $lat2 = deg2rad($fuelStation['ftpLat']);
+    $lon2 = deg2rad($fuelStation['ftpLng']);
+
+    $dlat = $lat2 - $lat1;
+    $dlon = $lon2 - $lon1;
+    $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+    return $earthRadius * $c;
+}
+function calculateDistance($lat1, $lng1, $lat2, $lng2) {
+    $earthRadius = 3958.8; // Radius of Earth in miles
+
+    $lat1 = deg2rad($lat1);
+    $lng1 = deg2rad($lng1);
+    $lat2 = deg2rad($lat2);
+    $lng2 = deg2rad($lng2);
+
+    $dLat = $lat2 - $lat1;
+    $dLng = $lng2 - $lng1;
+
+    $a = sin($dLat / 2) * sin($dLat / 2) +
+        cos($lat1) * cos($lat2) *
+        sin($dLng / 2) * sin($dLng / 2);
+
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+    return $earthRadius * $c; // Distance in miles
+}
 }
