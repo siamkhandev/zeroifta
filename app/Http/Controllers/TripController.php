@@ -471,7 +471,7 @@ class TripController extends Controller
                         $formattedDuration = "{$minutes} min";
                     }
                 }
-                dd( $formattedDuration);
+                
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
@@ -495,6 +495,7 @@ class TripController extends Controller
                     $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $currentTrip = Trip::where('id', $trip->id)->first();
                     $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
+                    dd($vehicle_id);
                     if($vehicle_id){
                         $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
                         $truckMpg = $findVehicle->mpg;
