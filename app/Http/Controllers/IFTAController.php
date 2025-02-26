@@ -359,7 +359,7 @@ class IFTAController extends Controller
                         $fuelStation->lastprice = $value['lastprice'];
                         $fuelStation->discount = $value['discount'];
                         $fuelStation->ifta_tax = $value['IFTA_tax'];
-                        $fuelStation->is_optimal = $value['is_optimal'];
+                        $fuelStation->is_optimal = $value['isOptimal'];
                         $fuelStation->address = $value['address'];
                         $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
                         $fuelStation->trip_id = $trip->id;
