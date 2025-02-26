@@ -539,13 +539,13 @@ class IFTAController extends Controller
 
 
                 $reserve_fuel = $request->reserve_fuel;
-                $startLat = '34.5362184';
-                $startLng = '-117.2927641';
-                $endLat = '36.171563';
-                 $endLng = '-115.1391009';
-                 $truckMpg =5;
-                 $currentFuel =5;
-                 $reserve_fuel = 0;
+                // $startLat = '34.5362184';
+                // $startLng = '-117.2927641';
+                // $endLat = '36.171563';
+                //  $endLng = '-115.1391009';
+                //  $truckMpg =5;
+                //  $currentFuel =5;
+                //  $reserve_fuel = 0;
                  $totalFuel = $currentFuel+$reserve_fuel;
                 $tripDetailResponse = [
                     'data' => [
