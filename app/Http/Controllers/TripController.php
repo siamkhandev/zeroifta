@@ -411,17 +411,18 @@ class TripController extends Controller
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
-        $updatedStartLat = $trip->updated_start_lat;
-        $updatedStartLng = $trip->updated_start_lng;
-        $updatedEndLat =$trip->updated_end_lat;
-        $updatedEndLng = $trip->updated_end_lng;
+        $updatedStartLat = (float)$trip->updated_start_lat;
+        $updatedStartLng = (float)$trip->updated_start_lng;
+        $updatedEndLat =(float)$trip->updated_end_lat;
+        $updatedEndLng = (float)$trip->updated_end_lng;
+        
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
 
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
         if (isset($waypoints)) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
@@ -430,7 +431,7 @@ class TripController extends Controller
        
         if ($response->successful()) {
             $data = $response->json();
-            dd($data);
+           
             if($data['routes'] && $data['routes'][0]){
                 $route = $data['routes'][0];
                 if (!empty($data['routes'][0]['legs'])) {
