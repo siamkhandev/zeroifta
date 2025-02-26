@@ -412,7 +412,7 @@ class TripController extends Controller
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
         $endLng = $trip->end_lng;
-dd($endLng );
+
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {
@@ -471,6 +471,7 @@ dd($endLng );
                         $formattedDuration = "{$minutes} min";
                     }
                 }
+                dd( $formattedDuration);
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
