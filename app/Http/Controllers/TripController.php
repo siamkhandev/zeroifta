@@ -427,9 +427,10 @@ class TripController extends Controller
         }
 
         $response = Http::get($url);
-        dd($response);
+       
         if ($response->successful()) {
             $data = $response->json();
+            dd($data);
             if($data['routes'] && $data['routes'][0]){
                 $route = $data['routes'][0];
                 if (!empty($data['routes'][0]['legs'])) {
