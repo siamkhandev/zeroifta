@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('trips', function (Blueprint $table) {
-            $table->decimal('updated_start_lat', 10, 8)->nullable();
-            $table->decimal('updated_start_lng', 10, 8)->nullable();
-            $table->decimal('updated_end_lat', 10, 8)->nullable();
-            $table->decimal('updated_end_lng', 10, 8)->nullable();
+            $table->decimal('updated_start_lat', 20, 8)->nullable();
+            $table->decimal('updated_start_lng', 20, 8)->nullable();
+            $table->decimal('updated_end_lat', 20, 8)->nullable();
+            $table->decimal('updated_end_lng', 20, 8)->nullable();
         });
     }
 
