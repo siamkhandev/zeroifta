@@ -1086,11 +1086,12 @@ class TripController extends Controller
         if ($optimalStation && $start) {
             $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation);
         }
-
+        $optimalFuelStations = [];
         // Find the cheapest station and mark it as isOptimal
         $cheapestStation = $fuelStations->sortBy('price')->first();
         if ($cheapestStation) {
             $cheapestStation['isOptimal'] = true;
+            $optimalFuelStations[] = $cheapestStation;
             $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $cheapestStation['ftpLat'] && $fs['ftpLng'] === $cheapestStation['ftpLng'])->push($cheapestStation);
         }
 
@@ -1136,13 +1137,16 @@ class TripController extends Controller
         // Append optimal stations
         if ($firstCheapestInRange) {
             $firstCheapestInRange['firstOptimal'] = true;
+            $optimalFuelStations[] = $firstCheapestInRange;
             $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $firstCheapestInRange['ftpLat'] && $fs['ftpLng'] === $firstCheapestInRange['ftpLng'])->push($firstCheapestInRange);
         }
         if ($secondCheapestInRange) {
+            $optimalFuelStations[] = $secondCheapestInRange;
             $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $secondCheapestInRange['ftpLat'] && $fs['ftpLng'] === $secondCheapestInRange['ftpLng'])->push($secondCheapestInRange);
         }
         if ($midOptimal) {
             $midOptimal['midOptimal'] = true;
+            $optimalFuelStations[] = $midOptimal;
             $fuelStations = $fuelStations->reject(fn($fs) => $fs['ftpLat'] === $midOptimal['ftpLat'] && $fs['ftpLng'] === $midOptimal['ftpLng'])->push($midOptimal);
         }
 
@@ -1159,19 +1163,21 @@ class TripController extends Controller
         });
         // Calculate gallons_to_buy for firstOptimal to midOptimal
         if ($firstCheapestInRange && $midOptimal) {
+            // Calculate fuel used to reach firstOptimal
             $distanceToFirstOptimal = $firstCheapestInRange['distanceFromStart'];
             $fuelUsedToFirstOptimal = $distanceToFirstOptimal / $mpg;
-
+        
             // Fuel left after reaching firstOptimal
             $fuelLeftAfterFirstOptimal = max(0, $fuelLeft - $fuelUsedToFirstOptimal);
-
+        
+            // Calculate fuel needed from firstOptimal to midOptimal
             $distanceBetweenFirstAndMid = $midOptimal['distanceFromStart'] - $firstCheapestInRange['distanceFromStart'];
             $fuelNeededForMid = $distanceBetweenFirstAndMid / $mpg;
-
-            // If fuel left is not enough, buy fuel
+        
+            // If fuel left is not enough, buy fuel at firstOptimal
             if ($fuelLeftAfterFirstOptimal < $fuelNeededForMid) {
                 $gallonsToBuyFirst = $fuelNeededForMid - $fuelLeftAfterFirstOptimal;
-
+        
                 // Update fuel stations in the original collection
                 $fuelStations = $fuelStations->map(function ($station) use ($firstCheapestInRange, $gallonsToBuyFirst) {
                     if ($station['fuel_station_name'] === $firstCheapestInRange['fuel_station_name']) {
@@ -1179,23 +1185,90 @@ class TripController extends Controller
                     }
                     return $station;
                 });
-
-                $fuelLeftAfterFirstOptimal += $gallonsToBuyFirst; // Update fuel after refueling
+        
+                // Update fuel left after refueling at firstOptimal
+                $fuelLeftAfterFirstOptimal += $gallonsToBuyFirst;
             }
-
+        
+            // Calculate fuel used to reach midOptimal
+            $fuelUsedToMidOptimal = $fuelNeededForMid;
+            $fuelLeftAfterMidOptimal = max(0, $fuelLeftAfterFirstOptimal - $fuelUsedToMidOptimal);
+        
+            // Calculate fuel needed from midOptimal to secondOptimal
             if ($midOptimal && $secondCheapestInRange) {
                 $distanceBetweenMidAndSecond = $secondCheapestInRange['distanceFromStart'] - $midOptimal['distanceFromStart'];
                 $fuelNeededForSecond = $distanceBetweenMidAndSecond / $mpg;
-
-                $gallonsToBuyMid = max(0, $fuelNeededForSecond - $fuelLeftAfterFirstOptimal);
-
-                // Update midOptimal in the collection
-                $fuelStations = $fuelStations->map(function ($station) use ($midOptimal, $gallonsToBuyMid) {
-                    if ($station['fuel_station_name'] === $midOptimal['fuel_station_name']) {
-                        $station['gallons_to_buy'] = $gallonsToBuyMid;
+        
+                // If fuel left is not enough, buy fuel at midOptimal
+                if ($fuelLeftAfterMidOptimal < $fuelNeededForSecond) {
+                    $gallonsToBuyMid = $fuelNeededForSecond - $fuelLeftAfterMidOptimal;
+        
+                    // Update midOptimal in the collection
+                    $fuelStations = $fuelStations->map(function ($station) use ($midOptimal, $gallonsToBuyMid) {
+                        if ($station['fuel_station_name'] === $midOptimal['fuel_station_name']) {
+                            $station['gallons_to_buy'] = $gallonsToBuyMid;
+                        }
+                        return $station;
+                    });
+        
+                    // Update fuel left after refueling at midOptimal
+                    $fuelLeftAfterMidOptimal += $gallonsToBuyMid;
+                }
+        
+                // Calculate fuel used to reach secondOptimal
+                $fuelUsedToSecondOptimal = $fuelNeededForSecond;
+                $fuelLeftAfterSecondOptimal = max(0, $fuelLeftAfterMidOptimal - $fuelUsedToSecondOptimal);
+        
+                // Calculate fuel needed from secondOptimal to isOptimal
+                if ($secondCheapestInRange && $cheapestStation) {
+                    $distanceBetweenSecondAndLast = $cheapestStation['distanceFromStart'] - $secondCheapestInRange['distanceFromStart'];
+                    $fuelNeededForLast = $distanceBetweenSecondAndLast / $mpg;
+        
+                    // If fuel left is not enough, buy fuel at secondOptimal
+                    if ($fuelLeftAfterSecondOptimal < $fuelNeededForLast) {
+                        $gallonsToBuySecond = $fuelNeededForLast - $fuelLeftAfterSecondOptimal;
+        
+                        // Update secondOptimal in the collection
+                        $fuelStations = $fuelStations->map(function ($station) use ($secondCheapestInRange, $gallonsToBuySecond) {
+                            if ($station['fuel_station_name'] === $secondCheapestInRange['fuel_station_name']) {
+                                $station['gallons_to_buy'] = $gallonsToBuySecond;
+                            }
+                            return $station;
+                        });
+        
+                        // Update fuel left after refueling at secondOptimal
+                        $fuelLeftAfterSecondOptimal += $gallonsToBuySecond;
                     }
-                    return $station;
-                });
+        
+                    // Calculate fuel used to reach isOptimal
+                    $fuelUsedToIsOptimal = $fuelNeededForLast;
+                    $fuelLeftAfterIsOptimal = max(0, $fuelLeftAfterSecondOptimal - $fuelUsedToIsOptimal);
+        
+                    // Calculate fuel needed from isOptimal to end of trip
+                    if ($cheapestStation && $endLat && $endLng) {
+                        $distanceFromIsOptimalToEnd = $this->calculateDistance(
+                            $cheapestStation['ftpLat'], $cheapestStation['ftpLng'],
+                            $endLat, $endLng
+                        );
+                        $fuelNeededToEnd = $distanceFromIsOptimalToEnd / $mpg;
+        
+                        // If fuel left is not enough, buy fuel at isOptimal
+                        if ($fuelLeftAfterIsOptimal < $fuelNeededToEnd) {
+                            $gallonsToBuyIsOptimal = $fuelNeededToEnd - $fuelLeftAfterIsOptimal;
+        
+                            // Update isOptimal in the collection
+                            $fuelStations = $fuelStations->map(function ($station) use ($cheapestStation, $gallonsToBuyIsOptimal) {
+                                if ($station['fuel_station_name'] === $cheapestStation['fuel_station_name']) {
+                                    $station['gallons_to_buy'] = ($station['gallons_to_buy'] ?? 0) + $gallonsToBuyIsOptimal;
+                                }
+                                return $station;
+                            });
+        
+                            // Update fuel left after refueling at isOptimal
+                            $fuelLeftAfterIsOptimal += $gallonsToBuyIsOptimal;
+                        }
+                    }
+                }
             }
         }
 
@@ -1208,7 +1281,7 @@ class TripController extends Controller
 
                 // ✅ Case 1: If the same station is both `isOptimal` and `secondOptimal`
                 if ($isOptimal && $secondOptimal) {
-                    $distanceFromIsOptimalToEnd = $this->calculateDistance1(
+                    $distanceFromIsOptimalToEnd = $this->calculateDistance(
                         $station['ftpLat'], $station['ftpLng'],
                         $endLat, $endLng
                     );
@@ -1245,7 +1318,7 @@ class TripController extends Controller
                         $station['gallons_to_buy'] = $gallonsToBuyAtSecondOptimal;
 
                         // Calculate fuel needed from `isOptimal` to end location
-                        $distanceFromIsOptimalToEnd = $this->calculateDistance1(
+                        $distanceFromIsOptimalToEnd = $this->calculateDistance(
                             $nextIsOptimal['ftpLat'], $nextIsOptimal['ftpLng'],
                             $endLat, $endLng
                         );
