@@ -1011,7 +1011,29 @@ class IFTAController extends Controller
 
         // Mark stations as optimal
         if ($secondCheapestInRange && $firstCheapestInRange && $secondCheapestInRange['price'] < $firstCheapestInRange['price']) {
-            $secondCheapestInRange['secondOptimal'] = true;
+            // Ensure secondOptimal is before isOptimal
+            if ($secondCheapestInRange['distanceFromStart'] < $cheapestStation['distanceFromStart']) {
+                $secondCheapestInRange['secondOptimal'] = true;
+            }
+        }
+
+        // Handle the case where secondOptimal and isOptimal are the same station
+        if ($cheapestStation && $secondCheapestInRange && $cheapestStation['ftpLat'] === $secondCheapestInRange['ftpLat'] && $cheapestStation['ftpLng'] === $secondCheapestInRange['ftpLng']) {
+            // Check if there is no station between midOptimal and isOptimal OR a station with higher price than midOptimal
+            $stationsBetweenMidAndIsOptimal = $fuelStations->filter(fn($fs) =>
+                $fs['distanceFromStart'] > ($midOptimal['distanceFromStart'] ?? 0) &&
+                $fs['distanceFromStart'] < $cheapestStation['distanceFromStart']
+            );
+
+            $hasHigherPriceStation = $stationsBetweenMidAndIsOptimal->contains(fn($fs) => $fs['price'] > ($midOptimal['price'] ?? INF));
+
+            if ($stationsBetweenMidAndIsOptimal->isEmpty() || $hasHigherPriceStation) {
+                // Allow both secondOptimal and isOptimal to be true for the same station
+                $cheapestStation['secondOptimal'] = true;
+            } else {
+                // Otherwise, unmark secondOptimal
+                $secondCheapestInRange['secondOptimal'] = false;
+            }
         }
 
         // Remove stations if they are farther than optimal
@@ -1041,13 +1063,7 @@ class IFTAController extends Controller
         if ($optimalStation) {
             $fuelStations->push($optimalStation);
         }
-        $fuelStations = $fuelStations->map(function ($station) use ($firstCheapestInRange) {
-            if (!isset($station['gallons_to_buy']) || $station['gallons_to_buy'] === null) {
-                // Only set to null if it's completely missing, don't overwrite existing values
-                $station['gallons_to_buy'] = $station['gallons_to_buy'] ?? null;
-            }
-            return $station;
-        });
+
         // Calculate gallons_to_buy for firstOptimal to midOptimal
         if ($firstCheapestInRange && $midOptimal) {
             $distanceToFirstOptimal = $firstCheapestInRange['distanceFromStart'];
@@ -1090,75 +1106,15 @@ class IFTAController extends Controller
             }
         }
 
-        // ✅ Now handle `isOptimal` and `secondOptimal`
-        if ($fuelStations) {
-            $fuelStations = $fuelStations->map(function ($station) use ($mpg, $fuelLeft, $endLat, $endLng, $fuelStations) {
-                // Ensure keys exist before accessing them
-                $isOptimal = $station['isOptimal'] ?? false;
-                $secondOptimal = $station['secondOptimal'] ?? false;
+        // Ensure other fuel stations have gallons_to_buy set to null
+        $fuelStations = $fuelStations->map(function ($station) {
+            if (!isset($station['gallons_to_buy'])) {
+                $station['gallons_to_buy'] = null;
+            }
+            return $station;
+        });
 
-                // ✅ Case 1: If the same station is both `isOptimal` and `secondOptimal`
-                if ($isOptimal && $secondOptimal) {
-                    $distanceFromIsOptimalToEnd = $this->calculateDistance(
-                        $station['ftpLat'], $station['ftpLng'],
-                        $endLat, $endLng
-                    );
-
-                    $fuelUsedToReachIsOptimal = ($station['distanceFromStart'] ?? 0) / $mpg;
-                    $fuelLeftAtIsOptimal = max(0, $fuelLeft - $fuelUsedToReachIsOptimal);
-
-                    $fuelNeededToEnd = $distanceFromIsOptimalToEnd / $mpg;
-                    $gallonsToBuy = max(0, $fuelNeededToEnd - $fuelLeftAtIsOptimal);
-
-                    $station['gallons_to_buy'] = $gallonsToBuy;
-                }
-
-                // ✅ Case 2: `secondOptimal` is true but it is NOT `isOptimal`
-                elseif ($secondOptimal) {
-                    // Find the next `isOptimal` station after this `secondOptimal`
-                    $nextIsOptimal = collect($fuelStations)->first(function ($s) use ($station) {
-                        return ($s['isOptimal'] ?? false) && ($s['distanceFromStart'] ?? 0) > ($station['distanceFromStart'] ?? 0);
-                    });
-
-                    if ($nextIsOptimal) {
-                        // Distance & fuel needed to reach `isOptimal`
-                        $distanceToIsOptimal = ($nextIsOptimal['distanceFromStart'] ?? 0) - ($station['distanceFromStart'] ?? 0);
-                        $fuelNeededToIsOptimal = $distanceToIsOptimal / $mpg;
-
-                        // Fuel left at `secondOptimal`
-                        $fuelUsedToSecondOptimal = ($station['distanceFromStart'] ?? 0) / $mpg;
-                        $fuelLeftAtSecondOptimal = max(0, $fuelLeft - $fuelUsedToSecondOptimal);
-
-                        // If fuel is not enough, calculate gallons to buy
-                        $gallonsToBuyAtSecondOptimal = max(0, $fuelNeededToIsOptimal - $fuelLeftAtSecondOptimal);
-
-                        // ✅ Update `secondOptimal` station
-                        $station['gallons_to_buy'] = $gallonsToBuyAtSecondOptimal;
-
-                        // Calculate fuel needed from `isOptimal` to end location
-                        $distanceFromIsOptimalToEnd = $this->calculateDistance(
-                            $nextIsOptimal['ftpLat'], $nextIsOptimal['ftpLng'],
-                            $endLat, $endLng
-                        );
-
-                        $fuelNeededToEnd = $distanceFromIsOptimalToEnd / $mpg;
-                        $fuelLeftAtIsOptimal = max(0, $fuelLeftAtSecondOptimal - $fuelNeededToIsOptimal);
-                        $gallonsToBuyAtIsOptimal = max(0, $fuelNeededToEnd - $fuelLeftAtIsOptimal);
-
-                        // ✅ Update `isOptimal` station in the collection
-                        $fuelStations = $fuelStations->map(function ($s) use ($nextIsOptimal, $gallonsToBuyAtIsOptimal) {
-                            if ($s['fuel_station_name'] === $nextIsOptimal['fuel_station_name']) {
-                                $s['gallons_to_buy'] = $gallonsToBuyAtIsOptimal;
-                            }
-                            return $s;
-                        });
-                    }
-                }
-
-                return $station;
-            });
-        }
-
+        // Ensure all fuel stations have distanceFromStart
         $fuelStations = $fuelStations->map(function ($station) use ($start) {
             if (!isset($station['distanceFromStart'])) {
                 $station['distanceFromStart'] = $this->getDistance($start, $station);
@@ -1167,10 +1123,8 @@ class IFTAController extends Controller
         });
 
         $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
-        return $fuelStations->values()->all();
+        return $mutableData;
     }
-
-
 function getDistance($start, $fuelStation)
 {
     // Dummy function to simulate distance calculation
