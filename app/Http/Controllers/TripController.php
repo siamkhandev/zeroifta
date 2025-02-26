@@ -387,7 +387,6 @@ class TripController extends Controller
     }
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
-        
         $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()
         ->map(function ($station) {
         // Convert the station to an array, keeping all attributes
@@ -471,7 +470,6 @@ class TripController extends Controller
                         $formattedDuration = "{$minutes} min";
                     }
                 }
-                
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
@@ -491,64 +489,38 @@ class TripController extends Controller
 
                 // Reset array keys to ensure a clean array structure
                 $finalFilteredPolyline = array_values($finalFilteredPolyline);
-                $ftpData = $this->loadAndParseFTPData();
-                $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-                $currentTrip = Trip::where('id', $trip->id)->first();
-                $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
-                
-                if($vehicle_id){
-                    $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
-                    $truckMpg = $findVehicle->mpg;
-                    $currentFuel = $findVehicle->fuel_left;
-                    $reserve_fuel = $request->reserve_fuel;
-            
-                    $totalFuel = $currentFuel+$reserve_fuel;
-                    $tripDetailResponse = [
-                    'data' => [
-                        'trip' => [
-                            'start' => [
-                                'latitude' => $startLat,
-                                'longitude' => $startLng
-                            ],
-                            'end' => [
-                                'latitude' => $endLat,
-                                'longitude' => $endLng
-                            ]
-                        ],
-                        'vehicle' => [
-                            'mpg' => $truckMpg,
-                            'fuelLeft' => $totalFuel
-                        ],
-                        'fuelStations' => $matchingRecords
-
-                        ]
-                    ];
-
-                    $result = $this->markOptimumFuelStations($tripDetailResponse);
-                            //$result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
-                            foreach ($result as  $value) {
-                                $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
-                                $fuelStation->name = $value['fuel_station_name'];
-                                $fuelStation->latitude = $value['ftp_lat'];
-                                $fuelStation->longitude = $value['ftp_lng'];
-                                $fuelStation->price = $value['price'];
-                                $fuelStation->lastprice = $value['lastprice'];
-                                $fuelStation->discount = $value['discount'];
-                                $fuelStation->ifta_tax = $value['IFTA_tax'];
-                                $fuelStation->is_optimal = $value['is_optimal'];
-                                $fuelStation->address = $value['address'];
-                                $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
-                                $fuelStation->trip_id = $trip->id;
-                                $fuelStation->user_id = $trip->user_id;
-                                $fuelStation->update();
-                            }
-                        }else{
-                            return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
+                    $ftpData = $this->loadAndParseFTPData();
+                    $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+                    $currentTrip = Trip::where('id', $trip->id)->first();
+                    $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
+                    if($vehicle_id){
+                        $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
+                        $truckMpg = $findVehicle->mpg;
+                        $currentFuel = $findVehicle->fuel_left;
+                        $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                        foreach ($result as  $value) {
+                            $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
+                            $fuelStation->name = $value['fuel_station_name'];
+                            $fuelStation->latitude = $value['ftp_lat'];
+                            $fuelStation->longitude = $value['ftp_lng'];
+                            $fuelStation->price = $value['price'];
+                            $fuelStation->lastprice = $value['lastprice'];
+                            $fuelStation->discount = $value['discount'];
+                            $fuelStation->ifta_tax = $value['IFTA_tax'];
+                            $fuelStation->is_optimal = $value['is_optimal'];
+                            $fuelStation->address = $value['address'];
+                            $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
+                            $fuelStation->trip_id = $trip->id;
+                            $fuelStation->user_id = $trip->user_id;
+                            $fuelStation->update();
                         }
-
+                    }else{
+                        return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
                     }
+
                 }
             }
+        }
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
         if($driverVehicle && $driverVehicle->vehicle_id != null){
@@ -561,7 +533,6 @@ class TripController extends Controller
         }
 
         unset($trip->vehicle_id);
-        dd($trip);
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
