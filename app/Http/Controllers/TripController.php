@@ -415,7 +415,7 @@ class TripController extends Controller
         $updatedStartLng = $trip->updated_start_lng;
         $updatedEndLat =$trip->updated_end_lat;
         $updatedEndLng = $trip->updated_end_lng;
-      dd($startLat,$updatedStartLat);
+      
         $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {
@@ -431,7 +431,7 @@ class TripController extends Controller
        
         if ($response->successful()) {
             $data = $response->json();
-           
+            dd($data);
             if($data['routes'] && $data['routes'][0]){
                 $route = $data['routes'][0];
                 if (!empty($data['routes'][0]['legs'])) {
