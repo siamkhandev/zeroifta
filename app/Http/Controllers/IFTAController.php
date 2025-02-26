@@ -353,8 +353,8 @@ class IFTAController extends Controller
                     foreach ($result as  $value) {
                         $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
                         $fuelStation->name = $value['fuel_station_name'];
-                        $fuelStation->latitude = $value['ftp_lat'];
-                        $fuelStation->longitude = $value['ftp_lng'];
+                        $fuelStation->latitude = $value['ftpLat'];
+                        $fuelStation->longitude = $value['ftpLng'];
                         $fuelStation->price = $value['price'];
                         $fuelStation->lastprice = $value['lastprice'];
                         $fuelStation->discount = $value['discount'];
