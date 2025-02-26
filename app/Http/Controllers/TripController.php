@@ -526,7 +526,7 @@ class TripController extends Controller
         
                             ]
                         ];
-                        dd($tripDetailResponse);
+                        
                         $result = $this->markOptimumFuelStations($tripDetailResponse);
                        
                         foreach ($result as  $value) {
@@ -984,8 +984,8 @@ class TripController extends Controller
                     if (!isset($uniqueRecords[$uniqueKey])) {
                         $matchingRecords[] = [
                             'fuel_station_name' => (string) $data['fuel_station_name'],
-                            'ftp_lat' => (string) $lat2, // Ensure lat/lng are strings for consistency
-                            'ftp_lng' => (string) $lng2,
+                            'ftpLat' => (string) $lat2, // Ensure lat/lng are strings for consistency
+                            'ftpLng' => (string) $lng2,
                             'lastprice' => (float) $data['lastprice'], // Ensure numeric fields are cast properly
                             'price' => (float) $data['price'],
                             'discount' => isset($data['discount']) ? (float) $data['discount'] : 0.0,
