@@ -1121,9 +1121,9 @@ class IFTAController extends Controller
             }
             return $station;
         });
-
+dd($fuelStations->values()->all());
         $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
-        return $mutableData;
+        return $fuelStations->values()->all();
     }
 function getDistance($start, $fuelStation)
 {
