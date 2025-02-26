@@ -431,7 +431,7 @@ class TripController extends Controller
        
         if ($response->successful()) {
             $data = $response->json();
-            dd($data);
+            
             if($data['routes'] && $data['routes'][0]){
                 $route = $data['routes'][0];
                 if (!empty($data['routes'][0]['legs'])) {
@@ -468,7 +468,7 @@ class TripController extends Controller
 
                     // Format distance
                     $formattedDistance = $totalDistanceMiles . ' miles';
-                   
+                    dd($formattedDistance);
                     // Format duration
                     if ($hours > 0) {
                         $formattedDuration = "{$hours} hr {$minutes} min";
