@@ -465,7 +465,7 @@ class TripController extends Controller
 
                     // Format distance
                     $formattedDistance = $totalDistanceMiles . ' miles';
-                    dd($formattedDistance);
+                   
                     // Format duration
                     if ($hours > 0) {
                         $formattedDuration = "{$hours} hr {$minutes} min";
@@ -561,6 +561,7 @@ class TripController extends Controller
         }
 
         unset($trip->vehicle_id);
+        dd($trip);
         if($trip){
             $trip->distance = $formattedDistance;
             $trip->duration = $formattedDuration;
