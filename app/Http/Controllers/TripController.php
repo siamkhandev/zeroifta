@@ -496,7 +496,7 @@ class TripController extends Controller
                 $currentTrip = Trip::where('id', $trip->id)->first();
                 $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
                 
-                //if($vehicle_id){
+                if($vehicle_id){
                     $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
                     $truckMpg = $findVehicle->mpg;
                     $currentFuel = $findVehicle->fuel_left;
@@ -547,7 +547,7 @@ class TripController extends Controller
                         }
 
                     }
-                //}
+                }
             }
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
