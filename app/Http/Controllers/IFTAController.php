@@ -311,7 +311,33 @@ class IFTAController extends Controller
                     // Reset array keys to ensure a clean array structure
                     $finalFilteredPolyline = array_values($finalFilteredPolyline);
                     $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-                    $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                    $reserve_fuel = $request->reserve_fuel;
+                
+                 $totalFuel = $currentFuel+$reserve_fuel;
+                $tripDetailResponse = [
+                    'data' => [
+                        'trip' => [
+                            'start' => [
+                                'latitude' => $startLat,
+                                'longitude' => $startLng
+                            ],
+                            'end' => [
+                                'latitude' => $endLat,
+                                'longitude' => $endLng
+                            ]
+                        ],
+                        'vehicle' => [
+                            'mpg' => $truckMpg,
+                            'fuelLeft' => $totalFuel
+                        ],
+                        'fuelStations' => $matchingRecords
+
+                    ]
+                ];
+
+                $result = $this->markOptimumFuelStations($tripDetailResponse);
+
+                   // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     $trip = Trip::find($request->trip_id);
 
                     foreach ($result as  $value) {
@@ -539,13 +565,7 @@ class IFTAController extends Controller
 
 
                 $reserve_fuel = $request->reserve_fuel;
-                // $startLat = '34.5362184';
-                // $startLng = '-117.2927641';
-                // $endLat = '36.171563';
-                //  $endLng = '-115.1391009';
-                //  $truckMpg =5;
-                //  $currentFuel =5;
-                //  $reserve_fuel = 0;
+                
                  $totalFuel = $currentFuel+$reserve_fuel;
                 $tripDetailResponse = [
                     'data' => [

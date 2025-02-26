@@ -497,7 +497,32 @@ class TripController extends Controller
                         $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
                         $truckMpg = $findVehicle->mpg;
                         $currentFuel = $findVehicle->fuel_left;
-                        $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                        $reserve_fuel = $request->reserve_fuel;
+                
+                 $totalFuel = $currentFuel+$reserve_fuel;
+                $tripDetailResponse = [
+                    'data' => [
+                        'trip' => [
+                            'start' => [
+                                'latitude' => $startLat,
+                                'longitude' => $startLng
+                            ],
+                            'end' => [
+                                'latitude' => $endLat,
+                                'longitude' => $endLng
+                            ]
+                        ],
+                        'vehicle' => [
+                            'mpg' => $truckMpg,
+                            'fuelLeft' => $totalFuel
+                        ],
+                        'fuelStations' => $matchingRecords
+
+                    ]
+                ];
+
+                $result = $this->markOptimumFuelStations($tripDetailResponse);
+                        //$result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                         foreach ($result as  $value) {
                             $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
                             $fuelStation->name = $value['fuel_station_name'];
@@ -820,7 +845,32 @@ class TripController extends Controller
                     $truckMpg = $findVehicle->mpg;
                     $currentFuel = $findVehicle->fuel_left;
                     $fuelStations = [];
-                    $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                    $reserve_fuel = $request->reserve_fuel;
+                
+                 $totalFuel = $currentFuel+$reserve_fuel;
+                $tripDetailResponse = [
+                    'data' => [
+                        'trip' => [
+                            'start' => [
+                                'latitude' => $startLat,
+                                'longitude' => $startLng
+                            ],
+                            'end' => [
+                                'latitude' => $endLat,
+                                'longitude' => $endLng
+                            ]
+                        ],
+                        'vehicle' => [
+                            'mpg' => $truckMpg,
+                            'fuelLeft' => $totalFuel
+                        ],
+                        'fuelStations' => $matchingRecords
+
+                    ]
+                ];
+
+                $result = $this->markOptimumFuelStations($tripDetailResponse);
+                    //$result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     FuelStation::where('trip_id', $trip->id)->delete();
                     foreach ($result as  $value) {
                         $fuelStations[] = [
