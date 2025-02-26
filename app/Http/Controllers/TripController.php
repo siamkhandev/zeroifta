@@ -387,6 +387,7 @@ class TripController extends Controller
     }
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
+        dd($trip);
         $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()
         ->map(function ($station) {
         // Convert the station to an array, keeping all attributes
