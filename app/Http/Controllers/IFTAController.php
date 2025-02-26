@@ -242,7 +242,7 @@ class IFTAController extends Controller
         if ($stops->isNotEmpty()) {
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$$updatedStartLat},{$$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
         if (isset($waypoints)) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
