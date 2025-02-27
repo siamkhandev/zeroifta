@@ -535,7 +535,7 @@ class IFTAController extends Controller
                 $distanceParts = explode(' ', $distanceText);
                 $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
             }
-
+            dd($formattedDistance);
             // Format duration (e.g., "2 hr 20 min")
             if ($durationText) {
                 $durationParts = explode(' ', $durationText);
