@@ -253,6 +253,13 @@ class IFTAController extends Controller
             $data = $response->json();
             if($data['routes'] && $data['routes'][0]){
                 if (!empty($data['routes'][0]['legs'])) {
+                    $steps = $data['routes'][0]['legs'][0]['steps'];
+                    $decodedCoordinates = [];
+                    foreach ($steps as $step) {
+                        if (isset($step['polyline']['points'])) {
+                            $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+                        }
+                    }
                     $polylinePoints = [];
 
                     foreach ($data['routes'][0]['legs'] as $leg) {
@@ -335,7 +342,8 @@ class IFTAController extends Controller
                             'mpg' => $truckMpg,
                             'fuelLeft' => $totalFuel
                         ],
-                        'fuelStations' => $matchingRecords
+                        'fuelStations' => $matchingRecords,
+                        'polyline'=>$decodedCoordinates
 
                     ]
                 ];
@@ -602,7 +610,7 @@ class IFTAController extends Controller
                 $validatedData['updated_start_lat'] = $request->start_lat;
                 $validatedData['updated_start_lng'] = $request->start_lng;
                 $validatedData['updated_end_lat'] = $request->end_lat;
-                $validatedData['updated_end_lng'] = $request->end_lat;
+                $validatedData['updated_end_lng'] = $request->end_lng;
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
 

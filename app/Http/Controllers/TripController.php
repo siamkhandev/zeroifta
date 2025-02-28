@@ -435,6 +435,13 @@ class TripController extends Controller
             if($data['routes'] && $data['routes'][0]){
                 $route = $data['routes'][0];
                 if (!empty($data['routes'][0]['legs'])) {
+                    $steps = $data['routes'][0]['legs'][0]['steps'];
+                    $decodedCoordinates = [];
+                    foreach ($steps as $step) {
+                        if (isset($step['polyline']['points'])) {
+                            $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+                        }
+                    }
                     $polylinePoints = [];
 
                     foreach ($data['routes'][0]['legs'] as $leg) {
@@ -522,7 +529,8 @@ class TripController extends Controller
                                     'mpg' => $truckMpg,
                                     'fuelLeft' => $totalFuel
                                 ],
-                                'fuelStations' => $matchingRecords
+                                'fuelStations' => $matchingRecords,
+                                'polyline'=>$decodedCoordinates
 
                             ]
                         ];
@@ -790,6 +798,13 @@ class TripController extends Controller
             $data = $response->json();
             if($data['routes'] && $data['routes'][0]){
                 if (!empty($data['routes'][0]['legs'])) {
+                    $steps = $data['routes'][0]['legs'][0]['steps'];
+                    $decodedCoordinates = [];
+                    foreach ($steps as $step) {
+                        if (isset($step['polyline']['points'])) {
+                            $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+                        }
+                    }
                     $polylinePoints = [];
 
                     foreach ($data['routes'][0]['legs'] as $leg) {
@@ -875,7 +890,8 @@ class TripController extends Controller
                             'mpg' => $truckMpg,
                             'fuelLeft' => $totalFuel
                         ],
-                        'fuelStations' => $matchingRecords
+                        'fuelStations' => $matchingRecords,
+                        'polyline'=>$decodedCoordinates
 
                     ]
                 ];
