@@ -1499,21 +1499,55 @@ class TripController extends Controller
 
 
 
-function getDistance($start, $fuelStation)
+    public function getDistance($start, $fuelStation, $polyline)
+    {
+       
+        $userLocation = ['lat' => $start['latitude'], 'lng' => $start['longitude']];
+        $stationLocation = ['lat' => $fuelStation['ftpLat'], 'lng' => $fuelStation['ftpLng']];
+    
+        return $this->calculatePolylineDistance($userLocation, $stationLocation, $polyline);
+    }
+    private function calculatePolylineDistance($userLocation, $destination, $polyline)
 {
-    // Dummy function to simulate distance calculation
-    $earthRadius = 3958.8; // in miles
-    $lat1 = deg2rad($start['latitude']);
-    $lon1 = deg2rad($start['longitude']);
-    $lat2 = deg2rad($fuelStation['ftpLat']);
-    $lon2 = deg2rad($fuelStation['ftpLng']);
+    $startIndex = $this->findNearestPoint($userLocation, $polyline);
+    $endIndex = $this->findNearestPoint($destination, $polyline);
 
-    $dlat = $lat2 - $lat1;
-    $dlon = $lon2 - $lon1;
-    $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
+    $totalDistance = 0.0;
+    for ($i = $startIndex; $i < $endIndex; $i++) {
+        $totalDistance += $this->haversineDistance1($polyline[$i], $polyline[$i + 1]);
+    }
+    return $totalDistance;
+}
+private function findNearestPoint($location, $polyline)
+{
+    $minDistance = PHP_FLOAT_MAX;
+    $nearestIndex = 0;
+
+    foreach ($polyline as $index => $point) {
+        $distance = $this->haversineDistance1($location, $point);
+        if ($distance < $minDistance) {
+            $minDistance = $distance;
+            $nearestIndex = $index;
+        }
+    }
+    return $nearestIndex;
+}
+private function haversineDistance1($p1, $p2)
+{
+    
+    $earthRadius = 3958.8; // Radius in meters
+    $lat1 = deg2rad($p1['lat']);
+    $lon1 = deg2rad($p1['lng']);
+    $lat2 = deg2rad($p2['lat']);
+    $lon2 = deg2rad($p2['lng']);
+
+    $dLat = $lat2 - $lat1;
+    $dLon = $lon2 - $lon1;
+
+    $a = sin($dLat / 2) ** 2 + cos($lat1) * cos($lat2) * sin($dLon / 2) ** 2;
     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-    return $earthRadius * $c;
+    return $earthRadius * $c; // Distance in meters
 }
 function calculateDistance1($lat1, $lng1, $lat2, $lng2) {
     $earthRadius = 3958.8; // Radius of Earth in miles
