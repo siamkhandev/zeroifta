@@ -1089,18 +1089,18 @@ class TripController extends Controller
             $fuelLeft = floatval($tripDetailResponse['data']['vehicle']['fuelLeft'] ?? 0);
             $truckTravelableDistanceInMiles = $mpg * $fuelLeft;
         }
-
+        $polyline = $tripDetailResponse['data']['polyline'];
         // Add distanceFromStart to every fuel station
-        $fuelStations = $fuelStations->map(function ($fuelStation) use ($start) {
+        $fuelStations = $fuelStations->map(function ($fuelStation) use ($start,$polyline) {
             if ($start) {
-                $fuelStation['distanceFromStart'] = $this->getDistance($start, $fuelStation);
+                $fuelStation['distanceFromStart'] = $this->getDistance($start, $fuelStation,$polyline);
             }
             return $fuelStation;
         });
-
+        
         // Also, add distanceFromStart to the optimal station if it exists
         if ($optimalStation && $start) {
-            $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation);
+            $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation,$polyline);
         }
         $optimalFuelStations = [];
         // Find the cheapest station and mark it as isOptimal
@@ -1502,17 +1502,19 @@ class TripController extends Controller
             });
         }
 
-        $fuelStations = $fuelStations->map(function ($station) use ($start) {
+        $fuelStations = $fuelStations->map(function ($station) use ($start,$polyline) {
             if (!isset($station['distanceFromStart'])) {
-                $station['distanceFromStart'] = $this->getDistance($start, $station);
+                $station['distanceFromStart'] = $this->getDistance($start, $station,$polyline);
             }
             return $station;
         });
-
+        
         $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
+       
+        //$distances = $this->optimizedFuelStationsWithDistance($mutableData);
+        
         return $fuelStations->values()->all();
     }
-
 
 
     public function getDistance($start, $fuelStation, $polyline)
