@@ -119,4 +119,9 @@ Route::post('generatetoken',[SubscriptionController::class,'generateToken']);
 // Get available subscription plans
 Route::post('/subscription/plans', [SubscriptionController::class, 'getPlans']);
 
+// OAuth2 API Routes
+Route::post('/oauth/token', [App\Http\Controllers\Api\OAuthController::class, 'issueToken']);
+Route::post('/transactions', [App\Http\Controllers\Api\TransactionController::class, 'store'])
+    ->middleware('verify.api.token');
+
 
