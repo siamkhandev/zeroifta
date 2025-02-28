@@ -513,7 +513,12 @@ class IFTAController extends Controller
            if($data['routes'] && $data['routes'][0]){
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
-
+                $decodedCoordinates = [];
+                foreach ($steps as $step) {
+                    if (isset($step['polyline']['points'])) {
+                        $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+                    }
+                }
                 // Extract polyline points as an array of strings
                 $polylinePoints = array_map(function ($step) {
                     return $step['polyline']['points'] ?? null;
@@ -565,14 +570,9 @@ class IFTAController extends Controller
 
                 // Reset array keys to ensure a clean array structure
                 $finalFilteredPolyline = array_values($finalFilteredPolyline);
-
                 $ftpData = $this->loadAndParseFTPData();
-
                 $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-
-
                 $reserve_fuel = $request->reserve_fuel;
-
                  $totalFuel = $currentFuel+$reserve_fuel;
                 $tripDetailResponse = [
                     'data' => [
@@ -590,11 +590,12 @@ class IFTAController extends Controller
                             'mpg' => $truckMpg,
                             'fuelLeft' => $totalFuel
                         ],
-                        'fuelStations' => $matchingRecords
+                        'fuelStations' => $matchingRecords,
+                        'polyline'=>$decodedCoordinates
 
                     ]
                 ];
-
+               
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
 
                 $fuelStations = [];
@@ -1003,18 +1004,18 @@ class IFTAController extends Controller
             $fuelLeft = floatval($tripDetailResponse['data']['vehicle']['fuelLeft'] ?? 0);
             $truckTravelableDistanceInMiles = $mpg * $fuelLeft;
         }
-
+        $polyline = $tripDetailResponse['data']['polyline'];
         // Add distanceFromStart to every fuel station
-        $fuelStations = $fuelStations->map(function ($fuelStation) use ($start) {
+        $fuelStations = $fuelStations->map(function ($fuelStation) use ($start,$polyline) {
             if ($start) {
-                $fuelStation['distanceFromStart'] = $this->getDistance($start, $fuelStation);
+                $fuelStation['distanceFromStart'] = $this->getDistance($start, $fuelStation,$polyline);
             }
             return $fuelStation;
         });
-
+        
         // Also, add distanceFromStart to the optimal station if it exists
         if ($optimalStation && $start) {
-            $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation);
+            $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation,$polyline);
         }
         $optimalFuelStations = [];
         // Find the cheapest station and mark it as isOptimal
@@ -1416,34 +1417,230 @@ class IFTAController extends Controller
             });
         }
 
-        $fuelStations = $fuelStations->map(function ($station) use ($start) {
+        $fuelStations = $fuelStations->map(function ($station) use ($start,$polyline) {
             if (!isset($station['distanceFromStart'])) {
-                $station['distanceFromStart'] = $this->getDistance($start, $station);
+                $station['distanceFromStart'] = $this->getDistance($start, $station,$polyline);
             }
             return $station;
         });
-
+        
         $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
+       
+        //$distances = $this->optimizedFuelStationsWithDistance($mutableData);
+        
         return $fuelStations->values()->all();
     }
 
 
-function getDistance($start, $fuelStation)
-{
-    // Dummy function to simulate distance calculation
-    $earthRadius = 3958.8; // in miles
-    $lat1 = deg2rad($start['latitude']);
-    $lon1 = deg2rad($start['longitude']);
-    $lat2 = deg2rad($fuelStation['ftpLat']);
-    $lon2 = deg2rad($fuelStation['ftpLng']);
+// function getDistance($start, $fuelStation)
+// {
+//     // Dummy function to simulate distance calculation
+//     $earthRadius = 3958.8; // in miles
+//     $lat1 = deg2rad($start['latitude']);
+//     $lon1 = deg2rad($start['longitude']);
+//     $lat2 = deg2rad($fuelStation['ftpLat']);
+//     $lon2 = deg2rad($fuelStation['ftpLng']);
 
-    $dlat = $lat2 - $lat1;
-    $dlon = $lon2 - $lon1;
-    $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
+//     $dlat = $lat2 - $lat1;
+//     $dlon = $lon2 - $lon1;
+//     $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
+//     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+//     return $earthRadius * $c;
+// }
+public function optimizedFuelStationsWithDistance($tripData)
+{
+    if (!$tripData) return null;
+
+    $fuelStations = $tripData['data']['fuelStations'] ?? [];
+    
+    $start = $tripData['data']['trip']['start'] ?? null;
+    $encodedPolylines = $tripData['data']['polyline'] ?? [$tripData['data']['polyline'] ?? ''];
+    
+    $totalCoordinates = $tripData['data']['polyline'] ?? [];
+
+    // Decode all polylines into coordinate points
+    // foreach ($encodedPolylines as $encodedPolyline) {
+    //     if ($encodedPolyline) {
+    //         $decodedPoints = $this->decodePolyline1($encodedPolyline);
+    //         $totalCoordinates = array_merge($totalCoordinates, $decodedPoints);
+    //     }
+    // }
+
+    foreach ($fuelStations as $index => &$fuelStation) {
+        if (!$start) continue;
+
+        $fuelLat = $fuelStation['ftpLat'] ?? null;
+        $fuelLng = $fuelStation['ftpLng'] ?? null;
+
+        if (!$fuelLat || !$fuelLng) continue;
+
+        $fuelStationCoordinate = ['lat' => (float) $fuelLat, 'lng' => (float) $fuelLng];
+
+        // Find the nearest polyline coordinate within 10 miles
+        $nearestCoordinate = null;
+        $nearestDistance = PHP_FLOAT_MAX;
+
+        foreach ($totalCoordinates as $coordinate) {
+            $distance = $this->calculateDistance1($coordinate, $fuelStationCoordinate);
+
+            if ($distance <= 10 && $distance < $nearestDistance) {
+                $nearestDistance = $distance;
+                $nearestCoordinate = $coordinate;
+            }
+        }
+
+        if ($nearestCoordinate) {
+            // Calculate distance from start to nearest polyline point
+            $totalDistance = 0;
+            
+            for ($i = 0; $i < count($totalCoordinates) - 1; $i++) {
+                $distance = $this->calculateDistance1($totalCoordinates[$i], $totalCoordinates[$i + 1]);
+                $totalDistance += $distance;
+
+                if ($totalCoordinates[$i + 1]['lat'] == $nearestCoordinate['lat'] &&
+                    $totalCoordinates[$i + 1]['lng'] == $nearestCoordinate['lng']) {
+                    break;
+                }
+            }
+
+            // Total fuel station distance = start to nearest polyline coordinate + nearest coordinate to fuel station
+            $fuelStationDistance = ($totalDistance / 1600) + $nearestDistance;
+
+            if (isset($fuelStation['distanceFromStart'])) {
+                if ($fuelStationDistance > $fuelStation['distanceFromStart']) {
+                    $fuelStation['distanceFromStart'] += (int) ($fuelStationDistance - $fuelStation['distanceFromStart']);
+                }
+            }
+        }
+    }
+
+    Log::info("Optimized fuel stations: ", $fuelStations);
+    return $fuelStations;
+}
+
+/**
+ * Decode a Google Maps encoded polyline into an array of coordinates
+ *
+ * @param string $encoded
+ * @return array
+ */
+private function decodePolyline1(string $encoded): array
+{
+    $points = [];
+    $index = 0;
+    $len = strlen($encoded);
+    $lat = 0;
+    $lng = 0;
+
+    while ($index < $len) {
+        $shift = 0;
+        $result = 0;
+
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1f) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
+
+        $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+        $lat += $dlat;
+
+        $shift = 0;
+        $result = 0;
+
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1f) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
+
+        $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+        $lng += $dlng;
+
+        $points[] = ['lat' => $lat / 1E5, 'lng' => $lng / 1E5];
+    }
+
+    return $points;
+}
+
+/**
+ * Calculate distance between two coordinates using Haversine formula
+ *
+ * @param array $coord1 ['lat' => x, 'lng' => y]
+ * @param array $coord2 ['lat' => x, 'lng' => y]
+ * @return float Distance in miles
+ */
+private function calculateDistance1(array $coord1, array $coord2): float
+{
+    $earthRadius = 3958.8; // Radius in miles
+    $lat1 = deg2rad($coord1['lat']);
+    $lng1 = deg2rad($coord1['lng']);
+    $lat2 = deg2rad($coord2['lat']);
+    $lng2 = deg2rad($coord2['lng']);
+
+    $latDelta = $lat2 - $lat1;
+    $lngDelta = $lng2 - $lng1;
+
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+        cos($lat1) * cos($lat2) * pow(sin($lngDelta / 2), 2)));
+
+    return $earthRadius * $angle;
+}
+public function getDistance($start, $fuelStation, $polyline)
+{
+   
+    $userLocation = ['lat' => $start['latitude'], 'lng' => $start['longitude']];
+    $stationLocation = ['lat' => $fuelStation['ftpLat'], 'lng' => $fuelStation['ftpLng']];
+
+    return $this->calculatePolylineDistance($userLocation, $stationLocation, $polyline);
+}
+
+private function haversineDistance1($p1, $p2)
+{
+    
+    $earthRadius = 3958.8; // Radius in meters
+    $lat1 = deg2rad($p1['lat']);
+    $lon1 = deg2rad($p1['lng']);
+    $lat2 = deg2rad($p2['lat']);
+    $lon2 = deg2rad($p2['lng']);
+
+    $dLat = $lat2 - $lat1;
+    $dLon = $lon2 - $lon1;
+
+    $a = sin($dLat / 2) ** 2 + cos($lat1) * cos($lat2) * sin($dLon / 2) ** 2;
     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-    return $earthRadius * $c;
+    return $earthRadius * $c; // Distance in meters
 }
+
+private function findNearestPoint($location, $polyline)
+{
+    $minDistance = PHP_FLOAT_MAX;
+    $nearestIndex = 0;
+
+    foreach ($polyline as $index => $point) {
+        $distance = $this->haversineDistance1($location, $point);
+        if ($distance < $minDistance) {
+            $minDistance = $distance;
+            $nearestIndex = $index;
+        }
+    }
+    return $nearestIndex;
+}
+
+private function calculatePolylineDistance($userLocation, $destination, $polyline)
+{
+    $startIndex = $this->findNearestPoint($userLocation, $polyline);
+    $endIndex = $this->findNearestPoint($destination, $polyline);
+
+    $totalDistance = 0.0;
+    for ($i = $startIndex; $i < $endIndex; $i++) {
+        $totalDistance += $this->haversineDistance1($polyline[$i], $polyline[$i + 1]);
+    }
+    return $totalDistance;
+}
+
 function calculateDistance($lat1, $lng1, $lat2, $lng2) {
     $earthRadius = 3958.8; // Radius of Earth in miles
 
