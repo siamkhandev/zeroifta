@@ -510,7 +510,7 @@ class TripController extends Controller
                         $findVehicle = Vehicle::where('id', $vehicle_id->vehicle_id)->first();
                         $truckMpg = $findVehicle->mpg;
                         $currentFuel = $findVehicle->fuel_left;
-                        $reserve_fuel = $request->reserve_fuel ?? 0;
+                        $reserve_fuel = $findVehicle->reserve_fuel ?? 0;
 
                         $totalFuel = $currentFuel+$reserve_fuel;
                         $tripDetailResponse = [
@@ -538,20 +538,27 @@ class TripController extends Controller
                         $result = $this->markOptimumFuelStations($tripDetailResponse);
 
                         foreach ($result as  $value) {
-                            $fuelStation = FuelStation::where('trip_id', $trip->id)->first();
-                            $fuelStation->name = $value['fuel_station_name'];
-                            $fuelStation->latitude = $value['ftpLat'];
-                            $fuelStation->longitude = $value['ftpLng'];
-                            $fuelStation->price = $value['price'];
-                            $fuelStation->lastprice = $value['lastprice'];
-                            $fuelStation->discount = $value['discount'];
-                            $fuelStation->ifta_tax = $value['IFTA_tax'];
-                            $fuelStation->is_optimal = $value['isOptimal'] ?? false;
-                            $fuelStation->address = $value['address'];
-                            $fuelStation->gallons_to_buy = $value['gallons_to_buy'];
-                            $fuelStation->trip_id = $trip->id;
-                            $fuelStation->user_id = $trip->user_id;
-                            $fuelStation->update();
+                         
+
+                            FuelStation::updateOrCreate(
+                                [
+                                    'trip_id' => $trip->id, // Condition to check if the record exists
+                                    'latitude' => $value['ftpLat'],
+                                    'longitude' => $value['ftpLng']
+                                ],
+                                [
+                                    'name' => $value['fuel_station_name'],
+                                    'price' => $value['price'],
+                                    'lastprice' => $value['lastprice'],
+                                    'discount' => $value['discount'],
+                                    'ifta_tax' => $value['IFTA_tax'],
+                                    'is_optimal' => $value['isOptimal'] ?? false,
+                                    'address' => $value['address'],
+                                    'gallons_to_buy' => $value['gallons_to_buy'],
+                                    'trip_id' => $trip->id,
+                                    'user_id' => $trip->user_id,
+                                ]
+                            );
                         }
                     }else{
                         return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
