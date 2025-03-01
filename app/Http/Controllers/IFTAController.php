@@ -349,7 +349,9 @@ class IFTAController extends Controller
                 ];
 
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
-
+                if($result==false){
+                    return response()->json(['status'=>404,'message'=>'no fuel station in range','data'=>(object)[]]);
+                }
                    // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     $trip = Trip::find($request->trip_id);
                     $trip->update([
@@ -610,7 +612,9 @@ class IFTAController extends Controller
                 ];
                
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
-                dd($result);
+                if($result==false){
+                    return response()->json(['status'=>404,'message'=>'no fuel station in range','data'=>(object)[]]);
+                }
                 $fuelStations = [];
                 $validatedData['updated_start_lat'] = $request->start_lat;
                 $validatedData['updated_start_lng'] = $request->start_lng;
