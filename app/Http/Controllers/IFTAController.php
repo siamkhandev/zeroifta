@@ -610,7 +610,7 @@ class IFTAController extends Controller
                 ];
                
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
-
+                dd($result);
                 $fuelStations = [];
                 $validatedData['updated_start_lat'] = $request->start_lat;
                 $validatedData['updated_start_lng'] = $request->start_lng;
@@ -1043,7 +1043,7 @@ class IFTAController extends Controller
         $fuelStationsInRange = $fuelStations->filter(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
         $fuelStationsOutsideRange = $fuelStations->reject(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
        if($fuelStationsInRange->isEmpty()){
-        return response()->json(['status'=>404,'message'=>'there is no fuel station in vehicle range','data'=>(object)[]]);
+        return false;
        }
         // Find the cheapest stations
         $firstCheapestInRange = $fuelStationsInRange->sortBy('price')->first();
