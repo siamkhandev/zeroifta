@@ -139,14 +139,14 @@
           @if(Auth::user()->role=='admin')
           <div class="col-lg-6 col-md-12 col.sm-12 col-12 mb-4">
             @else
-            <div class="col-lg-12 col-md-12 col.sm-12 col-12 mb-4">
+            <div class="col-lg-6 col-md-12 col.sm-12 col-12 mb-4">
               @endif
               <div class="sec1-style">
                 <div class="inHead-span">
                   <h2 class="head-20Med">@if(Auth::user()->role=='admin')
                   {{__('messages.Companies overview')}}
                     @else
-                    {{__('messages.Drivers overview')}}
+                    {{__('messages.Drivers')}}
                     @endif</h2>
                 </div>
                 @if(Auth::user()->role=='admin')
@@ -196,7 +196,7 @@
                 @endif
               </div>
             </div>
-            @if(Auth::user()->role=='admin')
+            @if(Auth::user()->role=='admin' || Auth::user()->role=='company')
             @php
             $contacts = \App\Models\CompanyContactUs::with('company')->take(5)->latest()->get();
             @endphp
