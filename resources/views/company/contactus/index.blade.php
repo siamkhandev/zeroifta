@@ -26,41 +26,41 @@
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </th>
-              <th scope="col">{{__('messages.Company Name')}}</th>
-              <th scope="col">{{__('messages.Subject')}}</th>
-              <th scope="col">{{__('messages.Contact')}}</th>
-              <th scope="col">{{__('messages.Date')}}</th>
-              <th scope="col">{{__('messages.Action')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Company Name')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Subject')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Contact')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Date')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Action')}}</th>
             </tr>
           </thead>
           <tbody>
             @foreach($forms as $form)
             <tr>
-              <td>
+              <td class="table-text-left">
                 <span>
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </td>
-              <td>
+              <td class="table-text-left">
                 <div class="table-conTab">
                   <span>{{$form->company->name}} </span>
                 </div>
               </td>
-              <td>
+              <td class="table-text-left">
                 <div>
                   <p>{{$form->subject}}</p>
                 </div>
               </td>
-              <td>
+              <td class="table-text-left">
                 <div>
                   <p>{{$form->company->email}}</p>
                   <p>{{$form->phone}}</p>
                 </div>
               </td>
-              <td>
+              <td class="table-text-left">
                 <span>{{$form->created_at->format('Y-m-d')}}</span>
               </td>
-              <td>
+              <td class="table-text-left">
                 <div class="tabAction-list">
                   <span class="tabView-icon">
                     <a href="{{route('contactform.detail',$form->id)}}">

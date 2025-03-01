@@ -49,13 +49,13 @@
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </th>
-              <th scope="col">{{__('messages.Name')}}</th>
-              <th scope="col">{{__('messages.Email')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Name')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Email')}}</th>
 
-              <th scope="col">{{__('messages.License Number')}}</th>
-              <th scope="col">{{__('messages.License Start Date')}}</th>
-              <th scope="col">{{__('messages.Vehicle Assignment Status')}}</th>
-              <th scope="col">{{__('messages.Action')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.License Number')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.License Start Date')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Vehicle Assignment Status')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Action')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -79,22 +79,22 @@
                   <span>   <a href="{{route('driver.edit',$driver->driver->id)}}" style="color:var(--gray1)">{{$driver->driver->name ?? 'N/A'}}</a></span>
                 </div>
               </td>
-              <td>
+              <td class="table-text-left">
                 <div>
                   <p>{{$driver->driver->email ?? 'N/A'}}</p>
                   <p>{{$driver->driver->phone}}</p>
                 </div>
               </td>
-              <td>{{$driver->driver->license_number}}</td>
-              <td>{{$driver->driver->license_start_date}}</td>
-              <td>
+              <td class="table-text-left">{{$driver->driver->license_number}}</td>
+              <td class="table-text-left">{{$driver->driver->license_start_date}}</td>
+              <td class="table-text-left">
                 @if($driver->vehicle_assigned == 'Vehicle Assigned')
                 <span style="color: green;">{{__('messages.Vehicle Assigned')}}</span>
                 @else
                 <span style="color: red;">{{__('messages.Vehicle Not Assigned')}}</span>
                 @endif
             </td>
-              <td>
+              <td class="table-text-left">
                 <div class="tabAction-list">
 
                   <span class="tabEdit-icon">

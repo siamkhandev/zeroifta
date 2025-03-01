@@ -48,10 +48,10 @@
                   <input id="remember-me" name="remember-me" type="checkbox" />
                 </span>
               </th>
-              <th scope="col">{{__('messages.Driver Name')}}</th>
-              <th scope="col">{{__('messages.Vehicle Number')}}</th>
-              <th scope="col">{{__('messages.Vehicle Image')}}</th>
-              <th scope="col">{{__('messages.Action')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Driver Name')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Vehicle Number')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Vehicle Image')}}</th>
+              <th scope="col" class="table-text-left">{{__('messages.Action')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +63,7 @@
                 </span>
               </td>
 
-              <td>
+              <td class="table-text-left">
                 <div class="table-conTab">
                   <span>
                     @if($vehicle->driver->driver_image)
@@ -76,13 +76,13 @@
                   <span><a href="{{route('driver_vehicles.edit',$vehicle->id)}}" style="color:var(--gray1)"> {{$vehicle->driver->name??'N/A'}} </a></span>
                 </div>
               </td>
-              <td>
+              <td class="table-text-left">
                 <div>
                   <p>{{$vehicle->vehicle->license_plate_number ?? 'N/A'}}</p>
 
                 </div>
               </td>
-              <td>
+              <td class="table-text-left">
                 @if($vehicle->vehicle->vehicle_image)
                 <img src="{{asset('vehicles')}}/{{$vehicle->vehicle->vehicle_image}}" class="avatar avatar-sm me-3" alt="user1" style="height: 30px;">
                 @else
@@ -91,7 +91,7 @@
             </td>
 
 
-              <td>
+              <td class="table-text-left">
                 <div class="tabAction-list">
 
                   <span class="tabEdit-icon">

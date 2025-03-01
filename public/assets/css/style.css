@@ -1930,3 +1930,6 @@ Media Quries
     border-radius: 50% !important;
 }
 
+.table-text-left {
+    text-align: left !important;
+}
