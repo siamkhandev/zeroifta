@@ -111,7 +111,7 @@
 
                         <input
                             type="file"
-                            class="form-control dis-input"
+                            class="form-control dis-input choose-file-input"
 
                             name="image"
                             accept="image/png, image/jpg, image/jpeg"

@@ -1920,3 +1920,10 @@ Media Quries
         padding: 0 1px;
     }
 }
+
+
+.choose-file-input {
+    padding-left: 17px !important;
+}
+
+
