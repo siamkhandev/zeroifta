@@ -1926,4 +1926,7 @@ Media Quries
     padding-left: 17px !important;
 }
 
+.rounded-image {
+    border-radius: 50% !important;
+}
 
