@@ -521,7 +521,7 @@ class TripController extends Controller
                                         'longitude' => $updatedStartLng
                                     ],
                                     'end' => [
-                                        'latitude' => $updatedStartLng,
+                                        'latitude' => $updatedEndLat,
                                         'longitude' => $updatedEndLng
                                     ]
                                 ],
@@ -880,7 +880,7 @@ class TripController extends Controller
                     $truckMpg = $findVehicle->mpg;
                     $currentFuel = $findVehicle->fuel_left;
                     $fuelStations = [];
-                    $reserve_fuel = $request->reserve_fuel ?? 0;
+                    $reserve_fuel = $findVehicle->reserve_fuel ?? 0;
 
                  $totalFuel = $currentFuel+$reserve_fuel;
                 $tripDetailResponse = [

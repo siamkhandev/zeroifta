@@ -334,7 +334,7 @@ class IFTAController extends Controller
                                 'longitude' => $updatedStartLng
                             ],
                             'end' => [
-                                'latitude' => $updatedStartLng,
+                                'latitude' => $updatedEndLat,
                                 'longitude' => $updatedEndLng
                             ]
                         ],
@@ -693,7 +693,9 @@ class IFTAController extends Controller
                 $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
                 if($vehicleFind){
                     $vehicle = Vehicle::where('id', $vehicleFind)->first();
-                    $vehicle->reserve_fuel = $request->reserve_fuel;
+                    $vehicle->fuel_left= $currentFuel;
+                    $vehicle->mpg=$truckMpg;
+                    $vehicle->reserve_fuel=$request->reserve_fuel;
                     $vehicle->update();
                     if($vehicle && $vehicle->vehicle_image != null){
                         $vehicle->vehicle_image =url('/vehicles/'.$vehicle->vehicle_image);
