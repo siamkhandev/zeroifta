@@ -1042,7 +1042,9 @@ class IFTAController extends Controller
         // Separate stations into in-range and out-of-range based on truck's fuel capacity
         $fuelStationsInRange = $fuelStations->filter(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
         $fuelStationsOutsideRange = $fuelStations->reject(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
-        dd($fuelStationsInRange,$fuelStationsOutsideRange);
+       if(!$fuelStationsInRange){
+        return response()->json(['status'=>404,'message'=>'there is no fuel station in vehicle range','data'=>(object)[]]);
+       }
         // Find the cheapest stations
         $firstCheapestInRange = $fuelStationsInRange->sortBy('price')->first();
 
