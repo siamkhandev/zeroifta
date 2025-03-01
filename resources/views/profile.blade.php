@@ -31,9 +31,9 @@
   @if(Session::has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #13975b;color:white">
     {{Session::get('success')}}
-    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+      <!-- <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
   </div>
   @endif
   <div class="profile-area mb-4">
