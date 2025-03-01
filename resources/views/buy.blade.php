@@ -156,7 +156,7 @@
                   <div class="inHead-span">
 
                   </div>
-                  <div class="row justify-content-center mt-5">
+                  <div class="row justify-content-center">
                         @if(Session::has('error'))
                         <div class="alert alert-danger">{{Session::get('error')}}</div>
                         @endif
