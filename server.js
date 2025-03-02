@@ -106,15 +106,15 @@ io.on('connection', (socket) => {
             const polylinePoints = polyline.decode(encodedPolyline);
 
             // Check if the driver is within 10 miles of any polyline point
-            const withinRange = isWithinRange('34.052235', '-118.243683', polylinePoints);
+            const withinRange = isWithinRange(lat, lng, polylinePoints);
 
             if (!withinRange) {
                 console.log(`Driver ${user_id} is off-route. Recalculating route...`);
 
                 // Emit event to frontend that the driver has deviated
                 socket.emit('routeDeviation', {
-                    user_id: 22,
-                    trip_id: 125,
+                    user_id: user_id,
+                    trip_id: trip_id,
                     message: "Driver has deviated from the route. Recalculating..."
                 });
 
