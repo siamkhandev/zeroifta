@@ -305,7 +305,7 @@ class IFTAController extends Controller
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
-                    $ftpData = $this->loadAndParseFTPData();
+                   
                     // Filter coordinates based on distance from start and end points
                     $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
                         // Ensure $coordinate is valid
@@ -322,7 +322,8 @@ class IFTAController extends Controller
 
                     // Reset array keys to ensure a clean array structure
                     $finalFilteredPolyline = array_values($finalFilteredPolyline);
-                    $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+                    $ftpData = $this->loadAndParseFTPData($finalFilteredPolyline);
+                   // $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $reserve_fuel = $request->reserve_fuel;
 
                  $totalFuel = $currentFuel+$reserve_fuel;
