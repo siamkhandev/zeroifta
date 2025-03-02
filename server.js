@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
-const axios = require('axios'); // To fetch trip details from Laravel API
-const polyline = require('@mapbox/polyline'); // To decode polylines
+const axios = require('axios'); // For making API calls
+const polyline = require('@mapbox/polyline'); // For decoding polylines
 const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
@@ -39,81 +39,24 @@ function isWithinRange(driverLat, driverLng, polylinePoints) {
 io.on('connection', (socket) => {
     console.log('User connected');
 
-    // Listen for location updates from the frontend
-    socket.on('userLocation', async (data) => {
+    // Listen for location updates from the Android app
+    socket.on('userLocation', (data) => {
         console.log(`Received location for user ${data.user_id}: ${data.lat}, ${data.lng}`);
 
-        // Store or update driver location
+        // Check if the driver already exists in the drivers array
         const driverIndex = drivers.findIndex(driver => driver.id === data.user_id);
+
         if (driverIndex !== -1) {
+            // Update the existing driver's location
             drivers[driverIndex].lat = data.lat;
             drivers[driverIndex].lng = data.lng;
         } else {
-            drivers.push({ id: data.user_id, lat: data.lat, lng: data.lng });
-        }
-
-        // Fetch trip details from Laravel API
-        try {
-            const response = await axios.post('https://staging.zeroifta.com/api/check-active-trip', {
-                trip_id: data.trip_id
+            // Add new driver to the array if they don't exist
+            drivers.push({
+                id: data.user_id,
+                lat: data.lat,
+                lng: data.lng,
             });
-            const trip = response.data; // Expected to return {start_lat, start_lng, end_lat, end_lng}
-
-            if (!trip) {
-                console.log("Trip not found");
-                return;
-            }
-
-            const { start_lat, start_lng, end_lat, end_lng } = trip;
-
-            // Get polyline route using Google Directions API (or your own stored polyline)
-            const polylineResponse = await axios.get(`https://maps.googleapis.com/maps/api/directions/json`, {
-                params: {
-                    origin: `${start_lat},${start_lng}`,
-                    destination: `${end_lat},${end_lng}`,
-                    key: "AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg"
-                }
-            });
-
-            if (polylineResponse.data.routes.length === 0) {
-                console.log("No route found");
-                return;
-            }
-
-            const encodedPolyline = polylineResponse.data.routes[0].overview_polyline.points;
-            const polylinePoints = polyline.decode(encodedPolyline); // Decode polyline into array of lat/lng pairs
-
-            // Check if driver is within range of any polyline point
-            const withinRange = isWithinRange(data.lat, data.lng, polylinePoints);
-
-            if (!withinRange) {
-                console.log(`Driver ${data.user_id} is off-route. Recalculating route...`);
-                socket.emit("new_route", {
-                    new_start_lat: data.lat,
-                    new_start_lng: data.lng,
-                    end_lat,
-                    end_lng
-                });
-                try {
-                    await axios.post('https://staging.zeroifta.com/api/trip/update', {
-                        trip_id: data.trip_id,
-                        start_lat: data.lat,
-                        start_lng: data.lng,
-                        end_lat: trip.end_lat,
-                        end_lng: trip.end_lng,
-                        truck_mpg: trip.truck_mpg,
-                        fuel_tank_capacity: trip.fuel_tank_capacity,
-                        total_gallons_present: trip.fuel_left,
-                        reserve_fuel:trip.reserve_fuel,
-                    });
-
-                    console.log(`Trip ${data.trip_id} updated successfully!`);
-                } catch (updateError) {
-                    console.error("Failed to update trip start location:", updateError);
-                }
-            }
-        } catch (error) {
-            console.error("Error fetching trip data", error);
         }
 
         // Broadcast updated location to all connected clients
@@ -122,6 +65,83 @@ io.on('connection', (socket) => {
             lat: data.lat,
             lng: data.lng
         });
+    });
+
+    // New event to handle trip deviation check
+    socket.on('checkTripDeviation', async (data) => {
+        const { trip_id, user_id, lat, lng } = data;
+        console.log(`Checking trip deviation for user ${user_id} on trip ${trip_id}`);
+
+        try {
+            // Fetch trip details from Laravel API
+            const tripResponse = await axios.post('https://staging.zeroifta.com/api/check-active-trip', {
+                trip_id: trip_id
+            });
+
+            const trip = tripResponse.data; // Expected to return {start_lat, start_lng, end_lat, end_lng}
+
+            if (!trip) {
+                console.log("Trip not found");
+                return;
+            }
+
+            const { start_lat, start_lng, end_lat, end_lng } = trip;
+
+            // Get polyline route using Google Directions API
+            const polylineResponse = await axios.get(`https://maps.googleapis.com/maps/api/directions/json`, {
+                params: {
+                    origin: `${start_lat},${start_lng}`,
+                    destination: `${end_lat},${end_lng}`,
+                    key: "AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg" // Replace with your Google Maps API key
+                }
+            });
+
+            if (polylineResponse.data.routes.length === 0) {
+                console.log("No route found");
+                return;
+            }
+
+            // Decode the polyline into an array of coordinates
+            const encodedPolyline = polylineResponse.data.routes[0].overview_polyline.points;
+            const polylinePoints = polyline.decode(encodedPolyline);
+
+            // Check if the driver is within 10 miles of any polyline point
+            const withinRange = isWithinRange(lat, lng, polylinePoints);
+
+            if (!withinRange) {
+                console.log(`Driver ${user_id} is off-route. Recalculating route...`);
+
+                // Emit event to frontend that the driver has deviated
+                socket.emit('routeDeviation', {
+                    user_id: user_id,
+                    trip_id: trip_id,
+                    message: "Driver has deviated from the route. Recalculating..."
+                });
+
+                // Call the update trip API to update the start location
+                try {
+                    const updateResponse = await axios.post('https://staging.zeroifta.com/api/trip/update', {
+                        trip_id: trip_id,
+                        start_lat: lat,
+                        start_lng: lng,
+                        end_lat: end_lat,
+                        end_lng: end_lng,
+                        truck_mpg: trip.truck_mpg,
+                        fuel_tank_capacity: trip.fuel_tank_capacity,
+                        total_gallons_present: trip.fuel_left,
+                        reserve_fuel: trip.reserve_fuel,
+                    });
+
+                    console.log("Trip updated successfully:", updateResponse.data);
+                } catch (updateError) {
+                    console.error("Failed to update trip:", updateError.response ? updateError.response.data : updateError.message);
+                }
+            } else {
+                console.log(`Driver ${user_id} is on route.`);
+            }
+        } catch (error) {
+            console.error("Error checking trip deviation:", error.response ? error.response.data : error.message);
+        }
     });
 
     socket.on('disconnect', () => {
