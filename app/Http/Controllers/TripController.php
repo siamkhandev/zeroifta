@@ -502,8 +502,8 @@ class TripController extends Controller
 
                 // Reset array keys to ensure a clean array structure
                 $finalFilteredPolyline = array_values($finalFilteredPolyline);
-                    $ftpData = $this->loadAndParseFTPData();
-                    $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+                    $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
+                    //$matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $currentTrip = Trip::where('id', $trip->id)->first();
                     $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
                     if($vehicle_id){
@@ -871,8 +871,8 @@ class TripController extends Controller
 
                 // Reset array keys to ensure a clean array structure
                 $finalFilteredPolyline = array_values($finalFilteredPolyline);
-                    $ftpData = $this->loadAndParseFTPData();
-                    $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+                    $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
+                    //$matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $currentTrip = Trip::where('id', $trip->id)->first();
                     $vehicle_id = DriverVehicle::where('driver_id', $currentTrip->user_id)->first();
 
@@ -1126,9 +1126,9 @@ class TripController extends Controller
         // Separate stations into in-range and out-of-range based on truck's fuel capacity
         $fuelStationsInRange = $fuelStations->filter(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
         $fuelStationsOutsideRange = $fuelStations->reject(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
-        if($fuelStationsInRange->isEmpty()){
-            return false;
-        }
+       if($fuelStationsInRange->isEmpty()){
+        return false;
+       }
         // Find the cheapest stations
         $firstCheapestInRange = $fuelStationsInRange->sortBy('price')->first();
 
