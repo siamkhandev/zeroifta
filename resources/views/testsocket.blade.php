@@ -74,6 +74,7 @@
 
         // Listen for the 'routeDeviation' event from the server
         socket.on('routeDeviation', (data) => {
+            console.log('data'.data);
             const responseDiv = document.getElementById('response');
             responseDiv.innerHTML = `
                 <div class="alert alert-warning">
