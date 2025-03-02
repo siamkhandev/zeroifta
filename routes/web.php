@@ -109,6 +109,9 @@ Route::get('maptest', function () {
 Route::get('terms-and-conditions', function () {
   return view('terms-and-conditions');
 });
+Route::get('testroute', function () {
+  return view('testsocket');
+});
 Route::get('/read-dat-file', [UsersController::class, 'readDatFile'])->name('read.dat.file');
 Route::get('/subscription', [AdminController::class, 'subscription']);
 Route::get('/buy/{plan}', [AdminController::class, 'buy'])->name('buy');

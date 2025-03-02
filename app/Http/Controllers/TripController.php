@@ -385,6 +385,34 @@ class TripController extends Controller
 
         return "No matching coordinates found.";
     }
+    public function checkActiveTrip(Request $request)
+    {
+        $validatedData = $request->validate([
+            'trip_id' => 'required|exists:trips,id',
+        ]);
+    
+        $trip = Trip::with('vehicle')->find($validatedData['trip_id']);
+    
+        if (!$trip) {
+            return response()->json(['success' => false, 'message' => 'Trip not found'], 404);
+        }
+        $findVehicle = Vehicle::whereId($trip->vehicle_id)->first();
+        return response()->json([
+            'success' => true,
+            'trip' => [
+                'trip_id' => $trip->id,
+                'start_lat' => $trip->updated_start_lat,
+                'start_lng' => $trip->updated_start_lng,
+                'end_lat' => $trip->updated_end_lat,
+                'end_lng' => $trip->updated_end_lng,
+                'truck_mpg' => $findVehicle->mpg ?? null,
+                'fuel_tank_capacity' => $findVehicle->fuel_tank_capacity ?? null,
+                'fuel_left' =>$findVehicle->fuel_left ?? 0,
+                'reserve_fuel'=>$findVehicle->reserve_fuel ?? 0,
+            ]
+        ]);
+    }
+    
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
         $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()

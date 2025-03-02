@@ -73,6 +73,7 @@ Route::post('dashboard',[DriverDashboardController::class,'index']);
 
     Route::post('/trip/start', [IFTAController::class, 'getDecodedPolyline']);
     Route::post('/get-active-trip', [TripController::class, 'getActiveTrip']);
+    Route::post('/check-active-trip', [TripController::class, 'checkActiveTrip']);
     Route::post('/trip/update', [IFTAController::class, 'updateTrip']);
     Route::post('/trip/delete', [TripController::class, 'deleteTrip']);
     Route::post('/trip/complete', [TripController::class, 'completeTrip']);
