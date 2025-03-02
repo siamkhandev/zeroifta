@@ -50,9 +50,7 @@
 
     <script>
         // Initialize Socket.IO connection
-        const socket = io('https://ws.zeroifta.com', {
-            transports: ['websocket']
-        });
+        const socket = io('https://ws.zeroifta.com');
 
         // Initialize Google Map
         let map;
