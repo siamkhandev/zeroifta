@@ -585,8 +585,8 @@ class IFTAController extends Controller
 
                 // Reset array keys to ensure a clean array structure
                 $finalFilteredPolyline = array_values($finalFilteredPolyline);
-                $ftpData = $this->loadAndParseFTPData();
-                $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+                $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
+                //$matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                 $reserve_fuel = $request->reserve_fuel;
                  $totalFuel = $currentFuel+$reserve_fuel;
                 $tripDetailResponse = [
@@ -909,39 +909,60 @@ class IFTAController extends Controller
         return $points;
     }
 
-    private function loadAndParseFTPData()
-    {
-        $filePath = 'EFSLLCpricing';
+    private function loadAndParseFTPData(array $decodedPolyline)
+{
+    $filePath = 'EFSLLCpricing';
 
-        // Connect to the FTP disk
-        $ftpDisk = Storage::disk('ftp');
-        if (!$ftpDisk->exists($filePath)) {
-            throw new \Exception("FTP file not found.");
+    // Connect to the FTP disk
+    $ftpDisk = Storage::disk('ftp');
+    if (!$ftpDisk->exists($filePath)) {
+        throw new \Exception("FTP file not found.");
+    }
+
+    $fileContent = $ftpDisk->get($filePath);
+    $rows = explode("\n", trim($fileContent));
+    $filteredData = [];
+    $uniqueRecords = [];
+
+    foreach ($rows as $line) {
+        $row = explode('|', $line);
+
+        if (!isset($row[8], $row[9])) {
+            continue; // Skip invalid data
         }
 
-        $fileContent = $ftpDisk->get($filePath);
-        $rows = explode("\n", trim($fileContent));
-        $parsedData = [];
+        $lat2 = number_format((float) trim($row[8]), 4);
+        $lng2 = number_format((float) trim($row[9]), 4);
 
-        foreach ($rows as $line) {
-            $row = explode('|', $line);
+        // Check if this station is near the route
+        foreach ($decodedPolyline as $decoded) {
+            $lat1 = $decoded['lat'];
+            $lng1 = $decoded['lng'];
+            $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
 
-            if (isset($row[8], $row[9])) {
-                $lat = number_format((float) trim($row[8]), 4);
-                $lng = number_format((float) trim($row[9]), 4);
-                $parsedData[$lat][$lng] = [
-                    'fuel_station_name'=>$row[1] ?? 'N/A',
-                    'lastprice' => $row[10] ?? 0.00,
-                    'price' => $row[11] ?? 0.00,
-                    'IFTA_tax'=> $row[18] ?? 0.00,
-                    'address' => $row[3] ?? 'N/A',
-                    'discount' => $row[12] ?? 0.00
-                ];
+            if ($distance < 12000) { // Within 500 meters
+                $uniqueKey = $lat2 . ',' . $lng2;
+
+                if (!isset($uniqueRecords[$uniqueKey])) {
+                    $filteredData[] = [
+                        'fuel_station_name' => (string) $row[1] ?? 'N/A',
+                        'ftpLat' => (string) $lat2,
+                        'ftpLng' => (string) $lng2,
+                        'lastprice' => (float) $row[10] ?? 0.00,
+                        'price' => (float) $row[11] ?? 0.00,
+                        'discount' => (float) $row[12] ?? 0.00,
+                        'IFTA_tax' => (float) $row[18] ?? 0.00,
+                        'address' => (string) $row[3] ?? 'N/A',
+                    ];
+                    $uniqueRecords[$uniqueKey] = true;
+                }
+                break; // No need to check further once it's matched
             }
         }
-
-        return $parsedData;
     }
+
+    return $filteredData;
+}
     private function findMatchingRecords(array $decodedPolyline, array $ftpData)
     {
         $matchingRecords = [];
