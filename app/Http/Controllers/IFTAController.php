@@ -322,7 +322,7 @@ class IFTAController extends Controller
 
                     // Reset array keys to ensure a clean array structure
                     $finalFilteredPolyline = array_values($finalFilteredPolyline);
-                    $ftpData = $this->loadAndParseFTPData($finalFilteredPolyline);
+                    $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
                    // $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $reserve_fuel = $request->reserve_fuel;
 
