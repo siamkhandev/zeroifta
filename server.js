@@ -131,7 +131,12 @@ io.on('connection', (socket) => {
                         total_gallons_present: trip.trip.fuel_left,
                         reserve_fuel: trip.trip.reserve_fuel,
                     });
-
+                    socket.emit('tripUpdated', {
+                        user_id: user_id,
+                        trip_id: trip_id,
+                        trip_data: updateResponse.data, // Send the full API response
+                        message: "Trip updated successfully after deviation."
+                    });
                     console.log("Trip updated successfully:", updateResponse.data);
                 } catch (updateError) {
                     console.error("Failed to update trip:", updateError.response ? updateError.response.data : updateError.message);
