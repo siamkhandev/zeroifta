@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            const { start_lat, start_lng, end_lat, end_lng } = trip;
+            const { start_lat, start_lng, end_lat, end_lng } = trip.trip;
 
             // Get polyline route using Google Directions API
             const polylineResponse = await axios.get(`https://maps.googleapis.com/maps/api/directions/json`, {
@@ -126,10 +126,10 @@ io.on('connection', (socket) => {
                         start_lng: lng,
                         end_lat: end_lat,
                         end_lng: end_lng,
-                        truck_mpg: trip.truck_mpg,
-                        fuel_tank_capacity: trip.fuel_tank_capacity,
-                        total_gallons_present: trip.fuel_left,
-                        reserve_fuel: trip.reserve_fuel,
+                        truck_mpg: trip.trip.truck_mpg,
+                        fuel_tank_capacity: trip.trip.fuel_tank_capacity,
+                        total_gallons_present: trip.trip.fuel_left,
+                        reserve_fuel: trip.trip.reserve_fuel,
                     });
 
                     console.log("Trip updated successfully:", updateResponse.data);

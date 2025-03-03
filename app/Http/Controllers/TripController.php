@@ -390,9 +390,9 @@ class TripController extends Controller
         $validatedData = $request->validate([
             'trip_id' => 'required|exists:trips,id',
         ]);
-    
-        $trip = Trip::with('vehicle')->find($validatedData['trip_id']);
-    
+
+        $trip = Trip::find($validatedData['trip_id']);
+        $vehicle = Vehicle::where('id',$trip->vehicle_id)->first();
         if (!$trip) {
             return response()->json(['success' => false, 'message' => 'Trip not found'], 404);
         }
@@ -412,7 +412,7 @@ class TripController extends Controller
             ]
         ]);
     }
-    
+
     public function getActiveTrip(Request $request){
         $trip = Trip::whereId($request->trip_id)->first();
         $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()
@@ -568,7 +568,7 @@ class TripController extends Controller
                             return response()->json(['status'=>404,'message'=>'no fuel station in range','data'=>(object)[]]);
                         }
                         foreach ($result as  $value) {
-                         
+
 
                             FuelStation::updateOrCreate(
                                 [
@@ -1137,7 +1137,7 @@ class TripController extends Controller
             }
             return $fuelStation;
         });
-        
+
         // Also, add distanceFromStart to the optimal station if it exists
         if ($optimalStation && $start) {
             $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation,$polyline);
@@ -1550,21 +1550,21 @@ class TripController extends Controller
             }
             return $station;
         });
-        
+
         $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
-       
+
         //$distances = $this->optimizedFuelStationsWithDistance($mutableData);
-        
+
         return $fuelStations->values()->all();
     }
 
 
     public function getDistance($start, $fuelStation, $polyline)
     {
-       
+
         $userLocation = ['lat' => $start['latitude'], 'lng' => $start['longitude']];
         $stationLocation = ['lat' => $fuelStation['ftpLat'], 'lng' => $fuelStation['ftpLng']];
-    
+
         return $this->calculatePolylineDistance($userLocation, $stationLocation, $polyline);
     }
     private function calculatePolylineDistance($userLocation, $destination, $polyline)
@@ -1594,7 +1594,7 @@ private function findNearestPoint($location, $polyline)
 }
 private function haversineDistance1($p1, $p2)
 {
-    
+
     $earthRadius = 3958.8; // Radius in meters
     $lat1 = deg2rad($p1['lat']);
     $lon1 = deg2rad($p1['lng']);
