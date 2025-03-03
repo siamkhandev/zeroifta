@@ -45,7 +45,11 @@
     <script>
         // Connect to the Socket.IO server
         const socket = io('https://ws.zeroifta.com');
+        socket.on('connection', (socket) => {
+        console.log('User connected:', socket.id);
 
+
+        });
         // Listen for the form submission
         document.getElementById('deviationForm').addEventListener('submit', (e) => {
             e.preventDefault(); // Prevent the form from submitting
