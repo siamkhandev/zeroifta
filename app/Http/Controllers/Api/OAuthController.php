@@ -47,7 +47,7 @@ class OAuthController extends Controller
             'iss' => config('app.url'),
             'sub' => $client->client_id,
             'iat' => time(),
-            'exp' => time() + 3600, // Token valid for 1 hour
+            'exp' => time() + 900, // Token valid for 15 minutes
         ];
 
         $token = JWT::encode($payload, config('app.key'), 'HS256');
@@ -56,7 +56,7 @@ class OAuthController extends Controller
             'status' => 'success',
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => 3600
+            'expires_in' => 900
         ]);
     }
 }
