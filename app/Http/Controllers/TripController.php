@@ -571,7 +571,7 @@ class TripController extends Controller
 
                         $result = $this->markOptimumFuelStations($tripDetailResponse);
                         if($result==false){
-                            return response()->json(['status'=>404,'message'=>'no fuel station in range','data'=>(object)[]]);
+                            $result = $matchingRecords;
                         }
                         foreach ($result as  $value) {
 
@@ -947,7 +947,7 @@ class TripController extends Controller
 
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
                 if($result==false){
-                    return response()->json(['status'=>404,'message'=>'no fuel station in range','data'=>(object)[]]);
+                    $result = $matchingRecords;
                 }
                     //$result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     FuelStation::where('trip_id', $trip->id)->delete();
