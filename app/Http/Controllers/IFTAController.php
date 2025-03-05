@@ -628,7 +628,8 @@ class IFTAController extends Controller
 
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
                 if($result==false){
-                    return response()->json(['status'=>404,'message'=>'no fuel station in range','data'=>(object)[]]);
+                    $result = $matchingRecords;
+
                 }
                 $fuelStations = [];
                 $validatedData['updated_start_lat'] = $request->start_lat;
@@ -1037,9 +1038,9 @@ private function decodePolyline($encoded)
         // Separate stations into in-range and out-of-range based on truck's fuel capacity
         $fuelStationsInRange = $fuelStations->filter(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
         $fuelStationsOutsideRange = $fuelStations->reject(fn($fs) => $fs['distanceFromStart'] < $truckTravelableDistanceInMiles);
-       if($fuelStationsInRange->isEmpty()){
-        return false;
-       }
+        if($fuelStationsInRange->isEmpty()){
+            return false;
+        }
         // Find the cheapest stations
         $firstCheapestInRange = $fuelStationsInRange->sortBy('price')->first();
 
