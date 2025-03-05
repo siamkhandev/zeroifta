@@ -533,7 +533,7 @@ class IFTAController extends Controller
                 $decodedCoordinates = [];
 
                 // Decode polyline in chunks for efficiency
-                foreach (array_chunk($steps, 50) as $chunkedSteps) {
+                foreach (array_chunk($steps, 150) as $chunkedSteps) {
                     foreach ($chunkedSteps as $step) {
                         if (isset($step['polyline']['points'])) {
                             $decodedCoordinates = array_merge(
