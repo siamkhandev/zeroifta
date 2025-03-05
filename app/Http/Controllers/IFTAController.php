@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessTripStart;
 use App\Models\CompanyDriver;
 use App\Models\DriverVehicle;
 use App\Models\FcmToken;
@@ -531,9 +532,15 @@ class IFTAController extends Controller
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
                 $decodedCoordinates = [];
+                $stepSize = 10; // Sample every 10th point
+
                 foreach ($steps as $step) {
                     if (isset($step['polyline']['points'])) {
-                        $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+                        $points = $this->decodePolyline($step['polyline']['points']);
+                        // Sample every 10th point
+                        for ($i = 0; $i < count($points); $i += $stepSize) {
+                            $decodedCoordinates[] = $points[$i];
+                        }
                     }
                 }
                 // Extract polyline points as an array of strings
@@ -642,53 +649,7 @@ class IFTAController extends Controller
                         'updated_at' => now(),
                     ];
                }
-               $findDriver = User::where('id', $trip->user_id)->first();
-               if($findDriver){
-
-                $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
-                if ($findCompany) {
-                    $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-                    $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)
-                    ->pluck('token')
-                    ->toArray();
-
-                    if (!empty($companyFcmTokens)) {
-                        $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
-                        $messaging = $factory->createMessaging();
-
-                        // Create the notification payload
-                        $message = CloudMessage::new()
-                            ->withNotification(Notification::create('Trip Started', $findDriver->name.' has started a trip.'))
-                            ->withData([
-                                'trip_id' => (string) $trip->id,  // Include trip ID for reference
-                                'driver_name' => $findDriver->name, // Driver's name
-                                'sound' => 'default',  // This triggers the sound
-                            ]);
-
-                        // Send notification to all FCM tokens of the company
-                        $response = $messaging->sendMulticast($message, $companyFcmTokens);
-                    }
-                    if (!empty($driverFcm)) {
-                        $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
-                        $messaging = $factory->createMessaging();
-
-                        $message = CloudMessage::new()
-                            ->withNotification(Notification::create('Trip Started', 'Trip started successfully'))
-                            ->withData([
-                                'sound' => 'default', // This triggers the sound
-                            ]);
-
-                        $response = $messaging->sendMulticast($message, $driverFcm);
-                        ModelsNotification::create([
-                            'user_id' => $findCompany->company_id,
-                            'title' => 'Trip Started',
-                            'body' => $findDriver->name . ' has started a trip.',
-                        ]);
-                    }
-                }
-
-            }
-               FuelStation::insert($fuelStations);
+               ProcessTripStart::dispatch($fuelStations, $trip, $validatedData);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
@@ -868,48 +829,51 @@ class IFTAController extends Controller
 
 
 
-    private function decodePolyline($encoded)
-    {
-        $points = [];
-        $index = 0;
-        $len = strlen($encoded);
-        $lat = 0;
-        $lng = 0;
+private function decodePolyline($encoded, $precision = 5)
+{
+    $points = [];
+    $index = 0;
+    $len = strlen($encoded);
+    $lat = 0;
+    $lng = 0;
 
-        while ($index < $len) {
-            $b = 0;
-            $shift = 0;
-            $result = 0;
+    while ($index < $len) {
+        // Decode latitude
+        $b = 0;
+        $shift = 0;
+        $result = 0;
 
-            do {
-                $b = ord($encoded[$index++]) - 63;
-                $result |= ($b & 0x1f) << $shift;
-                $shift += 5;
-            } while ($b >= 0x20);
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1f) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
 
-            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
-            $lat += $dlat;
+        $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+        $lat += $dlat;
 
-            $shift = 0;
-            $result = 0;
+        // Decode longitude
+        $shift = 0;
+        $result = 0;
 
-            do {
-                $b = ord($encoded[$index++]) - 63;
-                $result |= ($b & 0x1f) << $shift;
-                $shift += 5;
-            } while ($b >= 0x20);
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1f) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
 
-            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
-            $lng += $dlng;
+        $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+        $lng += $dlng;
 
-            $points[] = [
-                'lat' => number_format($lat * 1e-5, 5),
-                'lng' => number_format($lng * 1e-5, 5),
-            ];
-        }
-
-        return $points;
+        // Add point to the array
+        $points[] = [
+            'lat' => $lat * 1e-5,
+            'lng' => $lng * 1e-5,
+        ];
     }
+
+    return $points;
+}
 
     private function loadAndParseFTPData(array $decodedPolyline)
 {
