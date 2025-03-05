@@ -305,7 +305,7 @@ class IFTAController extends Controller
                 if (isset($data['routes'][0]['overview_polyline']['points'])) {
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
-                   
+
                     // Filter coordinates based on distance from start and end points
                     $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
                         // Ensure $coordinate is valid
@@ -488,6 +488,7 @@ class IFTAController extends Controller
 }
     public function getDecodedPolyline(Request $request, FcmService $firebaseService)
     {
+        ini_set('max_execution_time', 120);
         $validatedData =$request->validate([
             'user_id'   => 'required|exists:users,id',
             'start_lat' => 'required',
@@ -611,7 +612,7 @@ class IFTAController extends Controller
 
                     ]
                 ];
-               
+
                 $result = $this->markOptimumFuelStations($tripDetailResponse);
                 if($result==false){
                     return response()->json(['status'=>404,'message'=>'no fuel station in range','data'=>(object)[]]);
@@ -1053,7 +1054,7 @@ class IFTAController extends Controller
             }
             return $fuelStation;
         });
-        
+
         // Also, add distanceFromStart to the optimal station if it exists
         if ($optimalStation && $start) {
             $optimalStation['distanceFromStart'] = $this->getDistance($start, $optimalStation,$polyline);
@@ -1466,11 +1467,11 @@ class IFTAController extends Controller
             }
             return $station;
         });
-        
+
         $mutableData['data']['fuelStations'] = $fuelStations->values()->all();
-       
+
         //$distances = $this->optimizedFuelStationsWithDistance($mutableData);
-        
+
         return $fuelStations->values()->all();
     }
 
@@ -1496,10 +1497,10 @@ public function optimizedFuelStationsWithDistance($tripData)
     if (!$tripData) return null;
 
     $fuelStations = $tripData['data']['fuelStations'] ?? [];
-    
+
     $start = $tripData['data']['trip']['start'] ?? null;
     $encodedPolylines = $tripData['data']['polyline'] ?? [$tripData['data']['polyline'] ?? ''];
-    
+
     $totalCoordinates = $tripData['data']['polyline'] ?? [];
 
     // Decode all polylines into coordinate points
@@ -1536,7 +1537,7 @@ public function optimizedFuelStationsWithDistance($tripData)
         if ($nearestCoordinate) {
             // Calculate distance from start to nearest polyline point
             $totalDistance = 0;
-            
+
             for ($i = 0; $i < count($totalCoordinates) - 1; $i++) {
                 $distance = $this->calculateDistance1($totalCoordinates[$i], $totalCoordinates[$i + 1]);
                 $totalDistance += $distance;
@@ -1632,7 +1633,7 @@ private function calculateDistance1(array $coord1, array $coord2): float
 }
 public function getDistance($start, $fuelStation, $polyline)
 {
-   
+
     $userLocation = ['lat' => $start['latitude'], 'lng' => $start['longitude']];
     $stationLocation = ['lat' => $fuelStation['ftpLat'], 'lng' => $fuelStation['ftpLng']];
 
@@ -1641,7 +1642,7 @@ public function getDistance($start, $fuelStation, $polyline)
 
 private function haversineDistance1($p1, $p2)
 {
-    
+
     $earthRadius = 3958.8; // Radius in meters
     $lat1 = deg2rad($p1['lat']);
     $lon1 = deg2rad($p1['lng']);
