@@ -530,18 +530,10 @@ class IFTAController extends Controller
            if($data['routes'] && $data['routes'][0]){
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
-                dd(count($steps));
                 $decodedCoordinates = [];
-
-                // Decode polyline in chunks for efficiency
-                foreach (array_chunk($steps, 150) as $chunkedSteps) {
-                    foreach ($chunkedSteps as $step) {
-                        if (isset($step['polyline']['points'])) {
-                            $decodedCoordinates = array_merge(
-                                $decodedCoordinates,
-                                $this->decodePolyline($step['polyline']['points'])
-                            );
-                        }
+                foreach ($steps as $step) {
+                    if (isset($step['polyline']['points'])) {
+                        $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
                     }
                 }
                 // Extract polyline points as an array of strings
@@ -876,48 +868,46 @@ class IFTAController extends Controller
 
 
 
-    private function decodePolyline($encoded)
-    {
-        $points = [];
-        $index = 0;
-        $len = strlen($encoded);
-        $lat = 0;
-        $lng = 0;
+private function decodePolyline($encoded)
+{
+    $points = [];
+    $index = 0;
+    $lat = 0;
+    $lng = 0;
+    $len = strlen($encoded);
 
-        while ($index < $len) {
-            $b = 0;
-            $shift = 0;
-            $result = 0;
+    while ($index < $len) {
+        $result = 0;
+        $shift = 0;
 
-            do {
-                $b = ord($encoded[$index++]) - 63;
-                $result |= ($b & 0x1f) << $shift;
-                $shift += 5;
-            } while ($b >= 0x20);
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1F) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
 
-            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
-            $lat += $dlat;
+        $lat += ($result & 1) ? ~($result >> 1) : ($result >> 1);
 
-            $shift = 0;
-            $result = 0;
+        $result = 0;
+        $shift = 0;
 
-            do {
-                $b = ord($encoded[$index++]) - 63;
-                $result |= ($b & 0x1f) << $shift;
-                $shift += 5;
-            } while ($b >= 0x20);
+        do {
+            $b = ord($encoded[$index++]) - 63;
+            $result |= ($b & 0x1F) << $shift;
+            $shift += 5;
+        } while ($b >= 0x20);
 
-            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
-            $lng += $dlng;
+        $lng += ($result & 1) ? ~($result >> 1) : ($result >> 1);
 
-            $points[] = [
-                'lat' => number_format($lat * 1e-5, 5),
-                'lng' => number_format($lng * 1e-5, 5),
-            ];
-        }
-
-        return $points;
+        $points[] = [
+            'lat' => round($lat * 1e-5, 6), // Preserve float precision
+            'lng' => round($lng * 1e-5, 6),
+        ];
     }
+
+    return $points;
+}
+
 
     private function loadAndParseFTPData(array $decodedPolyline)
 {
