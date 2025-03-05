@@ -868,46 +868,48 @@ class IFTAController extends Controller
 
 
 
-private function decodePolyline($encoded)
-{
-    $points = [];
-    $index = 0;
-    $lat = 0;
-    $lng = 0;
-    $len = strlen($encoded);
+    private function decodePolyline($encoded)
+    {
+        $points = [];
+        $index = 0;
+        $len = strlen($encoded);
+        $lat = 0;
+        $lng = 0;
 
-    while ($index < $len) {
-        $result = 0;
-        $shift = 0;
+        while ($index < $len) {
+            $b = 0;
+            $shift = 0;
+            $result = 0;
 
-        do {
-            $b = ord($encoded[$index++]) - 63;
-            $result |= ($b & 0x1F) << $shift;
-            $shift += 5;
-        } while ($b >= 0x20);
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
 
-        $lat += ($result & 1) ? ~($result >> 1) : ($result >> 1);
+            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lat += $dlat;
 
-        $result = 0;
-        $shift = 0;
+            $shift = 0;
+            $result = 0;
 
-        do {
-            $b = ord($encoded[$index++]) - 63;
-            $result |= ($b & 0x1F) << $shift;
-            $shift += 5;
-        } while ($b >= 0x20);
+            do {
+                $b = ord($encoded[$index++]) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b >= 0x20);
 
-        $lng += ($result & 1) ? ~($result >> 1) : ($result >> 1);
+            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lng += $dlng;
 
-        $points[] = [
-            'lat' => round($lat * 1e-5, 6), // Preserve float precision
-            'lng' => round($lng * 1e-5, 6),
-        ];
+            $points[] = [
+                'lat' => number_format($lat * 1e-5, 5),
+                'lng' => number_format($lng * 1e-5, 5),
+            ];
+        }
+
+        return $points;
     }
-
-    return $points;
-}
-
 
     private function loadAndParseFTPData(array $decodedPolyline)
 {
