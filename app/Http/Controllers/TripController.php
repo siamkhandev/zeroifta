@@ -465,9 +465,15 @@ class TripController extends Controller
                 if (!empty($data['routes'][0]['legs'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
                     $decodedCoordinates = [];
+                    $stepSize = 7; // Sample every 10th point
+
                     foreach ($steps as $step) {
                         if (isset($step['polyline']['points'])) {
-                            $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+                            $points = $this->decodePolyline($step['polyline']['points']);
+                            // Sample every 10th point
+                            for ($i = 0; $i < count($points); $i += $stepSize) {
+                                $decodedCoordinates[] = $points[$i];
+                            }
                         }
                     }
                     $polylinePoints = [];
@@ -837,11 +843,17 @@ class TripController extends Controller
                 if (!empty($data['routes'][0]['legs'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
                     $decodedCoordinates = [];
-                    foreach ($steps as $step) {
-                        if (isset($step['polyline']['points'])) {
-                            $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+                $stepSize = 7; // Sample every 10th point
+
+                foreach ($steps as $step) {
+                    if (isset($step['polyline']['points'])) {
+                        $points = $this->decodePolyline($step['polyline']['points']);
+                        // Sample every 10th point
+                        for ($i = 0; $i < count($points); $i += $stepSize) {
+                            $decodedCoordinates[] = $points[$i];
                         }
                     }
+                }
                     $polylinePoints = [];
 
                     foreach ($data['routes'][0]['legs'] as $leg) {
