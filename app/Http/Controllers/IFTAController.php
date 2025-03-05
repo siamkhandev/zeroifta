@@ -488,8 +488,7 @@ class IFTAController extends Controller
 }
     public function getDecodedPolyline(Request $request, FcmService $firebaseService)
     {
-       dd(phpinfo()
-    );
+
         $validatedData =$request->validate([
             'user_id'   => 'required|exists:users,id',
             'start_lat' => 'required',
