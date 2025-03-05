@@ -488,7 +488,7 @@ class IFTAController extends Controller
 }
     public function getDecodedPolyline(Request $request, FcmService $firebaseService)
     {
-
+        ini_set('max_execution_time', 600);
         $validatedData =$request->validate([
             'user_id'   => 'required|exists:users,id',
             'start_lat' => 'required',
@@ -643,52 +643,52 @@ class IFTAController extends Controller
                     ];
                }
                $findDriver = User::where('id', $trip->user_id)->first();
-               if($findDriver){
+            //    if($findDriver){
 
-                $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
-                if ($findCompany) {
-                    $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-                    $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)
-                    ->pluck('token')
-                    ->toArray();
+            //     $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
+            //     if ($findCompany) {
+            //         $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
+            //         $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)
+            //         ->pluck('token')
+            //         ->toArray();
 
-                    if (!empty($companyFcmTokens)) {
-                        $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
-                        $messaging = $factory->createMessaging();
+            //         if (!empty($companyFcmTokens)) {
+            //             $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+            //             $messaging = $factory->createMessaging();
 
-                        // Create the notification payload
-                        $message = CloudMessage::new()
-                            ->withNotification(Notification::create('Trip Started', $findDriver->name.' has started a trip.'))
-                            ->withData([
-                                'trip_id' => (string) $trip->id,  // Include trip ID for reference
-                                'driver_name' => $findDriver->name, // Driver's name
-                                'sound' => 'default',  // This triggers the sound
-                            ]);
+            //             // Create the notification payload
+            //             $message = CloudMessage::new()
+            //                 ->withNotification(Notification::create('Trip Started', $findDriver->name.' has started a trip.'))
+            //                 ->withData([
+            //                     'trip_id' => (string) $trip->id,  // Include trip ID for reference
+            //                     'driver_name' => $findDriver->name, // Driver's name
+            //                     'sound' => 'default',  // This triggers the sound
+            //                 ]);
 
-                        // Send notification to all FCM tokens of the company
-                        $response = $messaging->sendMulticast($message, $companyFcmTokens);
-                    }
-                    if (!empty($driverFcm)) {
-                        $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
-                        $messaging = $factory->createMessaging();
+            //             // Send notification to all FCM tokens of the company
+            //             $response = $messaging->sendMulticast($message, $companyFcmTokens);
+            //         }
+            //         if (!empty($driverFcm)) {
+            //             $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+            //             $messaging = $factory->createMessaging();
 
-                        $message = CloudMessage::new()
-                            ->withNotification(Notification::create('Trip Started', 'Trip started successfully'))
-                            ->withData([
-                                'sound' => 'default', // This triggers the sound
-                            ]);
+            //             $message = CloudMessage::new()
+            //                 ->withNotification(Notification::create('Trip Started', 'Trip started successfully'))
+            //                 ->withData([
+            //                     'sound' => 'default', // This triggers the sound
+            //                 ]);
 
-                        $response = $messaging->sendMulticast($message, $driverFcm);
-                        ModelsNotification::create([
-                            'user_id' => $findCompany->company_id,
-                            'title' => 'Trip Started',
-                            'body' => $findDriver->name . ' has started a trip.',
-                        ]);
-                    }
-                }
+            //             $response = $messaging->sendMulticast($message, $driverFcm);
+            //             ModelsNotification::create([
+            //                 'user_id' => $findCompany->company_id,
+            //                 'title' => 'Trip Started',
+            //                 'body' => $findDriver->name . ' has started a trip.',
+            //             ]);
+            //         }
+            //     }
 
-            }
-               FuelStation::insert($fuelStations);
+            // }
+            //    FuelStation::insert($fuelStations);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
