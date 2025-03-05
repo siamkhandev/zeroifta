@@ -530,6 +530,7 @@ class IFTAController extends Controller
            if($data['routes'] && $data['routes'][0]){
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
+                dd(count($steps));
                 $decodedCoordinates = [];
 
                 // Decode polyline in chunks for efficiency
