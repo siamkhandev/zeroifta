@@ -531,9 +531,16 @@ class IFTAController extends Controller
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
                 $decodedCoordinates = [];
-                foreach ($steps as $step) {
-                    if (isset($step['polyline']['points'])) {
-                        $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($step['polyline']['points']));
+
+                // Decode polyline in chunks for efficiency
+                foreach (array_chunk($steps, 50) as $chunkedSteps) {
+                    foreach ($chunkedSteps as $step) {
+                        if (isset($step['polyline']['points'])) {
+                            $decodedCoordinates = array_merge(
+                                $decodedCoordinates,
+                                $this->decodePolyline($step['polyline']['points'])
+                            );
+                        }
                     }
                 }
                 // Extract polyline points as an array of strings
@@ -608,7 +615,7 @@ class IFTAController extends Controller
                             'fuelLeft' => $totalFuel
                         ],
                         'fuelStations' => $matchingRecords,
-                        'polyline'=>$decodedPolyline
+                        'polyline'=>$decodedCoordinates
 
                     ]
                 ];
