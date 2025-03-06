@@ -7,6 +7,7 @@ use App\Models\FuelStation;
 use App\Models\FcmToken;
 use App\Models\CompanyDriver;
 use App\Models\ModelsNotification;
+use App\Models\Notification as AppModelsNotification;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
@@ -63,18 +64,18 @@ class ProcessTripStart implements ShouldQueue
         $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
         $messaging = $factory->createMessaging();
 
-        // Send Notification to Company
-        // if (!empty($companyFcmTokens)) {
-        //     $message = CloudMessage::new()
-        //         ->withNotification(Notification::create('Trip Started', $findDriver->name . ' has started a trip.'))
-        //         ->withData([
-        //             'trip_id' => (string) $this->trip->id,
-        //             'driver_name' => $findDriver->name,
-        //             'sound' => 'default',
-        //         ]);
+        //Send Notification to Company
+        if (!empty($companyFcmTokens)) {
+            $message = CloudMessage::new()
+                ->withNotification(Notification::create('Trip Started', $findDriver->name . ' has started a trip.'))
+                ->withData([
+                    'trip_id' => (string) $this->trip->id,
+                    'driver_name' => $findDriver->name,
+                    'sound' => 'default',
+                ]);
 
-        //     $messaging->sendMulticast($message, $companyFcmTokens);
-        // }
+            $messaging->sendMulticast($message, $companyFcmTokens);
+        }
 
         // Send Notification to Driver
         if (!empty($driverFcm)) {
@@ -84,10 +85,10 @@ class ProcessTripStart implements ShouldQueue
                     'sound' => 'default',
                 ]);
 
-            //$messaging->sendMulticast($message, $driverFcm);
+            $messaging->sendMulticast($message, $driverFcm);
 
             // Store Notification in Database
-            ModelsNotification::create([
+            AppModelsNotification::create([
                 'user_id' => $findCompany->company_id,
                 'title' => 'Trip Started',
                 'body' => $findDriver->name . ' has started a trip.',
