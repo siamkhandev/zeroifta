@@ -542,28 +542,22 @@ class IFTAController extends Controller
            if($data['routes'] && $data['routes'][0]){
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
-                $decodedCoordinates = [];
-                $stepSize = 10; // Sample every 10th point ...but this approach is not correct
+                $filteredPolylines = [];
 
-                foreach ($steps as $step) {
+                foreach ($steps as $index => $step) {
                     if (isset($step['polyline']['points'])) {
-                        //decode polyline
-                        $points = $this->decodePolyline($step['polyline']['points']);
-                       
-                        for ($i = 0; $i < count($points); $i += $stepSize) {
-                            $decodedCoordinates[] = $points[$i];
+                        // Only process steps with odd indices
+                        if ($index % 2 !== 0) {
+                            $filteredPolylines[] = $step['polyline']['points'];
                         }
                     }
                 }
-                // Extract polyline points as an array of strings
-                $polylinePoints = array_map(function ($step) {
-                    return $step['polyline']['points'] ?? null;
-                }, $steps);
 
-                // Filter out any null values if necessary
-                $polylinePoints = array_filter($polylinePoints);
-
-
+                // Now decode only the selected odd-indexed polylines
+                $decodedCoordinates = [];
+                foreach ($filteredPolylines as $polyline) {
+                    $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($polyline));
+                }
             }
 
             $route = $data['routes'][0];
@@ -782,37 +776,37 @@ class IFTAController extends Controller
     private function loadAndParseFTPData(array $decodedPolyline)
     {
         $filePath = 'EFSLLCpricing';
-    
+
         // Connect to the FTP disk
         $ftpDisk = Storage::disk('ftp');
         if (!$ftpDisk->exists($filePath)) {
             throw new \Exception("FTP file not found.");
         }
-    
+
         $fileContent = $ftpDisk->get($filePath);
         $rows = explode("\n", trim($fileContent));
         $filteredData = [];
         $uniqueRecords = [];
-    
+
         foreach ($rows as $line) {
             $row = explode('|', $line);
-    
+
             if (!isset($row[8], $row[9])) {
                 continue; // Skip invalid data
             }
-    
+
             $lat2 = number_format((float) trim($row[8]), 4);
             $lng2 = number_format((float) trim($row[9]), 4);
-    
+
             // Check if this station is near the route
             foreach ($decodedPolyline as $decoded) {
                 $lat1 = $decoded['lat'];
                 $lng1 = $decoded['lng'];
                 $distance = $this->haversineDistance($lat1, $lng1, $lat2, $lng2);
-    
+
                 if ($distance < 12000) { // Within 500 meters
                     $uniqueKey = $lat2 . ',' . $lng2;
-    
+
                     if (!isset($uniqueRecords[$uniqueKey])) {
                         $filteredData[] = [
                             'fuel_station_name' => (string) $row[1] ?? 'N/A',
@@ -830,7 +824,7 @@ class IFTAController extends Controller
                 }
             }
         }
-    
+
         return $filteredData;
     }
     private function haversineDistance($lat1, $lng1, $lat2, $lng2)
@@ -1298,8 +1292,8 @@ class IFTAController extends Controller
 
         return $fuelStations->values()->all();
     }
-    
-   
+
+
 public function optimizedFuelStationsWithDistance($tripData)
 {
     if (!$tripData) return null;
