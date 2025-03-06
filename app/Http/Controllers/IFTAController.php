@@ -601,7 +601,7 @@ class IFTAController extends Controller
                     $formattedDuration = "{$minutes} min";
                 }
 
-                dd($formattedDuration); // Debugging output
+
             }
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
