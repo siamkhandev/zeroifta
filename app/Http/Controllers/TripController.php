@@ -465,7 +465,7 @@ class TripController extends Controller
                 if (!empty($data['routes'][0]['legs'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
                     $decodedCoordinates = [];
-                    $stepSize = 7; // Sample every 10th point
+                    $stepSize =3; // Sample every 10th point
 
                     foreach ($steps as $step) {
                         if (isset($step['polyline']['points'])) {
@@ -843,7 +843,7 @@ class TripController extends Controller
                 if (!empty($data['routes'][0]['legs'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
                     $decodedCoordinates = [];
-                $stepSize = 7; // Sample every 10th point
+                $stepSize = 3; // Sample every 10th point
 
                 foreach ($steps as $step) {
                     if (isset($step['polyline']['points'])) {
