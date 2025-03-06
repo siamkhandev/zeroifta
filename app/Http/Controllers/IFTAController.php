@@ -542,22 +542,28 @@ class IFTAController extends Controller
            if($data['routes'] && $data['routes'][0]){
             if (!empty($data['routes'][0]['legs'][0]['steps'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
-                $filteredPolylines = [];
+                $decodedCoordinates = [];
+                $stepSize = 5; // Sample every 10th point ...but this approach is not correct
 
-                foreach ($steps as $index => $step) {
+                foreach ($steps as $step) {
                     if (isset($step['polyline']['points'])) {
-                        // Only process steps with odd indices
-                        if ($index % 2 !== 0) {
-                            $filteredPolylines[] = $step['polyline']['points'];
+                        //decode polyline
+                        $points = $this->decodePolyline($step['polyline']['points']);
+
+                        for ($i = 0; $i < count($points); $i += $stepSize) {
+                            $decodedCoordinates[] = $points[$i];
                         }
                     }
                 }
+                // Extract polyline points as an array of strings
+                $polylinePoints = array_map(function ($step) {
+                    return $step['polyline']['points'] ?? null;
+                }, $steps);
 
-                // Now decode only the selected odd-indexed polylines
-                $decodedCoordinates = [];
-                foreach ($filteredPolylines as $polyline) {
-                    $decodedCoordinates = array_merge($decodedCoordinates, $this->decodePolyline($polyline));
-                }
+                // Filter out any null values if necessary
+                $polylinePoints = array_filter($polylinePoints);
+
+
             }
 
             $route = $data['routes'][0];
