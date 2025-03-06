@@ -579,22 +579,11 @@ class IFTAController extends Controller
 
             // Format duration (e.g., "2 hr 20 min")
             if ($durationText) {
-                // Match hours and minutes separately
-                preg_match('/(\d+)\s*hour/', $durationText, $hourMatch);
-                preg_match('/(\d+)\s*min/', $durationText, $minuteMatch);
+                $durationParts = explode(' ', $durationText);
+                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
+                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
+                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
 
-                // Extract values or set defaults
-                $hours = isset($hourMatch[1]) ? (int)$hourMatch[1] : 0;
-                $minutes = isset($minuteMatch[1]) ? (int)$minuteMatch[1] : 0;
-
-                // Format duration correctly
-                if ($hours > 0 && $minutes > 0) {
-                    $formattedDuration = "{$hours} hr {$minutes} min";
-                } elseif ($hours > 0) {
-                    $formattedDuration = "{$hours} hr";
-                } else {
-                    $formattedDuration = "{$minutes} min";
-                }
             }
 
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
