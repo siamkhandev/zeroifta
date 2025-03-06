@@ -658,7 +658,7 @@ class IFTAController extends Controller
                     ];
                }
                // Dispatch background process
-               ProcessTripStart::dispatch($fuelStations, $trip, $validatedData);
+               //ProcessTripStart::dispatch($fuelStations, $trip, $validatedData);
                 $trip->distance = $formattedDistance;
                 $trip->duration = $formattedDuration;
                 $trip->user_id = (int)$trip->user_id;
