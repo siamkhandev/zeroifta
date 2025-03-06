@@ -579,13 +579,30 @@ class IFTAController extends Controller
 
             // Format duration (e.g., "2 hr 20 min")
             if ($durationText) {
-                $durationParts = explode(' ', $durationText);
-                $hours = isset($durationParts[0]) ? $durationParts[0] : 0;
-                $minutes = isset($durationParts[2]) ? $durationParts[2] : 0;
-                $formattedDuration = $hours . ' hr ' . $minutes . ' min'; // Formatting as "2 hr 20 min"
+                // Match days, hours, and minutes separately
+                preg_match('/(\d+)\s*day/', $durationText, $dayMatch);
+                preg_match('/(\d+)\s*hour/', $durationText, $hourMatch);
+                preg_match('/(\d+)\s*min/', $durationText, $minuteMatch);
 
+                // Convert extracted values to integers or default to 0
+                $days = isset($dayMatch[1]) ? (int)$dayMatch[1] : 0;
+                $hours = isset($hourMatch[1]) ? (int)$hourMatch[1] : 0;
+                $minutes = isset($minuteMatch[1]) ? (int)$minuteMatch[1] : 0;
+
+                // Convert days to hours
+                $totalHours = ($days * 24) + $hours;
+
+                // Format the output correctly
+                if ($totalHours > 0 && $minutes > 0) {
+                    $formattedDuration = "{$totalHours} hr {$minutes} min";
+                } elseif ($totalHours > 0) {
+                    $formattedDuration = "{$totalHours} hr";
+                } else {
+                    $formattedDuration = "{$minutes} min";
+                }
+
+                dd($formattedDuration); // Debugging output
             }
-            dd($formattedDuration);
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
