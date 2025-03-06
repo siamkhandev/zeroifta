@@ -567,42 +567,33 @@ class IFTAController extends Controller
             }
 
             $route = $data['routes'][0];
-            // Extract and format distance & duration
-            $distanceText = isset($route['legs'][0]['distance']['text']) ? $route['legs'][0]['distance']['text'] : null;
-            $durationText = isset($route['legs'][0]['duration']['text']) ? $route['legs'][0]['duration']['text'] : null;
+            $route = $data['routes'][0];
+                if($route){
+                    $totalDistance = 0;
+                    $totalDuration = 0;
 
-            // Format distance (e.g., "100 miles")
-            if ($distanceText) {
-                $distanceParts = explode(' ', $distanceText);
-                $formattedDistance = $distanceParts[0] . ' miles'; // Ensuring it always returns distance in miles
-            }
+                    foreach ($route['legs'] as $leg) {
+                        $totalDistance += $leg['distance']['value']; // Distance in meters
+                        $totalDuration += $leg['duration']['value']; // Duration in seconds
+                    }
 
-            // Format duration (e.g., "2 hr 20 min")
-            if ($durationText) {
-                // Match days, hours, and minutes separately
-                preg_match('/(\d+)\s*day/', $durationText, $dayMatch);
-                preg_match('/(\d+)\s*hour/', $durationText, $hourMatch);
-                preg_match('/(\d+)\s*min/', $durationText, $minuteMatch);
+                    // Convert meters to miles
+                    $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
 
-                // Convert extracted values to integers or default to 0
-                $days = isset($dayMatch[1]) ? (int)$dayMatch[1] : 0;
-                $hours = isset($hourMatch[1]) ? (int)$hourMatch[1] : 0;
-                $minutes = isset($minuteMatch[1]) ? (int)$minuteMatch[1] : 0;
+                    // Convert seconds to hours and minutes
+                    $hours = floor($totalDuration / 3600);
+                    $minutes = floor(($totalDuration % 3600) / 60);
 
-                // Convert days to hours
-                $totalHours = ($days * 24) + $hours;
+                    // Format distance
+                    $formattedDistance = $totalDistanceMiles . ' miles';
 
-                // Format the output correctly
-                if ($totalHours > 0 && $minutes > 0) {
-                    $formattedDuration = "{$totalHours} hr {$minutes} min";
-                } elseif ($totalHours > 0) {
-                    $formattedDuration = "{$totalHours} hr";
-                } else {
-                    $formattedDuration = "{$minutes} min";
+                    // Format duration
+                    if ($hours > 0) {
+                        $formattedDuration = "{$hours} hr {$minutes} min";
+                    } else {
+                        $formattedDuration = "{$minutes} min";
+                    }
                 }
-
-
-            }
             if (isset($data['routes'][0]['overview_polyline']['points'])) {
                 $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                 $decodedPolyline = $this->decodePolyline($encodedPolyline);
