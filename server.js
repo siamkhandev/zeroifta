@@ -105,7 +105,7 @@ io.on('connection', (socket) => {
                     params: {
                         origin: `${start_lat},${start_lng}`,
                         destination: `${end_lat},${end_lng}`,
-                        key: "YOUR_GOOGLE_API_KEY"
+                        key: "AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg"
                     }
                 });
 
