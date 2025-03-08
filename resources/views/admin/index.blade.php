@@ -1,5 +1,8 @@
 @extends('layouts.new_main')
 @section('content')
+<!-- Add AntV dependencies -->
+<script src="https://unpkg.com/@antv/g2plot@latest/dist/g2plot.min.js"></script>
+
 <div class="dash-countMain">
   <div class="container-fluid">
     <!-- Dashboards Count -->
@@ -127,8 +130,9 @@
               @endif</h2>
           </div>
           <div>
-            <div class="chart" style="max-width: 1125px; overflow: hidden;">
-              <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+            <div class="chart" style="max-width: 1700px; overflow: hidden;">
+              <div id="line-chart" style="height: 300px;"></div>
+              <div id="column-chart" style="height: 300px;"></div>
             </div>
           </div>
         </div>
@@ -249,4 +253,65 @@
 </div>
 
 
+@endsection
+
+@section('scripts')
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Sample data - replace this with your actual data from backend
+    const data = @json($chartData ?? []);
+
+    // Line Chart Configuration
+    const lineChart = new G2Plot.Line('line-chart', {
+      data: data,
+      xField: 'date',
+      yField: 'Drivers',
+      color: '#092e75',
+      height: 300,
+      tooltip: {
+        showCrosshairs: true,
+        shared: true,
+      },
+      point: {
+        size: 3,
+      },
+    });
+
+    // Column Chart Configuration
+    const columnChart = new G2Plot.Column('column-chart', {
+      data: data,
+      xField: 'date',
+      yField: 'Drivers',
+      height: 300,
+      color: '#092e75',
+      tooltip: {
+        showCrosshairs: true,
+        shared: true,
+      },
+    });
+
+    // Render both charts
+    lineChart.render();
+    columnChart.render();
+
+    // Sync tooltips between charts
+    lineChart.on('plot:mousemove', (evt) => {
+      const point = lineChart.getXY(evt.data.data);
+      columnChart.showTooltip(point);
+    });
+
+    columnChart.on('plot:mousemove', (evt) => {
+      const point = columnChart.getXY(evt.data.data);
+      lineChart.showTooltip(point);
+    });
+
+    lineChart.on('plot:mouseleave', () => {
+      columnChart.hideTooltip();
+    });
+
+    columnChart.on('plot:mouseleave', () => {
+      lineChart.hideTooltip();
+    });
+  });
+</script>
 @endsection

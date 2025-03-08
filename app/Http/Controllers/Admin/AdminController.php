@@ -28,11 +28,41 @@ class AdminController extends Controller
         if(Auth::user()->role=='admin')
         {
             $data = User::where('role','company')->take(10)->latest()->get();
+            // Using dummy data for the chart
+            $chartData = [
+                ["date" => "Jan 2024", "Drivers" => 1394.46],
+                ["date" => "Feb 2024", "Drivers" => 1366.42],
+                ["date" => "Mar 2024", "Drivers" => 1498.58],
+                ["date" => "Apr 2024", "Drivers" => 1452.43],
+                ["date" => "May 2024", "Drivers" => 1420.6],
+                ["date" => "Jun 2024", "Drivers" => 1454.6],
+                ["date" => "Jul 2024", "Drivers" => 1430.83],
+                ["date" => "Aug 2024", "Drivers" => 1517.68],
+                ["date" => "Sep 2024", "Drivers" => 1436.51],
+                ["date" => "Oct 2024", "Drivers" => 1429.4],
+                ["date" => "Nov 2024", "Drivers" => 1314.95],
+                ["date" => "Dec 2024", "Drivers" => 1320.28]
+            ];
         }else{
             if(Auth::user()->is_subscribed==0){
                 return redirect('subscription');
             }
             $data = CompanyDriver::with('driver','company')->where('company_id',Auth::id())->take(10)->latest()->get();
+            // Using dummy data for the chart
+            $chartData = [
+                ["date" => "Jan 2024", "Drivers" => 1394.46],
+                ["date" => "Feb 2024", "Drivers" => 1366.42],
+                ["date" => "Mar 2024", "Drivers" => 1498.58],
+                ["date" => "Apr 2024", "Drivers" => 1452.43],
+                ["date" => "May 2024", "Drivers" => 1420.6],
+                ["date" => "Jun 2024", "Drivers" => 1454.6],
+                ["date" => "Jul 2024", "Drivers" => 1430.83],
+                ["date" => "Aug 2024", "Drivers" => 1517.68],
+                ["date" => "Sep 2024", "Drivers" => 1436.51],
+                ["date" => "Oct 2024", "Drivers" => 1429.4],
+                ["date" => "Nov 2024", "Drivers" => 1314.95],
+                ["date" => "Dec 2024", "Drivers" => 1320.28]
+            ];
         }
         return view('admin.index',get_defined_vars());
     }
