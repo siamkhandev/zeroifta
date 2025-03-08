@@ -1264,7 +1264,7 @@ Companies Managemnet
 .tabAction-list {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 7px;
 }
 .tabAction-list span {
     width: 36px;

@@ -82,7 +82,7 @@
               <td class="table-text-left">
                 <div>
                   <p>{{$driver->driver->email ?? 'N/A'}}</p>
-                  <p>{{$driver->driver->phone}}</p>
+                 
                 </div>
               </td>
               <td class="table-text-left">{{$driver->driver->license_number}}</td>
