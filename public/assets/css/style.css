@@ -1940,3 +1940,21 @@ button.page-link {
     padding: 7px 10px !important;
     font-weight: 500 !important;
 }
+
+.chart {
+    max-width: 68.5vw;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+@media screen and (min-width: 1920px) {
+    .chart {
+        max-width: 78.5vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .chart {
+        max-width: 75vw;
+    }
+}

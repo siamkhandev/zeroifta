@@ -130,7 +130,7 @@
               @endif</h2>
           </div>
           <div>
-            <div class="chart" style="max-width: 1700px; overflow: hidden;">
+            <div class="chart">
               <div id="line-chart" style="height: 300px;"></div>
               <div id="column-chart" style="height: 300px;"></div>
             </div>
