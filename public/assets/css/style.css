@@ -633,7 +633,10 @@ Main Dashboard
 .body-right {
     max-height: 100vh;
     overflow-y: scroll;
-    width: 100%;
+    width: calc(100vw - 300px);
+    @media screen and (max-width: 1024px) {
+        width: 100vw;
+    }
 }
 .dashboard-rigt {
     width: 100%;
@@ -1942,19 +1945,7 @@ button.page-link {
 }
 
 .chart {
-    max-width: 68.5vw;
+    max-width: 100%;
     margin: 0 auto;
     overflow: hidden;
-}
-
-@media screen and (min-width: 1920px) {
-    .chart {
-        max-width: 78.5vw;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .chart {
-        max-width: 75vw;
-    }
 }
