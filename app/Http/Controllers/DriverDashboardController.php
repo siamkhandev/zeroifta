@@ -238,8 +238,7 @@ class DriverDashboardController extends Controller
         // Prepare notification payload
         
         $deviceToken = $companyFcmTokens->token; // Replace with actual FCM token.
-        $title ='New Message from Driver';
-        $body =$driverName. " has sent you a message. ";
+       
         
         $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
         $messaging = $factory->createMessaging();
@@ -254,7 +253,7 @@ class DriverDashboardController extends Controller
                     'sound' => 'default',
                 ]);
 
-            $messaging->sendMulticast($message, $deviceToken);
+                $messaging->send($message->withTarget('token', $deviceToken));
         }
         return response()->json(['status'=>200,'message'=>'Request submitted successfully','data'=>$contact],200);
     }
