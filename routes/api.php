@@ -114,6 +114,7 @@ Route::post('store-login-session', [LoginSessionsController::class, 'storeLoginS
 Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPaymentMethod']);
 Route::post('register',[IndependentTruckerController::class,'store']);
 Route::post('generatetoken',[SubscriptionController::class,'generateToken']);
+///
 
 
 
