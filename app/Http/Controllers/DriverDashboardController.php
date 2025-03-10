@@ -223,7 +223,7 @@ class DriverDashboardController extends Controller
         $company_id = $findCompany->company_id;
 
         // Fetch the company's FCM tokens
-        $companyFcmTokens = FcmToken::where('company_id', $company_id)->first();
+        $companyFcmTokens = FcmToken::where('user_id', $company_id)->first();
         if (empty($companyFcmTokens)) {
             return response()->json(['status' => 404, 'message' => 'No FCM tokens found for this company', 'data' => (object)[]], 404);
         }
