@@ -246,14 +246,15 @@ class DriverDashboardController extends Controller
         //Send Notification to Company
         if (!empty($deviceToken)) {
             $message = CloudMessage::new()
-                ->withNotification(Notification::create('New Message', $driverName . ' has sent you a new message.'))
                 ->withData([
+                    'title' => 'New Message',
+                    'body' => $driverName . ' has sent you a new message.',
                     'driver_name' => $driverName,
                     'sound' => 'default',
                 ])
-                ->withTarget('token', $deviceToken); // Set target as a single device token
+                ->withTarget('token', $deviceToken); // Target single device
         
-            $messaging->send($message); // Use send() instead of sendMulticast()
+            $messaging->send($message);
         }
         return response()->json(['status'=>200,'message'=>'Request submitted successfully','data'=>$contact],200);
     }
