@@ -35,7 +35,42 @@ function isWithinRange(driverLat, driverLng, polylinePoints) {
     }
     return false; // Driver is too far from all polyline points
 }
+async function sendDeviationNotification(user_id, trip_id) {
+    try {
+        // 1. Get Company ID for the driver
+        const companyResponse = await axios.post('https://staging.zeroifta.com/api/get-company-by-driver', { driver_id: user_id });
+        const company_id = companyResponse.data.company_id;
 
+        if (!company_id) {
+            console.log("Company not found for driver:", user_id);
+            return;
+        }
+
+        // 2. Get FCM tokens for the company
+        const fcmResponse = await axios.post('https://staging.zeroifta.com/api/get-company-fcm-tokens', { company_id });
+        const fcmTokens = fcmResponse.data.tokens;
+
+        if (!fcmTokens || fcmTokens.length === 0) {
+            console.log("No FCM tokens found for company:", company_id);
+            return;
+        }
+
+        // 3. Send Push Notification
+        const message = {
+            notification: {
+                title: "Driver Route Deviation",
+                body: `Driver ${user_id} has deviated from the route on trip ${trip_id}.`
+            },
+            tokens: fcmTokens
+        };
+
+        const response = await admin.messaging().sendMulticast(message);
+        console.log("Push notification sent successfully:", response);
+
+    } catch (error) {
+        console.error("Error sending push notification:", error.response ? error.response.data : error.message);
+    }
+}
 io.on('connection', (socket) => {
     console.log('User connected');
 
@@ -70,37 +105,38 @@ io.on('connection', (socket) => {
     // New event to handle trip deviation check
     const driverStatus = {}; // Track driver deviation status & last updated trip route
 
+   
+
     socket.on('checkTripDeviation', async (data) => {
         const { trip_id, user_id, lat, lng } = data;
         console.log(`Checking trip deviation for user ${user_id} on trip ${trip_id}`);
-
+    
         try {
             let trip;
-
-            // Check if we already have the trip details cached
+    
+            // Check if we already have the updated trip details
             if (driverStatus[user_id] && driverStatus[user_id].trip) {
                 trip = driverStatus[user_id].trip;
             } else {
                 // Fetch trip details from Laravel API
                 const tripResponse = await axios.post('https://staging.zeroifta.com/api/check-active-trip', { trip_id });
                 trip = tripResponse.data.trip;
-
+    
                 if (!trip) {
                     console.log("Trip not found");
                     return;
                 }
-
-                // Store the fetched trip in memory
+    
+                // Store trip details in memory
                 driverStatus[user_id] = { trip };
             }
-
+    
             const { start_lat, start_lng, end_lat, end_lng } = trip;
-
-            // Check if we already have polyline points stored
+    
+            // Check if polyline is already stored, else fetch from Google
             if (!driverStatus[user_id].polylinePoints) {
                 console.log(`Fetching route for user ${user_id}`);
-
-                // Get polyline route from Google Directions API
+    
                 const polylineResponse = await axios.get(`https://maps.googleapis.com/maps/api/directions/json`, {
                     params: {
                         origin: `${start_lat},${start_lng}`,
@@ -108,37 +144,35 @@ io.on('connection', (socket) => {
                         key: "AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg"
                     }
                 });
-
+    
                 if (polylineResponse.data.routes.length === 0) {
                     console.log("No route found");
                     return;
                 }
-
-                // Decode polyline and store it
+    
                 const encodedPolyline = polylineResponse.data.routes[0].overview_polyline.points;
                 driverStatus[user_id].polylinePoints = polyline.decode(encodedPolyline);
             }
-
-            // Check if driver is within route
+    
+            // Check if the driver is within 10 miles of any polyline point
             const withinRange = isWithinRange(lat, lng, driverStatus[user_id].polylinePoints);
-
+    
             if (!withinRange) {
                 // Driver is off-route
                 if (!driverStatus[user_id].isDeviated) {
-                    // Only call API once per deviation
                     driverStatus[user_id].isDeviated = true;
-
+    
                     console.log(`Driver ${user_id} is off-route. Recalculating route...`);
-
+    
                     // Emit event to frontend about deviation
                     socket.emit('routeDeviation', {
                         user_id,
                         trip_id,
                         message: "Driver has deviated from the route. Recalculating..."
                     });
-
+    
+                    // Call the update trip API to update the start location
                     try {
-                        // Call update trip API only once
                         const updateResponse = await axios.post('https://staging.zeroifta.com/api/trip/update', {
                             trip_id,
                             start_lat: lat,
@@ -150,42 +184,27 @@ io.on('connection', (socket) => {
                             total_gallons_present: trip.fuel_left,
                             reserve_fuel: trip.reserve_fuel,
                         });
-
+    
                         console.log("Trip updated successfully:", updateResponse.data);
-
-                        // Update stored trip details
-                        driverStatus[user_id].trip.start_lat = lat;
-                        driverStatus[user_id].trip.start_lng = lng;
-
-                        // Fetch updated route **only once after deviation**
-                        const updatedRouteResponse = await axios.get(`https://maps.googleapis.com/maps/api/directions/json`, {
-                            params: {
-                                origin: `${lat},${lng}`,
-                                destination: `${end_lat},${end_lng}`,
-                                key: "YOUR_GOOGLE_API_KEY"
-                            }
-                        });
-
-                        if (updatedRouteResponse.data.routes.length > 0) {
-                            const updatedPolyline = updatedRouteResponse.data.routes[0].overview_polyline.points;
-                            driverStatus[user_id].polylinePoints = polyline.decode(updatedPolyline);
-                        }
-
-                        // Emit event to frontend to update trip
+                       
+                        // Emit event to frontend about updated trip
+    
                         socket.emit('tripUpdated', {
                             user_id,
                             trip_id,
                             trip_data: updateResponse.data, // Send the full API response
                             message: "Trip updated successfully after deviation."
                         });
+                        await sendDeviationNotification(user_id, trip_id);
+    
                     } catch (updateError) {
                         console.error("Failed to update trip:", updateError.response ? updateError.response.data : updateError.message);
                     }
                 }
             } else {
-                // Driver is back on route
+                // Driver is on-route
                 if (driverStatus[user_id].isDeviated) {
-                    driverStatus[user_id].isDeviated = false; // Reset flag
+                    driverStatus[user_id].isDeviated = false;
                     console.log(`Driver ${user_id} is back on route.`);
                 }
             }
@@ -193,7 +212,7 @@ io.on('connection', (socket) => {
             console.error("Error checking trip deviation:", error.response ? error.response.data : error.message);
         }
     });
-
+    
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');

@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\StopController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TestNotificationController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Http\Request;
@@ -115,8 +116,8 @@ Route::post('/payment-methods/store', [PaymentMethodController::class, 'addPayme
 Route::post('register',[IndependentTruckerController::class,'store']);
 Route::post('generatetoken',[SubscriptionController::class,'generateToken']);
 ///
-
-
+Route::post('get-company-by-driver',[TestNotificationController::class,'getCompanyByDriver']);
+Route::post('get-company-fcm-tokens',[TestNotificationController::class,'getCompanyFCMTokens']);
 
 // Get available subscription plans
 Route::post('/subscription/plans', [SubscriptionController::class, 'getPlans']);
