@@ -7,6 +7,9 @@ use App\Models\CompanyDriver;
 use App\Models\Contactus;
 use App\Models\DriverVehicle;
 use App\Models\FcmToken;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 use App\Models\Plan;
 use App\Models\Trip;
 use App\Models\User;
@@ -238,7 +241,21 @@ class DriverDashboardController extends Controller
         $title ='New Message from Driver';
         $body =$driverName. " has sent you a message. ";
         
-        $response = $this->fcmService->sendNotification($deviceToken, $title, $body);
+        $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+        $messaging = $factory->createMessaging();
+
+        //Send Notification to Company
+        if (!empty($companyFcmTokens)) {
+            $message = CloudMessage::new()
+                ->withNotification(Notification::create('New Message', $findDriver->name . ' has sent you a new message.'))
+                ->withData([
+                    
+                    'driver_name' => $findDriver->name,
+                    'sound' => 'default',
+                ]);
+
+            $messaging->sendMulticast($message, $companyFcmTokens);
+        }
         return response()->json(['status'=>200,'message'=>'Request submitted successfully','data'=>$contact],200);
     }
     public function getAddressFromCoordinates($latitude, $longitude)
