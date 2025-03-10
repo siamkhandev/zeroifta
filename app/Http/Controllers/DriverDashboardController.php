@@ -245,7 +245,7 @@ class DriverDashboardController extends Controller
         $messaging = $factory->createMessaging();
 
         //Send Notification to Company
-        if (!empty($companyFcmTokens)) {
+        if (!empty($deviceToken)) {
             $message = CloudMessage::new()
                 ->withNotification(Notification::create('New Message', $driverName . ' has sent you a new message.'))
                 ->withData([
@@ -254,7 +254,7 @@ class DriverDashboardController extends Controller
                     'sound' => 'default',
                 ]);
 
-            $messaging->sendMulticast($message, $companyFcmTokens);
+            $messaging->sendMulticast($message, $deviceToken);
         }
         return response()->json(['status'=>200,'message'=>'Request submitted successfully','data'=>$contact],200);
     }
