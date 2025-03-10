@@ -6,10 +6,12 @@ use App\Models\CompanyContactUs;
 use App\Models\CompanyDriver;
 use App\Models\Contactus;
 use App\Models\DriverVehicle;
+use App\Models\FcmToken;
 use App\Models\Plan;
 use App\Models\Trip;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Services\FcmService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -20,6 +22,12 @@ use Stripe\Subscription;
 
 class DriverDashboardController extends Controller
 {
+    protected $fcmService;
+
+    public function __construct(FcmService $fcmService)
+    {
+        $this->fcmService = $fcmService;
+    }
     public function index(Request $request)
     {
         Stripe::setApiKey('sk_test_51FYXgWJOfbRIs4ne6dmGfFbmR1pKgX5V1CQVQHSSlzjCom2KemJylbslX2ylQ2dpbrvmSBGUQSWt6kXETr1ByRR500fTaO7v7k');
@@ -207,6 +215,30 @@ class DriverDashboardController extends Controller
         $contact->subject = $request->subject;
         $contact->message = $request->message;
         $contact->save();
+        $findCompany = CompanyDriver::where('driver_id', $request->driver_id)->first();
+        if (!$findCompany) {
+            return response()->json(['status' => 404, 'message' => 'Company not found for this driver', 'data' => (object)[]], 404);
+        }
+
+        $company_id = $findCompany->company_id;
+
+        // Fetch the company's FCM tokens
+        $companyFcmTokens = FcmToken::where('company_id', $company_id)->first();
+        if (empty($companyFcmTokens)) {
+            return response()->json(['status' => 404, 'message' => 'No FCM tokens found for this company', 'data' => (object)[]], 404);
+        }
+
+        // Get driver's name
+        $driver = User::find($request->driver_id);
+        $driverName = $driver ? $driver->name : "Unknown Driver";
+
+        // Prepare notification payload
+        
+        $deviceToken = $companyFcmTokens->token; // Replace with actual FCM token.
+        $title ='New Message from Driver';
+        $body =$driverName. " has sent you a message. ";
+        
+        $response = $this->fcmService->sendNotification($deviceToken, $title, $body);
         return response()->json(['status'=>200,'message'=>'Request submitted successfully','data'=>$contact],200);
     }
     public function getAddressFromCoordinates($latitude, $longitude)
