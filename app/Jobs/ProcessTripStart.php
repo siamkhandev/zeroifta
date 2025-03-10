@@ -57,8 +57,8 @@ class ProcessTripStart implements ShouldQueue
         }
 
         // Fetch FCM tokens
-        $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-        $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)->pluck('token')->toArray();
+        $driverFcm = FcmToken::where('user_id', $findDriver->id)->first();
+        $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)->first();
 
         // Firebase Notification Factory
         $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
@@ -74,7 +74,7 @@ class ProcessTripStart implements ShouldQueue
                     'sound' => 'default',
                 ]);
 
-            $messaging->sendMulticast($message, $companyFcmTokens);
+            $messaging->sendMulticast($message, $companyFcmTokens->token);
         }
 
         // Send Notification to Driver
@@ -85,7 +85,7 @@ class ProcessTripStart implements ShouldQueue
                     'sound' => 'default',
                 ]);
 
-            $messaging->sendMulticast($message, $driverFcm);
+            $messaging->sendMulticast($message, $driverFcm->token);
 
             // Store Notification in Database
             AppModelsNotification::create([
