@@ -247,10 +247,10 @@ class DriverDashboardController extends Controller
         //Send Notification to Company
         if (!empty($companyFcmTokens)) {
             $message = CloudMessage::new()
-                ->withNotification(Notification::create('New Message', $findDriver->name . ' has sent you a new message.'))
+                ->withNotification(Notification::create('New Message', $driverName . ' has sent you a new message.'))
                 ->withData([
                     
-                    'driver_name' => $findDriver->name,
+                    'driver_name' =>$driverName,
                     'sound' => 'default',
                 ]);
 
