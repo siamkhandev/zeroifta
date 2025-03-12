@@ -20,7 +20,7 @@ class TestNotificationController extends Controller
         $deviceToken = 'cB2U-Fq5Q16SSb_3ruYUfJ:APA91bHCv0ZWxtEtZDBun-Ly7n6qEweSMrmsNnFlPEwqbw3BIZoMwyRYnvDz1OpcQChhXnQJiuuwI-Wvx3zzS1QwX_JF1Me6Ittz7tolwk9ZVxbJGMnNyD8'; // Replace with actual FCM token.
         $title = 'Test Notification';
         $body = 'This is a test push notification.';
-        
+
         $response = $this->fcmService->sendNotification($deviceToken, $title, $body);
 
         return response()->json(['response' => $response]);
@@ -32,7 +32,7 @@ class TestNotificationController extends Controller
     }
     public function getCompanyFCMTokens(Request $request) {
         $company_id = $request->company_id;
-        $tokens = DB::table('fcm_tokens')->where('company_id', $company_id)->pluck('fcm_token')->toArray();
+        $tokens = DB::table('fcm_tokens')->where('company_id', $company_id)->pluck('token')->toArray();
         return response()->json(['tokens' => $tokens]);
     }
 }
