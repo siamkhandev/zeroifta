@@ -17,6 +17,7 @@ use App\Models\Vehicle;
 use App\Services\FcmService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Stripe\Customer;
@@ -172,34 +173,31 @@ class DriverDashboardController extends Controller
         return $addresses;
     }
     private function batchGetRoutesFromCoordinates($trips)
-{
-    $results = [];
-    foreach ($trips as $trip) {
-        $start = "{$trip->start_lat},{$trip->start_lng}";
-        $end = "{$trip->end_lat},{$trip->end_lng}";
-        $routeKey = "$start-$end";
-
-        $results[$routeKey] = cache()->remember("route:$routeKey", 3600, function () use ($start, $end) {
-            $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
-            $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$start}&destination={$end}&key={$apiKey}";
-            $response = Http::get($url);
-
-            if ($response->successful()) {
-                $data = $response->json();
-                $route = $data['routes'][0]['legs'][0] ?? null;
-
-                return [
-                    'distance' => $route['distance']['text'] ?? null,
-                    'duration' => $route['duration']['text'] ?? null,
-                ];
-            }
-
-            return ['distance' => null, 'duration' => null];
-        });
+    {
+        $results = [];
+    
+        foreach ($trips as $trip) {
+            $start = "{$trip->start_lat},{$trip->start_lng}";
+            $end = "{$trip->end_lat},{$trip->end_lng}";
+            $routeKey = "$start-$end";
+    
+            // Fetch from the database instead of calling Google API
+            $routeData = DB::table('trips') // Change to your actual table name
+                ->where('start_lat', $trip->start_lat)
+                ->where('start_lng', $trip->start_lng)
+                ->where('end_lat', $trip->end_lat)
+                ->where('end_lng', $trip->end_lng)
+                ->first();
+    
+            // Store in results
+            $results[$routeKey] = [
+                'distance' => $routeData->distance ?? null,
+                'duration' => $routeData->duration ?? null,
+            ];
+        }
+    
+        return $results;
     }
-
-    return $results;
-}
     public function contactus(Request $request)
     {
         $validator = Validator::make($request->all(), [
