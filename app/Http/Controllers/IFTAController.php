@@ -180,6 +180,10 @@ class IFTAController extends Controller
                         'updated_start_lng' => $updatedStartLng,
                         'updated_end_lat' => $updatedEndLat,
                         'updated_end_lng' => $updatedEndLng,
+                        'polyline' => json_encode($polylinePoints),
+                        'polyline_encoded' => $encodedPolyline,
+                        'distance' => $formattedDistance,
+                        'duration'=> $formattedDuration,
                     ]);
                     foreach ($result as $value) {
                         FuelStation::updateOrCreate(
