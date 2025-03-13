@@ -413,28 +413,29 @@ class TripController extends Controller
         ]);
     }
 
-    public function getActiveTrip(Request $request){
+    public function getActiveTrip(Request $request)
+    {
         $trip = Trip::whereId($request->trip_id)->first();
         $fuelStations = FuelStation::where('trip_id', $request->trip_id)->get()
         ->map(function ($station) {
-        // Convert the station to an array, keeping all attributes
-        $data = $station->toArray();
+            // Convert the station to an array, keeping all attributes
+            $data = $station->toArray();
 
-        // Add the new keys
-        $data['ftp_lat'] = $data['latitude'];
-        $data['ftp_lng'] = $data['longitude'];
-        $data['fuel_station_name'] = $data['name'];
-        $data['IFTA_tax'] = floatval(preg_replace('/[^0-9.-]/', '', $station->ifta_tax));
-        $data['lastprice'] = floatval(preg_replace('/[^0-9.-]/', '', $station->lastprice));
-        $data['price'] = floatval(preg_replace('/[^0-9.-]/', '', $station->price));
-        $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
-        $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] :null;
-        $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
-        // Optionally remove the old keys if not needed
-        unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name']);
+            // Add the new keys
+            $data['ftp_lat'] = $data['latitude'];
+            $data['ftp_lng'] = $data['longitude'];
+            $data['fuel_station_name'] = $data['name'];
+            $data['IFTA_tax'] = floatval(preg_replace('/[^0-9.-]/', '', $station->ifta_tax));
+            $data['lastprice'] = floatval(preg_replace('/[^0-9.-]/', '', $station->lastprice));
+            $data['price'] = floatval(preg_replace('/[^0-9.-]/', '', $station->price));
+            $data['discount'] = $data['discount'] ? (double)$data['discount'] : 0;
+            $data['gallons_to_buy'] = $data['gallons_to_buy'] ? (double)$data['gallons_to_buy'] :null;
+            $data['is_optimal'] = $data['is_optimal'] ? (bool)$data['is_optimal'] : false;
+            // Optionally remove the old keys if not needed
+            unset($data['latitude'], $data['longitude'],$data['ifta_tax'],$data['name']);
 
-        return $data;
-    });
+            return $data;
+        });
         $startLat = $trip->start_lat;
         $startLng = $trip->start_lng;
         $endLat = $trip->end_lat;
@@ -444,81 +445,91 @@ class TripController extends Controller
         $updatedEndLat =$trip->updated_end_lat;
         $updatedEndLng = $trip->updated_end_lng;
 
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
-        $stops = Tripstop::where('trip_id', $trip->id)->get();
-        if ($stops->isNotEmpty()) {
-            $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
-        }
+        // $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        // $stops = Tripstop::where('trip_id', $trip->id)->get();
+        // if ($stops->isNotEmpty()) {
+        //     $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
+        // }
 
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
-        if (isset($waypoints)) {
-            $url .= "&waypoints=optimize:true|{$waypoints}";
-        }
+        // $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
+        // if (isset($waypoints)) {
+        //     $url .= "&waypoints=optimize:true|{$waypoints}";
+        // }
 
-        $response = Http::get($url);
+       // $response = Http::get($url);
 
-        if ($response->successful()) {
-            $data = $response->json();
+        //if ($response->successful()) {
+           // $data = $response->json();
 
-            if($data['routes'] && $data['routes'][0]){
-                $route = $data['routes'][0];
-                if (!empty($data['routes'][0]['legs'])) {
-                    $steps = $data['routes'][0]['legs'][0]['steps'];
-                    $decodedCoordinates = [];
-                    $stepSize =3; // Sample every 10th point
+            //if($data['routes'] && $data['routes'][0]){
+               // $route = $data['routes'][0];
+                // if (!empty($data['routes'][0]['legs'])) {
+                //     $steps = $data['routes'][0]['legs'][0]['steps'];
+                //     $decodedCoordinates = [];
+                //     $stepSize =3; // Sample every 10th point
 
-                    foreach ($steps as $step) {
-                        if (isset($step['polyline']['points'])) {
-                            $points = $this->decodePolyline($step['polyline']['points']);
-                            // Sample every 10th point
-                            for ($i = 0; $i < count($points); $i += $stepSize) {
-                                $decodedCoordinates[] = $points[$i];
-                            }
-                        }
-                    }
-                    $polylinePoints = [];
+                //     foreach ($steps as $step) {
+                //         if (isset($step['polyline']['points'])) {
+                //             $points = $this->decodePolyline($step['polyline']['points']);
+                //             // Sample every 10th point
+                //             for ($i = 0; $i < count($points); $i += $stepSize) {
+                //                 $decodedCoordinates[] = $points[$i];
+                //             }
+                //         }
+                //     }
+                //     $polylinePoints = [];
 
-                    foreach ($data['routes'][0]['legs'] as $leg) {
-                        if (!empty($leg['steps'])) {
-                            foreach ($leg['steps'] as $step) {
-                                if (isset($step['polyline']['points'])) {
-                                    $polylinePoints[] = $step['polyline']['points'];
-                                }
-                            }
-                        }
-                    }
+                //     foreach ($data['routes'][0]['legs'] as $leg) {
+                //         if (!empty($leg['steps'])) {
+                //             foreach ($leg['steps'] as $step) {
+                //                 if (isset($step['polyline']['points'])) {
+                //                     $polylinePoints[] = $step['polyline']['points'];
+                //                 }
+                //             }
+                //         }
+                //     }
 
-                    // Filter out any null values if necessary
-                    $polylinePoints = array_filter($polylinePoints);
-                }
-                if ($route) {
-                    $totalDistance = 0;
-                    $totalDuration = 0;
+                //     // Filter out any null values if necessary
+                //     $polylinePoints = array_filter($polylinePoints);
+                // }
+                $polylinePoints = json_decode($trip->polyline_points, true);
+                $decodedCoordinates = [];
+                $stepSize = 7; // Sample every 3rd point
 
-                    foreach ($route['legs'] as $leg) {
-                        $totalDistance += $leg['distance']['value']; // Distance in meters
-                        $totalDuration += $leg['duration']['value']; // Duration in seconds
-                    }
-
-                    // Convert meters to miles
-                    $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
-
-                    // Convert seconds to hours and minutes
-                    $hours = floor($totalDuration / 3600);
-                    $minutes = floor(($totalDuration % 3600) / 60);
-
-                    // Format distance
-                    $formattedDistance = $totalDistanceMiles . ' miles';
-
-                    // Format duration
-                    if ($hours > 0) {
-                        $formattedDuration = "{$hours} hr {$minutes} min";
-                    } else {
-                        $formattedDuration = "{$minutes} min";
+                foreach ($polylinePoints as $points) {
+                    $decodedPoints = $this->decodePolyline($points);
+                    for ($i = 0; $i < count($decodedPoints); $i += $stepSize) {
+                        $decodedCoordinates[] = $decodedPoints[$i];
                     }
                 }
-                if (isset($data['routes'][0]['overview_polyline']['points'])) {
-                    $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                // if ($route) {
+                //     $totalDistance = 0;
+                //     $totalDuration = 0;
+
+                //     foreach ($route['legs'] as $leg) {
+                //         $totalDistance += $leg['distance']['value']; // Distance in meters
+                //         $totalDuration += $leg['duration']['value']; // Duration in seconds
+                //     }
+
+                //     // Convert meters to miles
+                //     $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
+
+                //     // Convert seconds to hours and minutes
+                //     $hours = floor($totalDuration / 3600);
+                //     $minutes = floor(($totalDuration % 3600) / 60);
+
+                //     // Format distance
+                //     $formattedDistance = $totalDistanceMiles . ' miles';
+
+                //     // Format duration
+                //     if ($hours > 0) {
+                //         $formattedDuration = "{$hours} hr {$minutes} min";
+                //     } else {
+                //         $formattedDuration = "{$minutes} min";
+                //     }
+                // }
+                //if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                    $encodedPolyline = $trip->polyline_encoded;
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
                      // Filter coordinates based on distance from start and end points
                     $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
@@ -600,9 +611,9 @@ class TripController extends Controller
                         return response()->json(['status'=>404,'message'=>'trip not found','data'=>(object)[]],404);
                     }
 
-                }
-            }
-        }
+                //}
+            //}
+       // }
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
         if($driverVehicle && $driverVehicle->vehicle_id != null){
@@ -617,8 +628,8 @@ class TripController extends Controller
         unset($trip->vehicle_id);
 
         if($trip){
-            $trip->distance = $formattedDistance;
-            $trip->duration = $formattedDuration;
+            $trip->distance = $trip->distance;
+            $trip->duration = $trip->duration;
             $trip->user_id = (int)$trip->user_id;
             $response = [
                 'trip_id' => $trip->id,
@@ -843,17 +854,17 @@ class TripController extends Controller
                 if (!empty($data['routes'][0]['legs'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
                     $decodedCoordinates = [];
-                $stepSize = 3; // Sample every 10th point
+                    $stepSize = 7; // Sample every 10th point
 
-                foreach ($steps as $step) {
-                    if (isset($step['polyline']['points'])) {
-                        $points = $this->decodePolyline($step['polyline']['points']);
-                        // Sample every 10th point
-                        for ($i = 0; $i < count($points); $i += $stepSize) {
-                            $decodedCoordinates[] = $points[$i];
+                    foreach ($steps as $step) {
+                        if (isset($step['polyline']['points'])) {
+                            $points = $this->decodePolyline($step['polyline']['points']);
+                            // Sample every 10th point
+                            for ($i = 0; $i < count($points); $i += $stepSize) {
+                                $decodedCoordinates[] = $points[$i];
+                            }
                         }
                     }
-                }
                     $polylinePoints = [];
 
                     foreach ($data['routes'][0]['legs'] as $leg) {
@@ -896,21 +907,21 @@ class TripController extends Controller
                     $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
                     $decodedPolyline = $this->decodePolyline($encodedPolyline);
                     // Filter coordinates based on distance from start and end points
-                $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
-                    // Ensure $coordinate is valid
-                    if (isset($coordinate['lat'], $coordinate['lng'])) {
-                        // Calculate distances from both start and end points
-                        $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
-                        $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
+                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
+                        // Ensure $coordinate is valid
+                        if (isset($coordinate['lat'], $coordinate['lng'])) {
+                            // Calculate distances from both start and end points
+                            $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
 
-                        // Keep coordinates if they are sufficiently far from both points
-                        return $distanceFromStart > 9 && $distanceFromEnd > 9;
-                    }
-                    return false; // Skip invalid coordinates
-                });
+                            // Keep coordinates if they are sufficiently far from both points
+                            return $distanceFromStart > 9 && $distanceFromEnd > 9;
+                        }
+                        return false; // Skip invalid coordinates
+                    });
 
-                // Reset array keys to ensure a clean array structure
-                $finalFilteredPolyline = array_values($finalFilteredPolyline);
+                    // Reset array keys to ensure a clean array structure
+                    $finalFilteredPolyline = array_values($finalFilteredPolyline);
                     $ftpData = $this->loadAndParseFTPData();
                     $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
                     $currentTrip = Trip::where('id', $trip->id)->first();
@@ -974,7 +985,12 @@ class TripController extends Controller
 
             }
         }
-
+        $trip->update([
+            'polyline'=>json_encode($polylinePoints),
+            'polyline_encoded'=>$encodedPolyline,
+            'duration'=>$formattedDuration,
+            'distance'=>$formattedDistance
+        ]);
         $vehiclefind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
         if($vehiclefind){
             $vehicle = Vehicle::where('id', $vehiclefind)->first();

@@ -462,6 +462,11 @@ class IFTAController extends Controller
                 $validatedData['updated_start_lng'] = $request->start_lng;
                 $validatedData['updated_end_lat'] = $request->end_lat;
                 $validatedData['updated_end_lng'] = $request->end_lng;
+                $validatedData['polyline'] = json_encode($polylinePoints);
+                $validatedData['polyline_encoded'] = $encodedPolyline;
+                $validatedData['distance'] = $formattedDistance;
+                $validatedData['duration'] = $formattedDuration;
+
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
                     // Prepare fuel station data for processing
