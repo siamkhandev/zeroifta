@@ -492,8 +492,8 @@ class TripController extends Controller
                 //     // Filter out any null values if necessary
                 //     $polylinePoints = array_filter($polylinePoints);
                 // }
-                $polylinePoints = json_decode($trip->polyline_points, true);
-                dd($polylinePoints);
+                $polylinePoints = json_decode($trip->polyline, true);
+               
                 $decodedCoordinates = [];
                 $stepSize = 7; // Sample every 3rd point
 
