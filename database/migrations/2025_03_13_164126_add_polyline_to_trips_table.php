@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('trips', function (Blueprint $table) {
-            $table->text('polyline')->nullable();
-            $table->string('polyline_encoded')->nullable();
+            $table->longText('polyline')->nullable();
+            $table->longText('polyline_encoded')->nullable();
             $table->string('distance')->nullable();
             $table->string('duration')->nullable();
         });
