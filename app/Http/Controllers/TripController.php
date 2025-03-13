@@ -409,6 +409,8 @@ class TripController extends Controller
                 'fuel_tank_capacity' => $findVehicle->fuel_tank_capacity ?? null,
                 'fuel_left' =>$findVehicle->fuel_left ?? 0,
                 'reserve_fuel'=>$findVehicle->reserve_fuel ?? 0,
+                'polyline_points'=>json_decode($trip->polyline,true),
+                'encoded_polyline'=>$trip->polyline_encoded
             ]
         ]);
     }
