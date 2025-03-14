@@ -461,6 +461,9 @@ class IFTAController extends Controller
 
                 }
                 // Create a new trip record
+               $startLocation = $this->getAddressFromCoordinates($request->start_lat, $request->start_lng);
+               $endLocation = $this->getAddressFromCoordinates($request->end_lat, $request->end_lng);
+dd($startLocation,$endLocation);
                 $fuelStations = [];
                 $validatedData['updated_start_lat'] = $request->start_lat;
                 $validatedData['updated_start_lng'] = $request->start_lng;
@@ -1127,7 +1130,24 @@ class IFTAController extends Controller
         return $fuelStations->values()->all();
     }
 
+    public function getAddressFromCoordinates($latitude, $longitude)
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Use config for the API key
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
 
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+
+        if (isset($response['results'][0]['address_components'])) {
+            foreach ($response['results'][0]['address_components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types'])) {
+                    return $component['long_name']; // State name
+                }
+            }
+        }
+
+        return 'Address not found';
+    }
 public function optimizedFuelStationsWithDistance($tripData)
 {
     if (!$tripData) return null;

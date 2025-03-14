@@ -65,11 +65,11 @@ class DriverDashboardController extends Controller
             }else{
                 $vehicle->vehicle_image =null;
             }
-           
+
         }
             $dashboardData['vehicle'] = $vehicle;
-        
-        
+
+
 
         // Fetch the last 5 trips
         $trips = Trip::select('id', 'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng', 'status', 'created_at')
@@ -118,18 +118,18 @@ class DriverDashboardController extends Controller
                 'limit' => 1,
             ]);
         }
-        
+
 
             // Check if customer has active subscriptions
-           
 
-            
+
+
 
            if(!empty($subscriptions->data)){
             $findPlan = Plan::where('stripe_plan_id',$subscriptions->data[0]->items->data[0]->plan->id)->first();
-                
+
             $subscription = $subscriptions->data[0];
-              
+
             // Extract next billing details
             $nextBillingDate = $subscription->current_period_end;
             $planName = $findPlan->name;
@@ -144,7 +144,7 @@ class DriverDashboardController extends Controller
            }else{
             $subscriptionDetail = null;
            }
-           
+
 
              $dashboardData['subscription'] = $subscriptionDetail;
              $dashboardData['recentTrips'] = $tripData;
@@ -175,12 +175,12 @@ class DriverDashboardController extends Controller
     private function batchGetRoutesFromCoordinates($trips)
     {
         $results = [];
-    
+
         foreach ($trips as $trip) {
             $start = "{$trip->start_lat},{$trip->start_lng}";
             $end = "{$trip->end_lat},{$trip->end_lng}";
             $routeKey = "$start-$end";
-    
+
             // Fetch from the database instead of calling Google API
             $routeData = DB::table('trips') // Change to your actual table name
                 ->where('start_lat', $trip->start_lat)
@@ -188,14 +188,14 @@ class DriverDashboardController extends Controller
                 ->where('end_lat', $trip->end_lat)
                 ->where('end_lng', $trip->end_lng)
                 ->first();
-    
+
             // Store in results
             $results[$routeKey] = [
                 'distance' => $routeData->distance ?? null,
                 'duration' => $routeData->duration ?? null,
             ];
         }
-    
+
         return $results;
     }
     public function contactus(Request $request)
@@ -234,10 +234,10 @@ class DriverDashboardController extends Controller
         $driverName = $driver ? $driver->name : "Unknown Driver";
 
         // Prepare notification payload
-        
+
         $deviceToken = $companyFcmTokens->token; // Replace with actual FCM token.
-       
-        
+
+
         $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
         $messaging = $factory->createMessaging();
 
@@ -246,7 +246,7 @@ class DriverDashboardController extends Controller
             $message = CloudMessage::new()
                 ->withNotification(Notification::create('New Message', $driverName . ' has sent you a new message.'))
                 ->withData([
-                    
+
                     'driver_name' =>$driverName,
                     'sound' => 'default',
                 ]);
@@ -256,21 +256,21 @@ class DriverDashboardController extends Controller
         return response()->json(['status'=>200,'message'=>'Request submitted successfully','data'=>$contact],200);
     }
     public function getAddressFromCoordinates($latitude, $longitude)
-{
-    $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Use config for the API key
-    $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
+    {
+        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Use config for the API key
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
 
-    $response = file_get_contents($url);
-    $response = json_decode($response, true);
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
 
-    if (isset($response['results'][0]['address_components'])) {
-        foreach ($response['results'][0]['address_components'] as $component) {
-            if (in_array('administrative_area_level_1', $component['types'])) {
-                return $component['long_name']; // State name
+        if (isset($response['results'][0]['address_components'])) {
+            foreach ($response['results'][0]['address_components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types'])) {
+                    return $component['long_name']; // State name
+                }
             }
         }
-    }
 
-    return 'Address not found';
-}
+        return 'Address not found';
+    }
 }
