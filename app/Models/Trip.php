@@ -9,7 +9,7 @@ class Trip extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng','status','vehicle_id','updated_start_lat','updated_start_lng','updated_end_lat','updated_end_lng','polyline','polyline_encoded','distance','duration',
+        'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng','status','vehicle_id','updated_start_lat','updated_start_lng','updated_end_lat','updated_end_lng','polyline','polyline_encoded','distance','duration','start_address','end_address'
     ];
 
     public function driverVehicle()

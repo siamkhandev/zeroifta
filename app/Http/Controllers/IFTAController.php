@@ -463,7 +463,7 @@ class IFTAController extends Controller
                 // Create a new trip record
                $startLocation = $this->getAddressFromCoordinates($request->start_lat, $request->start_lng);
                $endLocation = $this->getAddressFromCoordinates($request->end_lat, $request->end_lng);
-dd($startLocation,$endLocation);
+
                 $fuelStations = [];
                 $validatedData['updated_start_lat'] = $request->start_lat;
                 $validatedData['updated_start_lng'] = $request->start_lng;
@@ -473,7 +473,8 @@ dd($startLocation,$endLocation);
                 $validatedData['polyline_encoded'] = $encodedPolyline;
                 $validatedData['distance'] = $formattedDistance;
                 $validatedData['duration'] = $formattedDuration;
-
+                $validatedData['start_address'] = $startLocation;
+                $validatedData['end_address'] = $endLocation;
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
                     // Prepare fuel station data for processing

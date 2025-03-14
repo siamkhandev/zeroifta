@@ -72,24 +72,24 @@ class DriverDashboardController extends Controller
 
 
         // Fetch the last 5 trips
-        $trips = Trip::select('id', 'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng', 'status', 'created_at')
+        $trips = Trip::select('id', 'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng', 'status', 'created_at','start_address','end_address')
             ->where('user_id', $request->driver_id)
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
 
         // Cache addresses and routes
-        $addresses = $this->batchGetAddressesFromCoordinates($trips->flatMap(function ($trip) {
-            return [
-                ['lat' => $trip->start_lat, 'lng' => $trip->start_lng],
-                ['lat' => $trip->end_lat, 'lng' => $trip->end_lng],
-            ];
-        })->unique());
+        // $addresses = $this->batchGetAddressesFromCoordinates($trips->flatMap(function ($trip) {
+        //     return [
+        //         ['lat' => $trip->start_lat, 'lng' => $trip->start_lng],
+        //         ['lat' => $trip->end_lat, 'lng' => $trip->end_lng],
+        //     ];
+        // })->unique());
 
-        $routes = $this->batchGetRoutesFromCoordinates($trips);
+        // $routes = $this->batchGetRoutesFromCoordinates($trips);
 
         // Map trips with pre-fetched data
-        $tripData = $trips->map(function ($trip) use ($addresses, $routes) {
+        $tripData = $trips->map(function ($trip){
             $pickupKey = "{$trip->start_lat},{$trip->start_lng}";
             $dropoffKey = "{$trip->end_lat},{$trip->end_lng}";
             $routeKey = "$pickupKey-$dropoffKey";
@@ -101,8 +101,8 @@ class DriverDashboardController extends Controller
                 'end_lat'=>$trip->end_lat,
                 'end_lng'=>$trip->end_lng,
                 'user_id' => $trip->user_id,
-                'pickup' => $addresses[$pickupKey] ?? 'Unknown Location',
-                'dropoff' => $addresses[$dropoffKey] ?? 'Unknown Location',
+                'pickup' => $trip->start_address ?? 'Unknown Location',
+                'dropoff' => $trip->end_address ?? 'Unknown Location',
                 'distance' => $routes[$routeKey]['distance'] ?? null,
                 'duration' => $routes[$routeKey]['duration'] ?? null,
                 'status' => $trip->status,
