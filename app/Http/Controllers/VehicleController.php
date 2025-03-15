@@ -103,7 +103,7 @@ class VehicleController extends Controller
         $vehicles = Vehicle::whereIn('id', $driverVehicles)->get()->keyBy('id');
 
         // API key (move to .env for security)
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
 
         $geocodedTrips = $trips->map(function ($trip) use ($driverVehicles, $vehicles, $apiKey) {
             $vehicleId = $driverVehicles[$trip->user_id] ?? null;

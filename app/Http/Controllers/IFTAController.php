@@ -51,7 +51,7 @@ class IFTAController extends Controller
         $fuelTankCapacity = $request->fuel_tank_capacity;
         $currentFuel = $request->total_gallons_present;
         // Replace with your Google API key
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
         $stops = Tripstop::where('trip_id', $request->trip_id)->get();
         if ($stops->isNotEmpty()) {
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
@@ -348,7 +348,7 @@ class IFTAController extends Controller
         $fuelTankCapacity = $request->fuel_tank_capacity;
         $currentFuel = $request->total_gallons_present;
         // Fetch route data from Google Maps API
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
 
         // Fetch data from Google Maps API
@@ -1133,7 +1133,7 @@ class IFTAController extends Controller
 
     public function getAddressFromCoordinates($latitude, $longitude)
     {
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Use config for the API key
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w'; // Use config for the API key
         $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
 
         $response = file_get_contents($url);

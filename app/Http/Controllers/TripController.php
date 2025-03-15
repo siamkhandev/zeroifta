@@ -714,7 +714,7 @@ class TripController extends Controller
             $startLng = $trip->start_lng;
             $endLat = $trip->end_lat;
             $endLng = $trip->end_lng;
-            $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+            $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
         $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$startLat},{$startLng}&destination={$endLat},{$endLng}&key={$apiKey}";
         $response = Http::get($url);
         if ($response->successful()) {
@@ -749,7 +749,7 @@ class TripController extends Controller
 
     private function getAddressFromCoordinates($latitude, $longitude)
     {
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w'; // Add your API key in .env
         $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
 
         $response = file_get_contents($url);
@@ -767,7 +767,7 @@ class TripController extends Controller
     }
     private function getPickupFromCoordinates($latitude, $longitude)
     {
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Add your API key in .env
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w'; // Add your API key in .env
         $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
 
         $response = file_get_contents($url);
@@ -840,7 +840,7 @@ class TripController extends Controller
         $updatedStartLng = $trip->updated_start_lng;
         $updatedEndLat =$trip->updated_end_lat;
         $updatedEndLng = $trip->updated_end_lng;
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg';
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
         $waypoints = '';
         $stops = Tripstop::where('trip_id', $trip->id)->get();
         if ($stops->isNotEmpty()) {

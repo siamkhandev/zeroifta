@@ -257,7 +257,7 @@ class DriverDashboardController extends Controller
     }
     public function getAddressFromCoordinates($latitude, $longitude)
     {
-        $apiKey = 'AIzaSyBtQuABE7uPsvBnnkXtCNMt9BpG9hjeDIg'; // Use config for the API key
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w'; // Use config for the API key
         $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
 
         $response = file_get_contents($url);
