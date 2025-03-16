@@ -105,8 +105,8 @@ class DriverDashboardController extends Controller
                 'dropoff' => $trip->end_address ?? 'Unknown Location',
                 'city'=>$trip->city ?? null,
                 'full_address'=>$trip->full_address ?? null,
-                'distance' => $routes[$routeKey]['distance'] ?? null,
-                'duration' => $routes[$routeKey]['duration'] ?? null,
+                'distance' =>$trip->distance ?? null,
+                'duration' => $trip->duration ?? null,
                 'status' => $trip->status,
                 'created_at' => $trip->created_at->format('d M'),
             ];
