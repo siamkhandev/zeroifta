@@ -74,7 +74,7 @@ class IFTAController extends Controller
             if (!empty($data['routes'][0]['legs'])) {
                 $steps = $data['routes'][0]['legs'][0]['steps'];
                 $decodedCoordinates = [];
-                $stepSize = 3; // Sample every 3rd point
+                $stepSize = 6; // Sample every 3rd point
 
                 // Sample polyline points while preserving order
                 foreach ($steps as $step) {
