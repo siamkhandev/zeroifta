@@ -72,7 +72,7 @@ class DriverDashboardController extends Controller
 
 
         // Fetch the last 5 trips
-        $trips = Trip::select('id', 'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng', 'status', 'created_at','start_address','end_address')
+        $trips = Trip::select('id', 'user_id', 'start_lat', 'start_lng', 'end_lat', 'end_lng', 'status', 'created_at','start_address','end_address','distance','duration','city','full_address')
             ->where('user_id', $request->driver_id)
             ->orderBy('created_at', 'desc')
             ->take(5)
@@ -103,6 +103,8 @@ class DriverDashboardController extends Controller
                 'user_id' => $trip->user_id,
                 'pickup' => $trip->start_address ?? 'Unknown Location',
                 'dropoff' => $trip->end_address ?? 'Unknown Location',
+                'city'=>$trip->city ?? null,
+                'full_address'=>$trip->full_address ?? null,
                 'distance' => $routes[$routeKey]['distance'] ?? null,
                 'duration' => $routes[$routeKey]['duration'] ?? null,
                 'status' => $trip->status,
