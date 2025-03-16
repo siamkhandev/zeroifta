@@ -471,7 +471,7 @@ class IFTAController extends Controller
                 // Create a new trip record
                $startLocation = $this->getAddressFromCoordinates($request->start_lat, $request->start_lng);
                $endLocation = $this->getAddressFromCoordinates($request->end_lat, $request->end_lng);
-                dd($startLocation, $endLocation);
+                
                 $fuelStations = [];
                 $validatedData['updated_start_lat'] = $request->start_lat;
                 $validatedData['updated_start_lng'] = $request->start_lng;
