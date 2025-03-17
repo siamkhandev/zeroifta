@@ -32,7 +32,7 @@ class TestNotificationController extends Controller
     }
     public function getCompanyFCMTokens(Request $request) {
         $company_id = $request->company_id;
-        $tokens = DB::table('fcm_tokens')->where('company_id', $company_id)->pluck('token')->toArray();
+        $tokens = DB::table('fcm_tokens')->where('user_id', $company_id)->pluck('token')->toArray();
         return response()->json(['tokens' => $tokens]);
     }
 }
