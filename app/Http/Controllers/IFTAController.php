@@ -59,7 +59,7 @@ class IFTAController extends Controller
         $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
     }
 
-    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
+    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}&alternatives=false";
     if (isset($waypoints)) {
         $url .= "&waypoints=optimize:true|{$waypoints}";
     }
@@ -471,7 +471,7 @@ class IFTAController extends Controller
                 // Create a new trip record
                $startLocation = $this->getAddressFromCoordinates($request->start_lat, $request->start_lng);
                $endLocation = $this->getAddressFromCoordinates($request->end_lat, $request->end_lng);
-                
+
                 $fuelStations = [];
                 $validatedData['updated_start_lat'] = $request->start_lat;
                 $validatedData['updated_start_lng'] = $request->start_lng;
@@ -487,7 +487,7 @@ class IFTAController extends Controller
                 $validatedData['start_state'] = $startLocation['state'];
                 $validatedData['end_city'] = $startLocation['city'];
                 $validatedData['end_state'] = $startLocation['state'];
-               
+
                 $trip = Trip::create($validatedData);
                foreach ($result as  $value) {
                     // Prepare fuel station data for processing
@@ -1148,17 +1148,17 @@ class IFTAController extends Controller
     {
         $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w'; // Store API key in config
         $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}";
-    
+
         $response = file_get_contents($url);
         $response = json_decode($response, true);
-    
+
         if (isset($response['results'][0])) {
             $addressComponents = $response['results'][0]['address_components'];
             $fullAddress = $response['results'][0]['formatted_address']; // Full address
-    
+
             $city = '';
             $state = '';
-    
+
             foreach ($addressComponents as $component) {
                 if (in_array('administrative_area_level_1', $component['types'])) {
                     $state = $component['long_name']; // State name
@@ -1167,21 +1167,21 @@ class IFTAController extends Controller
                     $city = $component['long_name']; // City name
                 }
             }
-    
+
             return [
                 'full_address' => $fullAddress,
                 'city' => $city,
                 'state' => $state,
             ];
         }
-    
+
         return [
             'full_address' => 'Address not found',
             'city' => 'City not found',
             'state' => 'State not found',
         ];
     }
-    
+
 public function optimizedFuelStationsWithDistance($tripData)
 {
     if (!$tripData) return null;
