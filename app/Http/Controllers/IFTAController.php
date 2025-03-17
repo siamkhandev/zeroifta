@@ -50,7 +50,7 @@ class IFTAController extends Controller
     $truckMpg = $request->truck_mpg;
     $fuelTankCapacity = $request->fuel_tank_capacity;
     $currentFuel = $request->total_gallons_present;
-
+    $heading = $request->bearing;
     // Replace with your Google API key
     $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
     $stops = Tripstop::where('trip_id', $request->trip_id)->get();
@@ -59,7 +59,7 @@ class IFTAController extends Controller
         $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
     }
 
-    $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}&alternatives=false";
+    $url = "https://maps.googleapis.com/maps/api/directions/json?origin=heading%3D{$heading}%3A{$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}&alternatives=false";
     if (isset($waypoints)) {
         $url .= "&waypoints=optimize:true|{$waypoints}";
     }
