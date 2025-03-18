@@ -166,9 +166,9 @@ class TripController extends Controller
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
                     'vehicle' => ['mpg' => $truckMpg, 'fuelLeft' => $totalFuel],
-                    'fuelStations' => $matchingRecords,
+                    'fuelStations' => [],
                     'polyline' => $decodedCoordinates,
-                    'polyline_encoded' => $encodedPolyline,
+                    'encoded_polyline' => $encodedPolyline,
                     'polyline_paths'=>$polylinePoints,
                     'stops'=>[],
                 
