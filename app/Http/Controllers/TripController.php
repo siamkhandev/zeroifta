@@ -244,27 +244,27 @@ class TripController extends Controller
                         'distance' => $formattedDistance,
                         'duration'=> $formattedDuration,
                     ]);
-                    foreach ($result as $value) {
-                        FuelStation::updateOrCreate(
-                            [
-                                'trip_id' => $trip->id, // Condition to check if the record exists
-                                'latitude' => $value['ftpLat'],
-                                'longitude' => $value['ftpLng']
-                            ],
-                            [
-                                'name' => $value['fuel_station_name'],
-                                'price' => $value['price'],
-                                'lastprice' => $value['lastprice'],
-                                'discount' => $value['discount'],
-                                'ifta_tax' => $value['IFTA_tax'],
-                                'is_optimal' => $value['isOptimal'] ?? false,
-                                'address' => $value['address'],
-                                'gallons_to_buy' => $value['gallons_to_buy'],
-                                'trip_id' => $trip->id,
-                                'user_id' => $trip->user_id,
-                            ]
-                        );
-                    }
+                    // foreach ($result as $value) {
+                    //     FuelStation::updateOrCreate(
+                    //         [
+                    //             'trip_id' => $trip->id, // Condition to check if the record exists
+                    //             'latitude' => $value['ftpLat'],
+                    //             'longitude' => $value['ftpLng']
+                    //         ],
+                    //         [
+                    //             'name' => $value['fuel_station_name'],
+                    //             'price' => $value['price'],
+                    //             'lastprice' => $value['lastprice'],
+                    //             'discount' => $value['discount'],
+                    //             'ifta_tax' => $value['IFTA_tax'],
+                    //             'is_optimal' => $value['isOptimal'] ?? false,
+                    //             'address' => $value['address'],
+                    //             'gallons_to_buy' => $value['gallons_to_buy'],
+                    //             'trip_id' => $trip->id,
+                    //             'user_id' => $trip->user_id,
+                    //         ]
+                    //     );
+                    // }
                     $trip->distance = $formattedDistance;
                     $trip->duration = $formattedDuration;
                     $stops = Tripstop::where('trip_id', $trip->id)->get();
