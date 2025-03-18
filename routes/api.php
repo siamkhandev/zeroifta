@@ -7,6 +7,7 @@ use App\Http\Controllers\FuelStationController;
 use App\Http\Controllers\IFTAController;
 use App\Http\Controllers\IndependentTruckerController;
 use App\Http\Controllers\LoginSessionsController;
+use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReceiptController;
@@ -124,5 +125,7 @@ Route::post('/subscription/plans', [SubscriptionController::class, 'getPlans']);
 Route::post('/oauth/token', [App\Http\Controllers\Api\OAuthController::class, 'issueToken']);
 Route::post('/transactions', [App\Http\Controllers\Api\TransactionController::class, 'store'])
     ->middleware('verify.api.token');
+
+Route::get('/reroute', [NavigationController::class, 'reroute']);
 
 
