@@ -180,7 +180,7 @@ class TripController extends Controller
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
                     'vehicle' => $vehicle,
-                    'fuel_station' => [],
+                    'fuel_stations' => [],
                     'polyline' => $decodedCoordinates,
                     'encoded_polyline' => $encodedPolyline,
                     'polyline_paths'=>$polylinePoints,
