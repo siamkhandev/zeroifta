@@ -457,24 +457,56 @@ class TripController extends Controller
             'data'=>(object)[]
         ]);
     }
-    private function getBestForwardRoute($routes, $currentLocation,$bearing)
-    {
+    private function getBestForwardRoute($routes, $currentLocation, $userBearing) {
         $bestRoute = null;
-        $bestDistance = PHP_INT_MAX;
-
+        $bestBearingDifference = 360; // Initialize with maximum possible difference
+    
         foreach ($routes as $route) {
-          
-            $firstTurn = $this->getFirstValidTurn($route['legs'][0]['steps'], $currentLocation,$bearing);
-            $distanceToTurn = $this->distanceBetween($currentLocation, $firstTurn);
-
-            // Choose the closest turn that is ahead
-            if ($this->isTurnAhead($currentLocation, $firstTurn,$bearing) && $distanceToTurn < $bestDistance) {
+            $legs = $route['legs'];
+            $firstStep = $legs[0]['steps'][0];
+            $startLocation = $firstStep['start_location'];
+            $endLocation = $firstStep['end_location'];
+    
+            // Calculate the bearing of the first segment of the route
+            $routeBearing = $this->calculateBearing(
+                $startLocation['lat'], $startLocation['lng'],
+                $endLocation['lat'], $endLocation['lng']
+            );
+    
+            // Calculate the difference between the user's bearing and the route's bearing
+            $bearingDifference = abs($userBearing - $routeBearing);
+    
+            // Normalize the bearing difference to be within 0-180 degrees
+            if ($bearingDifference > 180) {
+                $bearingDifference = 360 - $bearingDifference;
+            }
+    
+            // If this route has a smaller bearing difference, it's a better match
+            if ($bearingDifference < $bestBearingDifference) {
+                $bestBearingDifference = $bearingDifference;
                 $bestRoute = $route;
-                $bestDistance = $distanceToTurn;
             }
         }
-
+    
         return $bestRoute;
+    }
+    
+    private function calculateBearing($lat1, $lon1, $lat2, $lon2) {
+        $lat1 = deg2rad($lat1);
+        $lon1 = deg2rad($lon1);
+        $lat2 = deg2rad($lat2);
+        $lon2 = deg2rad($lon2);
+    
+        $deltaLon = $lon2 - $lon1;
+    
+        $x = cos($lat2) * sin($deltaLon);
+        $y = cos($lat1) * sin($lat2) - sin($lat1) * cos($lat2) * cos($deltaLon);
+    
+        $bearing = atan2($x, $y);
+        $bearing = rad2deg($bearing);
+        $bearing = fmod(($bearing + 360), 360);
+    
+        return $bearing;
     }
 
     private function getFirstValidTurn($steps, $currentLocation,$bearing)
