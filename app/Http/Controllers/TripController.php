@@ -122,24 +122,30 @@ class TripController extends Controller
         if ($response->successful()) {
             $data = $response->json();
             $routes = $data['routes'];
-            $route = $data['routes'][0];
+            //$route = $data['routes'][0];
             $currentLocation = $startLat.','.$startLng;
             $bestRoute = $this->getBestForwardRoute($routes, $currentLocation,$bearing);
             $legs = $bestRoute['legs'];
             $decodedCoordinates = [];
             $stepSize = 7; // Sample every 3rd point
-
+            $polylinePoints = [];
             foreach ($legs as $leg) {
                 foreach ($leg['steps'] as $step) {
                     if (isset($step['polyline']['points'])) {
                         $points = $this->decodePolyline($step['polyline']['points']);
+                        
+                        // Add filtered points to decodedCoordinates
                         for ($i = 0; $i < count($points); $i += $stepSize) {
                             $decodedCoordinates[] = $points[$i];
                         }
+            
+                        // Collect polyline points correctly
+                        $polylinePoints[] = $step['polyline']['points'];
                     }
                 }
             }
-            $polylinePoints = array_map(fn($step) => $step['polyline']['points'] ?? null, array_merge(...array_column($legs, 'steps')));
+            
+            // Ensure polylinePoints is filtered properly
             $polylinePoints = array_filter($polylinePoints);
             $totalDistance = array_sum(array_column($legs, 'distance.value')); // in meters
             $totalDuration = array_sum(array_column($legs, 'duration.value')); // in seconds
