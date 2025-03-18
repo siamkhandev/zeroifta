@@ -401,7 +401,7 @@ class TripController extends Controller
     private function isTurnAhead($currentLocation, $turnLocation,$bearing)
     {
         // Get user bearing (mocked; replace with real user bearing logic if available)
-        $userBearing =$bearing ??  0; // Assume user is moving north (0°)
+        $userBearing =$bearing < 0 ? 0: $bearing; // Assume user is moving north (0°)
         $bearingToTurn = $this->bearingBetweenLocations($currentLocation, $turnLocation);
 
         return abs($bearingToTurn - $userBearing) < 90; // Forward if within 90°
