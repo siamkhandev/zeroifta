@@ -81,6 +81,371 @@ class TripController extends Controller
             'gas_stations'  => $storedStations ?? [],
         ]]);
     }
+    public function updateTrip(Request $request)
+    {
+        $validatedData =$request->validate([
+            'trip_id' => 'required|exists:trips,id',
+            'start_lat' => 'required',
+            'start_lng' => 'required',
+            'end_lat' => 'required',
+            'end_lng' => 'required',
+            'truck_mpg' => 'required',
+            'fuel_tank_capacity' => 'required',
+            'total_gallons_present' => 'required',
+        ]);
+
+        $updatedStartLat = $request->start_lat;
+        $updatedStartLng = $request->start_lng;
+        $updatedEndLat = $request->end_lat;
+        $updatedEndLng = $request->end_lng;
+        $startLat = $request->start_lat;
+        $startLng = $request->start_lng;
+        $endLat = $request->end_lat;
+        $endLng = $request->end_lng;
+        $truckMpg = $request->truck_mpg;
+        $fuelTankCapacity = $request->fuel_tank_capacity;
+        $currentFuel = $request->total_gallons_present;
+        $bearing = $request->bearing ?? 90;
+        // Replace with your Google API key
+        $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
+        $stops = Tripstop::where('trip_id', $request->trip_id)->get();
+        if ($stops->isNotEmpty()) {
+            $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
+        }
+        $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
+        if (isset($waypoints)) {
+            $url .= "&waypoints=optimize:true|{$waypoints}";
+        }
+        // Fetch data from Google Maps API
+        $response = Http::get($url);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            if($data['routes'] && $data['routes'][0]){
+                if (!empty($data['routes'][0]['legs'])) {
+                    $steps = $data['routes'][0]['legs'][0]['steps'];
+                    $decodedCoordinates = [];
+                $stepSize =3; // Sample every 10th point
+
+                foreach ($steps as $step) {
+                    if (isset($step['polyline']['points'])) {
+                        $points = $this->decodePolyline($step['polyline']['points']);
+                        // Sample every 10th point
+                        for ($i = 0; $i < count($points); $i += $stepSize) {
+                            $decodedCoordinates[] = $points[$i];
+                        }
+                    }
+                }
+                    $polylinePoints = [];
+
+                    foreach ($data['routes'][0]['legs'] as $leg) {
+                        if (!empty($leg['steps'])) {
+                            foreach ($leg['steps'] as $step) {
+                                if (isset($step['polyline']['points'])) {
+                                    $polylinePoints[] = $step['polyline']['points'];
+                                }
+                            }
+                        }
+                    }
+
+                    // Filter out any null values if necessary
+                    $polylinePoints = array_filter($polylinePoints);
+                }
+                $route = $data['routes'][0];
+                $currentLocation = ['lat' => $startLat, 'lng' => $startLng];
+                $bestRoute = $this->getBestForwardRoute($route, $currentLocation,$bearing);
+                if($route){
+                    $totalDistance = 0;
+                    $totalDuration = 0;
+
+                    foreach ($route['legs'] as $leg) {
+                        $totalDistance += $leg['distance']['value']; // Distance in meters
+                        $totalDuration += $leg['duration']['value']; // Duration in seconds
+                    }
+
+                    // Convert meters to miles
+                    $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
+
+                    // Convert seconds to hours and minutes
+                    $hours = floor($totalDuration / 3600);
+                    $minutes = floor(($totalDuration % 3600) / 60);
+
+                    // Format distance
+                    $formattedDistance = $totalDistanceMiles . ' miles';
+
+                    // Format duration
+                    if ($hours > 0) {
+                        $formattedDuration = "{$hours} hr {$minutes} min";
+                    } else {
+                        $formattedDuration = "{$minutes} min";
+                    }
+                }
+                if (isset($data['routes'][0]['overview_polyline']['points'])) {
+                    $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
+                    $decodedPolyline = $this->decodePolyline($encodedPolyline);
+
+                    // Filter coordinates based on distance from start and end points
+                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
+                        // Ensure $coordinate is valid
+                        if (isset($coordinate['lat'], $coordinate['lng'])) {
+                            // Calculate distances from both start and end points
+                            $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
+                            $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
+
+                            // Keep coordinates if they are sufficiently far from both points
+                            return $distanceFromStart > 9 && $distanceFromEnd > 9;
+                        }
+                        return false; // Skip invalid coordinates
+                    });
+
+                    // Reset array keys to ensure a clean array structure
+                    $finalFilteredPolyline = array_values($finalFilteredPolyline);
+                    $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
+                   // $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
+                    $reserve_fuel = $request->reserve_fuel;
+
+                 $totalFuel = $currentFuel+$reserve_fuel;
+                $tripDetailResponse = [
+                    'data' => [
+                        'trip' => [
+                            'start' => [
+                                'latitude' => $updatedStartLat,
+                                'longitude' => $updatedStartLng
+                            ],
+                            'end' => [
+                                'latitude' => $updatedEndLat,
+                                'longitude' => $updatedEndLng
+                            ]
+                        ],
+                        'vehicle' => [
+                            'mpg' => $truckMpg,
+                            'fuelLeft' => $totalFuel
+                        ],
+                        'fuelStations' => $matchingRecords,
+                        'polyline'=>$decodedCoordinates
+
+                    ]
+                ];
+
+                $result = $this->markOptimumFuelStations($tripDetailResponse);
+                if($result==false){
+                    $result = $matchingRecords;
+                }
+                   // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
+                    $trip = Trip::find($request->trip_id);
+                    $trip->update([
+                        'updated_start_lat' => $updatedStartLat,
+                        'updated_start_lng' => $updatedStartLng,
+                        'updated_end_lat' => $updatedEndLat,
+                        'updated_end_lng' => $updatedEndLng,
+                        'polyline' => json_encode($polylinePoints),
+                        'polyline_encoded' => $encodedPolyline,
+                        'distance' => $formattedDistance,
+                        'duration'=> $formattedDuration,
+                    ]);
+                    foreach ($result as $value) {
+                        FuelStation::updateOrCreate(
+                            [
+                                'trip_id' => $trip->id, // Condition to check if the record exists
+                                'latitude' => $value['ftpLat'],
+                                'longitude' => $value['ftpLng']
+                            ],
+                            [
+                                'name' => $value['fuel_station_name'],
+                                'price' => $value['price'],
+                                'lastprice' => $value['lastprice'],
+                                'discount' => $value['discount'],
+                                'ifta_tax' => $value['IFTA_tax'],
+                                'is_optimal' => $value['isOptimal'] ?? false,
+                                'address' => $value['address'],
+                                'gallons_to_buy' => $value['gallons_to_buy'],
+                                'trip_id' => $trip->id,
+                                'user_id' => $trip->user_id,
+                            ]
+                        );
+                    }
+                    $trip->distance = $formattedDistance;
+                    $trip->duration = $formattedDuration;
+                    $stops = Tripstop::where('trip_id', $trip->id)->get();
+                    $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
+                    if($driverVehicle){
+                        $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
+                        $vehicle->update([
+                            'fuel_left'=> $currentFuel,
+                            'mpg'=>$truckMpg,
+                            'reserve_fuel'=>$request->reserve_fuel,
+                        ]);
+                        if($vehicle && $vehicle->vehicle_image != null){
+                            $vehicle->vehicle_image = url('/vehicles/'.$vehicle->vehicle_image);
+                        }
+                    }else{
+
+                        $vehicle=null;
+                    }
+
+
+                    // Create a separate key for the polyline
+                    $responseData = [
+                        'trip_id' => $request->trip_id,
+                        'trip' => $trip,
+                        'fuel_stations' => $result, // Fuel stations with optimal station marked
+                        'polyline' => $decodedPolyline,
+                        'encoded_polyline'=>$encodedPolyline,
+                        'polyline_paths' => $polylinePoints ?? [],
+                        'stops' => $stops,
+                        'vehicle' => $vehicle
+                    ];
+                    $findDriver = User::where('id', $trip->user_id)->first();
+                    if($findDriver){
+
+                     $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
+                     if ($findCompany) {
+                        $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
+                        $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)
+                        ->pluck('token')
+                        ->toArray();
+
+                        if (!empty($companyFcmTokens)) {
+                            $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+                            $messaging = $factory->createMessaging();
+
+                            // Create the notification payload
+                            $message = CloudMessage::new()
+                                ->withNotification(Notification::create('Trip Updated', $findDriver->name . 'has updated a trip.'))
+                                ->withData([
+                                    'trip_id' => (string) $trip->id,  // Include trip ID for reference
+                                    'driver_name' => $findDriver->name, // Driver's name
+                                    'sound' => 'default',  // This triggers the sound
+                                ]);
+
+                            // Send notification to all FCM tokens of the company
+                            $response = $messaging->sendMulticast($message, $companyFcmTokens);
+                        }
+                        if (!empty($driverFcm)) {
+                            $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
+                            $messaging = $factory->createMessaging();
+
+                            $message = CloudMessage::new()
+                                ->withNotification(Notification::create('Trip Updated', 'Trip updated successfully'))
+                                ->withData([
+                                    'sound' => 'default', // This triggers the sound
+                                ]);
+
+                            $response = $messaging->sendMulticast($message, $driverFcm);
+                            ModelsNotification::create([
+                                'user_id' => $findCompany->company_id,
+                                'title' => 'Trip Updated',
+                                'body' => $findDriver->name . ' has updated a trip.',
+                            ]);
+                        }
+                    }
+                    }
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'Fuel stations fetched successfully.',
+                        'data' => $bestRoute,
+                    ]);
+                }
+
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No route found.',
+                    'data'=>(object)[]
+                ], 404);
+            }else{
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Failed to fetch data from Google Maps API.',
+                    'data'=>(object)[]
+                ]);
+            }
+
+        }
+
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to fetch data from Google Maps API.',
+            'data'=>(object)[]
+        ]);
+    }
+    private function getBestForwardRoute($routes, $currentLocation,$bearing)
+    {
+        $bestRoute = null;
+        $bestDistance = PHP_INT_MAX;
+
+        foreach ($routes as $route) {
+            $firstTurn = $this->getFirstValidTurn($route['legs'][0]['steps'], $currentLocation,$bearing);
+            $distanceToTurn = $this->distanceBetween($currentLocation, $firstTurn);
+
+            // Choose the closest turn that is ahead
+            if ($this->isTurnAhead($currentLocation, $firstTurn,$bearing) && $distanceToTurn < $bestDistance) {
+                $bestRoute = $route;
+                $bestDistance = $distanceToTurn;
+            }
+        }
+
+        return $bestRoute;
+    }
+
+    private function getFirstValidTurn($steps, $currentLocation,$bearing)
+    {
+        foreach ($steps as $step) {
+            $turnLocation = "{$step['start_location']['lat']},{$step['start_location']['lng']}";
+            if ($this->isTurnAhead($currentLocation, $turnLocation,$bearing)) {
+                return $turnLocation;
+            }
+        }
+        return "{$steps[0]['start_location']['lat']},{$steps[0]['start_location']['lng']}"; // Default to first point
+    }
+
+    private function isTurnAhead($currentLocation, $turnLocation,$bearing)
+    {
+        // Get user bearing (mocked; replace with real user bearing logic if available)
+        $userBearing =$bearing ??  0; // Assume user is moving north (0°)
+        $bearingToTurn = $this->bearingBetweenLocations($currentLocation, $turnLocation);
+
+        return abs($bearingToTurn - $userBearing) < 90; // Forward if within 90°
+    }
+
+    private function distanceBetween($point1, $point2)
+    {
+        list($lat1, $lng1) = explode(',', $point1);
+        list($lat2, $lng2) = explode(',', $point2);
+
+        $earthRadius = 6371; // Radius of Earth in km
+        $lat1 = deg2rad($lat1);
+        $lng1 = deg2rad($lng1);
+        $lat2 = deg2rad($lat2);
+        $lng2 = deg2rad($lng2);
+
+        $dLat = $lat2 - $lat1;
+        $dLng = $lng2 - $lng1;
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos($lat1) * cos($lat2) *
+             sin($dLng / 2) * sin($dLng / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
+    }
+
+    private function bearingBetweenLocations($point1, $point2)
+    {
+        list($lat1, $lng1) = explode(',', $point1);
+        list($lat2, $lng2) = explode(',', $point2);
+
+        $lat1 = deg2rad($lat1);
+        $lng1 = deg2rad($lng1);
+        $lat2 = deg2rad($lat2);
+        $lng2 = deg2rad($lng2);
+
+        $dLng = $lng2 - $lng1;
+        $y = sin($dLng) * cos($lat2);
+        $x = cos($lat1) * sin($lat2) - sin($lat1) * cos($lat2) * cos($dLng);
+        $bearing = rad2deg(atan2($y, $x));
+
+        return ($bearing + 360) % 360;
+    }
     private function loadAndParseFTPData()
     {
         $filePath = 'EFSLLCpricing';
@@ -495,7 +860,7 @@ class TripController extends Controller
                 //     $polylinePoints = array_filter($polylinePoints);
                 // }
                 $polylinePoints = json_decode($trip->polyline, true);
-               
+
                 $decodedCoordinates = [];
                 $stepSize = 7; // Sample every 3rd point
 
