@@ -121,8 +121,79 @@ class TripController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
-            if($data['routes'] && $data['routes'][0]){
-                if (!empty($data['routes'][0]['legs'])) {
+            $routes = $data['routes'];
+            $route = $data['routes'][0];
+            $currentLocation = $startLat.','.$startLng;
+            $bestRoute = $this->getBestForwardRoute($routes, $currentLocation,$bearing);
+            $legs = $bestRoute['legs'];
+            $decodedCoordinates = [];
+            $stepSize = 7; // Sample every 3rd point
+
+            foreach ($legs as $leg) {
+                foreach ($leg['steps'] as $step) {
+                    if (isset($step['polyline']['points'])) {
+                        $points = $this->decodePolyline($step['polyline']['points']);
+                        for ($i = 0; $i < count($points); $i += $stepSize) {
+                            $decodedCoordinates[] = $points[$i];
+                        }
+                    }
+                }
+            }
+            $polylinePoints = array_map(fn($step) => $step['polyline']['points'] ?? null, array_merge(...array_column($legs, 'steps')));
+            $polylinePoints = array_filter($polylinePoints);
+            $totalDistance = array_sum(array_column($legs, 'distance.value')); // in meters
+            $totalDuration = array_sum(array_column($legs, 'duration.value')); // in seconds
+            $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
+            $formattedDuration = gmdate("H\h i\m", $totalDuration);
+            $encodedPolyline = $bestRoute['overview_polyline']['points'];
+            $decodedPolyline = $this->decodePolyline($encodedPolyline);
+            $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
+                if (isset($coordinate['lat'], $coordinate['lng'])) {
+                    $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
+                    $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
+                    return $distanceFromStart > 9 && $distanceFromEnd > 9;
+                }
+                return false;
+            });
+            $finalFilteredPolyline = array_values($finalFilteredPolyline);
+            $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
+            $reserve_fuel = $request->reserve_fuel;
+            $totalFuel = $currentFuel + $reserve_fuel;
+            $trip = Trip::find($request->trip_id);
+            // ✅ Final trip response
+            $tripDetailResponse = [
+                
+                    'trip_id'=>$trip->id,
+                    'trip' => $trip,
+                    'vehicle' => ['mpg' => $truckMpg, 'fuelLeft' => $totalFuel],
+                    'fuelStations' => $matchingRecords,
+                    'polyline' => $decodedCoordinates,
+                    'polyline_encoded' => $encodedPolyline,
+                    'polyline_paths'=>$polylinePoints,
+                    'stops'=>[],
+                
+            ];
+            
+            $trip->update([
+                'updated_start_lat' => $updatedStartLat,
+                'updated_start_lng' => $updatedStartLng,
+                'updated_end_lat' => $updatedEndLat,
+                'updated_end_lng' => $updatedEndLng,
+                'polyline' => json_encode($polylinePoints),
+                'polyline_encoded' => $encodedPolyline,
+                'distance' => $totalDistanceMiles . ' miles',
+                'duration' => $formattedDuration,
+            ]);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Trip updated successfully',
+                'data' => $tripDetailResponse
+            ]
+               
+            );
+           dd($bestRoute['legs']);
+            if($bestRoute){
+                if (!empty($bestRoute['legs'])) {
                     $steps = $data['routes'][0]['legs'][0]['steps'];
                     $decodedCoordinates = [];
                 $stepSize =3; // Sample every 10th point
@@ -151,10 +222,7 @@ class TripController extends Controller
                     // Filter out any null values if necessary
                     $polylinePoints = array_filter($polylinePoints);
                 }
-                $routes = $data['routes'];
-                $route = $data['routes'][0];
-                $currentLocation = $startLat.','.$startLng;
-                $bestRoute = $this->getBestForwardRoute($routes, $currentLocation,$bearing);
+                
                 if($route){
                     $totalDistance = 0;
                     $totalDuration = 0;
