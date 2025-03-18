@@ -163,9 +163,58 @@ class TripController extends Controller
             });
             $finalFilteredPolyline = array_values($finalFilteredPolyline);
             $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
+
             $reserve_fuel = $request->reserve_fuel;
             $totalFuel = $currentFuel + $reserve_fuel;
+            $tripDetailResponse = [
+                'data' => [
+                    'trip' => [
+                        'start' => [
+                            'latitude' => $startLat,
+                            'longitude' => $startLng
+                        ],
+                        'end' => [
+                            'latitude' => $endLat,
+                            'longitude' => $endLng
+                        ]
+                    ],
+                    'vehicle' => [
+                        'mpg' => $truckMpg,
+                        'fuelLeft' => $totalFuel
+                    ],
+                    'fuelStations' => $matchingRecords,
+                    'polyline'=>$decodedCoordinates
+
+                ]
+            ];
             $trip = Trip::find($request->trip_id);
+            $result = $this->markOptimumFuelStations($tripDetailResponse);
+                if($result==false){
+                    $result = $matchingRecords;
+
+                }
+                foreach ($result as $value) {
+                    FuelStation::updateOrCreate(
+                        [
+                            'trip_id' => $trip->id, // Condition to check if the record exists
+                            'latitude' => $value['ftpLat'],
+                            'longitude' => $value['ftpLng']
+                        ],
+                        [
+                            'name' => $value['fuel_station_name'],
+                            'price' => $value['price'],
+                            'lastprice' => $value['lastprice'],
+                            'discount' => $value['discount'],
+                            'ifta_tax' => $value['IFTA_tax'],
+                            'is_optimal' => $value['isOptimal'] ?? false,
+                            'address' => $value['address'],
+                            'gallons_to_buy' => $value['gallons_to_buy'],
+                            'trip_id' => $trip->id,
+                            'user_id' => $trip->user_id,
+                        ]
+                    );
+                }
+           
             $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
             if($vehicleFind){
                 // Update vehicle details
@@ -186,7 +235,7 @@ class TripController extends Controller
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
                     'vehicle' => $vehicle,
-                    'fuel_stations' => [],
+                    'fuel_stations' => $result,
                     'polyline' => $decodedCoordinates,
                     'encoded_polyline' => $encodedPolyline,
                     'polyline_paths'=>$polylinePoints,
@@ -1215,16 +1264,16 @@ class TripController extends Controller
                     FuelStation::where('trip_id', $trip->id)->delete();
                     foreach ($result as  $value) {
                         $fuelStations[] = [
-                            'name' => $value['fuel_station_name'],
-                            'latitude' => $value['ftpLat'],
-                            'longitude' => $value['ftpLng'],
-                            'price' => $value['price'],
-                            'lastprice' => $value['lastprice'],
-                            'discount' => $value['discount'],
-                            'ifta_tax' => $value['IFTA_tax'],
+                            'name' => $value['fuel_station_name'] ??'N/A',
+                            'latitude' => $value['ftpLat'] ?? 0,
+                            'longitude' => $value['ftpLng'] ?? 0,
+                            'price' => $value['price'] ?? 0,
+                            'lastprice' => $value['lastprice'] ?? 0,
+                            'discount' => $value['discount'] ?? 0,
+                            'ifta_tax' => $value['IFTA_tax'] ?? 0,
                             'is_optimal' => $value['isOptimal'] ?? false,
-                            'address' => $value['address'],
-                            'gallons_to_buy' => $value['gallons_to_buy'],
+                            'address' => $value['address'] ?? 'N/A',
+                            'gallons_to_buy' => $value['gallons_to_buy'] ?? 0,
                             'trip_id' => $trip->id,
                             'user_id' => $trip->user_id,
                             'created_at' => now(),
@@ -1262,7 +1311,7 @@ class TripController extends Controller
             $response = [
                 'trip_id' => $trip->id,
                 'trip' => $trip,
-                'fuel_stations' => $result,
+                'fuel_stations' => $result ?? [],
                 'polyline' => $decodedPolyline,
                 'encoded_polyline'=>$encodedPolyline,
                 'polyline_paths' => $polylinePoints ?? [],
