@@ -151,9 +151,10 @@ class TripController extends Controller
                     // Filter out any null values if necessary
                     $polylinePoints = array_filter($polylinePoints);
                 }
+                $routes = $data['routes'];
                 $route = $data['routes'][0];
-                $currentLocation = ['lat' => $startLat, 'lng' => $startLng];
-                $bestRoute = $this->getBestForwardRoute($route, $currentLocation,$bearing);
+                $currentLocation = $startLat.','.$startLng;
+                $bestRoute = $this->getBestForwardRoute($routes, $currentLocation,$bearing);
                 if($route){
                     $totalDistance = 0;
                     $totalDuration = 0;
@@ -227,10 +228,10 @@ class TripController extends Controller
                     ]
                 ];
 
-                $result = $this->markOptimumFuelStations($tripDetailResponse);
-                if($result==false){
+                //$result = $this->markOptimumFuelStations($tripDetailResponse);
+                //if($result==false){
                     $result = $matchingRecords;
-                }
+                //}
                    // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
                     $trip = Trip::find($request->trip_id);
                     $trip->update([
@@ -374,6 +375,7 @@ class TripController extends Controller
         $bestDistance = PHP_INT_MAX;
 
         foreach ($routes as $route) {
+          
             $firstTurn = $this->getFirstValidTurn($route['legs'][0]['steps'], $currentLocation,$bearing);
             $distanceToTurn = $this->distanceBetween($currentLocation, $firstTurn);
 
@@ -402,6 +404,7 @@ class TripController extends Controller
     {
         // Get user bearing (mocked; replace with real user bearing logic if available)
         $userBearing =$bearing < 0 ? 0: $bearing; // Assume user is moving north (0°)
+        
         $bearingToTurn = $this->bearingBetweenLocations($currentLocation, $turnLocation);
 
         return abs($bearingToTurn - $userBearing) < 90; // Forward if within 90°
@@ -431,9 +434,10 @@ class TripController extends Controller
 
     private function bearingBetweenLocations($point1, $point2)
     {
+       
         list($lat1, $lng1) = explode(',', $point1);
         list($lat2, $lng2) = explode(',', $point2);
-
+        
         $lat1 = deg2rad($lat1);
         $lng1 = deg2rad($lng1);
         $lat2 = deg2rad($lat2);
