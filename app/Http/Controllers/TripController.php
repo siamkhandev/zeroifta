@@ -128,7 +128,7 @@ class TripController extends Controller
             $legs = $bestRoute['legs'];
             $decodedCoordinates = [];
             $stepSize = 7; // Sample every 3rd point
-            $polylinePoints = [];
+            $polylinePoints = [];   
             foreach ($legs as $leg) {
                 foreach ($leg['steps'] as $step) {
                     if (isset($step['polyline']['points'])) {
@@ -211,243 +211,7 @@ class TripController extends Controller
             ]
                
             );
-           dd($bestRoute['legs']);
-            if($bestRoute){
-                if (!empty($bestRoute['legs'])) {
-                    $steps = $data['routes'][0]['legs'][0]['steps'];
-                    $decodedCoordinates = [];
-                $stepSize =3; // Sample every 10th point
-
-                foreach ($steps as $step) {
-                    if (isset($step['polyline']['points'])) {
-                        $points = $this->decodePolyline($step['polyline']['points']);
-                        // Sample every 10th point
-                        for ($i = 0; $i < count($points); $i += $stepSize) {
-                            $decodedCoordinates[] = $points[$i];
-                        }
-                    }
-                }
-                    $polylinePoints = [];
-
-                    foreach ($data['routes'][0]['legs'] as $leg) {
-                        if (!empty($leg['steps'])) {
-                            foreach ($leg['steps'] as $step) {
-                                if (isset($step['polyline']['points'])) {
-                                    $polylinePoints[] = $step['polyline']['points'];
-                                }
-                            }
-                        }
-                    }
-
-                    // Filter out any null values if necessary
-                    $polylinePoints = array_filter($polylinePoints);
-                }
-                
-                if($route){
-                    $totalDistance = 0;
-                    $totalDuration = 0;
-
-                    foreach ($route['legs'] as $leg) {
-                        $totalDistance += $leg['distance']['value']; // Distance in meters
-                        $totalDuration += $leg['duration']['value']; // Duration in seconds
-                    }
-
-                    // Convert meters to miles
-                    $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
-
-                    // Convert seconds to hours and minutes
-                    $hours = floor($totalDuration / 3600);
-                    $minutes = floor(($totalDuration % 3600) / 60);
-
-                    // Format distance
-                    $formattedDistance = $totalDistanceMiles . ' miles';
-
-                    // Format duration
-                    if ($hours > 0) {
-                        $formattedDuration = "{$hours} hr {$minutes} min";
-                    } else {
-                        $formattedDuration = "{$minutes} min";
-                    }
-                }
-                if (isset($data['routes'][0]['overview_polyline']['points'])) {
-                    $encodedPolyline = $data['routes'][0]['overview_polyline']['points'];
-                    $decodedPolyline = $this->decodePolyline($encodedPolyline);
-
-                    // Filter coordinates based on distance from start and end points
-                    $finalFilteredPolyline = array_filter($decodedPolyline, function ($coordinate) use ($updatedStartLat, $updatedStartLng, $updatedEndLat, $updatedEndLng) {
-                        // Ensure $coordinate is valid
-                        if (isset($coordinate['lat'], $coordinate['lng'])) {
-                            // Calculate distances from both start and end points
-                            $distanceFromStart = $this->haversineDistanceFilter($updatedStartLat, $updatedStartLng, $coordinate['lat'], $coordinate['lng']);
-                            $distanceFromEnd = $this->haversineDistanceFilter($updatedEndLat, $updatedEndLng, $coordinate['lat'], $coordinate['lng']);
-
-                            // Keep coordinates if they are sufficiently far from both points
-                            return $distanceFromStart > 9 && $distanceFromEnd > 9;
-                        }
-                        return false; // Skip invalid coordinates
-                    });
-
-                    // Reset array keys to ensure a clean array structure
-                    $finalFilteredPolyline = array_values($finalFilteredPolyline);
-                    $matchingRecords = $this->loadAndParseFTPData($finalFilteredPolyline);
-                   // $matchingRecords = $this->findMatchingRecords($finalFilteredPolyline, $ftpData);
-                    $reserve_fuel = $request->reserve_fuel;
-
-                 $totalFuel = $currentFuel+$reserve_fuel;
-                $tripDetailResponse = [
-                    'data' => [
-                        'trip' => [
-                            'start' => [
-                                'latitude' => $updatedStartLat,
-                                'longitude' => $updatedStartLng
-                            ],
-                            'end' => [
-                                'latitude' => $updatedEndLat,
-                                'longitude' => $updatedEndLng
-                            ]
-                        ],
-                        'vehicle' => [
-                            'mpg' => $truckMpg,
-                            'fuelLeft' => $totalFuel
-                        ],
-                        'fuelStations' => $matchingRecords,
-                        'polyline'=>$decodedCoordinates
-
-                    ]
-                ];
-
-                //$result = $this->markOptimumFuelStations($tripDetailResponse);
-                //if($result==false){
-                    $result = $matchingRecords;
-                //}
-                   // $result = $this->findOptimalFuelStation($startLat, $startLng, $truckMpg, $currentFuel, $matchingRecords, $endLat, $endLng);
-                    $trip = Trip::find($request->trip_id);
-                    $trip->update([
-                        'updated_start_lat' => $updatedStartLat,
-                        'updated_start_lng' => $updatedStartLng,
-                        'updated_end_lat' => $updatedEndLat,
-                        'updated_end_lng' => $updatedEndLng,
-                        'polyline' => json_encode($polylinePoints),
-                        'polyline_encoded' => $encodedPolyline,
-                        'distance' => $formattedDistance,
-                        'duration'=> $formattedDuration,
-                    ]);
-                    // foreach ($result as $value) {
-                    //     FuelStation::updateOrCreate(
-                    //         [
-                    //             'trip_id' => $trip->id, // Condition to check if the record exists
-                    //             'latitude' => $value['ftpLat'],
-                    //             'longitude' => $value['ftpLng']
-                    //         ],
-                    //         [
-                    //             'name' => $value['fuel_station_name'],
-                    //             'price' => $value['price'],
-                    //             'lastprice' => $value['lastprice'],
-                    //             'discount' => $value['discount'],
-                    //             'ifta_tax' => $value['IFTA_tax'],
-                    //             'is_optimal' => $value['isOptimal'] ?? false,
-                    //             'address' => $value['address'],
-                    //             'gallons_to_buy' => $value['gallons_to_buy'],
-                    //             'trip_id' => $trip->id,
-                    //             'user_id' => $trip->user_id,
-                    //         ]
-                    //     );
-                    // }
-                    $trip->distance = $formattedDistance;
-                    $trip->duration = $formattedDuration;
-                    $stops = Tripstop::where('trip_id', $trip->id)->get();
-                    $driverVehicle = DriverVehicle::where('driver_id', $trip->user_id)->first();
-                    if($driverVehicle){
-                        $vehicle = Vehicle::where('id', $driverVehicle->vehicle_id)->first();
-                        $vehicle->update([
-                            'fuel_left'=> $currentFuel,
-                            'mpg'=>$truckMpg,
-                            'reserve_fuel'=>$request->reserve_fuel,
-                        ]);
-                        if($vehicle && $vehicle->vehicle_image != null){
-                            $vehicle->vehicle_image = url('/vehicles/'.$vehicle->vehicle_image);
-                        }
-                    }else{
-
-                        $vehicle=null;
-                    }
-
-
-                    // Create a separate key for the polyline
-                    $responseData = [
-                        'trip_id' => $request->trip_id,
-                        'trip' => $trip,
-                        'fuel_stations' => $result, // Fuel stations with optimal station marked
-                        'polyline' => $decodedPolyline,
-                        'encoded_polyline'=>$encodedPolyline,
-                        'polyline_paths' => $polylinePoints ?? [],
-                        'stops' => $stops,
-                        'vehicle' => $vehicle
-                    ];
-                    $findDriver = User::where('id', $trip->user_id)->first();
-                    if($findDriver){
-
-                     $findCompany = CompanyDriver::where('driver_id',$findDriver->id)->first();
-                     if ($findCompany) {
-                        $driverFcm = FcmToken::where('user_id', $findDriver->id)->pluck('token')->toArray();
-                        $companyFcmTokens = FcmToken::where('user_id', $findCompany->company_id)
-                        ->pluck('token')
-                        ->toArray();
-
-                        if (!empty($companyFcmTokens)) {
-                            $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
-                            $messaging = $factory->createMessaging();
-
-                            // Create the notification payload
-                            $message = CloudMessage::new()
-                                ->withNotification(Notification::create('Trip Updated', $findDriver->name . 'has updated a trip.'))
-                                ->withData([
-                                    'trip_id' => (string) $trip->id,  // Include trip ID for reference
-                                    'driver_name' => $findDriver->name, // Driver's name
-                                    'sound' => 'default',  // This triggers the sound
-                                ]);
-
-                            // Send notification to all FCM tokens of the company
-                            $response = $messaging->sendMulticast($message, $companyFcmTokens);
-                        }
-                        if (!empty($driverFcm)) {
-                            $factory = (new Factory)->withServiceAccount(storage_path('app/zeroifta.json'));
-                            $messaging = $factory->createMessaging();
-
-                            $message = CloudMessage::new()
-                                ->withNotification(Notification::create('Trip Updated', 'Trip updated successfully'))
-                                ->withData([
-                                    'sound' => 'default', // This triggers the sound
-                                ]);
-
-                            $response = $messaging->sendMulticast($message, $driverFcm);
-                            ModelsNotification::create([
-                                'user_id' => $findCompany->company_id,
-                                'title' => 'Trip Updated',
-                                'body' => $findDriver->name . ' has updated a trip.',
-                            ]);
-                        }
-                    }
-                    }
-                    return response()->json([
-                        'status' => 200,
-                        'message' => 'Fuel stations fetched successfully.',
-                        'data' => $bestRoute,
-                    ]);
-                }
-
-                return response()->json([
-                    'status' => 404,
-                    'message' => 'No route found.',
-                    'data'=>(object)[]
-                ], 404);
-            }else{
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'Failed to fetch data from Google Maps API.',
-                    'data'=>(object)[]
-                ]);
-            }
+           
 
         }
 
@@ -457,78 +221,73 @@ class TripController extends Controller
             'data'=>(object)[]
         ]);
     }
-    private function getBestForwardRoute($routes, $currentLocation, $userBearing) {
-        $bestRoute = null;
-        $bestBearingDifference = 360; // Initialize with maximum possible difference
-    
-        foreach ($routes as $route) {
-            $legs = $route['legs'];
-            $firstStep = $legs[0]['steps'][0];
-            $startLocation = $firstStep['start_location'];
-            $endLocation = $firstStep['end_location'];
-    
-            // Calculate the bearing of the first segment of the route
-            $routeBearing = $this->calculateBearing(
-                $startLocation['lat'], $startLocation['lng'],
-                $endLocation['lat'], $endLocation['lng']
-            );
-    
-            // Calculate the difference between the user's bearing and the route's bearing
-            $bearingDifference = abs($userBearing - $routeBearing);
-    
-            // Normalize the bearing difference to be within 0-180 degrees
-            if ($bearingDifference > 180) {
-                $bearingDifference = 360 - $bearingDifference;
-            }
-    
-            // If this route has a smaller bearing difference, it's a better match
-            if ($bearingDifference < $bestBearingDifference) {
-                $bestBearingDifference = $bearingDifference;
-                $bestRoute = $route;
+    private function getBestForwardRoute($routes, $currentLocation, $userBearing)
+{
+    $bestRoute = null;
+    $bestBearingDifference = 360; // Initialize with maximum possible difference
+
+    foreach ($routes as $route) {
+        $legs = $route['legs'];
+        $firstStep = $legs[0]['steps'][0];
+        $startLocation = $firstStep['start_location'];
+        $endLocation = $firstStep['end_location'];
+
+        // Calculate the bearing of the first segment of the route
+        $routeBearing = $this->bearingBetweenLocations(
+            "{$startLocation['lat']},{$startLocation['lng']}",
+            "{$endLocation['lat']},{$endLocation['lng']}"
+        );
+
+        // Calculate the difference between the user's bearing and the route's bearing
+        $bearingDifference = abs($userBearing - $routeBearing);
+
+        // Normalize the bearing difference to be within 0-180 degrees
+        if ($bearingDifference > 180) {
+            $bearingDifference = 360 - $bearingDifference;
+        }
+
+        // If this route has a smaller bearing difference, it's a better match
+        if ($bearingDifference < $bestBearingDifference) {
+            $bestBearingDifference = $bearingDifference;
+            $bestRoute = $route;
+        }
+    }
+
+    return $bestRoute;
+}
+
+    private function getFirstValidTurn($steps, $currentLocation, $userBearing)
+{
+    $closestTurn = null;
+    $closestDistance = PHP_INT_MAX;
+
+    foreach ($steps as $step) {
+        $turnLocation = "{$step['start_location']['lat']},{$step['start_location']['lng']}";
+        if ($this->isTurnAhead($currentLocation, $turnLocation, $userBearing)) {
+            $distanceToTurn = $this->distanceBetween($currentLocation, $turnLocation);
+            if ($distanceToTurn < $closestDistance) {
+                $closestTurn = $turnLocation;
+                $closestDistance = $distanceToTurn;
             }
         }
-    
-        return $bestRoute;
-    }
-    
-    private function calculateBearing($lat1, $lon1, $lat2, $lon2) {
-        $lat1 = deg2rad($lat1);
-        $lon1 = deg2rad($lon1);
-        $lat2 = deg2rad($lat2);
-        $lon2 = deg2rad($lon2);
-    
-        $deltaLon = $lon2 - $lon1;
-    
-        $x = cos($lat2) * sin($deltaLon);
-        $y = cos($lat1) * sin($lat2) - sin($lat1) * cos($lat2) * cos($deltaLon);
-    
-        $bearing = atan2($x, $y);
-        $bearing = rad2deg($bearing);
-        $bearing = fmod(($bearing + 360), 360);
-    
-        return $bearing;
     }
 
-    private function getFirstValidTurn($steps, $currentLocation,$bearing)
-    {
-        foreach ($steps as $step) {
-            $turnLocation = "{$step['start_location']['lat']},{$step['start_location']['lng']}";
-            if ($this->isTurnAhead($currentLocation, $turnLocation,$bearing)) {
-                return $turnLocation;
-            }
-        }
-        return "{$steps[0]['start_location']['lat']},{$steps[0]['start_location']['lng']}"; // Default to first point
+    return $closestTurn ?? "{$steps[0]['start_location']['lat']},{$steps[0]['start_location']['lng']}";
+}
+
+    private function isTurnAhead($currentLocation, $turnLocation, $userBearing)
+{
+    $bearingToTurn = $this->bearingBetweenLocations($currentLocation, $turnLocation);
+    $bearingDifference = abs($bearingToTurn - $userBearing);
+
+    // Normalize the bearing difference to be within 0-180 degrees
+    if ($bearingDifference > 180) {
+        $bearingDifference = 360 - $bearingDifference;
     }
 
-    private function isTurnAhead($currentLocation, $turnLocation,$bearing)
-    {
-        // Get user bearing (mocked; replace with real user bearing logic if available)
-        $userBearing =$bearing < 0 ? 0: $bearing; // Assume user is moving north (0°)
-        
-        $bearingToTurn = $this->bearingBetweenLocations($currentLocation, $turnLocation);
-
-        return abs($bearingToTurn - $userBearing) < 90; // Forward if within 90°
-    }
+    // Consider the turn "ahead" if the bearing difference is less than 45°
+    return $bearingDifference < 45;
+}
 
     private function distanceBetween($point1, $point2)
     {
