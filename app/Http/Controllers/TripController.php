@@ -160,13 +160,27 @@ class TripController extends Controller
             $reserve_fuel = $request->reserve_fuel;
             $totalFuel = $currentFuel + $reserve_fuel;
             $trip = Trip::find($request->trip_id);
+            $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
+            if($vehicleFind){
+                // Update vehicle details
+                $vehicle = Vehicle::where('id', $vehicleFind)->first();
+                $vehicle->fuel_left= $currentFuel;
+                $vehicle->mpg=$truckMpg;
+                $vehicle->reserve_fuel=$request->reserve_fuel;
+                $vehicle->update();
+                if($vehicle && $vehicle->vehicle_image != null){
+                    $vehicle->vehicle_image =url('/vehicles/'.$vehicle->vehicle_image);
+                }
+            }else{
+                $vehicle = null;
+            }
             // ✅ Final trip response
             $tripDetailResponse = [
                 
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
-                    'vehicle' => ['mpg' => $truckMpg, 'fuelLeft' => $totalFuel],
-                    'fuelStations' => [],
+                    'vehicle' => $vehicle,
+                    'fuel_station' => [],
                     'polyline' => $decodedCoordinates,
                     'encoded_polyline' => $encodedPolyline,
                     'polyline_paths'=>$polylinePoints,
