@@ -116,6 +116,7 @@ class TripController extends Controller
         if (isset($waypoints)) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
+        \Log::info($url);
         // Fetch data from Google Maps API
         $response = Http::get($url);
 
