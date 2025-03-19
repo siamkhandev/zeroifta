@@ -105,7 +105,7 @@ class TripController extends Controller
         $truckMpg = $request->truck_mpg;
         $fuelTankCapacity = $request->fuel_tank_capacity;
         $currentFuel = $request->total_gallons_present;
-        $bearing = $request->bearing ?? 90;
+        $bearing = $request->bearing < 0 ? 0 : $request->bearing;
         // Replace with your Google API key
         $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
         $stops = Tripstop::where('trip_id', $request->trip_id)->get();
@@ -129,6 +129,8 @@ class TripController extends Controller
             $decodedCoordinates = [];
             $stepSize = 7; // Sample every 3rd point
             $polylinePoints = [];
+            $totalDistance = 0;
+            $totalDuration = 0;
             foreach ($legs as $leg) {
                 foreach ($leg['steps'] as $step) {
                     if (isset($step['polyline']['points'])) {
@@ -144,11 +146,23 @@ class TripController extends Controller
                     }
                 }
             }
+            foreach ($legs as $leg) {
+                if (isset($leg['distance']['value'])) {
+                    $totalDistance += $leg['distance']['value'];
+                } else {
+                    \Log::error('Missing distance value in leg:', $leg);
+                }
 
+                if (isset($leg['duration']['value'])) {
+                    $totalDuration += $leg['duration']['value'];
+                } else {
+                    \Log::error('Missing duration value in leg:', $leg);
+                }
+            }
             // Ensure polylinePoints is filtered properly
             $polylinePoints = array_filter($polylinePoints);
-            $totalDistance = array_sum(array_column($legs, 'distance.value')); // in meters
-            $totalDuration = array_sum(array_column($legs, 'duration.value')); // in seconds
+            $totalDistanceMiles = round($totalDistance * 0.000621371, 2); // Convert meters to miles
+            $formattedDuration = gmdate("H\h i\m", $totalDuration); // Format duration
             $totalDistanceMiles = round($totalDistance * 0.000621371, 2);
             $formattedDuration = gmdate("H\h i\m", $totalDuration);
             $encodedPolyline = $bestRoute['overview_polyline']['points'];
