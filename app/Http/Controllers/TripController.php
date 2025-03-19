@@ -268,6 +268,7 @@ class TripController extends Controller
                 'distance' => $totalDistanceMiles . ' miles',
                 'duration' => $formattedDuration,
             ]);
+            unset($trip->vehicle_id);
             $tripDetailResponse = [
 
                 'trip_id'=>$trip->id,
