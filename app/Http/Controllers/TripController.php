@@ -108,6 +108,8 @@ class TripController extends Controller
         $bearing = $request->bearing;
         if($bearing <0){
             $userBearing =0;
+        }else{
+            $userBearing = $bearing;
         }
         // Replace with your Google API key
         $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
