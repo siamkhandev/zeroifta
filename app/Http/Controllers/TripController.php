@@ -128,23 +128,23 @@ class TripController extends Controller
             $legs = $bestRoute['legs'];
             $decodedCoordinates = [];
             $stepSize = 7; // Sample every 3rd point
-            $polylinePoints = [];   
+            $polylinePoints = [];
             foreach ($legs as $leg) {
                 foreach ($leg['steps'] as $step) {
                     if (isset($step['polyline']['points'])) {
                         $points = $this->decodePolyline($step['polyline']['points']);
-                        
+
                         // Add filtered points to decodedCoordinates
                         for ($i = 0; $i < count($points); $i += $stepSize) {
                             $decodedCoordinates[] = $points[$i];
                         }
-            
+
                         // Collect polyline points correctly
                         $polylinePoints[] = $step['polyline']['points'];
                     }
                 }
             }
-            
+
             // Ensure polylinePoints is filtered properly
             $polylinePoints = array_filter($polylinePoints);
             $totalDistance = array_sum(array_column($legs, 'distance.value')); // in meters
@@ -166,55 +166,56 @@ class TripController extends Controller
 
             $reserve_fuel = $request->reserve_fuel;
             $totalFuel = $currentFuel + $reserve_fuel;
-            $tripDetailResponse = [
-                'data' => [
-                    'trip' => [
-                        'start' => [
-                            'latitude' => $startLat,
-                            'longitude' => $startLng
-                        ],
-                        'end' => [
-                            'latitude' => $endLat,
-                            'longitude' => $endLng
-                        ]
-                    ],
-                    'vehicle' => [
-                        'mpg' => $truckMpg,
-                        'fuelLeft' => $totalFuel
-                    ],
-                    'fuelStations' => $matchingRecords,
-                    'polyline'=>$decodedCoordinates
+            // $tripDetailResponse = [
+            //     'data' => [
+            //         'trip' => [
+            //             'start' => [
+            //                 'latitude' => $startLat,
+            //                 'longitude' => $startLng
+            //             ],
+            //             'end' => [
+            //                 'latitude' => $endLat,
+            //                 'longitude' => $endLng
+            //             ]
+            //         ],
+            //         'vehicle' => [
+            //             'mpg' => $truckMpg,
+            //             'fuelLeft' => $totalFuel
+            //         ],
+            //         'fuelStations' => $matchingRecords,
+            //         'polyline'=>$decodedCoordinates
 
-                ]
-            ];
+            //     ]
+            // ];
             $trip = Trip::find($request->trip_id);
-            $result = $this->markOptimumFuelStations($tripDetailResponse);
-                if($result==false){
-                    $result = $matchingRecords;
+           // $result = $this->markOptimumFuelStations($tripDetailResponse);
+           $result = FuelStation::where('trip_id', $trip->id)->get();
+                // if($result==false){
+                //     $result = $matchingRecords;
 
-                }
-                foreach ($result as $value) {
-                    FuelStation::updateOrCreate(
-                        [
-                            'trip_id' => $trip->id, // Condition to check if the record exists
-                            'latitude' => $value['ftpLat'],
-                            'longitude' => $value['ftpLng']
-                        ],
-                        [
-                            'name' => $value['fuel_station_name'],
-                            'price' => $value['price'],
-                            'lastprice' => $value['lastprice'],
-                            'discount' => $value['discount'],
-                            'ifta_tax' => $value['IFTA_tax'],
-                            'is_optimal' => $value['isOptimal'] ?? false,
-                            'address' => $value['address'],
-                            'gallons_to_buy' => $value['gallons_to_buy'],
-                            'trip_id' => $trip->id,
-                            'user_id' => $trip->user_id,
-                        ]
-                    );
-                }
-           
+                // }
+                // foreach ($result as $value) {
+                //     FuelStation::updateOrCreate(
+                //         [
+                //             'trip_id' => $trip->id, // Condition to check if the record exists
+                //             'latitude' => $value['ftpLat'],
+                //             'longitude' => $value['ftpLng']
+                //         ],
+                //         [
+                //             'name' => $value['fuel_station_name'],
+                //             'price' => $value['price'],
+                //             'lastprice' => $value['lastprice'],
+                //             'discount' => $value['discount'],
+                //             'ifta_tax' => $value['IFTA_tax'],
+                //             'is_optimal' => $value['isOptimal'] ?? false,
+                //             'address' => $value['address'],
+                //             'gallons_to_buy' => $value['gallons_to_buy'],
+                //             'trip_id' => $trip->id,
+                //             'user_id' => $trip->user_id,
+                //         ]
+                //     );
+                // }
+
             $vehicleFind = DriverVehicle::where('driver_id', $trip->user_id)->pluck('vehicle_id')->first();
             if($vehicleFind){
                 // Update vehicle details
@@ -231,18 +232,18 @@ class TripController extends Controller
             }
             // ✅ Final trip response
             $tripDetailResponse = [
-                
+
                     'trip_id'=>$trip->id,
                     'trip' => $trip,
                     'vehicle' => $vehicle,
-                    'fuel_stations' => $result,
+                    'fuel_stations' => $result ?? [],
                     'polyline' => $decodedCoordinates,
                     'encoded_polyline' => $encodedPolyline,
                     'polyline_paths'=>$polylinePoints,
                     'stops'=>[],
-                
+
             ];
-            
+
             $trip->update([
                 'updated_start_lat' => $updatedStartLat,
                 'updated_start_lng' => $updatedStartLng,
@@ -258,9 +259,9 @@ class TripController extends Controller
                 'message' => 'Trip updated successfully',
                 'data' => $tripDetailResponse
             ]
-               
+
             );
-           
+
 
         }
 
@@ -362,10 +363,10 @@ class TripController extends Controller
 
     private function bearingBetweenLocations($point1, $point2)
     {
-       
+
         list($lat1, $lng1) = explode(',', $point1);
         list($lat2, $lng2) = explode(',', $point2);
-        
+
         $lat1 = deg2rad($lat1);
         $lng1 = deg2rad($lng1);
         $lat2 = deg2rad($lat2);
