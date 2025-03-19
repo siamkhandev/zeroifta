@@ -105,15 +105,23 @@ class TripController extends Controller
         $truckMpg = $request->truck_mpg;
         $fuelTankCapacity = $request->fuel_tank_capacity;
         $currentFuel = $request->total_gallons_present;
-        $bearing = $request->bearing < 0 ? 0 : $request->bearing;
+        $bearing = $request->bearing;
+        if($bearing <0){
+            $userBearing =0;
+        }
         // Replace with your Google API key
         $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
         $stops = Tripstop::where('trip_id', $request->trip_id)->get();
         if ($stops->isNotEmpty()) {
             $waypoints = $stops->map(fn($stop) => "{$stop->stop_lat},{$stop->stop_lng}")->implode('|');
         }
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin=heading={$bearing}:{$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
-        if (isset($waypoints)) {
+        if($bearing <0){
+            $url = "https://maps.googleapis.com/maps/api/directions/json?origin={$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
+        }else{
+            $url = "https://maps.googleapis.com/maps/api/directions/json?origin=heading={$bearing}:{$updatedStartLat},{$updatedStartLng}&destination={$updatedEndLat},{$updatedEndLng}&key={$apiKey}";
+
+        }
+       if (isset($waypoints)) {
             $url .= "&waypoints=optimize:true|{$waypoints}";
         }
         \Log::info($url);
@@ -125,7 +133,7 @@ class TripController extends Controller
             $routes = $data['routes'];
             //$route = $data['routes'][0];
             $currentLocation = $startLat.','.$startLng;
-            $bestRoute = $this->getBestForwardRoute($routes, $currentLocation,$bearing);
+            $bestRoute = $this->getBestForwardRoute($routes, $currentLocation,$userBearing);
             $legs = $bestRoute['legs'];
             $decodedCoordinates = [];
             $stepSize = 7; // Sample every 3rd point
