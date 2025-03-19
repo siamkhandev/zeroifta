@@ -105,7 +105,7 @@ class TripController extends Controller
         $truckMpg = $request->truck_mpg;
         $fuelTankCapacity = $request->fuel_tank_capacity;
         $currentFuel = $request->total_gallons_present;
-        $bearing = $request->bearing < 0 ? 0 : $request->bearing;
+        $bearing = $request->bearing < 0 ? "" : $request->bearing;
         // Replace with your Google API key
         $apiKey = 'AIzaSyA0HjmGzP9rrqNBbpH7B0zwN9Gx9MC4w8w';
         $stops = Tripstop::where('trip_id', $request->trip_id)->get();
