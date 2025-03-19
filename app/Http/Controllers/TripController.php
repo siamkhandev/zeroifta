@@ -231,18 +231,7 @@ class TripController extends Controller
                 $vehicle = null;
             }
             // ✅ Final trip response
-            $tripDetailResponse = [
 
-                    'trip_id'=>$trip->id,
-                    'trip' => $trip,
-                    'vehicle' => $vehicle,
-                    'fuel_stations' => $result ?? [],
-                    'polyline' => $decodedCoordinates,
-                    'encoded_polyline' => $encodedPolyline,
-                    'polyline_paths'=>$polylinePoints,
-                    'stops'=>[],
-
-            ];
 
             $trip->update([
                 'updated_start_lat' => $updatedStartLat,
@@ -254,6 +243,18 @@ class TripController extends Controller
                 'distance' => $totalDistanceMiles . ' miles',
                 'duration' => $formattedDuration,
             ]);
+            $tripDetailResponse = [
+
+                'trip_id'=>$trip->id,
+                'trip' => $trip,
+                'vehicle' => $vehicle,
+                'fuel_stations' => $result ?? [],
+                'polyline' => $decodedCoordinates,
+                'encoded_polyline' => $encodedPolyline,
+                'polyline_paths'=>$polylinePoints,
+                'stops'=>[],
+
+        ];
             return response()->json([
                 'status' => 200,
                 'message' => 'Trip updated successfully',
